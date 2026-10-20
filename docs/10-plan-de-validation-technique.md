@@ -4,7 +4,7 @@ Mis à jour le 20 octobre 2026. **Document de référence pour l'ordre du travai
 
 ## Position actuelle
 
-**État courant : revue MVP et économique rédigée (étape 3) ; S0 et S1 terminés localement, prochain ticket : S2-01 (parcours simulé).** F3 est clos ; admission libre et couverture des sources restent non validées. [D0](../engine-lab/reports/monitor-result-20261012.json), [F0](../engine-lab/reports/firecrawl-result-20261012.json), [F1](../engine-lab/reports/firecrawl-controlled-result-20261012.json), [protocole et preuves](../validation/03-protocole-comparatif-des-moteurs.md).
+**État courant : revue MVP et économique rédigée (étape 3) ; S0, S1 et S2 terminés localement, prochain ticket : S3-01 (spécification et chiffrage du service réel).** F3 est clos ; admission libre et couverture des sources restent non validées. [D0](../engine-lab/reports/monitor-result-20261012.json), [F0](../engine-lab/reports/firecrawl-result-20261012.json), [F1](../engine-lab/reports/firecrawl-controlled-result-20261012.json), [protocole et preuves](../validation/03-protocole-comparatif-des-moteurs.md).
 
 D0 : format Exa Monitor non conforme ; recherche Search pertinente mais dates de publication parfois fausses/non étayées. F0 : Firecrawl retrouve une vraie annonce récente, confirmée par un complément d'audit, mais retient aussi un ancien guide en confondant publication et mise à jour. La découverte avec preuve de récence reste non validée.
 
@@ -48,7 +48,7 @@ MVVM et Clean Architecture, dans un seul module Gradle initial, restent le cadre
 | **1 — Contrat d'essai** | Remplir le [protocole](../validation/03-protocole-comparatif-des-moteurs.md) : demandes exactes issues des familles validées, référence indépendante, attendus, faux positifs, coût maximal et arrêt. | Cas et seuils gelés avant appels ; accès et arrêt distant vérifiés ; aucune dépense au-delà de l'autorisation existante. **D0/F0/F1 gelés et exécutés ; Y1 annulé, aucun accès demandé.** |
 | **2 — Chaîne déléguée minimale** | Un prestataire à la fois → réception sécurisée → contrôle minimal des preuves et doublons → journal d'événements. Bilan des passages, y compris silencieux ou échoués. | Aucun échec critique sur les cas contrôlés ; cas positifs effectivement détectés. Une absence de positif réel reste non concluante. Coûts rapprochés des compteurs fournisseur. **F1/F2 réussis dans leur périmètre ; F3 livraison signée réelle rapprochée de l’API et journalisée localement. Admission libre, découverte, récepteur de production et push restent ouverts.** |
 | **3 — Décision MVP** | Retenir les capacités démontrées, limites, cadence, quotas, coût mensuel et adaptateurs nécessaires. | Décision écrite avec hypothèses économiques et arbitrages produit présentés à Fabien. **Revue du 20 octobre livrée dans les documents 03 et 07. Cadre produit conservé ; plafond et quotas proposés, non autorisés. Ces paramètres ne bloquent pas le socle Android.** |
-| **4 — Tranche Android** | Saisie → clarification/proposition → suivi → preuve → notification, avec architecture et tests utiles. | Une démonstration locale peut démarrer en parallèle sur repository simulé explicite ; l'intégration réelle attend les preuves du moteur. **Aucun code Android livré.** |
+| **4 — Tranche Android** | Saisie → clarification/proposition → suivi → preuve → notification, avec architecture et tests utiles. | Une démonstration locale peut démarrer en parallèle sur repository simulé explicite ; l'intégration réelle attend les preuves du moteur. **S1/S2 livrés localement : parcours demo et contrats simulés testés ; intégration réelle et push restent en S3.** |
 | **5 — Durée et publication** | Sept jours d'observation, qualité, coût, vie privée, accessibilité et exigences Play selon le document 09. | Tous les critères de sortie satisfaits et compte Play autorisé à publier. **Non commencée.** |
 
 Les sept jours évaluent la continuité et les événements observables ; ils ne garantissent ni une couverture mondiale ni une qualité statistique générale. Un essai court de contrat précède cette observation et ne la remplace pas.
@@ -103,7 +103,7 @@ Ce découpage remplace l'expression trop large « contrat et socle ». Les sprin
 
 ### Préparation S0 — terminée pour autoriser S1
 
-Spécification Android, contrat applicatif v0 et responsabilités : document 08. Backlog ci-dessous. Enveloppes et règles produit : documents 03/07, sans autorisation de dépense additionnelle. Les numéros de dépendances non éprouvés sont une tâche technique S1-02, pas un arbitrage produit. Le backend détaillé et la facture réelle seront décidés au ticket S3-01, avant réseau de production. Le socle Android S1 est livré ; les contrats complets restent à implémenter en S2/S3.
+Spécification Android, contrat applicatif v0 et responsabilités : document 08. Backlog ci-dessous. Enveloppes et règles produit : documents 03/07, sans autorisation de dépense additionnelle. Les numéros de dépendances non éprouvés sont une tâche technique S1-02, pas un arbitrage produit. Le backend détaillé et la facture réelle seront décidés au ticket S3-01, avant réseau de production. Le socle Android S1 et les contrats simulés S2 sont livrés ; les adaptateurs réels et leur validation restent en S3.
 
 ### Sprint 1 — environnement et fondations
 
@@ -124,7 +124,7 @@ Objectif : Fabien peut ouvrir le projet dans Android Studio, lancer l'applicatio
 
 Objectif : tester le produit Android et apprendre ses composants avant de payer des recherches. Les fixtures ne prouvent ni l'intelligence ni la fiabilité du futur moteur. Réseau métier : zéro.
 
-**Préparation vérifiée le 20 octobre :** le [document 08](08-architecture-et-donnees.md#contrat-dimplémentation-s2-01--préparation-du-20-octobre-2026) précise maintenant mutations, rejeu, concurrence, expiration, restauration et cas S2-C01 à C14. S2-01 est prêt à implémenter ; aucun test S2 exécuté à ce stade. Les comportements visibles restent dans le document 04. Pas de nouvelle stack, dépense ni choix produit requis pour démarrer. La connexion IDE non vérifiée de S1 reste un contrôle de prise en main à faire, sans bloquer les builds CLI déjà éprouvés.
+**Préparation vérifiée le 20 octobre :** le [document 08](08-architecture-et-donnees.md#contrat-dimplémentation-s2-01--préparation-du-20-octobre-2026) précise maintenant mutations, rejeu, concurrence, expiration, restauration et cas S2-C01 à C14. Ces attendus ont depuis été implémentés et vérifiés : **S2-01 à S2-06 terminés**, selon le [bilan et les preuves](../validation/android-s2/bilan.md). Les comportements visibles restent dans le document 04. Pas de nouvelle stack, dépense ni choix produit requis pour démarrer. La connexion IDE non vérifiée de S1 reste un contrôle de prise en main à faire, sans bloquer les builds CLI déjà éprouvés.
 
 Ordre par ticket : préciser l’attendu → écrire les tests pertinents → implémenter → contrôler le comportement → relire la modification → enregistrer le bilan. Une ambiguïté technique est résolue et documentée ; une modification de la promesse produit est soumise à Fabien avant code. Le fonctionnement simulé de S2 ne sera pas présenté comme une surveillance Web réelle.
 
@@ -171,7 +171,7 @@ Pour terminer un ticket : exigences reliées, comportement vérifié, tests appr
 
 À chaque fin de sprint : démonstration, explication pédagogique courte, résultat des contrôles, dépenses et prochaine tâche. Le bilan est une information, pas une demande automatique de permission. La progression continue dans le périmètre autorisé sauf demande d'arrêt de Fabien ou vrai blocage.
 
-### État au terme de cette préparation
+### État après livraison du sprint 2
 
 - **S0 terminé :** spécification v0 et backlog rédigés ; aucune compatibilité binaire prétendue validée.
 - **S1-01 terminé :** Android Studio installé/lancé, SDK/JDK vérifiés, émulateur API 36 ARM64 démarré et vu par adb. L’inspection de la fenêtre IDE a expiré ; aucune synchronisation IDE n’est déclarée vérifiée.
@@ -180,5 +180,5 @@ Pour terminer un ticket : exigences reliées, comportement vérifié, tests appr
 - **S1-04 terminé :** écran FR/EN, faux repository injecté, ViewModel/StateFlow, navigation typée et retour/recréation vérifiés sur appareil ; APK sans INTERNET.
 - **S1-05 terminé localement :** 2 tests unitaires, 1 test Android, compilation, Lint et contrôle des frontières passent. Workflow CI préparé, jamais exécuté à distance.
 - **S1-06 terminé :** [bilan, capture et empreinte](../validation/android-s1/bilan.md), [guide développeur](../android/README.md).
-- **S2-01 à S4-04 à faire.** Le moteur réel, l’admission libre, la publication Play et les performances/accessibilité complètes restent non validés.
-- Prochain travail : **S2-01**, puis les tickets S2 dans leur ordre de dépendance. Aucune approbation supplémentaire requise pour ces choix techniques réversibles.
+- **S2-01 à S2-06 terminés :** parcours simulés livrés ; 24 tests unitaires et 5 parcours Compose dans trois configurations réussis ; mort réelle du processus, Lint et frontières vérifiés. [Bilan et preuves S2](../validation/android-s2/bilan.md). Coût fournisseur : zéro. S3/S4 restent à faire ; le moteur réel, l’admission libre, la publication Play et les performances/accessibilité complètes restent non validés.
+- Prochain travail : **S3-01**, spécifier et chiffrer le service réel avant de raccorder Android. Aucun nouvel arbitrage nécessaire pour clôturer S2 ; toute dépense nouvelle ou réduction de promesse sera soumise avant engagement.

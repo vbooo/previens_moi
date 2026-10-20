@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "device": "emulator-5554",
+  "old_pid": "15948",
+  "new_pid": "16156",
+  "draft_restored": true,
+  "reset_explained": true,
+  "old_proposal_confirmable": false,
+  "automatic_activation": false,
+  "method": "background -> am kill -> launch existing task"
+}

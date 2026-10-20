@@ -342,3 +342,12 @@ Ces cas sont des attentes, pas des résultats. Leur implémentation sera reliée
 **Prêt :** exigences produit référencées, contrats et invariants ci-dessus, cas attendus écrits, dépendances S1 passantes, aucun accès externe ni nouveau budget nécessaire. **Terminé S2-01 :** modèles/ports/adaptateurs codés, cas C01–C08 exécutés, tests S1 toujours passants, absence de réseau conservée, limites et preuve enregistrées. Une description en Markdown ne remplace pas ces tests.
 
 Le premier parcours visible recherché en S2 reste saisie → proposition → connexion demo → suivi confirmé. Les autres états sont ajoutés selon les tickets, sans multiplier les écrans ou bâtir un moteur fictif généraliste. Le bilan de sprint montrera ce parcours et expliquera le rôle de chaque composant pour l’apprentissage Android.
+
+
+## Exécution S2 — 20 octobre 2026
+
+**S2-01 à S2-06 livrés localement.** Les cas S2-C01 à C14 ci-dessus ont été reliés aux tests et preuves dans le [bilan S2](../validation/android-s2/bilan.md). Les critères restent la référence ; leur couverture ne vaut pas validation d’un moteur réel.
+
+Les ports du domaine sont implémentés par un service demo partagé, avec mutations atomiques, reçus idempotents et horloge injectable. Les ViewModels exposent un état observable ; les composables affichent cet état et transmettent les actions. DataStore conserve le brouillon, SavedStateHandle les petits identifiants de parcours. Une perte du processus efface honnêtement la mémoire du service demo et ne déclenche aucune activation automatique. L’assemblage de cette variante est isolé dans `src/demo`.
+
+Validation : 24 tests unitaires, cinq parcours Compose dans trois configurations, restauration après mort réelle du processus, Lint et contrôle des frontières passants. Aucun réseau métier ni coût fournisseur. Les limites de qualification de production sont détaillées dans le bilan. La prochaine étape technique est S3-01 : ADR du service réel, contrat HTTP, identité, stockage, push et chiffrage avant intégration.

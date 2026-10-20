@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-20",
+  "scope": "Sprint 2 Android demo only",
+  "source_revision": "a3b4465346da034e1e7d268f1f6b61327daa9c04",
+  "apk_sha256": "0c4b339c73a45557a2d692c4f24ab6a783743286b4d2b763ed4804342a5200b7",
+  "unit_suites": [
+    {
+      "name": "fr.previensmoi.contract.DemoWatchContractTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T16:32:39.141Z"
+    },
+    {
+      "name": "fr.previensmoi.feature.create.presentation.CreateViewModelTest",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T16:32:39.384Z"
+    },
+    {
+      "name": "fr.previensmoi.feature.watches.presentation.WatchCommandsTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T16:32:39.423Z"
+    },
+    {
+      "name": "fr.previensmoi.feature.watches.presentation.WatchesViewModelTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "timestamp": "2026-10-20T16:32:39.435Z"
+    }
+  ],
+  "ui": [
+    {
+      "configuration": "phone-fr",
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "configuration": "phone-en-dark-large",
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "configuration": "tablet-fr",
+      "passed": 5,
+      "failed": 0
+    }
+  ],
+  "process_death": {
+    "status": "passed",
+    "device": "emulator-5554",
+    "old_pid": "15948",
+    "new_pid": "16156",
+    "draft_restored": true,
+    "reset_explained": true,
+    "old_proposal_confirmable": false,
+    "automatic_activation": false,
+    "method": "background -> am kill -> launch existing task"
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "version_hints": 6
+  },
+  "architecture_boundaries": "passed",
+  "apk_internet_permission": false,
+  "provider_calls": 0,
+  "additional_provider_cost_eur": 0,
+  "remote_ci_executed": false,
+  "interface_review": "ship for S2 demo; static evidence only",
+  "initial_failures": [
+    "Lint: quantity wording and unused S1 resources, corrected",
+    "UI: async evaluation/navigation was asserted before completion; explicit bounded waits and independent initialization added",
+    "Process probe: emulator keyboard stylus tutorial captured text; isolated, actual process death then verified"
+  ],
+  "not_validated": [
+    "real backend and authentication",
+    "cross-account authorization",
+    "Web search and interpretation",
+    "push notifications",
+    "TalkBack full audit",
+    "physical device performance",
+    "runtime API23 and API37",
+    "Play publication"
+  ]
+}
