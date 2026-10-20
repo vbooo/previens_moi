@@ -46,3 +46,6 @@ Le [chiffrage](cost-scenarios.json) est conditionnel, pas une facture ni une pre
 **S3-02 local :** migrations PostgreSQL et API métier, Auth locale avec boîte e-mail de test, vérification d'isolation A/B et d'idempotence sur vraie base, puis raccordement des ports Android. Ne pas présenter les tests MockWebServer comme ces tests d'isolation. L'environnement local permet d'avancer sans domaine et sans compte cloud.
 
 **Avant ouverture distante :** résoudre les inconnues S3-01, configurer les projets gratuits dédiés et le transport de codes e-mail, puis faire les preuves d'identité et de push réelles. Le domaine sert uniquement à l'expéditeur du code de connexion ; il n'est pas un prérequis pour coder ni pour installer l'application. Aucun achat demandé à Fabien à ce stade.
+
+
+Reprise du 20 octobre : l’implémentation locale du backend, de l’identité et de l’assemblage Android est désormais dans le [bilan S3 courant](../s3/bilan.md). Ce bilan de démarrage reste la preuve historique du contrat à son état initial ; ne pas l’utiliser comme statut actuel de S3-02.

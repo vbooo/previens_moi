@@ -1,0 +1,10 @@
+{
+  "openapi": "valid",
+  "operations": 15,
+  "schemas": 23,
+  "fixtures_passed": 34,
+  "positive": 21,
+  "negative": 13,
+  "network_calls": 0,
+  "scope": "specification and examples only"
+}

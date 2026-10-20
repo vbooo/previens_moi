@@ -1,0 +1,7 @@
+{
+  "typeCheck": true,
+  "transportTests": 6,
+  "passed": 6,
+  "googleNetworkCalls": 0,
+  "scope": "FCM transport with injected HTTP doubles; not real delivery"
+}

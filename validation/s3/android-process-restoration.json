@@ -1,0 +1,9 @@
+{
+  "scope": "injected pending local fixture; real Android process death; no provider activation",
+  "passed": true,
+  "newProviderCalls": 0,
+  "samePendingIdentifier": true,
+  "noDuplicateCommand": true,
+  "pendingShown": true,
+  "sessionRestoredFromKeystore": true
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "existing offline laboratory; does not measure provider quality",
+  "tests": 75,
+  "passed": 75,
+  "failures": 0,
+  "networkCalls": 0,
+  "additionalSpend": 0,
+  "corpusDigest": "af2103c73542288cae5d24591c1330299704cb37c41ec73cc85e1c3f2b306222"
+}

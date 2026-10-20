@@ -1,0 +1,20 @@
+{
+  "sprint": "S3",
+  "observation_started": false,
+  "seven_days_proven": false,
+  "public_deployment": false,
+  "provider_execution_enabled": false,
+  "fcm_execution_enabled": false,
+  "real_capacity": 0,
+  "remaining_gates": [
+    "qualify natural-language admission and discovery using frozen A1/REV cases",
+    "implement and qualify actual provider reconciliation and bounded recurring execution",
+    "confirm real remote pause/deletion and all in-flight emission races",
+    "configure dedicated Firebase Spark project and prove real device delivery",
+    "configure dedicated Supabase environment and public email transport when authorized",
+    "finish and prove complete account/identity erasure",
+    "qualify full chain and expected reference results before observation"
+  ],
+  "additional_paid_calls": 0,
+  "additional_spend": 0
+}

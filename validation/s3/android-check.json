@@ -1,0 +1,55 @@
+{
+  "unit": {
+    "demo": {
+      "tests": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "remote": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "overlapNote": "Some unit methods are shared between variants; do not add counts as distinct methods",
+  "lint": {
+    "demo": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 0,
+      "Information": 0
+    },
+    "remote": {
+      "Error": 0,
+      "Fatal": 0,
+      "Warning": 0,
+      "Information": 0
+    }
+  },
+  "compose": {
+    "demoTests": 5,
+    "remoteTestsPerLanguage": 1,
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "device": "emulator-5554 API36",
+    "darkTheme": true,
+    "fontScale": 1.3
+  },
+  "apks": {
+    "demo": {
+      "sha256": "3f0a628bf422cdddea0f4a595e8333b8eb470e7de111d57a212796ab12e77a50",
+      "privilegedCredentialMarkersFound": false,
+      "scope": "built APK; marker scan is not a universal secret audit"
+    },
+    "remote": {
+      "sha256": "3816a502409eb3aee292e25487ef6122e0e8d9baacf5043190845d0bb46f26a7",
+      "privilegedCredentialMarkersFound": false,
+      "scope": "built APK; marker scan is not a universal secret audit"
+    }
+  },
+  "backendQualification": "not inferred from Android HTTP fixtures"
+}

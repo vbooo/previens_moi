@@ -1,0 +1,6 @@
+
+fr.previensmoi.app.FoundationsTest:.....
+
+Time: 53.153
+
+OK (5 tests)

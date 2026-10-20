@@ -1,0 +1,23 @@
+{
+  "authorizedCumulativeMaxEUR": 2,
+  "additionalProviderCalls": 0,
+  "additionalSpendEUR": 0,
+  "subscriptionOrTopUp": false,
+  "historical": {
+    "openaiEstimatedUSD": 0.0476092,
+    "exaDisplayedRoundedUSD": 0.02,
+    "firecrawlFreeCreditsConsumed": 15,
+    "lastKnownFirecrawlCredits": 985,
+    "lastKnownBalanceDate": "2026-10-15"
+  },
+  "firecrawlBalanceRechecked": false,
+  "reason": "No new provider usage in S3 local implementation",
+  "productionForecastClosed": false,
+  "remainingCostUnknowns": [
+    "verified sending domain purchase/renewal if required",
+    "independent backup destination",
+    "qualified monitoring and analysis cost",
+    "taxes/exchange and public email operations"
+  ],
+  "monthlyBudgetAuthorized": false
+}

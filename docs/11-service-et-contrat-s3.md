@@ -1,6 +1,6 @@
 # Service réel — spécification S3-01
 
-20 octobre 2026. **Spécification préparée, aucun service déployé.** Choix techniques dans l'[ADR 0011](decisions/0011-service-reel-s3.md), contrat machine dans [OpenAPI v1](../contracts/application-v1.openapi.json). Références produit : documents 03/04/05/07/08/09. Le backlog actif reste le document 10.
+20 octobre 2026. **Service local isolé implémenté ; aucun service cloud déployé.** Choix techniques dans l'[ADR 0011](decisions/0011-service-reel-s3.md), contrat machine dans [OpenAPI v1](../contracts/application-v1.openapi.json). Références produit : documents 03/04/05/07/08/09. Le backlog actif reste le document 10.
 
 ## Objectif et frontières
 

@@ -1,0 +1,6 @@
+
+fr.previensmoi.app.LocalServiceTest:.
+
+Time: 9.03
+
+OK (1 test)

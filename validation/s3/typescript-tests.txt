@@ -1,0 +1,10 @@
+Task test deno test tests/fcm_test.ts
+running 6 tests from ./tests/fcm_test.ts
+disabled push performs no lease or network call ... ok (5ms)
+pause after lease prevents HTTP emission ... ok (1ms)
+FCM contains identifiers only and bounded TTL ... ok (0ms)
+acceptance is recorded and does not claim delivery ... ok (7ms)
+lost response is unknown without automatic duplicate POST ... ok (0ms)
+provider 503 is unknown; permanent 400 is failed ... ok (0ms)
+
+ok | 6 passed | 0 failed (27ms)

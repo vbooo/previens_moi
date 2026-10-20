@@ -1,0 +1,9 @@
+{
+  "scope": "Real local Supabase Auth + PostgreSQL + Edge HTTP; no provider or FCM",
+  "tests": 17,
+  "failures": 0,
+  "errors": 0,
+  "passed": true,
+  "durationSeconds": 4.26,
+  "additionalSpend": 0
+}

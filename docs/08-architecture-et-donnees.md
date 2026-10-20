@@ -358,3 +358,8 @@ Validation : 24 tests unitaires, cinq parcours Compose dans trois configurations
 Le [document 11](11-service-et-contrat-s3.md) et l’[ADR 0011](decisions/0011-service-reel-s3.md) précisent le service réel. Le [contrat OpenAPI](../contracts/application-v1.openapi.json) définit les échanges avant raccordement. Les anciens modèles S2 simplifiés restent la référence de la démo ; les DTO de S3 enrichissent questions, preuves, dates et opérations en attente dans `data/remote`, sans modifier les écrans ou le domaine à ce stade.
 
 Le client HTTP est testé sur serveur local et n’est pas injecté dans la démo. Retrofit 3.0.0 et OkHttp 5.5.0 ont été résolus/compilés ; la permission Internet apportée par la bibliothèque est explicitement retirée du manifeste demo et le binaire est contrôlé. Les exemples contractuels ne sont empaquetés que dans les tests JVM. Les validations de format ne prouvent ni l’identité, ni les transactions serveur, ni la détection réelle.
+
+
+## Exécution locale S3 — 20 octobre 2026
+
+Variante `remoteDebug` distincte, ports raccordés à l'API et à Supabase Auth, session Keystore, UUIDv7 et reçu pending persistant par identifiant. Le domaine conserve les états de préparation et d'arrêt distant, les preuves et la précision date/instant. PostgreSQL privé/RLS, transactions de commandes, capacité, jobs à baux, inbox HMAC et outbox atomique sont implémentés sous `service/`. Le [bilan S3](../validation/s3/bilan.md) précise les confirmations fournisseur simulées et les validations réelles encore absentes. Aucune modification des promesses, budgets ou conditions de publication.
