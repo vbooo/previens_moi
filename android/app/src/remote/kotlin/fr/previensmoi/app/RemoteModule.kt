@@ -32,6 +32,7 @@ object RemoteModule {
     @Provides @Singleton fun auth(): AuthApi = createAuthApi(BuildConfig.AUTH_URL.toHttpUrl(), BuildConfig.AUTH_PUBLIC_KEY, BuildConfig.LOCAL_SERVICE)
     @Provides @Singleton fun api(): ApplicationApi = ApiClient.create(BuildConfig.SERVICE_URL.toHttpUrl(), BuildConfig.LOCAL_SERVICE)
     @Provides @Singleton fun vault(@ApplicationContext context: Context): SessionVault = KeystoreSessionVault(context)
+    @Provides @Singleton fun notificationClaims(@ApplicationContext context: Context) = fr.previensmoi.data.push.NotificationClaims(context)
     @Provides @Singleton fun installation(@ApplicationContext context: Context) = DeviceInstallation(context)
     @Provides @Singleton fun sessions(api: AuthApi, vault: SessionVault, clock: Clock, application: ApplicationApi, installation: DeviceInstallation, ids: IdGenerator) = RemoteSessionRepository(api, vault, clock,
         beforeSignOut = { bearer -> application.removeDevice(bearer,installation.id) },
@@ -44,7 +45,8 @@ object RemoteModule {
         })
     @Provides fun session(repository: RemoteSessionRepository): SessionRepository = repository
     @Provides @Singleton fun journal(@ApplicationContext context: Context): PendingCommands = FilePendingCommands(context)
-    @Provides @Singleton fun repositories(api: ApplicationApi, session: RemoteSessionRepository, journal: PendingCommands, ids: IdGenerator) = RemoteRepositories(api,session,journal,ids)
+    @Provides @Singleton fun evaluationJournal(@ApplicationContext context: Context): EvaluationJournal = fr.previensmoi.data.local.KeystoreEvaluationJournal(context)
+    @Provides @Singleton fun repositories(evaluations: EvaluationJournal, api: ApplicationApi, session: RemoteSessionRepository, journal: PendingCommands, ids: IdGenerator) = RemoteRepositories(api,session,journal,ids,evaluations)
     @Provides fun watches(repository: RemoteRepositories): WatchRepository = repository
     @Provides fun proposals(repository: RemoteRepositories): ProposalRepository = repository
     @Provides fun findings(repository: RemoteRepositories): FindingRepository = repository

@@ -7,13 +7,14 @@ enum class FollowMode { Once, Continuous }
 data class RequestDraft(
     val text: String = "", val answer: String = "", val language: String = "fr",
     val mode: FollowMode = FollowMode.Once, val revision: Long = 0,
+    val answers: Map<String, String> = emptyMap(),
 )
 data class Proposal(
     val id: String, val version: Long, val draft: RequestDraft, val expiresAt: Long,
     val partial: Boolean = false, val sources: List<String> = emptyList(),
     val intervalHours: Int = 24, val limit: Int = 1,
     val title: String = "", val criteria: List<String> = emptyList(), val exclusions: List<String> = emptyList(),
-    val coverage: String = "", val limitations: List<String> = emptyList(),
+    val coverage: String = "", val limitations: List<String> = emptyList(), val method: String = "",
 )
 data class Watch(
     val id: String, val plan: Proposal, val version: Long = 1,
@@ -25,11 +26,11 @@ data class Finding(
     val id: String, val watchId: String, val planId: String, val planVersion: Long,
     val criterion: String, val observedAt: Long, val publishedAt: Long? = null,
     val eventAt: Long? = null, val source: String = "https://example.invalid/announcement",
-    val title: String = "", val fact: String = "", val reason: String = "", val evidence: List<Proof> = emptyList(), val eventDate: String? = null,
+    val title: String = "", val fact: String = "", val reason: String = "", val evidence: List<Proof> = emptyList(), val eventDate: String? = null, val noveltyBasis: String = "", val correctsFindingId: String? = null,
 )
 data class Proof(val url: String, val quote: String, val observedAt: Long, val publicationDate: String? = null)
 enum class Failure {
-    OperationPending,
+    OperationPending, AnalysisPending,
     Offline, TemporaryFailure, SessionRequired, AccessDenied, NotFound, ProposalExpired,
     VersionConflict, CommandConflict, QuotaExceeded, Unsupported, InvalidInput, StorageFailure,
 }
@@ -40,8 +41,11 @@ sealed interface Outcome<out T> {
 sealed interface Evaluation {
     data class Ready(val proposal: Proposal) : Evaluation
     data object Clarify : Evaluation
+    data class Questions(val items: List<ClarificationQuestion>) : Evaluation
     data object Unsupported : Evaluation
+    data class Rejected(val reason: String, val explanation: String) : Evaluation
 }
+data class ClarificationQuestion(val id: String, val label: String, val options: List<String>, val required: Boolean)
 enum class Operation { Activate, Pause, Resume, Delete, Replace }
 data class Command(
     val id: String, val operation: Operation, val targetId: String,

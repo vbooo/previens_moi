@@ -133,4 +133,20 @@ class CreateViewModelTest {
         assertEquals("After", f.service.observeList().first().single().plan.draft.text)
         assertEquals(before.id, vm.state.value.activatedId)
     }
+    @Test fun `identified required clarification survives edits and blocks incomplete submission`() = test { f ->
+        var calls=0
+        val vm=f.vm(object: ProposalRepository by f.service {
+            override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
+                calls++
+                return Outcome.Success(Evaluation.Questions(listOf(ClarificationQuestion("zone","Où ?",listOf("France","Belgique"),true),ClarificationQuestion("budget","Budget ?",emptyList(),false))))
+            }
+        })
+        runCurrent();vm.updateText("Produit");vm.evaluate("fr");runCurrent()
+        assertEquals(CreationStep.Clarifying,vm.state.value.step)
+        vm.evaluate("fr");runCurrent();assertEquals(1,calls);assertEquals(Failure.InvalidInput,vm.state.value.error)
+        vm.updateAnswerFor("zone","France");runCurrent();assertEquals("France",f.drafts.value.answers["zone"])
+        vm.evaluate("fr");runCurrent();assertEquals(2,calls)
+        vm.updateText("Autre produit");runCurrent();assertTrue(vm.state.value.draft.answers.isEmpty())
+    }
+
 }

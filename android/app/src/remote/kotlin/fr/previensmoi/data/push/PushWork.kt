@@ -25,6 +25,7 @@ import fr.previensmoi.domain.model.*
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -41,10 +42,10 @@ private suspend fun <T> Task<T>.result(): T = suspendCancellableCoroutine { c ->
     addOnFailureListener { if(c.isActive) c.resumeWithException(it) }
 }
 object PushWork {
-    fun register(context: Context, owner: String) { enqueue(context,owner,"register",null,null,null) }
-    fun finding(context: Context, owner: String, finding: String, watch: String, version: String) { enqueue(context,owner,"finding",finding,watch,version) }
-    private fun enqueue(context: Context, owner: String, kind: String, finding: String?, watch: String?, version: String?) {
-        val data = workDataOf("owner" to owner,"kind" to kind,"finding" to finding,"watch" to watch,"version" to version)
+    fun register(context: Context, owner: String) { enqueue(context,owner,"register",null,null,null,null) }
+    fun finding(context: Context, owner: String, finding: String, watch: String, version: String, expiresAt: Long) { enqueue(context,owner,"finding",finding,watch,version,expiresAt) }
+    private fun enqueue(context: Context, owner: String, kind: String, finding: String?, watch: String?, version: String?, expiresAt: Long?) {
+        val data = workDataOf("owner" to owner,"kind" to kind,"finding" to finding,"watch" to watch,"version" to version,"expiresAt" to expiresAt)
         val request = OneTimeWorkRequestBuilder<PushWorker>().setInputData(data)
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL,30,TimeUnit.SECONDS).addTag("session-push").build()
@@ -61,12 +62,13 @@ class PushService : FirebaseMessagingService() {
         if (message.notification != null || message.data.keys != setOf("findingId","watchId","planVersion")) return
         val finding = message.data["findingId"] ?: return; val watch = message.data["watchId"] ?: return; val version = message.data["planVersion"] ?: return
         if (runCatching { UUID.fromString(finding); UUID.fromString(watch); require(version.toLong()>0) }.isFailure) return
-        session.currentUserId()?.let { PushWork.finding(this,it,finding,watch,version) }
+        val expiresAt = pushExpiry(message.sentTime,message.ttl,System.currentTimeMillis()) ?: return
+        session.currentUserId()?.let { PushWork.finding(this,it,finding,watch,version,expiresAt) }
     }
 }
 class PushWorker(context: Context, params: WorkerParameters,
     private val repository: RemoteRepositories, private val sessions: RemoteSessionRepository,
-    private val api: ApplicationApi, private val installation: DeviceInstallation,
+    private val api: ApplicationApi, private val installation: DeviceInstallation, private val claims: NotificationClaims,
 ) : CoroutineWorker(context,params) {
     @Suppress("DEPRECATION")
     override suspend fun doWork(): Result {
@@ -75,12 +77,14 @@ class PushWorker(context: Context, params: WorkerParameters,
         if (runAttemptCount >= 3) return Result.failure()
         if (inputData.getString("kind") == "register") {
             if (FirebaseApp.getApps(applicationContext).isEmpty()) return Result.failure()
-            val token = try { FirebaseMessaging.getInstance().token.result() } catch (_: java.io.IOException) { return Result.retry() }
+            val token = try { FirebaseMessaging.getInstance().token.result() } catch (e: CancellationException) { throw e } catch (_: Exception) { return Result.retry() }
             val bearer = sessions.bearer() ?: return Result.failure()
             val language = java.util.Locale.getDefault().language.let { if(it == "fr") "fr" else "en" }
             val r = apiCall { api.registerDevice(bearer,installation.id,DeviceRegistrationDto(token,language)) }
             return if (r is ApiResult.Empty) Result.success() else Result.retry()
         }
+        val expiresAt = inputData.getLong("expiresAt",0)
+        if (System.currentTimeMillis() >= expiresAt) return Result.success()
         val findingId = inputData.getString("finding") ?: return Result.failure()
         val value = repository.getFinding(findingId)
         if (value is Outcome.Error) return if (value.reason == Failure.TemporaryFailure) Result.retry() else Result.success()
@@ -99,14 +103,17 @@ class PushWorker(context: Context, params: WorkerParameters,
         val pending = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val builder = if(Build.VERSION.SDK_INT>=26) Notification.Builder(applicationContext,"findings") else @Suppress("DEPRECATION") Notification.Builder(applicationContext)
         val notification = builder.setSmallIcon(R.drawable.ic_demo).setContentTitle(finding.title.ifBlank { applicationContext.getString(R.string.finding_title) })
-            .setContentText(finding.fact).setContentIntent(pending).setAutoCancel(true).setVisibility(Notification.VISIBILITY_PRIVATE).build()
+            .setContentText(finding.fact).setOnlyAlertOnce(true).setContentIntent(pending).setAutoCancel(true).setVisibility(Notification.VISIBILITY_PRIVATE).build()
         // Last local session fence before displaying; the fetched result was authorized above.
-        if (sessions.currentUserId() == owner) manager.notify(findingId,0,notification)
+        if (sessions.currentUserId() == owner && System.currentTimeMillis() < expiresAt) {
+            val first = try { claims.claim(owner,findingId) } catch (e: CancellationException) { throw e } catch (_: Exception) { return Result.retry() }
+            if (first && sessions.currentUserId() == owner) manager.notify(findingId,0,notification)
+        }
         return Result.success()
     }
 }
 class PushWorkerFactory @Inject constructor(private val repository: RemoteRepositories, private val sessions: RemoteSessionRepository,
-    private val api: ApplicationApi, private val installation: DeviceInstallation) : WorkerFactory() {
+    private val api: ApplicationApi, private val installation: DeviceInstallation, private val claims: NotificationClaims) : WorkerFactory() {
     override fun createWorker(appContext: Context, workerClassName: String, workerParameters: WorkerParameters): ListenableWorker? =
-        if (workerClassName == PushWorker::class.java.name) PushWorker(appContext,workerParameters,repository,sessions,api,installation) else null
+        if (workerClassName == PushWorker::class.java.name) PushWorker(appContext,workerParameters,repository,sessions,api,installation,claims) else null
 }

@@ -45,9 +45,22 @@ fun CreateScreen(state: CreateUiState, vm: CreateViewModel, login: (() -> Unit)?
                 RequestFields(state, vm)
                 if (state.step == CreationStep.Clarifying) {
                     Text(stringResource(R.string.clarification_title), style = MaterialTheme.typography.titleLarge)
-                    OutlinedTextField(state.draft.answer, vm::updateAnswer,
+                    if (state.questions.isEmpty()) OutlinedTextField(state.draft.answer, vm::updateAnswer,
                         label = { Text(stringResource(R.string.answer_label)) }, supportingText = { Text(stringResource(R.string.answer_hint)) },
                         modifier = Modifier.fillMaxWidth().testTag("answer"))
+                    state.questions.forEach { question ->
+                        Text(question.label, style = MaterialTheme.typography.titleMedium)
+                        if (question.options.isNotEmpty()) {
+                            question.options.forEach { option ->
+                                Row(Modifier.fillMaxWidth().toggleable(state.draft.answers[question.id] == option, role = Role.RadioButton,
+                                    onValueChange = { vm.updateAnswerFor(question.id, option) }).padding(vertical = 4.dp)) {
+                                    RadioButton(state.draft.answers[question.id] == option, onClick = null)
+                                    Text(option, Modifier.weight(1f).padding(top = 12.dp))
+                                }
+                            }
+                        } else OutlinedTextField(state.draft.answers[question.id].orEmpty(), { vm.updateAnswerFor(question.id, it) },
+                            label = { Text(question.label) }, modifier = Modifier.fillMaxWidth().testTag("answer_${question.id}"))
+                    }
                 }
                 FailureText(state.error)
                 if (state.step == CreationStep.Evaluating) Busy()
@@ -57,7 +70,7 @@ fun CreateScreen(state: CreateUiState, vm: CreateViewModel, login: (() -> Unit)?
             }
             CreationStep.Unsupported -> {
                 Text(stringResource(if (remote) R.string.remote_unavailable_title else R.string.unsupported_title), style = MaterialTheme.typography.headlineMedium)
-                Text(stringResource(if (remote) R.string.unqualified_body else R.string.unsupported_body))
+                Text(state.rejection ?: stringResource(if (remote) R.string.unqualified_body else R.string.unsupported_body))
                 Button(onClick = vm::revise) { Text(stringResource(R.string.revise)) }
             }
             CreationStep.Login -> {

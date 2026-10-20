@@ -1,50 +1,61 @@
-# Service S3 — environnement local isolé
+# Service S3 — raccordement local et qualification
 
-Supabase CLI **2.121.0**, Deno de contrôle **2.5.4** et dépendances npm verrouillées. PostgreSQL 17 ; runtime Edge fourni par le CLI. Aucun environnement cloud déployé. Projet local `previens-moi-s3`, ports API **56321**, PostgreSQL **56322**, mail de test **56324**. Les conteneurs Doklear ne sont ni arrêtés ni modifiés.
+Supabase CLI **2.121.0**, Deno **2.5.4**, dépendances verrouillées, PostgreSQL 17. Projet local isolé `previens-moi-s3` : API **56321**, base **56322**, Mailpit **56324**. Les conteneurs Doklear restent inchangés. Les 26 migrations ont été installées depuis une base de test vide.
 
-## Démarrer et vérifier
-
-Depuis la racine du dépôt, Docker Desktop démarré :
+## Vérifier localement
 
 ```sh
 npm ci --prefix service
 service/node_modules/.bin/supabase start --workdir service
-service/node_modules/.bin/supabase migration up --workdir service
+service/node_modules/.bin/supabase migration up --local --workdir service
 service/node_modules/.bin/supabase status --workdir service --output json > .local/s3-local-status.json
 service/node_modules/.bin/supabase functions serve --workdir service --env-file .local/s3-function.env
-```
-
-Les sorties `start/status` contiennent des clés locales : ne pas les verser dans Git ou un rapport public. Le fichier ignoré `.local/s3-function.env` contient un `PROVIDER_WEBHOOK_SECRET` aléatoire de test ; ne pas réutiliser la clé du laboratoire F3. `WORKER_SECRET` est une identité serveur distincte. Le mail arrive **uniquement** dans Mailpit local. Le code expire après dix minutes, renvoi limité à une minute. Le transport public reste à configurer séparément.
-
-```sh
-.local/contracts-venv/bin/python -m pip install -r service/requirements-test.txt
 .local/contracts-venv/bin/python service/tests/integration.py
 service/node_modules/.bin/deno task --config service/deno.json check
 service/node_modules/.bin/deno task --config service/deno.json test
-python3 scripts/check-local-android.py
 ```
 
-**Le test d'intégration tronque les fixtures métier de cette seule base locale.** Il refuse une URL de service différente de `127.0.0.1:56321`. Les méthodes/capacités ouvertes pendant les tests sont des paramètres de fixture et sont désactivées en fin de suite. Aucun compte ni fournisseur public n'est appelé. Pour reconstituer la base à neuf : `supabase db reset --local --workdir service`, exclusivement sur ce projet de test. Ne jamais utiliser cette procédure sur des données utilisateur.
+Les sorties `start/status` contiennent des clés locales : les conserver dans `.local/`. Le fichier de fonctions contient un secret HMAC de test `PROVIDER_WEBHOOK_SECRET` et un `WORKER_SECRET` distinct. Aucun secret fournisseur n'est requis pour les tests locaux. Les codes e-mail arrivent uniquement dans Mailpit, expiration dix minutes, renvoi limité à une minute.
 
-Les fonctions sont accessibles sous `/functions/v1/public/v1/...` et `/functions/v1/api/v1/...`. L'API JWT vérifie aussi l'utilisateur auprès d'Auth. Les RPC privées de métier valident la propriété et les commandes même lorsqu'un client tente de contourner Edge. Tables internes hors du schéma Data API ; RLS et droits explicites. Pagination opaque ordonnée `(created_at,id)`.
+**La suite d'intégration réinitialise les fixtures métier locales et refuse toute autre cible.** Elle ouvre temporairement des qualifications de fixture puis les referme ; ses confirmations fournisseur ne prouvent pas un appel Firecrawl. `db reset --local --workdir service` détruit cette seule base de test. Ne jamais utiliser ces procédures sur des données utilisateur.
 
-## Fonctionnement livré
+## Fonctions et protections
 
-- Prévisualisation anonyme bornée globalement et par session ; secrets hachés ; réponse honnête `unqualified_method` tant que le moteur ne passe pas sa qualification.
-- Auth Supabase par code e-mail réel local, avec boîte mail ; comptes isolés, JWT falsifié et compte fermé refusés.
-- Commandes UUIDv7, reçus idempotents, versions attendues, attribution unique des propositions. Pending distinct d'active ; aucune activation réelle dans l'installation par défaut.
-- Transactions de pause/reprise/remplacement/suppression ; historique de plans immuable ; ancienne exécution arrêtée avant remplacement ; état initial sans résultat artificiel. Les confirmations fournisseur sont des ports internes, exercés par les fixtures SQL, **pas un adaptateur Firecrawl réel**.
-- Jobs durables, baux exclusifs et trois essais au maximum. Une création dont la réponse est perdue devient ambiguë et n'est pas recréée aveuglément. Échec d'arrêt : état inconnu/dégradé et capacité gelée.
-- Réservation atomique d'unités avant un appel ; dépassement de la réservation gèle l'exécution. Les unités de fixture ne constituent ni une mesure de facture ni un tarif de production.
-- Webhook HMAC sur octets bruts avant stockage, taille bornée, format F3 et déduplication. Inbox seule : un `meaningful=true` signé ne crée pas de résultat. Le rapprochement fournisseur et la qualification restent à brancher.
-- Résultat, fait métier et intentions d'envoi atomiques ; première alerte ponctuelle conservée lorsque le suivi termine. Contrôle compte/génération/appareil avant émission.
-- Worker FCM HTTP v1 séparé et transport testé sans Google. `FCM_EXECUTION_ENABLED` absent/false : aucun envoi, aucune prise de bail. Pour envoyer, il faudrait une configuration Firebase dédiée valide **et** les preuves manquantes du bilan. `FIREBASE_SERVICE_ACCOUNT` est uniquement côté serveur ; ne jamais l'intégrer à Android.
-- Purge horaire locale des propositions, résultats et traces selon les durées prévues ; registre d'effacement et fonction de rejeu. Le test de rejeu d'un marqueur ne prouve pas une sauvegarde indépendante ni une purge complète d'Auth.
+`public/v1` fournit les prévisualisations, évaluations et propositions. `api/v1` exige un utilisateur Auth valide et vérifie la propriété. Les commandes sont idempotentes, versionnées et limitées dans le temps ; les créations restent en préparation avant confirmation de l'état initial. RLS et droits SQL empêchent de contourner les validations Edge.
 
-## Limites qui bloquent la clôture de S3
+`webhook` vérifie la signature HMAC des octets bruts et la taille avant stockage. L'inbox durable est rapprochée du passage lu par l'API fournisseur authentifiée : monitor, passage, source, statut et résumé doivent correspondre. Une valeur `meaningful=true` ne devient jamais automatiquement un résultat.
 
-Voir `validation/s3/bilan.md`. Il manque un moteur d'admission et un adaptateur de surveillance qualifiés, leur récurrence et arrêt réellement éprouvés, un projet Firebase et un vrai push, les accès cloud pour l'environnement dédié, la délivrabilité publique des codes et la chaîne complète. La purge complète d'identité/compte et la restauration d'une sauvegarde indépendante restent à terminer et prouver. Une petite fenêtre entre autorisation d'envoi et HTTP externe doit être qualifiée dans le test concurrent de pause ; le test d'arrêt avant la dernière autorisation ne prouve pas toutes les courses possibles. Aucun cron fournisseur ou FCM actif. Aucun test de sept jours lancé.
+`worker` traite des étapes persistées. L'exécution de l'admission, du fournisseur et de FCM est désactivée par défaut. Le budget réel et les qualifications restent fermés indépendamment de la présence de clés.
 
-## Sources de mise en œuvre
+- Admission : réservation avant appel OpenAI, sortie structurée, questions identifiées, contrôle des incohérences et coût mesuré. Une réponse perdue garde sa réservation, sans second appel aveugle. Les critères compris ne prouvent pas la capacité à surveiller.
+- Fournisseur : création avec identité de job durable ; rapprochement après réponse perdue ; monitor en pause au repos ; lancement explicite réservé ; attente d'une fin signée et rapprochement API ; état initial silencieux ; nouvelle réservation par passage récurrent. Pause et remplacement changent la génération, une réponse tardive conserve l'identité distante nécessaire au nettoyage. Crash final : état inconnu/dégradé et capacité gelée.
+- **Le jugement sémantique général n'est pas qualifié.** Le chemin actuel sait confirmer un état initial et un passage inchangé. Un changement sans jugement qualifié produit une panne visible, jamais une fausse affirmation ni un silence annoncé comme réussite. Ce n'est pas encore un moteur général d'alertes.
+- Envoi : FCM HTTP v1 avec identifiants seuls, TTL d'un jour, acceptation distincte de livraison. Prise d'émission atomique, conservée même après suppression du résultat ; l'arrêt attend les émissions engagées ou leur expiration. Android relit résultat et suivi authentifiés, contrôle compte, version, permission, expiration et doublon durable.
+- Effacement : accès fermé immédiatement ; arrêt et suppression fournisseur confirmés avant purge des plans, appareils, résultats et commandes ; suppression Auth via l'API Admin ; reprise après interruption. Une borne de coût non rapprochée reste sous forme minimale sans plan ni propriétaire. Le marqueur d'effacement est rejoué après restauration, y compris si une ancienne identité Auth réapparaît.
 
-Consultées le 20 octobre 2026 : [développement local Supabase](https://supabase.com/docs/guides/local-development), [validation utilisateur Auth](https://supabase.com/docs/reference/javascript/auth-getuser), [réception FCM Android](https://firebase.google.com/docs/cloud-messaging/android/receive-messages), [versions Firebase](https://firebase.google.com/support/release-notes/android), [versions AndroidX](https://developer.android.com/jetpack/androidx/versions). FCM **25.1.3** garde minSDK23 ; la version 26 exige minSDK24 et n'a pas été retenue. WorkManager **2.11.2** est isolé dans la variante remote. Le reste des versions Android est conservé.
+## Planification et secrets
+
+Deux jobs PostgreSQL existent : rétention horaire et réveil du worker chaque minute. Ce dernier est **inactif** tant que `private.worker_schedule.enabled=false`. Son activation exige une URL dédiée et un secret Vault nommé `previens-moi-worker` identique au secret serveur. La file `pg_net` ne reçoit aucun secret durable : uniquement une signature à usage unique valable 90 secondes. Les sorties du worker ne contiennent pas de texte de demande ni d'identité.
+
+Variables serveur préparées :
+
+| Variable | Usage |
+| --- | --- |
+| `WORKER_SECRET` | Appel administratif direct et signature des réveils planifiés |
+| `PROVIDER_WEBHOOK_SECRET` | Vérification du webhook Firecrawl |
+| `OPENAI_API_KEY` | Interprétation ; `ADMISSION_EXECUTION_ENABLED=true` **et** budget/qualification SQL requis |
+| `FIRECRAWL_API_KEY` | Adaptateur ; `PROVIDER_EXECUTION_ENABLED=true` **et** méthode/capacité SQL requises |
+| `PUBLIC_WEBHOOK_URL` | `https://<ref>.supabase.co/functions/v1/webhook` ; indispensable pour les essais de réception réelle |
+| `FIREBASE_SERVICE_ACCOUNT` | JSON serveur uniquement ; `FCM_EXECUTION_ENABLED=true` requis |
+
+Ne jamais placer une identité serveur dans Android. Les données publiques Firebase viennent de `google-services.json`. `scripts/check-cloud-config.py` contrôle les fichiers de `.local/cloud/` sans appel réseau et sans afficher leurs valeurs. L'option `--build` transmet seulement les données publiques à Android ; elle ne déploie rien.
+
+## Preuves et limites
+
+Voir le [bilan S3](../validation/s3/bilan.md). A1 réel : **7/9**, deux échecs conservés, aucune qualification ouverte. Le transport fournisseur, ses reprises et la récurrence sont testés avec réseau injecté et PostgreSQL réel, sans nouvelle surveillance externe. Les anciens suivis Firecrawl listés sont toujours en pause, solde 985 crédits recontrôlé.
+
+`scripts/check-local-backup-restore.py` prouve une reconstruction depuis un fichier hors du volume Docker et le rejeu d'un effacement postérieur au snapshot. Ce test local ne prouve ni une sauvegarde indépendante hébergée, ni une récupération de clés, ni la restauration du cloud.
+
+Il manque les projets Supabase et Firebase dédiés pour éprouver réception publique, codes externes et FCM réel. Les deux défauts A1, la découverte générale, le jugement des changements et la déduplication sémantique restent des conditions de qualité à satisfaire ; les accès seuls ne les rendent pas acquis. Aucune observation S4 commencée.
+
+Sources officielles consultées : [planifier Edge](https://supabase.com/docs/guides/functions/schedule-functions), [visibilité des en-têtes pg_net](https://supabase.com/docs/guides/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net-ad6357), [API Firecrawl](https://github.com/firecrawl/firecrawl-docs/blob/main/api-reference/v2-openapi.json), [FCM HTTP v1](https://firebase.google.com/docs/cloud-messaging/send/v1-api), [tarifs OpenAI](https://developers.openai.com/api/docs/pricing).

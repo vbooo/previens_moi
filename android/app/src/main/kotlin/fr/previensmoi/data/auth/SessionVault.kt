@@ -24,9 +24,9 @@ interface SessionVault {
 }
 // Atomic, authenticated encryption; the key never leaves Android Keystore. Both file and
 // installation key are excluded from cloud backup/device transfer by the application manifest.
-class KeystoreSessionVault(context: Context) : SessionVault {
-    private val file = AtomicFile(File(context.noBackupFilesDir, "session.enc"))
-    private val alias = context.packageName + ".session.v1"
+class KeystoreBlob(context: Context, name: String, purpose: String, private val maxBytes: Int = 131072) {
+    private val file = AtomicFile(File(context.noBackupFilesDir, name))
+    private val alias = context.packageName + "." + purpose
     private fun key(): SecretKey {
         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
         (store.getKey(alias, null) as? SecretKey)?.let { return it }
@@ -35,21 +35,29 @@ class KeystoreSessionVault(context: Context) : SessionVault {
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM).setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE).build())
         }.generateKey()
     }
-    @Synchronized override fun read(): Credentials? {
+    @Synchronized fun read(): ByteArray? {
         if (!file.baseFile.exists()) return null
         val bytes = file.openRead().use { it.readBytes() }
-        require(bytes.size in 29..32768)
+        require(bytes.size in 29..maxBytes)
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, bytes.copyOfRange(0, 12)))
-        return Json.decodeFromString<Credentials>(cipher.doFinal(bytes.copyOfRange(12, bytes.size)).decodeToString())
+        return cipher.doFinal(bytes.copyOfRange(12, bytes.size))
     }
-    @Synchronized override fun write(value: Credentials) {
+    @Synchronized fun write(value: ByteArray) {
+        require(value.size + 28 <= maxBytes)
         val cipher = Cipher.getInstance("AES/GCM/NoPadding").apply { init(Cipher.ENCRYPT_MODE, key()) }
         val output = file.startWrite()
         try {
-            output.write(cipher.iv); output.write(cipher.doFinal(Json.encodeToString(value).encodeToByteArray()))
+            output.write(cipher.iv); output.write(cipher.doFinal(value))
             file.finishWrite(output)
         } catch (e: Exception) { file.failWrite(output); throw e }
     }
-    @Synchronized override fun clear() { file.delete() }
+    @Synchronized fun clear() { file.delete() }
+}
+
+class KeystoreSessionVault(context: Context) : SessionVault {
+    private val blob = KeystoreBlob(context,"session.enc","session.v1",32768)
+    override fun read(): Credentials? = blob.read()?.let { Json.decodeFromString<Credentials>(it.decodeToString()) }
+    override fun write(value: Credentials) = blob.write(Json.encodeToString(value).encodeToByteArray())
+    override fun clear() = blob.clear()
 }

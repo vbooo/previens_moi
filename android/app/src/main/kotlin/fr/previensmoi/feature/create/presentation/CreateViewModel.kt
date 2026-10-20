@@ -21,6 +21,7 @@ data class CreateUiState(
     val step: CreationStep = CreationStep.Editing, val proposal: Proposal? = null,
     val error: Failure? = null, val resetNotice: Boolean = false, val storageFailed: Boolean = false,
     val partialAccepted: Boolean = false, val session: Session? = null,
+    val questions: List<ClarificationQuestion> = emptyList(), val rejection: String? = null,
     val editingId: String? = null, val activatedId: String? = null,
 )
 
@@ -65,11 +66,12 @@ class CreateViewModel @Inject constructor(
 
     fun updateText(text: String) = updateDraft(state.value.draft.copy(text = text), keepClarification = false)
     fun updateAnswer(answer: String) = updateDraft(state.value.draft.copy(answer = answer), keepClarification = true)
+    fun updateAnswerFor(id: String, answer: String) = updateDraft(state.value.draft.copy(answers = state.value.draft.answers + (id to answer)), keepClarification = true)
     fun updateMode(mode: FollowMode) = updateDraft(state.value.draft.copy(mode = mode), keepClarification = false)
     private fun updateDraft(draft: RequestDraft, keepClarification: Boolean) {
         if (!state.value.loaded || state.value.step == CreationStep.Confirming || draft == state.value.draft) return
         evaluationEpoch++; evaluationJob?.cancel(); pending = null; clearSavedProposal()
-        val next = draft.copy(revision = state.value.draft.revision + 1)
+        val next = draft.copy(revision = state.value.draft.revision + 1, answers = if (keepClarification) draft.answers else emptyMap())
         mutable.update { it.copy(draft = next, proposal = null, partialAccepted = false, error = null,
             step = if (keepClarification && it.step == CreationStep.Clarifying) CreationStep.Clarifying else CreationStep.Editing) }
         persist(next)
@@ -99,8 +101,11 @@ class CreateViewModel @Inject constructor(
     fun evaluate(language: String) {
         if (!state.value.loaded || state.value.step == CreationStep.Evaluating || state.value.step == CreationStep.Confirming) return
         if (state.value.draft.text.isBlank()) { mutable.update { it.copy(error = Failure.InvalidInput) }; return }
+        if (state.value.step == CreationStep.Clarifying && state.value.questions.any { it.required && state.value.draft.answers[it.id].isNullOrBlank() }) {
+            mutable.update { it.copy(error = Failure.InvalidInput) }; return
+        }
         val draft = state.value.draft.copy(language = language)
-        mutable.update { it.copy(draft = draft, step = CreationStep.Evaluating, proposal = null, error = null, partialAccepted = false) }
+        mutable.update { it.copy(draft = draft, step = CreationStep.Evaluating, proposal = null, error = null, partialAccepted = false, rejection = null) }
         persist(draft); clearSavedProposal(); pending = null
         val epoch = ++evaluationEpoch
         evaluationJob = viewModelScope.launch {
@@ -113,7 +118,9 @@ class CreateViewModel @Inject constructor(
                         saved["proposalId"] = result.proposal.id
                         mutable.update { it.copy(proposal = result.proposal, step = CreationStep.Ready) }
                     }
+                    is Evaluation.Questions -> mutable.update { it.copy(step = CreationStep.Clarifying, questions = result.items) }
                     Evaluation.Clarify -> mutable.update { it.copy(step = CreationStep.Clarifying) }
+                    is Evaluation.Rejected -> mutable.update { it.copy(step = CreationStep.Unsupported, rejection = result.explanation) }
                     Evaluation.Unsupported -> mutable.update { it.copy(step = CreationStep.Unsupported) }
                 }
             }

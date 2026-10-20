@@ -10,6 +10,8 @@ import fr.previensmoi.domain.model.*
 import fr.previensmoi.domain.repository.DraftRepository
 import kotlinx.coroutines.flow.first
 import java.io.IOException
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,16 +23,18 @@ class LocalDraftRepository @Inject constructor(@param:ApplicationContext private
     private val answer = stringPreferencesKey("answer")
     private val language = stringPreferencesKey("language")
     private val mode = stringPreferencesKey("mode")
+    private val answers = stringPreferencesKey("answers")
     private val revision = longPreferencesKey("revision")
     override suspend fun load(): Outcome<RequestDraft> = try {
         val p = context.draftStore.data.first()
         Outcome.Success(RequestDraft(p[text].orEmpty(), p[answer].orEmpty(), p[language] ?: "fr",
-            FollowMode.entries.firstOrNull { it.name == p[mode] } ?: FollowMode.Once, p[revision] ?: 0))
+            FollowMode.entries.firstOrNull { it.name == p[mode] } ?: FollowMode.Once, p[revision] ?: 0, p[answers]?.let { Json.decodeFromString<Map<String, String>>(it) } ?: emptyMap()))
     } catch (_: IOException) { Outcome.Error(Failure.StorageFailure) }
+    catch (_: kotlinx.serialization.SerializationException) { Outcome.Error(Failure.StorageFailure) }
     override suspend fun save(draft: RequestDraft): Outcome<Unit> = try {
         context.draftStore.edit { p ->
             p[text] = draft.text; p[answer] = draft.answer; p[language] = draft.language
-            p[mode] = draft.mode.name; p[revision] = draft.revision
+            p[mode] = draft.mode.name; p[revision] = draft.revision; p[answers] = Json.encodeToString(draft.answers)
         }
         Outcome.Success(Unit)
     } catch (_: IOException) { Outcome.Error(Failure.StorageFailure) }

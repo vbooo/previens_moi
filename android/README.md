@@ -73,19 +73,14 @@ AGP 9.4.1, Gradle 9.6.0, Kotlin/Compose compiler/sérialisation 2.3.21, KSP 2.3.
 
 Navigation 3 1.2.0 exige API 24 ; la version stable 1.1.0 conserve notre minimum API 23. Compilation/cible 37. API 23 et 37 en exécution restent à tester avant publication. AGP fournit Kotlin intégré ; aucun plugin `org.jetbrains.kotlin.android` supplémentaire. Le wrapper contrôle le SHA-256 de Gradle. Aucun artefact release demo.
 
-Lint traite les avertissements comme erreurs ; six suggestions de mises à jour restent informatives pour préserver la matrice compatible. Le manifeste fusionné et l’APK doivent rester sans permission INTERNET. Aucun secret dans Android. La CI GitHub Actions compile, teste le domaine/ViewModels et exécute Lint et le contrôle de frontières ; ses tests sur appareil restent locaux à ce stade. **Aucun dépôt distant ni exécution de CI distante n’est prétendu.**
+Lint traite les avertissements comme erreurs ; six suggestions de mises à jour restent informatives pour préserver la matrice compatible. Le manifeste fusionné et l’APK **demo** doivent rester sans permission INTERNET. Aucun secret dans Android. La CI GitHub Actions compile, teste le domaine/ViewModels et exécute Lint et le contrôle de frontières ; ses tests sur appareil restent locaux à ce stade. **Aucun dépôt distant ni exécution de CI distante n’est prétendu.**
 
 S3-01 a démarré : choix et spécification du service réel, identité, API et coûts ; voir la mise à jour ci-dessous. Surveillance réelle, authentification, accès entre comptes, push, performance, revue complète TalkBack et publication ne sont pas validés par cette démo.
 
 
-## Début de S3 : réseau préparé, démo inchangée
+## Contrat réseau S3
 
-`data/remote/ApplicationApi.kt` décrit les routes Retrofit, `WireModels.kt` les DTO sérialisables et `ApiClient.kt` le transport. Ils ne sont pas encore assemblés aux repositories de l’application. La démo conserve son service simulé et son absence de permission Internet ; cette permission est retirée explicitement lorsqu’une bibliothèque la déclare.
-
-Les tests `ApplicationApiTest` utilisent un serveur HTTP local : ils vérifient réponse en attente, réessai identique, erreurs/quota, absence de fuite des secrets sur redirection, lecture vide, champs inconnus, annulation et dates sans précision inventée. Les ressources JSON communes viennent de `contracts/` dans les tests uniquement. Versions résolues : Retrofit/converter 3.0.0, OkHttp/MockWebServer 5.5.0, kotlinx.serialization JSON 1.9.0.
-
-[Spécification S3](../docs/11-service-et-contrat-s3.md) · [Bilan de démarrage](../validation/s3-01/bilan.md). Le serveur réel, la session persistée et les tests d’isolation sur PostgreSQL restent à implémenter. Ces tests HTTP ne prouvent pas le fonctionnement d’un backend hébergé.
-
+Les routes Retrofit et DTO sont assemblés aux repositories dans `remoteDebug`. La démo conserve son service simulé. Les tests de transport contrôlé ne prouvent pas un backend hébergé ; l'intégration locale Supabase/PostgreSQL et ses limites sont documentées séparément.
 
 ## Variante connectée S3 (locale, non publiable)
 
@@ -96,3 +91,13 @@ Session : code e-mail réel local, jetons protégés par Android Keystore dans `
 FCM : SDK 25.1.3 et WorkManager 2.11.2 dans remote uniquement, données réduites aux identifiants, relecture authentifiée du résultat et du suivi, permission au choix de la personne, notification stable ouvrant le bon résultat. Projet Firebase absent : transport réel non prouvé. Les propriétés publiques `firebaseAppId`, `firebaseProjectId`, `firebaseApiKey`, `firebaseSenderId` initialisent Firebase uniquement lorsqu'elles sont toutes fournies. Aucune clé de compte de service dans l'APK.
 
 Les tests de parcours demo sont sous `src/androidTestDemo` ; le parcours Supabase local est sous `src/androidTestRemote`. Les tests dépendant du faux service restent sous `src/testDemo`. Le [bilan S3](../validation/s3/bilan.md) sépare contrat, tests réseau contrôlés, PostgreSQL/Auth réels locaux et preuves externes encore absentes.
+
+### Reprise et notifications après le complément S3
+
+Les questions portent leur identifiant, leur caractère obligatoire et leurs choix. Les réponses sont conservées avec le brouillon. Une analyse en attente est consultée par polling borné ; identifiant, requête et secret de prévisualisation sont enregistrés dans `evaluation.enc`, chiffré par Keystore et exclu des sauvegardes, **avant** le POST. Après mort du processus, le même identifiant et le même corps sont repris. Secret expiré : information explicite, aucune nouvelle analyse automatique. Une erreur de stockage empêche le POST. Les explications de refus du service sont affichées.
+
+Les notifications contrôlent aussi l'expiration FCM pendant leur attente WorkManager. Un journal d'identifiants hors sauvegarde empêche une seconde alerte après redémarrage. Il est pris avant affichage : une mort du processus à cette frontière peut perdre ce push, tandis que le résultat reste accessible dans l'application. Ne pas annoncer une livraison exactement une fois.
+
+Validation actuelle : 49 tests unitaires demo, 27 remote (une partie commune), Lint sans erreur/avertissement ; trois parcours remote en FR et EN ; reprise réelle du processus pour commande **et** analyse. Pour les tester, construire avec `scripts/check-local-android.py`. La procédure d'instrumentation directe conserve les données nécessaires aux scripts `check-android-remote-restoration.py` et `check-android-evaluation-restoration.py`.
+
+Raccordement dédié : `scripts/check-cloud-config.py` contrôle `.local/cloud/supabase.env`, `google-services.json` et `firebase-service-account.json` sans réseau ni affichage des valeurs. L'identité serveur reste hors d'Android.

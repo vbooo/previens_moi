@@ -6,6 +6,8 @@ import fr.previensmoi.domain.repository.*
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
+import kotlinx.serialization.Serializable
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -18,47 +20,109 @@ interface PendingCommands {
     fun write(owner: String, id: String)
     fun clear(owner: String)
 }
+@Serializable
+class EvaluationCache(val token: String, val request: EvaluationRequestDto?, val previousId: String?, val expiresAt: Long = Long.MAX_VALUE) {
+    override fun toString() = "EvaluationCache([redacted])"
+}
+interface EvaluationJournal {
+    fun read(): EvaluationCache?
+    fun write(value: EvaluationCache)
+}
+private class MemoryEvaluationJournal : EvaluationJournal {
+    private var value: EvaluationCache? = null
+    override fun read() = value
+    override fun write(value: EvaluationCache) { this.value = value }
+}
 class RemoteRepositories(
     private val api: ApplicationApi, private val sessions: RemoteSessionRepository,
     private val journal: PendingCommands, private val ids: IdGenerator,
+    private val evaluations: EvaluationJournal = MemoryEvaluationJournal(),
 ) : WatchRepository, ProposalRepository, FindingRepository {
     private val mutex = Mutex()
     private val watches = MutableStateFlow<List<Watch>>(emptyList())
     private val findings = MutableStateFlow<List<Finding>>(emptyList())
     private var preview: String? = null
+    private var previewExpires: Long = Long.MAX_VALUE
+    private var evaluationRequest: EvaluationRequestDto? = null
+    private var previousEvaluation: String? = null
+    private var evaluationLoaded = false
+    private fun restoreEvaluation(): Boolean = try {
+        if (!evaluationLoaded) {
+            evaluations.read()?.let { preview = it.token.takeIf(String::isNotEmpty); previewExpires = it.expiresAt; evaluationRequest = it.request; previousEvaluation = it.previousId }
+            evaluationLoaded = true
+        }; true
+    } catch (_: Exception) { false }
+    private fun saveEvaluation(): Boolean = try {
+        evaluations.write(EvaluationCache(preview.orEmpty(),evaluationRequest,previousEvaluation,previewExpires));true
+    } catch (_: Exception) { false }
     private var owner: String? = null
     private var commandInMemory: CommandDto? = null
+    private fun expireEvaluation(): Boolean {
+        if (preview == null || System.currentTimeMillis() < previewExpires) return false
+        preview = null; previewExpires = 0; evaluationRequest = null; previousEvaluation = null
+        return true
+    }
+    private fun evaluationFailure(result: ApiResult<*>): Failure {
+        if (result is ApiResult.Rejected && result.httpStatus == 401) {
+            preview = null; previewExpires = 0; evaluationRequest = null; previousEvaluation = null
+            return if (saveEvaluation()) Failure.ProposalExpired else Failure.StorageFailure
+        }
+        return result.failure()
+    }
     override fun observeList() = combine(watches, sessions.observeSession()) { value, session -> if (session?.id == owner) value else emptyList() }
     override fun observeFindings() = combine(findings, sessions.observeSession()) { value, session -> if (session?.id == owner) value else emptyList() }
-    fun clearPrivateState() { watches.value = emptyList(); findings.value = emptyList(); owner = null; commandInMemory = null; preview = null }
+    fun clearPrivateState() { watches.value = emptyList(); findings.value = emptyList(); owner = null; commandInMemory = null }
     private suspend fun bearer(): String? {
         val current = sessions.observeSession().first()?.id
         if (current != owner) { watches.value = emptyList(); findings.value = emptyList(); commandInMemory = null; owner = current }
         return sessions.bearer()
     }
     override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
+        if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
+        if (expireEvaluation()) return Outcome.Error(if(saveEvaluation()) Failure.ProposalExpired else Failure.StorageFailure)
         val token = preview ?: when (val r = apiCall { api.previewSession() }) {
-            is ApiResult.Value -> r.body.token.also { preview = it }
+            is ApiResult.Value -> r.body.token.also { previewExpires = instant(r.body.expiresAt); preview = it }
             else -> return Outcome.Error(r.failure())
         }
-        val request = EvaluationRequestDto(ids.next(), DraftDto(draft.text, draft.language, if (draft.mode == FollowMode.Once) "once" else "continuous", draft.revision,
-            if (draft.answer.isBlank()) emptyList() else listOf(AnswerDto("clarification", draft.answer))), null)
-        return when (val r = apiCall { api.evaluate(token, request) }) {
-            is ApiResult.Value -> when (val value = r.body) {
-                is EvaluationDto.Ready -> mapped { Evaluation.Ready(value.proposal.domain()) }
-                is EvaluationDto.Clarification -> Outcome.Success(Evaluation.Clarify)
-                is EvaluationDto.Unsupported -> Outcome.Success(Evaluation.Unsupported)
-                is EvaluationDto.Pending -> Outcome.Error(Failure.OperationPending)
-                is EvaluationDto.Failed -> Outcome.Error(errorFailure(value.error.code))
+        val answers = draft.answers.entries.sortedBy { it.key }.map { AnswerDto(it.key, it.value) }
+        val wire = DraftDto(draft.text, draft.language, if (draft.mode == FollowMode.Once) "once" else "continuous", draft.revision, answers)
+        val request = evaluationRequest?.takeIf { it.draft == wire }
+            ?: EvaluationRequestDto(ids.next(), wire, previousEvaluation.takeIf { evaluationRequest?.draft?.text == wire.text && evaluationRequest?.draft?.mode == wire.mode }).also { evaluationRequest = it }
+        if (!saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
+        var response = apiCall { api.evaluate(token, request) }
+        repeat(11) { attempt ->
+            when (val r = response) {
+                is ApiResult.Value -> {
+                    val value = r.body
+                    if (value.id != request.id || value.draftRevision != draft.revision) return Outcome.Error(Failure.VersionConflict)
+                    when (value) {
+                        is EvaluationDto.Pending -> {
+                            if (attempt == 10) return Outcome.Error(Failure.AnalysisPending)
+                            delay(1000)
+                            response = apiCall { api.evaluation(token, request.id) }
+                        }
+                        is EvaluationDto.Ready -> return mapped { Evaluation.Ready(value.proposal.domain()) }
+                        is EvaluationDto.Clarification -> {
+                            previousEvaluation = value.id
+                            if (!saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
+                            return Outcome.Success(Evaluation.Questions(value.questions.map { ClarificationQuestion(it.id, it.label, it.options, it.required) }))
+                        }
+                        is EvaluationDto.Unsupported -> return Outcome.Success(Evaluation.Rejected(value.reason, value.explanation))
+                        is EvaluationDto.Failed -> return Outcome.Error(errorFailure(value.error.code))
+                    }
+                }
+                else -> return Outcome.Error(evaluationFailure(r))
             }
-            else -> Outcome.Error(r.failure())
         }
+        return Outcome.Error(Failure.AnalysisPending)
     }
     override suspend fun get(id: String): Outcome<Proposal> {
+        if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
+        if (expireEvaluation()) return Outcome.Error(if(saveEvaluation()) Failure.ProposalExpired else Failure.StorageFailure)
         val token = preview ?: return Outcome.Error(Failure.NotFound)
         return when (val r = apiCall { api.proposal(token, id) }) {
             is ApiResult.Value -> mapped { r.body.domain() }
-            else -> Outcome.Error(r.failure())
+            else -> Outcome.Error(evaluationFailure(r))
         }
     }
     override suspend fun refresh(): RefreshResult = mutex.withLock {
@@ -168,8 +232,8 @@ internal fun instant(value: String): Long {
     return requireNotNull(SimpleDateFormat(if (normalized.contains('.')) "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" else "yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("UTC"); isLenient = false }.parse(normalized)).time
 }
 internal fun ProposalDto.domain() = Proposal(id, version, RequestDraft(draft.text, draft.answers.joinToString("\n") { it.value }, draft.language,
-    when(draft.mode) { "once" -> FollowMode.Once; "continuous" -> FollowMode.Continuous; else -> throw IllegalArgumentException() }, draft.revision), instant(expiresAt), partial, sources.map { it.url }, intervalHours, limits.activePerAccount,
-    title, criteria, exclusions, coverage, limitations)
+    when(draft.mode) { "once" -> FollowMode.Once; "continuous" -> FollowMode.Continuous; else -> throw IllegalArgumentException() }, draft.revision, draft.answers.associate { it.questionId to it.value }), instant(expiresAt), partial, sources.map { it.url }, intervalHours, limits.activePerAccount,
+    title, criteria, exclusions, coverage, limitations, method)
 internal fun WatchDto.domain() = Watch(id, plan.domain(), version,
     when(status) { "pending" -> WatchStatus.Pending; "active" -> WatchStatus.Active; "paused" -> WatchStatus.Paused; "completed" -> WatchStatus.Completed; "suspended_by_capacity" -> WatchStatus.SuspendedByCapacity; else -> throw IllegalArgumentException() },
     when(health) { "not_checked_yet" -> Health.NotCheckedYet; "healthy" -> Health.Healthy; "degraded" -> Health.Degraded; else -> throw IllegalArgumentException() },
@@ -179,7 +243,7 @@ internal fun FindingDto.domain(): Finding {
     require(evidence.isNotEmpty())
     return Finding(id, watchId, planId, planVersion, criteriaSnapshot.joinToString("\n"), instant(observedAt),
         (evidence.first().publication as? TemporalEvidenceDto.Instant)?.value?.let(::instant), (event as? TemporalEvidenceDto.Instant)?.value?.let(::instant), evidence.first().url,
-        title, fact, reason, evidence.map { Proof(it.url, it.quote, instant(it.observedAt), (it.publication as? TemporalEvidenceDto.Date)?.value) }, (event as? TemporalEvidenceDto.Date)?.value)
+        title, fact, reason, evidence.map { Proof(it.url, it.quote, instant(it.observedAt), (it.publication as? TemporalEvidenceDto.Date)?.value) }, (event as? TemporalEvidenceDto.Date)?.value, noveltyBasis, correctsFindingId)
 }
 internal fun errorFailure(code: String) = when(code) {
     "session_required" -> Failure.SessionRequired; "access_denied" -> Failure.AccessDenied; "not_found" -> Failure.NotFound

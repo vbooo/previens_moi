@@ -100,4 +100,6 @@
 <string name="erase_account_info">Cette action ferme l’accès et demande l’effacement ainsi que l’arrêt distant. Une connexion par code datant de moins de cinq minutes est nécessaire.</string>
 <string name="erasure_pending">Accès au compte fermé. Effacement et arrêt distant en cours ; leur achèvement n’est pas encore confirmé.</string>
 <string name="remote_unavailable_title">Surveillance indisponible pour l’instant</string>
+    <string name="correction_notice">Ce résultat corrige un résultat précédent.</string>
+    <string name="analysis_pending">Analyse encore en attente. Réessaie pour consulter son état ; aucune seconde analyse ne sera lancée.</string>
 </resources>

@@ -104,6 +104,7 @@ fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false) {
             if (finding.title.isNotBlank()) Text(finding.title)
             if (finding.fact.isNotBlank()) Text(finding.fact)
             if (finding.reason.isNotBlank()) Text(finding.reason)
+            if (finding.correctsFindingId != null) Text(stringResource(R.string.correction_notice))
             finding.evidence.forEach { proof -> Text(proof.quote); Text(proof.url); proof.publicationDate?.let { Text(it) } }
             finding.eventDate?.let { Text(it) }
             val watch = state.watches.find { it.id == finding.watchId }

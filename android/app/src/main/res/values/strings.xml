@@ -100,4 +100,6 @@
 <string name="erase_account_info">This closes access and requests erasure and remote shutdown. An email code sign-in within the last five minutes is required.</string>
 <string name="erasure_pending">Account access closed. Erasure and remote shutdown are pending; completion is not yet confirmed.</string>
 <string name="remote_unavailable_title">Monitoring is not available yet</string>
+    <string name="correction_notice">This finding corrects an earlier result.</string>
+    <string name="analysis_pending">Analysis is still pending. Try again to check the same analysis; a second analysis will not be started.</string>
 </resources>

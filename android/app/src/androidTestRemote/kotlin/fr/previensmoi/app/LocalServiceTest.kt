@@ -1,6 +1,15 @@
 package fr.previensmoi.app
 
 import androidx.compose.ui.test.*
+import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.SavedStateHandle
+import fr.previensmoi.domain.model.*
+import fr.previensmoi.domain.repository.*
+import fr.previensmoi.feature.create.presentation.CreateScreen
+import kotlinx.coroutines.flow.flowOf
 import android.os.Build
 import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
@@ -82,6 +91,65 @@ class LocalServiceTest {
         }
         capture("remote-unqualified.png")
         // A real Auth session does not qualify a monitoring method or create an activation.
-        compose.onNodeWithText(compose.activity.getString(R.string.unqualified_body)).assertIsDisplayed()
+        val evaluationFile=java.io.File(compose.activity.noBackupFilesDir,"evaluation.enc")
+        assertTrue(evaluationFile.exists())
+        assertFalse(evaluationFile.readBytes().decodeToString().contains("Préviens-moi des annonces de ma salle"))
+        val rejection=ViewModelProvider(compose.activity)[CreateViewModel::class.java].state.value.rejection
+        assertFalse(rejection.isNullOrBlank())
+        compose.onNodeWithText(checkNotNull(rejection)).assertIsDisplayed()
     }
+    @Test fun identifiedQuestionsRequiredAnswerAndHonestRejection() {
+        var calls=0
+        val proposals=object: ProposalRepository {
+            override suspend fun get(id: String): Outcome<Proposal> = Outcome.Error(Failure.NotFound)
+            override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
+                calls++
+                return if(calls==1) Outcome.Success(Evaluation.Questions(listOf(
+                    ClarificationQuestion("zone","Zone de livraison",listOf("France","Belgique"),true),
+                    ClarificationQuestion("budget","Budget complémentaire",emptyList(),false))))
+                else { assertEquals("France",draft.answers["zone"]);assertEquals("150",draft.answers["budget"]);Outcome.Success(Evaluation.Rejected("unqualified_method","Sources insuffisantes pour activer cette surveillance.")) }
+            }
+        }
+        val watches=object: WatchRepository {
+            override fun observeList()=flowOf(emptyList<Watch>())
+            override suspend fun refresh(): RefreshResult=RefreshResult.Success
+            override suspend fun execute(command: Command): Outcome<CommandReceipt> = Outcome.Error(Failure.Unsupported)
+        }
+        val sessions=object: SessionRepository {
+            override fun observeSession()=flowOf<Session?>(null)
+            override suspend fun signIn(): Outcome<Session> = Outcome.Error(Failure.Unsupported)
+        }
+        val drafts=object: DraftRepository {
+            override suspend fun load(): Outcome<RequestDraft> = Outcome.Success(RequestDraft())
+            override suspend fun save(draft: RequestDraft): Outcome<Unit> = Outcome.Success(Unit)
+            override suspend fun clear(): Outcome<Unit> = Outcome.Success(Unit)
+        }
+        compose.runOnUiThread {
+            val vm=CreateViewModel(proposals,watches,sessions,drafts,IdGenerator { "fixture" },SavedStateHandle())
+            compose.activity.setContent { MaterialTheme { val state by vm.state.collectAsState();CreateScreen(state,vm,remote=true) } }
+        }
+        compose.waitUntil(5000) { compose.onAllNodesWithTag("request").fetchSemanticsNodes().size==1 }
+        compose.onNodeWithTag("request").performTextReplacement("Produit de test")
+        tap("evaluate")
+        compose.onNodeWithText("Zone de livraison").performScrollTo().assertIsDisplayed()
+        tap("evaluate")
+        compose.onNodeWithText(compose.activity.getString(R.string.error_input)).performScrollTo().assertIsDisplayed()
+        assertEquals(1,calls)
+        compose.onNodeWithText("France").performScrollTo().performClick()
+        compose.onNodeWithTag("answer_budget").performScrollTo().performTextReplacement("150")
+        tap("evaluate")
+        compose.waitUntil(5000) { compose.onAllNodesWithText("Sources insuffisantes pour activer cette surveillance.").fetchSemanticsNodes().size==1 }
+        compose.onNodeWithText("Sources insuffisantes pour activer cette surveillance.").assertIsDisplayed()
+        assertEquals(2,calls)
+    }
+
+    @Test fun notificationClaimPersistsAcrossInstancesAndIsScopedByAccount() {
+        val context=InstrumentationRegistry.getInstrumentation().targetContext
+        val owner=java.util.UUID.randomUUID().toString();val other=java.util.UUID.randomUUID().toString();val finding=java.util.UUID.randomUUID().toString()
+        assertTrue(fr.previensmoi.data.push.NotificationClaims(context).claim(owner,finding,1_000))
+        assertFalse(fr.previensmoi.data.push.NotificationClaims(context).claim(owner,finding,2_000))
+        assertTrue(fr.previensmoi.data.push.NotificationClaims(context).claim(other,finding,2_000))
+        for(id in listOf(owner,other)) java.io.File(context.noBackupFilesDir,"notification-claims-$id").delete()
+    }
+
 }

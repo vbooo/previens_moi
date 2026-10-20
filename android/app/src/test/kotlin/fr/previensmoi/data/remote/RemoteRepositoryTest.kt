@@ -107,4 +107,79 @@ class RemoteRepositoryTest {
         assertNull(finding.eventAt);assertEquals("2026-11-12",finding.eventDate);assertNull(finding.publishedAt);assertTrue(finding.evidence.isNotEmpty())
         assertThrows(IllegalArgumentException::class.java) { instant("2026-11-12") }
     }
+    @Test fun `pending evaluation polls same identifier and clarification preserves question ids`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val session = auth(server, MemoryVault())
+            val repository = RemoteRepositories(ApiClient.create(server.url("/"),true),session,MemoryPending(),IdGenerator { "eval-id" })
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2026-10-21T00:00:00Z"}"""))
+            server.enqueue(response("""{"id":"eval-id","status":"pending","draftRevision":2,"updatedAt":"2026-10-20T00:00:00Z"}""",202))
+            val questions = """{"id":"eval-id","status":"clarification","draftRevision":2,"updatedAt":"2026-10-20T00:00:00Z","questions":[{"id":"zone","label":"Où ?","options":["France","Belgique"],"required":true},{"id":"budget","label":"Budget ?","options":[],"required":false}]}"""
+            server.enqueue(response(questions))
+            val result = repository.evaluate(RequestDraft("Produit",revision=2)) as Outcome.Success
+            val items = (result.value as Evaluation.Questions).items
+            assertEquals(listOf("zone","budget"),items.map { it.id });assertEquals(listOf("France","Belgique"),items[0].options)
+            server.takeRequest();val post=server.takeRequest();val poll=server.takeRequest()
+            assertEquals("GET",poll.method);assertTrue(poll.url.encodedPath.endsWith("eval-id"))
+            server.enqueue(response(questions.replace("\"draftRevision\":2","\"draftRevision\":3")))
+            repository.evaluate(RequestDraft("Produit",revision=3,answers=mapOf("zone" to "France","budget" to "100 €")))
+            val answered=ApiClient.json.parseToJsonElement(server.takeRequest().body!!.utf8()).jsonObject
+            assertEquals("eval-id",answered["previousEvaluationId"]!!.jsonPrimitive.content)
+            assertEquals(setOf("zone","budget"),answered["draft"]!!.jsonObject["answers"]!!.jsonArray.map { it.jsonObject["questionId"]!!.jsonPrimitive.content }.toSet())
+            assertTrue(post.body!!.utf8().contains("eval-id"))
+        }
+    }
+    @Test fun `evaluation polling is bounded and explicit retry reuses request`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            var generated=0
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault()),MemoryPending(),IdGenerator { generated++; "eval-id" })
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2026-10-21T00:00:00Z"}"""))
+            val pending="""{"id":"eval-id","status":"pending","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z"}"""
+            repeat(11) { server.enqueue(response(pending)) }
+            assertEquals(Outcome.Error(Failure.AnalysisPending),repository.evaluate(RequestDraft("test")))
+            assertEquals(12,server.requestCount);server.takeRequest();val original=server.takeRequest().body!!.utf8();repeat(10){ server.takeRequest() }
+            server.enqueue(response(pending.replace("\"draftRevision\":0","\"draftRevision\":99")))
+            assertEquals(Outcome.Error(Failure.VersionConflict),repository.evaluate(RequestDraft("test")))
+            assertEquals(original,server.takeRequest().body!!.utf8());assertEquals(1,generated)
+        }
+    }
+
+    @Test fun `push expiry rejects missing future invalid and stale deliveries`() {
+        val now=1_000_000L
+        assertNull(pushExpiry(0,86400,now));assertNull(pushExpiry(now+300001,86400,now))
+        assertNull(pushExpiry(now,86401,now));assertNull(pushExpiry(now,0,now))
+        assertNull(pushExpiry(now-1000,1,now));assertEquals(now+86400000,pushExpiry(now,86400,now))
+    }
+
+    @Test fun `uncertain analysis survives repository recreation with same encrypted-journal request identity`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val cache=object: EvaluationJournal { var value: EvaluationCache?=null;override fun read()=value;override fun write(value: EvaluationCache){this.value=value} }
+            val api=ApiClient.create(server.url("/"),true);val session=auth(server,MemoryVault())
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
+            server.enqueue(response("""{"id":"eval-id","status":"pending","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z"}""",202));server.enqueue(response("{}",503))
+            val first=RemoteRepositories(api,session,MemoryPending(),IdGenerator { "eval-id" },cache)
+            assertEquals(Outcome.Error(Failure.TemporaryFailure),first.evaluate(RequestDraft("secret-demand")))
+            server.takeRequest();val posted=server.takeRequest();server.takeRequest()
+            val second=RemoteRepositories(api,session,MemoryPending(),IdGenerator { error("A second id must not be generated") },cache)
+            server.enqueue(response("""{"id":"eval-id","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Not qualified"}"""))
+            assertTrue(second.evaluate(RequestDraft("secret-demand")) is Outcome.Success)
+            val replay=server.takeRequest();assertEquals(posted.url.encodedPath,replay.url.encodedPath);assertEquals(posted.body!!.utf8(),replay.body!!.utf8());assertEquals("preview-secret",replay.headers["X-Preview-Token"])
+            assertFalse(cache.value.toString().contains("secret"))
+        }
+    }
+    @Test fun `analysis storage failure prevents model POST and expired cache needs explicit retry`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val api=ApiClient.create(server.url("/"),true);val session=auth(server,MemoryVault())
+            val broken=object: EvaluationJournal {override fun read(): EvaluationCache?=null;override fun write(value: EvaluationCache){throw java.io.IOException()} }
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
+            assertEquals(Outcome.Error(Failure.StorageFailure),RemoteRepositories(api,session,MemoryPending(),IdGenerator { "eval" },broken).evaluate(RequestDraft("test")))
+            assertEquals(1,server.requestCount);server.takeRequest()
+            val expired=object: EvaluationJournal {var value=EvaluationCache("old-secret",null,null,1);override fun read()=value;override fun write(value: EvaluationCache){this.value=value} }
+            val repository=RemoteRepositories(api,session,MemoryPending(),IdGenerator { "new-eval" },expired)
+            assertEquals(Outcome.Error(Failure.ProposalExpired),repository.evaluate(RequestDraft("test")));assertEquals(1,server.requestCount)
+            server.enqueue(response("""{"token":"fresh-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
+            server.enqueue(response("""{"id":"new-eval","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Not qualified"}"""))
+            assertTrue(repository.evaluate(RequestDraft("test")) is Outcome.Success);assertEquals(3,server.requestCount)
+        }
+    }
+
 }

@@ -110,10 +110,11 @@ class Integration(unittest.TestCase):
  @classmethod
  def tearDownClass(cls):
   # Leave no active fixture/capacity on completion (even on test failures).
-  sql("update private.capacity set enabled=false,slots=reserved");sql("update private.method_qualifications set qualified=false")
+  sql("update private.capacity set enabled=false,slots=reserved");sql("update private.method_qualifications set qualified=false");sql("update private.admission_capacity set enabled=false,qualified=false")
  def setUp(self):
   sql('truncate private.watches cascade');sql('truncate private.inbox');sql('update private.method_qualifications set qualified=true')
   reset_capacity()
+  sql('update private.admission_capacity set enabled=false,qualified=false')
  def test_01_auth_invalid_and_cross_account(self):
   self.assertEqual(401,http('/functions/v1/api/v1/account',token=self.ta[:-5]+'bogus')[0])
   w,p=fixture_watch(self.a)
@@ -218,7 +219,7 @@ class Integration(unittest.TestCase):
   self.assertEqual(403,http('/auth/v1/verify','POST',{'email':email,'token':code,'type':'email'})[0])
  def test_11_webhook_raw_signature_replay_and_limits(self):
   w,p=fixture_watch(self.a)
-  secret=(ROOT/'.local/s3-function.env').read_text().strip().split('=',1)[1]
+  secret=next(line.split('=',1)[1] for line in (ROOT/'.local/s3-function.env').read_text().splitlines() if line.startswith('PROVIDER_WEBHOOK_SECRET='))
   event={'type':'monitor.check.completed','id':'check-local','webhookId':'delivery-local','success':True,'data':[{'monitorId':'fixture-'+w,'checkId':'check-local','status':'completed'}]}
   raw=json.dumps(event,separators=(',',':')).encode()
   signature='sha256='+hmac.new(secret.encode(),raw,hashlib.sha256).hexdigest()
@@ -306,6 +307,191 @@ class Integration(unittest.TestCase):
   self.assertFalse(sql('select enabled from private.capacity',one=True))
   self.assertEqual('unknown',sql('select remote_state from private.watches where id=%s',(w,),True))
 
+ def test_18_full_erasure_waits_for_remote_stop_and_deletes_identity(self):
+  owner,token=login('erase-'+uuid.uuid4().hex[:8]+'@example.test')
+  self.assertEqual(200,http('/functions/v1/api/v1/account',token=token)[0])
+  wid,p=fixture_watch(owner)
+  provider='fixture-'+wid
+  sql("insert into private.inbox values('erase-event',%s,'check',%s,now())",(provider,Jsonb({'private':'erase me'})))
+  s,_=http('/functions/v1/api/v1/account/deletion','POST',{'id':v7()},token)
+  self.assertEqual(202,s)
+  self.assertNotIn(owner,sql('select public.s3_erasure_candidates()',one=True))
+  job=sql('select public.s3_lease()',one=True)
+  sql('select public.s3_confirm_stop(%s,%s)',(job['id'],job['lease_token']))
+  self.assertNotIn(owner,sql('select public.s3_erasure_candidates()',one=True))
+  sql('select public.s3_remote_erased(%s)',(provider,)) # fixture acknowledgement, not a real provider deletion
+  self.assertIn(owner,sql('select public.s3_erasure_candidates()',one=True))
+  sql('select public.s3_erase_data(%s)',(owner,))
+  # A crash before Auth deletion cannot recreate a private account from the old JWT.
+  self.assertEqual(401,http('/functions/v1/api/v1/account',token=token)[0])
+  sql('select public.s3_erase_data(%s)',(owner,))
+  for table,column in [('accounts','id'),('watches','owner_id'),('commands','owner_id'),('devices','owner_id'),('provider_bindings','owner_id')]:
+   self.assertEqual(0,sql(f'select count(*) from private.{table} where {column}=%s',(owner,),True))
+  self.assertEqual(0,sql('select count(*) from private.inbox where provider_id=%s',(provider,),True))
+  self.assertEqual(200,http('/auth/v1/admin/users/'+owner,'DELETE',token=ADMIN)[0])
+  sql('select public.s3_erasure_identity_done(%s)',(owner,))
+  self.assertNotIn(owner,sql('select public.s3_erasure_candidates()',one=True))
+  self.assertEqual(0,sql('select count(*) from auth.users where id=%s',(owner,),True))
+  self.assertTrue(sql('select identity_deleted_at is not null from private.erasure_ledger where owner_id=%s',(owner,),True))
+ def test_19_emission_claim_survives_delete_and_blocks_stop_until_settled(self):
+  wid,p=fixture_watch(self.a)
+  device=str(uuid.uuid4())
+  self.assertEqual(204,http('/functions/v1/api/v1/devices/'+device,'PUT',{'fcmToken':'emission-'+uuid.uuid4().hex,'language':'fr'},self.ta)[0])
+  payload=finding(wid,p)
+  sql("select public.s3_record_check(%s,1,'emission','finding',now(),'same-fact',%s)",(wid,Jsonb(payload)))
+  d=sql('select public.s3_delivery_lease()',one=True)
+  self.assertTrue(sql('select public.s3_delivery_allowed(%s,%s)',(d['id'],d['lease']),True))
+  self.assertFalse(sql('select public.s3_delivery_allowed(%s,%s)',(d['id'],d['lease']),True))
+  self.assertEqual(202,http('/functions/v1/api/v1/commands','POST',{'id':v7(),'operation':'delete','watchId':wid,'expectedVersion':1},self.ta)[0])
+  self.assertEqual(0,sql('select count(*) from private.outbox',one=True))
+  job=sql('select public.s3_lease()',one=True)
+  with self.assertRaises(psycopg.errors.RaiseException):sql('select public.s3_confirm_stop(%s,%s)',(job['id'],job['lease_token']))
+  sql("select public.s3_delivery_finish(%s,%s,'accepted')",(d['id'],d['lease']))
+  sql('select public.s3_confirm_stop(%s,%s)',(job['id'],job['lease_token']))
+  self.assertEqual('stopped',sql('select remote_state from private.watches where id=%s',(wid,),True))
+ def test_20_worker_auth_and_real_identity_erasure(self):
+  secret=next(line.split('=',1)[1] for line in (ROOT/'.local/s3-function.env').read_text().splitlines() if line.startswith('WORKER_SECRET='))
+  self.assertEqual(403,http('/functions/v1/worker','POST',{},ADMIN)[0])
+  owner,token=login('worker-erase-'+uuid.uuid4().hex[:8]+'@example.test')
+  self.assertEqual(200,http('/functions/v1/api/v1/account',token=token)[0])
+  self.assertEqual(202,http('/functions/v1/api/v1/account/deletion','POST',{'id':v7()},token)[0])
+  for _ in range(5):
+   code,value=http('/functions/v1/worker','POST',{},secret)
+   self.assertEqual(200,code);self.assertEqual('disabled',value['state']);self.assertEqual('disabled',value['stop'])
+   if sql('select identity_deleted_at is not null from private.erasure_ledger where owner_id=%s',(owner,),True):break
+  self.assertTrue(sql('select identity_deleted_at is not null from private.erasure_ledger where owner_id=%s',(owner,),True))
+  self.assertEqual(0,sql('select count(*) from auth.users where id=%s',(owner,),True))
+  self.assertEqual(401,http('/functions/v1/api/v1/account',token=token)[0])
+ def test_21_emission_and_pause_serialize_on_real_database_lock(self):
+  wid,p=fixture_watch(self.a);device=str(uuid.uuid4())
+  self.assertEqual(204,http('/functions/v1/api/v1/devices/'+device,'PUT',{'fcmToken':'race-'+uuid.uuid4().hex,'language':'fr'},self.ta)[0])
+  sql("select public.s3_record_check(%s,1,'race','finding',now(),'fact',%s)",(wid,Jsonb(finding(wid,p))))
+  d=sql('select public.s3_delivery_lease()',one=True)
+  with futures.ThreadPoolExecutor(max_workers=1) as pool:
+   with psycopg.connect(DB) as transaction:
+    self.assertTrue(transaction.execute('select public.s3_delivery_allowed(%s,%s)',(d['id'],d['lease'])).fetchone()[0])
+    pause=pool.submit(http,'/functions/v1/api/v1/commands','POST',{'id':v7(),'operation':'pause','watchId':wid,'expectedVersion':1},self.ta)
+    with self.assertRaises(futures.TimeoutError):pause.result(timeout=.15)
+   self.assertEqual(202,pause.result(timeout=10)[0])
+  self.assertFalse(sql('select public.s3_delivery_allowed(%s,%s)',(d['id'],d['lease']),True))
+  self.assertEqual('emitting',sql('select state from private.emissions where id=%s',(d['id'],),True))
+  sql("select public.s3_delivery_finish(%s,%s,'unknown')",(d['id'],d['lease']))
+ def test_22_admission_queue_idempotence_budget_and_lost_call(self):
+  sql('update private.admission_capacity set enabled=true,qualified=true,budget_micro_usd=10000,used_micro_usd=0,reserved_micro_usd=0')
+  t=preview();request={'id':v7(),'draft':{'text':'Un produit','language':'fr','mode':'once','revision':2,'answers':[]},'previousEvaluationId':None}
+  h={'X-Preview-Token':t}
+  code,value=http('/functions/v1/public/v1/evaluations','POST',request,headers=h)
+  self.assertEqual((202,'pending'),(code,value['status']))
+  self.assertEqual(value,http('/functions/v1/public/v1/evaluations','POST',request,headers=h)[1])
+  job=sql('select public.s3_admission_lease()',one=True)
+  self.assertEqual(request['id'],job['id']);self.assertIsNone(sql('select public.s3_admission_lease()',one=True))
+  # Lost HTTP response consumes no second call/lease; reservation remains held.
+  sql("update private.admission_jobs set lease_until=now()-interval '1 second' where id=%s",(job['id'],))
+  self.assertIsNone(sql('select public.s3_admission_lease()',one=True))
+  value=http('/functions/v1/public/v1/evaluations/'+request['id'],headers=h)[1]
+  self.assertEqual('failed',value['status']);self.assertEqual(10000,sql('select reserved_micro_usd from private.admission_capacity',one=True))
+ def test_23_admission_result_cannot_bypass_source_gate_and_cost_overrun_freezes(self):
+  sql('update private.admission_capacity set enabled=true,qualified=true,budget_micro_usd=10000,used_micro_usd=0,reserved_micro_usd=0')
+  t=preview();request={'id':v7(),'draft':{'text':'Demande','language':'fr','mode':'once','revision':0,'answers':[]},'previousEvaluationId':None}
+  self.assertEqual(202,http('/functions/v1/public/v1/evaluations','POST',request,headers={'X-Preview-Token':t})[0])
+  j=sql('select public.s3_admission_lease()',one=True)
+  result={'id':j['id'],'draftRevision':0,'updatedAt':ISO(),'status':'ready'}
+  with self.assertRaises(psycopg.errors.RaiseException):sql('select public.s3_admission_finish(%s,%s,%s,null,1)',(j['id'],j['lease'],Jsonb(result)))
+  result.update(status='clarification',questions=[{'id':'product','label':'Quel produit ?','options':[],'required':True}])
+  sql('select public.s3_admission_finish(%s,%s,%s,null,10001)',(j['id'],j['lease'],Jsonb(result)))
+  self.assertFalse(sql('select enabled from private.admission_capacity',one=True))
+  self.assertEqual('failed',http('/functions/v1/public/v1/evaluations/'+j['id'],headers={'X-Preview-Token':t})[1]['status'])
+ def test_24_short_lived_worker_mac_replay_and_real_scheduler_transport(self):
+  secret=next(line.split('=',1)[1] for line in (ROOT/'.local/s3-function.env').read_text().splitlines() if line.startswith('WORKER_SECRET='))
+  stamp=str(int(time.time()));nonce=str(uuid.uuid4())
+  signature=hmac.new(secret.encode(),('previens-moi-worker-v1.'+stamp+'.'+nonce).encode(),hashlib.sha256).hexdigest()
+  h={'X-Worker-Time':stamp,'X-Worker-Nonce':nonce,'X-Worker-Signature':signature}
+  self.assertEqual(200,http('/functions/v1/worker','POST',{},headers=h)[0])
+  self.assertEqual(403,http('/functions/v1/worker','POST',{},headers=h)[0])
+  sql("select vault.create_secret(%s,'previens-moi-worker') where not exists(select 1 from vault.secrets where name='previens-moi-worker')",(secret,))
+  self.assertFalse(sql("select has_table_privilege('authenticated','vault.decrypted_secrets','select')",one=True))
+  self.assertIsNone(sql('select public.s3_tick()',one=True))
+  try:
+   sql("update private.worker_schedule set enabled=true,url='http://kong:8000/functions/v1/worker'")
+   # Inspect the uncommitted queue before pg_net can consume it: no durable credential.
+   with psycopg.connect(DB) as c:
+    rid=c.execute('select public.s3_tick()').fetchone()[0]
+    headers=c.execute('select headers from net.http_request_queue where id=%s',(rid,)).fetchone()[0]
+    self.assertNotIn(secret,json.dumps(headers));self.assertNotIn('Authorization',headers)
+    self.assertIn('X-Worker-Signature',headers)
+   response=None
+   for _ in range(50):
+    rows=sql('select status_code from net._http_response where id=%s',(rid,))
+    if rows:response=rows[0][0];break
+    time.sleep(.1)
+   self.assertEqual(200,response)
+  finally:sql('update private.worker_schedule set enabled=false')
+ def test_25_identified_clarification_is_retrievable_and_settles_known_usage(self):
+  sql('update private.admission_capacity set enabled=true,qualified=true,budget_micro_usd=10000,used_micro_usd=0,reserved_micro_usd=0')
+  t=preview();request={'id':v7(),'draft':{'text':'Clarifier le produit','language':'fr','mode':'once','revision':3,'answers':[]},'previousEvaluationId':None}
+  self.assertEqual(202,http('/functions/v1/public/v1/evaluations','POST',request,headers={'X-Preview-Token':t})[0])
+  j=sql('select public.s3_admission_lease()',one=True)
+  result={'id':j['id'],'draftRevision':3,'updatedAt':ISO(),'status':'clarification','questions':[{'id':'product','label':'Quel produit ?','options':[],'required':True}]}
+  sql('select public.s3_admission_finish(%s,%s,%s,null,72)',(j['id'],j['lease'],Jsonb(result)))
+  code,value=http('/functions/v1/public/v1/evaluations/'+j['id'],headers={'X-Preview-Token':t})
+  self.assertEqual(200,code);self.assertEqual('product',value['questions'][0]['id'])
+  self.assertEqual((0,72),sql('select reserved_micro_usd,used_micro_usd from private.admission_capacity')[0])
+ def test_26_durable_provider_baseline_and_each_recurrence_has_own_reservation(self):
+  t=preview();p=proposal(t);p['method']='known_page'
+  sql('update private.proposals set payload=%s where id=%s',(Jsonb(p),p['id']))
+  code,r=http('/functions/v1/api/v1/commands','POST',activate(t,p),self.ta);self.assertEqual(202,code);wid=r['watchId']
+  j=sql('select public.s3_provider_lease()',one=True);self.assertEqual('start',j['kind'])
+  args=(j['id'],j['lease_token'])
+  self.assertTrue(sql("select public.s3_provider_checkpoint(%s,%s,'begin')",args,True));self.assertFalse(sql("select public.s3_provider_checkpoint(%s,%s,'begin')",args,True))
+  sql("select public.s3_provider_checkpoint(%s,%s,'remember',%s)",args+(Jsonb({'id':'remote-'+wid}),))
+  sql("select public.s3_provider_checkpoint(%s,%s,'later')",args)
+  sql("update private.jobs set available_at=now()-interval '1 second' where id=%s",(j['id'],))
+  j=sql('select public.s3_provider_lease()',one=True);args=(j['id'],j['lease_token']);self.assertEqual('run',j['attempt']['phase'])
+  sql("select public.s3_provider_checkpoint(%s,%s,'reserve',%s)",args+(Jsonb({'before':100}),))
+  sql("select public.s3_provider_checkpoint(%s,%s,'intent')",args)
+  sql("select public.s3_provider_checkpoint(%s,%s,'queued',%s)",args+(Jsonb({'id':'baseline-check'}),))
+  sql("select public.s3_provider_complete(%s,%s,now(),'baseline',1)",args)
+  self.assertEqual('active',sql('select status from private.watches where id=%s',(wid,),True));self.assertEqual(0,sql('select count(*) from private.findings',one=True))
+  previous=j['id']
+  for n in range(2):
+   sql("update private.watches set next_check_at=now()-interval '1 second' where id=%s",(wid,))
+   self.assertEqual(1,sql('select public.s3_enqueue_due()',one=True));self.assertEqual(0,sql('select public.s3_enqueue_due()',one=True))
+   j=sql('select public.s3_provider_lease()',one=True);self.assertNotEqual(previous,j['id']);self.assertEqual('check',j['kind']);previous=j['id'];args=(j['id'],j['lease_token'])
+   sql("select public.s3_provider_checkpoint(%s,%s,'begin')",args)
+   sql("select public.s3_provider_checkpoint(%s,%s,'reserve',%s)",args+(Jsonb({'before':99-n}),))
+   sql("select public.s3_provider_checkpoint(%s,%s,'intent')",args)
+   sql("select public.s3_provider_checkpoint(%s,%s,'queued',%s)",args+(Jsonb({'id':'check-'+str(n)}),))
+   sql("select public.s3_provider_complete(%s,%s,now(),'no_change',1)",args)
+  self.assertEqual((3,0),sql('select used_units,reserved_units from private.capacity')[0])
+ def test_27_pause_during_create_retains_late_remote_identity_for_cleanup(self):
+  t=preview();p=proposal(t);p['method']='known_page';sql('update private.proposals set payload=%s where id=%s',(Jsonb(p),p['id']))
+  _,receipt=http('/functions/v1/api/v1/commands','POST',activate(t,p),self.ta);wid=receipt['watchId']
+  j=sql('select public.s3_provider_lease()',one=True);args=(j['id'],j['lease_token']);sql("select public.s3_provider_checkpoint(%s,%s,'begin')",args)
+  self.assertEqual(202,http('/functions/v1/api/v1/commands','POST',{'id':v7(),'operation':'pause','watchId':wid,'expectedVersion':1},self.ta)[0])
+  sql("select public.s3_provider_checkpoint(%s,%s,'remember',%s)",args+(Jsonb({'id':'late-'+wid}),))
+  self.assertFalse(sql('select public.s3_provider_allowed(%s,%s)',args,True))
+  stop=sql('select public.s3_stop_lease()',one=True);self.assertFalse(stop['uncertainStart']);self.assertEqual('late-'+wid,stop['providerId'])
+  sql('select public.s3_confirm_stop(%s,%s)',(stop['id'],stop['lease_token'])) # provider ack fixture
+  self.assertEqual('done',sql('select state from private.jobs where id=%s',(j['id'],),True))
+  self.assertEqual('paused',sql('select status from private.watches where id=%s',(wid,),True))
+ def test_28_unsettled_cost_does_not_retain_personal_plan_after_remote_erasure(self):
+  owner,token=login('unsettled-'+uuid.uuid4().hex[:8]+'@example.test');http('/functions/v1/api/v1/account',token=token)
+  wid,p=fixture_watch(owner);reservation=str(uuid.uuid4());provider='fixture-'+wid
+  sql('select public.s3_reserve(%s,%s,2)',(reservation,wid))
+  self.assertEqual(202,http('/functions/v1/api/v1/account/deletion','POST',{'id':v7()},token)[0])
+  stop=sql('select public.s3_stop_lease()',one=True);sql('select public.s3_confirm_stop(%s,%s)',(stop['id'],stop['lease_token']))
+  self.assertNotIn(owner,sql('select public.s3_erasure_candidates()',one=True))
+  sql('select public.s3_remote_erased(%s)',(provider,)) # fixture remote deletion acknowledged
+  sql('select public.s3_erase_data(%s)',(owner,))
+  self.assertEqual(0,sql('select count(*) from private.watches where owner_id=%s',(owner,),True))
+  self.assertEqual(2,sql('select units from private.unsettled_costs where id=%s',(reservation,),True));self.assertEqual(2,sql('select reserved_units from private.capacity',one=True))
+  self.assertEqual(200,http('/auth/v1/admin/users/'+owner,'DELETE',token=ADMIN)[0]);sql('select public.s3_erasure_identity_done(%s)',(owner,))
+ def test_29_provider_and_stop_crash_after_last_lease_remain_visible_and_freeze(self):
+  wid,p=fixture_watch(self.a)
+  job=str(uuid.uuid4());sql("insert into private.jobs(id,watch_id,generation,kind,state,attempts,lease_until) values(%s,%s,1,'check','leased',3,now()-interval '1 second')",(job,wid))
+  self.assertIsNone(sql('select public.s3_provider_lease()',one=True))
+  self.assertEqual('ambiguous',sql('select state from private.jobs where id=%s',(job,),True));self.assertFalse(sql('select enabled from private.capacity',one=True))
+  self.assertEqual(('unknown','degraded'),sql('select remote_state,health from private.watches where id=%s',(wid,))[0])
 if __name__=='__main__':
  suite=unittest.defaultTestLoader.loadTestsFromTestCase(Integration)
  start=time.monotonic();result=unittest.TextTestRunner(verbosity=2).run(suite)

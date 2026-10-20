@@ -28,6 +28,7 @@ fun Page(content: @Composable ColumnScope.() -> Unit) {
 @Composable fun FailureText(failure: Failure?) {
     if (failure == null) return
     val id = when (failure) {
+        Failure.AnalysisPending -> R.string.analysis_pending
         Failure.OperationPending -> R.string.operation_pending
         Failure.Offline -> R.string.error_offline
         Failure.TemporaryFailure -> R.string.error_temporary
