@@ -34,7 +34,7 @@ fun RequestFields(state: CreateUiState, vm: CreateViewModel) {
 }
 
 @Composable
-fun CreateScreen(state: CreateUiState, vm: CreateViewModel) {
+fun CreateScreen(state: CreateUiState, vm: CreateViewModel, login: (() -> Unit)? = null, remote: Boolean = false) {
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
     Page {
@@ -56,15 +56,15 @@ fun CreateScreen(state: CreateUiState, vm: CreateViewModel) {
                 TextButton(onClick = vm::discard) { Text(stringResource(R.string.discard)) }
             }
             CreationStep.Unsupported -> {
-                Text(stringResource(R.string.unsupported_title), style = MaterialTheme.typography.headlineMedium)
-                Text(stringResource(R.string.unsupported_body))
+                Text(stringResource(if (remote) R.string.remote_unavailable_title else R.string.unsupported_title), style = MaterialTheme.typography.headlineMedium)
+                Text(stringResource(if (remote) R.string.unqualified_body else R.string.unsupported_body))
                 Button(onClick = vm::revise) { Text(stringResource(R.string.revise)) }
             }
             CreationStep.Login -> {
                 Text(stringResource(R.string.login_title), style = MaterialTheme.typography.headlineMedium)
-                Text(stringResource(R.string.login_info))
+                Text(stringResource(if (remote) R.string.email_purpose else R.string.login_info))
                 FailureText(state.error)
-                Button(onClick = vm::signIn, modifier = Modifier.testTag("login")) { Text(stringResource(R.string.login_action)) }
+                Button(onClick = login ?: vm::signIn, modifier = Modifier.testTag("login")) { Text(stringResource(R.string.login_action)) }
                 TextButton(onClick = vm::revise) { Text(stringResource(R.string.revise)) }
             }
             CreationStep.Ready, CreationStep.Confirming -> {
@@ -84,7 +84,13 @@ fun CreateScreen(state: CreateUiState, vm: CreateViewModel) {
                             Text(stringResource(R.string.partial_accept), Modifier.weight(1f).padding(top = 12.dp))
                         }
                     }
-                    Text(stringResource(R.string.demo_terms, proposal.intervalHours, proposal.limit))
+                    if (remote) {
+                        proposal.criteria.forEach { Text(it) }
+                        Text(proposal.coverage)
+                        proposal.exclusions.forEach { Text(it) }
+                        proposal.limitations.forEach { Text(it) }
+                        Text(stringResource(R.string.remote_terms, proposal.intervalHours, proposal.limit))
+                    } else Text(stringResource(R.string.demo_terms, proposal.intervalHours, proposal.limit))
                     if (proposal.sources.isEmpty()) Text(stringResource(R.string.no_source))
                     else { Text(stringResource(R.string.source_label)); proposal.sources.forEach { Text(it, style = MaterialTheme.typography.bodySmall) } }
                     Text(stringResource(R.string.baseline_info))

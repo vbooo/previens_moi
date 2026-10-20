@@ -1720,7 +1720,8 @@
               "active",
               "paused",
               "completed",
-              "suspended_by_capacity"
+              "suspended_by_capacity",
+              "pending"
             ]
           },
           "health": {
@@ -1758,10 +1759,17 @@
             ]
           },
           "baselineAt": {
-            "type": "string",
-            "format": "date-time",
-            "pattern": "Z$",
-            "description": "Instant UTC RFC3339, suffixe Z."
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "nextCheckAt": {
             "anyOf": [

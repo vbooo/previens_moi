@@ -28,6 +28,7 @@ fun Page(content: @Composable ColumnScope.() -> Unit) {
 @Composable fun FailureText(failure: Failure?) {
     if (failure == null) return
     val id = when (failure) {
+        Failure.OperationPending -> R.string.operation_pending
         Failure.Offline -> R.string.error_offline
         Failure.TemporaryFailure -> R.string.error_temporary
         Failure.SessionRequired -> R.string.error_session
@@ -45,6 +46,7 @@ fun Page(content: @Composable ColumnScope.() -> Unit) {
 }
 @Composable fun dateText(value: Long?): String = value?.let { DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(it)) } ?: stringResource(R.string.unknown_date)
 fun statusLabel(status: WatchStatus) = when(status) {
+    WatchStatus.Pending -> R.string.status_pending
     WatchStatus.Active -> R.string.status_active
     WatchStatus.Paused -> R.string.status_paused
     WatchStatus.Completed -> R.string.status_completed

@@ -1,0 +1,19 @@
+<resources>
+    <string name="demo_banner">Démo · données fictives · aucune alerte envoyée</string>
+    <string name="demo_tools">Scénarios</string>
+    <string name="demo_tools_title">Scénario de démonstration</string>
+    <string name="simulate_check">Simuler une vérification</string>
+    <string name="reset_demo">Réinitialiser le service fictif</string>
+    <string name="demo_normal">Parcours réussi</string>
+    <string name="demo_clarification">Précision nécessaire</string>
+    <string name="demo_partial">Portée réduite</string>
+    <string name="demo_unsupported">Accès privé indisponible</string>
+    <string name="demo_no_results">Aucun résultat</string>
+    <string name="demo_quota">Capacité épuisée</string>
+    <string name="demo_source_failure">Source en panne</string>
+    <string name="demo_offline">Connexion indisponible</string>
+    <string name="demo_command_failure">Commande échouée</string>
+    <string name="demo_lost_response">Réponse perdue après succès</string>
+    <string name="demo_expired">Proposition expirée</string>
+    <string name="demo_conflict">Conflit de version</string>
+</resources>

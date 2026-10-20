@@ -12,6 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = json.loads((ROOT / 'contracts/application-v1.openapi.json').read_text())
 cases = json.loads((ROOT / 'contracts/application-v1.examples.json').read_text())
 validate(spec)
+snapshot = ROOT / 'service/supabase/functions/_shared/contract.json'
+if snapshot.exists():
+    assert json.loads(snapshot.read_text()) == spec, 'Edge contract snapshot is stale'
 uri = 'https://contracts.previens-moi.invalid/application-v1'
 resource = Resource.from_contents(dict(spec, **{'$schema': 'https://json-schema.org/draft/2020-12/schema'}))
 registry = Registry().with_resource(uri, resource)

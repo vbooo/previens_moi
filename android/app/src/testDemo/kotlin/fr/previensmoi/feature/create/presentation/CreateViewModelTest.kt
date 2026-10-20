@@ -33,6 +33,19 @@ class CreateViewModelTest {
         try { block(Fixture()) } finally { Dispatchers.resetMain() }
     }
 
+    @Test fun `duplicate text callback while evaluating does not cancel the current revision`() = test { f ->
+        val deferred = CompletableDeferred<Outcome<Evaluation>>()
+        val vm = f.vm(object : ProposalRepository by f.service {
+            override suspend fun evaluate(draft: RequestDraft) = deferred.await()
+        })
+        runCurrent(); vm.updateText("A"); vm.evaluate("fr"); runCurrent()
+        val revision = vm.state.value.draft.revision
+        vm.updateText("A"); runCurrent()
+        assertEquals(revision, vm.state.value.draft.revision)
+        deferred.complete(Outcome.Success(Evaluation.Ready(Proposal("p",1,vm.state.value.draft,Long.MAX_VALUE))))
+        runCurrent(); assertEquals(CreationStep.Ready, vm.state.value.step)
+    }
+
     @Test fun `C09 late response for A cannot replace B even when cancellation is ignored`() = test { f ->
         val delayed = CompletableDeferred<Outcome<Evaluation>>()
         val proposals = object : ProposalRepository by f.service {

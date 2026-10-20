@@ -19,12 +19,22 @@ android {
     flavorDimensions += "environment"
     productFlavors {
         create("demo") { dimension = "environment"; applicationIdSuffix = ".demo" }
+        create("remote") {
+            dimension = "environment"; applicationIdSuffix = ".remote"
+            for ((field, property) in listOf("FIREBASE_APP_ID" to "firebaseAppId", "FIREBASE_PROJECT_ID" to "firebaseProjectId", "FIREBASE_API_KEY" to "firebaseApiKey", "FIREBASE_SENDER_ID" to "firebaseSenderId")) {
+                buildConfigField("String", field, "\"${providers.gradleProperty(property).getOrElse("")}\"")
+            }
+            buildConfigField("String", "SERVICE_URL", "\"${providers.gradleProperty("serviceUrl").getOrElse("https://service.previens-moi.invalid/functions/v1/")}\"")
+            buildConfigField("String", "AUTH_URL", "\"${providers.gradleProperty("authUrl").getOrElse("https://service.previens-moi.invalid/auth/v1/")}\"")
+            buildConfigField("String", "AUTH_PUBLIC_KEY", "\"${providers.gradleProperty("authPublicKey").getOrElse("")}\"")
+            buildConfigField("boolean", "LOCAL_SERVICE", providers.gradleProperty("localService").getOrElse("false"))
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
     sourceSets.getByName("test").resources.directories.add("../../contracts")
     lint {
         abortOnError = true
@@ -37,6 +47,8 @@ android {
 // No demo release artifact: publication is a separate, explicit sprint.
 androidComponents { beforeVariants(selector().withBuildType("release")) { it.enable = false } }
 dependencies {
+    "remoteImplementation"(libs.firebase.messaging)
+    "remoteImplementation"(libs.work.runtime)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
     implementation(libs.compose.preview)

@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">Préviens-moi · Demo</string>
-    <string name="demo_banner">Demo · fictional data · no alerts sent</string>
     <string name="title">Your watches</string>
     <string name="back">Back</string>
     <string name="app_title">Préviens-moi</string>
@@ -70,22 +69,6 @@
     <string name="event_at">Event: %1$s</string>
     <string name="unknown_date">unknown date</string>
     <string name="stale_content">Refresh failed. The displayed content may be outdated. Try again.</string>
-    <string name="demo_tools">Scenarios</string>
-    <string name="demo_tools_title">Demonstration scenario</string>
-    <string name="simulate_check">Simulate a check</string>
-    <string name="reset_demo">Reset fictional service</string>
-    <string name="demo_normal">Successful flow</string>
-    <string name="demo_clarification">Clarification needed</string>
-    <string name="demo_partial">Limited scope</string>
-    <string name="demo_unsupported">Private access unavailable</string>
-    <string name="demo_no_results">No results</string>
-    <string name="demo_quota">Capacity exhausted</string>
-    <string name="demo_source_failure">Source failure</string>
-    <string name="demo_offline">Connection unavailable</string>
-    <string name="demo_command_failure">Command failure</string>
-    <string name="demo_lost_response">Response lost after success</string>
-    <string name="demo_expired">Expired proposal</string>
-    <string name="demo_conflict">Version conflict</string>
     <string name="error_offline">Connection unavailable in this scenario. Choose another scenario and try again.</string>
     <string name="error_temporary">Response not confirmed. Try again: the same command will be reused to prevent duplicates.</string>
     <string name="error_session">A demo account is required to confirm. Return to the proposal.</string>
@@ -96,4 +79,25 @@
     <string name="error_quota">Demo capacity has been reached. No new watch was activated. Free a slot or change the scenario.</string>
     <string name="error_unsupported">This action is unavailable in this state. Return to the watch details.</string>
     <string name="error_input">Enter a request before continuing.</string>
+    <string name="status_pending">Preparing</string>
+    <string name="operation_pending">Operation still pending. Refresh to check its status; no new activation is started.</string>
+    <string name="remote_terms">Check every %1$d h · account limit: %2$d.</string>
+    <string name="unqualified_body">This test service does not monitor requests yet. No monitoring has been activated.</string>
+    <string name="account_title">Account</string>
+    <string name="account_connected">Email code sign-in confirmed.</string>
+    <string name="sign_out">Sign out</string>
+    <string name="email_purpose">Your address receives sign-in codes. Alerts will use phone notifications.</string>
+    <string name="email_label">Email address</string>
+    <string name="send_code">Send code</string>
+    <string name="resend_code">Resend code</string>
+    <string name="code_sent">If the address can be used, a code has been sent. It expires after 10 minutes.</string>
+    <string name="code_label">Six-digit code</string>
+    <string name="verify_code">Verify code</string>
+    <string name="remote_stopping">Watch paused; remote service is stopping. Remote costs are not yet confirmed stopped.</string>
+    <string name="remote_unknown">Remote service state unknown.</string>
+<string name="push_status_info">Results remain available when notifications are disabled.</string>
+<string name="erase_account">Erase my account</string>
+<string name="erase_account_info">This closes access and requests erasure and remote shutdown. An email code sign-in within the last five minutes is required.</string>
+<string name="erasure_pending">Account access closed. Erasure and remote shutdown are pending; completion is not yet confirmed.</string>
+<string name="remote_unavailable_title">Monitoring is not available yet</string>
 </resources>

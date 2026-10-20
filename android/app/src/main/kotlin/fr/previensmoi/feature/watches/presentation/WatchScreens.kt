@@ -15,10 +15,10 @@ import fr.previensmoi.feature.common.presentation.*
 import fr.previensmoi.feature.create.presentation.*
 
 @Composable
-fun HomeScreen(state: WatchesUiState, creation: CreateUiState, createVm: CreateViewModel, preview: () -> Unit, refresh: () -> Unit, open: (String) -> Unit) {
+fun HomeScreen(state: WatchesUiState, creation: CreateUiState, createVm: CreateViewModel, preview: () -> Unit, refresh: () -> Unit, open: (String) -> Unit, remote: Boolean = false) {
     Page {
         RequestFields(creation, createVm)
-        Text(stringResource(R.string.demo_explanation), style = MaterialTheme.typography.bodySmall)
+        Text(stringResource(if (remote) R.string.unqualified_body else R.string.demo_explanation), style = MaterialTheme.typography.bodySmall)
         if (creation.resetNotice) Text(stringResource(R.string.reset_notice))
         if (creation.storageFailed) FailureText(Failure.StorageFailure)
         if (creation.step == CreationStep.Editing) FailureText(creation.error)
@@ -48,7 +48,7 @@ fun HomeScreen(state: WatchesUiState, creation: CreateUiState, createVm: CreateV
 }
 
 @Composable
-fun DetailScreen(id: String, state: WatchesUiState, vm: WatchesViewModel, edit: (Watch) -> Unit, openFinding: (String) -> Unit) {
+fun DetailScreen(id: String, state: WatchesUiState, vm: WatchesViewModel, edit: (Watch) -> Unit, openFinding: (String) -> Unit, remote: Boolean = false) {
     val watch = state.watches.find { it.id == id }
     var deleting by rememberSaveable(id) { mutableStateOf(false) }
     if (watch == null) { Page { Text(stringResource(R.string.missing)) }; return }
@@ -60,10 +60,12 @@ fun DetailScreen(id: String, state: WatchesUiState, vm: WatchesViewModel, edit: 
         HealthSummary(watch)
         if (state.refreshFailed) Text(stringResource(R.string.stale_content), color = MaterialTheme.colorScheme.error)
         Text(stringResource(R.string.baseline_at, dateText(watch.baselineAt)))
+        if (watch.remoteState == RemoteState.Stopping) Text(stringResource(R.string.remote_stopping))
+        if (watch.remoteState == RemoteState.Unknown) Text(stringResource(R.string.remote_unknown))
         if (watch.nextCheck != null) Text(stringResource(R.string.next_check, dateText(watch.nextCheck)))
-        Text(stringResource(R.string.demo_terms, watch.plan.intervalHours, watch.plan.limit))
+        Text(stringResource(if (remote) R.string.remote_terms else R.string.demo_terms, watch.plan.intervalHours, watch.plan.limit))
         if (watch.plan.partial) Text(stringResource(R.string.partial_text))
-        Text(stringResource(R.string.no_notifications), style = MaterialTheme.typography.bodySmall)
+        Text(stringResource(if (remote) R.string.push_status_info else R.string.no_notifications), style = MaterialTheme.typography.bodySmall)
         FailureText(state.commandError)
         if (state.commandPending) Busy()
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -92,13 +94,18 @@ fun DetailScreen(id: String, state: WatchesUiState, vm: WatchesViewModel, edit: 
 }
 
 @Composable
-fun FindingScreen(id: String, state: WatchesUiState) {
+fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false) {
     val finding = state.findings.find { it.id == id }
     Page {
-        if (finding == null) Text(stringResource(R.string.missing))
+        if (finding == null) { if (state.findingError != null) FailureText(state.findingError) else Text(stringResource(R.string.missing)) }
         else {
             Text(stringResource(R.string.finding_title), style = MaterialTheme.typography.headlineMedium)
-            Text(stringResource(R.string.finding_info))
+            if (!remote) Text(stringResource(R.string.finding_info))
+            if (finding.title.isNotBlank()) Text(finding.title)
+            if (finding.fact.isNotBlank()) Text(finding.fact)
+            if (finding.reason.isNotBlank()) Text(finding.reason)
+            finding.evidence.forEach { proof -> Text(proof.quote); Text(proof.url); proof.publicationDate?.let { Text(it) } }
+            finding.eventDate?.let { Text(it) }
             val watch = state.watches.find { it.id == finding.watchId }
             if (watch?.plan?.id != finding.planId || watch.plan.version != finding.planVersion) Text(stringResource(R.string.old_plan))
             Text(stringResource(R.string.why), style = MaterialTheme.typography.titleMedium)

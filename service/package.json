@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "deno": "2.5.4",
+    "supabase": "2.121.0"
+  }
+}

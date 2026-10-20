@@ -1,6 +1,7 @@
 package fr.previensmoi.domain.model
 
-enum class WatchStatus { Active, Paused, Completed, SuspendedByCapacity }
+enum class WatchStatus { Pending, Active, Paused, Completed, SuspendedByCapacity }
+enum class RemoteState { Starting, Running, Stopping, Stopped, Unknown }
 enum class Health { NotCheckedYet, Healthy, Degraded }
 enum class FollowMode { Once, Continuous }
 data class RequestDraft(
@@ -11,19 +12,24 @@ data class Proposal(
     val id: String, val version: Long, val draft: RequestDraft, val expiresAt: Long,
     val partial: Boolean = false, val sources: List<String> = emptyList(),
     val intervalHours: Int = 24, val limit: Int = 1,
+    val title: String = "", val criteria: List<String> = emptyList(), val exclusions: List<String> = emptyList(),
+    val coverage: String = "", val limitations: List<String> = emptyList(),
 )
 data class Watch(
     val id: String, val plan: Proposal, val version: Long = 1,
     val status: WatchStatus = WatchStatus.Active, val health: Health = Health.NotCheckedYet,
     val lastSuccess: Long? = null, val lastFailure: Long? = null,
-    val baselineAt: Long, val nextCheck: Long? = null,
+    val baselineAt: Long?, val nextCheck: Long? = null, val remoteState: RemoteState = RemoteState.Stopped,
 )
 data class Finding(
     val id: String, val watchId: String, val planId: String, val planVersion: Long,
     val criterion: String, val observedAt: Long, val publishedAt: Long? = null,
     val eventAt: Long? = null, val source: String = "https://example.invalid/announcement",
+    val title: String = "", val fact: String = "", val reason: String = "", val evidence: List<Proof> = emptyList(), val eventDate: String? = null,
 )
+data class Proof(val url: String, val quote: String, val observedAt: Long, val publicationDate: String? = null)
 enum class Failure {
+    OperationPending,
     Offline, TemporaryFailure, SessionRequired, AccessDenied, NotFound, ProposalExpired,
     VersionConflict, CommandConflict, QuotaExceeded, Unsupported, InvalidInput, StorageFailure,
 }
@@ -39,7 +45,7 @@ sealed interface Evaluation {
 enum class Operation { Activate, Pause, Resume, Delete, Replace }
 data class Command(
     val id: String, val operation: Operation, val targetId: String,
-    val expectedVersion: Long, val proposalId: String? = null, val proposalVersion: Long? = null,
+    val expectedVersion: Long, val proposalId: String? = null, val proposalVersion: Long? = null, val acceptPartial: Boolean = false,
 )
 data class CommandReceipt(val commandId: String, val watchId: String, val version: Long?, val deleted: Boolean = false)
 data class Session(val id: String)

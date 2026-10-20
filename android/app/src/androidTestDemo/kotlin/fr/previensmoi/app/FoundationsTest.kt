@@ -1,6 +1,9 @@
 package fr.previensmoi.app
 
 import androidx.compose.ui.test.*
+import android.os.Build
+import android.view.WindowInsets
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -27,9 +30,18 @@ class FoundationsTest {
     }
     private fun text(id: Int) = compose.activity.getString(id)
     private fun awaitTag(tag: String) {
-        compose.waitUntil(5_000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().size == 1 }
+        try { compose.waitUntil(5_000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().size == 1 } }
+        catch (failure: Throwable) { println("Missing demo tag: $tag\n" + compose.onRoot().printToString()); throw failure }
     }
-    private fun tap(tag: String) { awaitTag(tag); compose.onNodeWithTag(tag).performScrollTo().performClick() }
+    @Suppress("DEPRECATION")
+    private fun closeKeyboard() {
+        compose.runOnUiThread {
+            if (Build.VERSION.SDK_INT >= 30) compose.activity.window.insetsController?.hide(WindowInsets.Type.ime())
+            else compose.activity.getSystemService(InputMethodManager::class.java).hideSoftInputFromWindow(compose.activity.window.decorView.windowToken,0)
+        }
+        if (Build.VERSION.SDK_INT >= 30) compose.waitUntil(5000) { compose.activity.window.decorView.rootWindowInsets?.isVisible(WindowInsets.Type.ime()) != true }
+    }
+    private fun tap(tag: String) { closeKeyboard(); awaitTag(tag); compose.onNodeWithTag(tag).performScrollTo().performClick() }
     private fun status(id: Int) {
         compose.waitUntil(5_000) { compose.onAllNodes(hasTestTag("watch_status") and hasText(text(id))).fetchSemanticsNodes().size == 1 }
         compose.onNodeWithTag("watch_status").performScrollTo().assertTextEquals(text(id))

@@ -1,0 +1,11 @@
+import {sendOne,message,type Delivery,type Outbox} from '../src/fcm.ts';
+const assert=(v:unknown)=>{if(!v)throw new Error('assertion failed');};
+const d:Delivery={id:'outbox',lease:'lease',token:'test-device-token',findingId:'finding',watchId:'watch',planVersion:'1'};
+function fixture(allowed=true){const states:string[]=[];let leases=0;return {states,get leases(){return leases;},outbox:{async lease(){leases++;return d;},async allowed(){return allowed;},async finish(_:Delivery,state:string){states.push(state);}} as Outbox};}
+const identity={projectId:'previens-moi-test',async accessToken(){return 'test-only';}};
+Deno.test('disabled push performs no lease or network call',async()=>{const f=fixture();assert(await sendOne(f.outbox,identity,false)==='disabled');assert(f.leases===0);});
+Deno.test('pause after lease prevents HTTP emission',async()=>{const f=fixture(false);let calls=0;assert(await sendOne(f.outbox,identity,true,(()=>{calls++;throw new Error();}) as typeof fetch)==='cancelled');assert(calls===0&&f.states[0]==='cancelled');});
+Deno.test('FCM contains identifiers only and bounded TTL',()=>{const value=message(d);assert(Object.keys(value.message.data).join(',')==='findingId,watchId,planVersion');assert(!('notification' in value.message));assert(value.message.android.ttl==='86400s');});
+Deno.test('acceptance is recorded and does not claim delivery',async()=>{const f=fixture();let body='';const request=(async(url,init)=>{assert(String(url).startsWith('https://fcm.googleapis.com/'));body=String(init?.body);return new Response('{"name":"receipt"}');}) as typeof fetch;assert(await sendOne(f.outbox,identity,true,request)==='accepted');assert(f.states[0]==='accepted');assert(!body.includes('email'));});
+Deno.test('lost response is unknown without automatic duplicate POST',async()=>{const f=fixture();let calls=0;try{await sendOne(f.outbox,identity,true,(()=>{calls++;throw new Error('network');}) as typeof fetch);}catch{/* expected */}assert(calls===1&&f.states[0]==='unknown');});
+Deno.test('provider 503 is unknown; permanent 400 is failed',async()=>{for(const [code,state] of [[503,'unknown'],[400,'failed']] as const){const f=fixture();assert(await sendOne(f.outbox,identity,true,(async()=>new Response('',{status:code})) as typeof fetch)===state);}});

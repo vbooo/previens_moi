@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 root = Path(__file__).resolve().parents[1] / "android/app/src"
 errors = []
 for path in root.rglob("*.kt"):
-    if "/test/" in str(path): continue
+    if path.relative_to(root).parts[0].startswith(("test", "androidTest")): continue
     imports = re.findall(r"^import (.+)$", path.read_text(), re.M)
     if "/domain/" in str(path):
         allowed = ("kotlin.", "kotlinx.coroutines.", "fr.previensmoi.domain.")
@@ -18,7 +18,7 @@ for path in root.rglob("AndroidManifest.xml"):
     for permission in ET.parse(path).getroot().findall("uses-permission"):
         name = permission.get("{http://schemas.android.com/apk/res/android}name")
         action = permission.get("{http://schemas.android.com/tools}node")
-        if name == "android.permission.INTERNET" and action != "remove":
+        if name == "android.permission.INTERNET" and action != "remove" and "/remote/" not in str(path):
             errors.append(f"{path}: demo network permission")
 if "--merged" in sys.argv:
     manifest = root.parent / "build/intermediates/merged_manifests/demoDebug/processDemoDebugManifest/AndroidManifest.xml"

@@ -15,3 +15,9 @@ engine-lab/
 *.hprof
 captures/
 validation/preuves/
+
+# Service local tooling and runtime state
+**/node_modules/
+service/supabase/.temp/
+service/supabase/.branches/
+service/.runtime/

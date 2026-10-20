@@ -85,3 +85,14 @@ S3-01 a démarré : choix et spécification du service réel, identité, API et 
 Les tests `ApplicationApiTest` utilisent un serveur HTTP local : ils vérifient réponse en attente, réessai identique, erreurs/quota, absence de fuite des secrets sur redirection, lecture vide, champs inconnus, annulation et dates sans précision inventée. Les ressources JSON communes viennent de `contracts/` dans les tests uniquement. Versions résolues : Retrofit/converter 3.0.0, OkHttp/MockWebServer 5.5.0, kotlinx.serialization JSON 1.9.0.
 
 [Spécification S3](../docs/11-service-et-contrat-s3.md) · [Bilan de démarrage](../validation/s3-01/bilan.md). Le serveur réel, la session persistée et les tests d’isolation sur PostgreSQL restent à implémenter. Ces tests HTTP ne prouvent pas le fonctionnement d’un backend hébergé.
+
+
+## Variante connectée S3 (locale, non publiable)
+
+`remoteDebug` est séparée de `demoDebug`. Sans propriétés explicites, son URL reste `.invalid`, aucun projet Firebase n'est initialisé. `python3 scripts/check-local-android.py` construit l'app et ses tests avec seulement le service Supabase local dédié (voir `service/README.md`). La démo retire toujours INTERNET et ne contient pas Firebase/WorkManager.
+
+Session : code e-mail réel local, jetons protégés par Android Keystore dans `noBackupFilesDir`, rotation coordonnée, effacement local même après échec de déconnexion. Les UUID de commandes incertaines sont conservés séparément et relus après recréation ; aucune commande complète avec secret n'est persistée. Une commande perdue avant envoi et absente du serveur après mort du processus reste explicitement incertaine ; son contenu n'est pas reconstruit pour créer une nouvelle activation.
+
+FCM : SDK 25.1.3 et WorkManager 2.11.2 dans remote uniquement, données réduites aux identifiants, relecture authentifiée du résultat et du suivi, permission au choix de la personne, notification stable ouvrant le bon résultat. Projet Firebase absent : transport réel non prouvé. Les propriétés publiques `firebaseAppId`, `firebaseProjectId`, `firebaseApiKey`, `firebaseSenderId` initialisent Firebase uniquement lorsqu'elles sont toutes fournies. Aucune clé de compte de service dans l'APK.
+
+Les tests de parcours demo sont sous `src/androidTestDemo` ; le parcours Supabase local est sous `src/androidTestRemote`. Les tests dépendant du faux service restent sous `src/testDemo`. Le [bilan S3](../validation/s3/bilan.md) sépare contrat, tests réseau contrôlés, PostgreSQL/Auth réels locaux et preuves externes encore absentes.

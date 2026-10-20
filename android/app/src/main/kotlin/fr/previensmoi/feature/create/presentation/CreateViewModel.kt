@@ -67,7 +67,7 @@ class CreateViewModel @Inject constructor(
     fun updateAnswer(answer: String) = updateDraft(state.value.draft.copy(answer = answer), keepClarification = true)
     fun updateMode(mode: FollowMode) = updateDraft(state.value.draft.copy(mode = mode), keepClarification = false)
     private fun updateDraft(draft: RequestDraft, keepClarification: Boolean) {
-        if (!state.value.loaded || state.value.step == CreationStep.Confirming) return
+        if (!state.value.loaded || state.value.step == CreationStep.Confirming || draft == state.value.draft) return
         evaluationEpoch++; evaluationJob?.cancel(); pending = null; clearSavedProposal()
         val next = draft.copy(revision = state.value.draft.revision + 1)
         mutable.update { it.copy(draft = next, proposal = null, partialAccepted = false, error = null,
@@ -151,8 +151,8 @@ class CreateViewModel @Inject constructor(
                     }
                 }
                 val editing = state.value.editingId
-                pending = if (editing == null) Command(ids.next(), Operation.Activate, proposal.id, proposal.version)
-                    else Command(ids.next(), Operation.Replace, editing, expectedWatchVersion, proposal.id, proposal.version)
+                pending = if (editing == null) Command(ids.next(), Operation.Activate, proposal.id, proposal.version, acceptPartial = state.value.partialAccepted)
+                    else Command(ids.next(), Operation.Replace, editing, expectedWatchVersion, proposal.id, proposal.version, state.value.partialAccepted)
             }
             when (val result = watches.execute(checkNotNull(pending))) {
                 is Outcome.Success -> {
@@ -163,7 +163,7 @@ class CreateViewModel @Inject constructor(
                         editingId = null, activatedId = result.value.watchId, storageFailed = storageFailed) }
                 }
                 is Outcome.Error -> {
-                    if (result.reason !in setOf(Failure.Offline, Failure.TemporaryFailure)) pending = null
+                    if (result.reason !in setOf(Failure.Offline, Failure.TemporaryFailure, Failure.OperationPending)) pending = null
                     if (result.reason == Failure.VersionConflict && state.value.editingId != null) {
                         val watch = watches.observeList().first().find { it.id == state.value.editingId }
                         if (watch != null) { expectedWatchVersion = watch.version; saved["editVersion"] = watch.version }
@@ -173,6 +173,7 @@ class CreateViewModel @Inject constructor(
             }
         }
     }
+    fun resumeAfterSignIn() { if (state.value.session != null && state.value.step == CreationStep.Login) mutable.update { it.copy(step = CreationStep.Ready, error = null) } }
     fun consumeActivation() { mutable.update { it.copy(activatedId = null) } }
     fun discard() {
         if (state.value.step == CreationStep.Confirming) return

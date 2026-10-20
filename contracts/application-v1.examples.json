@@ -595,5 +595,53 @@
       "retryAfterSeconds": null,
       "scope": "global"
     }
+  },
+  {
+    "name": "watch_pending_without_baseline",
+    "schema": "Watch",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000002",
+      "version": 1,
+      "plan": {
+        "id": "019a05be-8000-7000-8000-000000000001",
+        "version": 1,
+        "draft": {
+          "text": "Préviens-moi des nouvelles annonces de concerts dans cette salle.",
+          "language": "fr",
+          "mode": "continuous",
+          "revision": 1,
+          "answers": []
+        },
+        "title": "Annonces de concerts",
+        "criteria": [
+          "Nouvelle annonce publiée par la salle"
+        ],
+        "exclusions": [],
+        "coverage": "Annonces publiques de la salle confirmée",
+        "partial": false,
+        "sources": [],
+        "method": "web_search",
+        "intervalHours": 24,
+        "limitations": [
+          "Pas de garantie de disponibilité des billets"
+        ],
+        "limits": {
+          "activePerAccount": 1,
+          "globalAvailable": 2,
+          "previewRemaining": 1,
+          "resetsAt": null
+        },
+        "expiresAt": "2026-10-21T12:00:00Z"
+      },
+      "status": "pending",
+      "health": "not_checked_yet",
+      "lastSuccessAt": null,
+      "lastFailureAt": null,
+      "baselineAt": null,
+      "nextCheckAt": null,
+      "pendingCommandId": null,
+      "remoteState": "starting"
+    }
   }
 ]

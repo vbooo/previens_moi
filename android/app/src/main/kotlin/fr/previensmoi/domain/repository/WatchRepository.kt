@@ -19,6 +19,10 @@ interface FindingRepository {
 interface SessionRepository {
     fun observeSession(): Flow<Session?>
     suspend fun signIn(): Outcome<Session>
+    suspend fun requestCode(email: String): Outcome<Unit> = Outcome.Error(Failure.Unsupported)
+    suspend fun verifyCode(email: String, code: String): Outcome<Session> = Outcome.Error(Failure.Unsupported)
+    suspend fun requestDeletion(): Outcome<Unit> = Outcome.Error(Failure.Unsupported)
+    suspend fun signOut(): Outcome<Unit> = Outcome.Error(Failure.Unsupported)
 }
 interface DraftRepository {
     suspend fun load(): Outcome<RequestDraft>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="demo_banner">Demo · fictional data · no alerts sent</string>
+    <string name="demo_tools">Scenarios</string>
+    <string name="demo_tools_title">Demonstration scenario</string>
+    <string name="simulate_check">Simulate a check</string>
+    <string name="reset_demo">Reset fictional service</string>
+    <string name="demo_normal">Successful flow</string>
+    <string name="demo_clarification">Clarification needed</string>
+    <string name="demo_partial">Limited scope</string>
+    <string name="demo_unsupported">Private access unavailable</string>
+    <string name="demo_no_results">No results</string>
+    <string name="demo_quota">Capacity exhausted</string>
+    <string name="demo_source_failure">Source failure</string>
+    <string name="demo_offline">Connection unavailable</string>
+    <string name="demo_command_failure">Command failure</string>
+    <string name="demo_lost_response">Response lost after success</string>
+    <string name="demo_expired">Expired proposal</string>
+    <string name="demo_conflict">Version conflict</string>
+</resources>

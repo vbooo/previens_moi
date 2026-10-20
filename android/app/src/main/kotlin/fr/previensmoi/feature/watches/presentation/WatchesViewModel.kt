@@ -15,7 +15,7 @@ data class WatchesUiState(
     val watches: List<Watch> = emptyList(), val findings: List<Finding> = emptyList(),
     val refreshing: Boolean = false, val refreshFailed: Boolean = false, val offline: Boolean = false,
     val commandPending: Boolean = false, val commandError: Failure? = null,
-    val deletedId: String? = null,
+    val deletedId: String? = null, val findingError: Failure? = null, val findingRequestId: String? = null,
 )
 
 @HiltViewModel
@@ -25,6 +25,7 @@ class WatchesViewModel @Inject constructor(
     private val mutableState = MutableStateFlow(WatchesUiState())
     val state = mutableState.asStateFlow()
     private var pending: Command? = null
+    private var findingEpoch = 0L
     init {
         viewModelScope.launch { repository.observeList().collect { watches -> mutableState.update { it.copy(watches = watches) } } }
         viewModelScope.launch { findings.observeFindings().collect { results -> mutableState.update { it.copy(findings = results) } } }
@@ -54,12 +55,24 @@ class WatchesViewModel @Inject constructor(
                         mutableState.update { it.copy(deletedId = if (result.value.deleted) result.value.watchId else null) }
                     }
                     is Outcome.Error -> {
-                        if (result.reason !in setOf(Failure.Offline, Failure.TemporaryFailure)) pending = null
+                        if (result.reason !in setOf(Failure.Offline, Failure.TemporaryFailure, Failure.OperationPending)) pending = null
                         mutableState.update { it.copy(commandError = result.reason) }
                         if (result.reason == Failure.VersionConflict) refresh()
                     }
                 }
             } finally { mutableState.update { it.copy(commandPending = false) } }
+        }
+    }
+    fun loadFinding(id: String) {
+        val epoch = ++findingEpoch
+        mutableState.update { it.copy(findingError = null, findingRequestId = id) }
+        viewModelScope.launch {
+            val result = findings.getFinding(id)
+            if (epoch != findingEpoch) return@launch
+            when (result) {
+                is Outcome.Success -> mutableState.update { it.copy(findings = it.findings.filterNot { old -> old.id == id } + result.value) }
+                is Outcome.Error -> mutableState.update { it.copy(findingError = result.reason, findings = it.findings.filterNot { old -> old.id == id }) }
+            }
         }
     }
     fun consumeDeletion() { mutableState.update { it.copy(deletedId = null) } }

@@ -35,7 +35,7 @@ import kotlinx.serialization.json.JsonClassDiscriminator
 }
 @Serializable data class WatchDto(
     val id: String, val version: Long, val plan: ProposalDto, val status: String, val health: String,
-    val lastSuccessAt: String?, val lastFailureAt: String?, val baselineAt: String,
+    val lastSuccessAt: String?, val lastFailureAt: String?, val baselineAt: String?,
     val nextCheckAt: String?, val pendingCommandId: String?, val remoteState: String,
 )
 @Serializable @JsonClassDiscriminator("precision") sealed interface TemporalEvidenceDto {

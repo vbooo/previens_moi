@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">Préviens-moi · Démo</string>
-    <string name="demo_banner">Démo · données fictives · aucune alerte envoyée</string>
     <string name="title">Tes suivis</string>
     <string name="back">Retour</string>
     <string name="app_title">Préviens-moi</string>
@@ -70,22 +69,6 @@
     <string name="event_at">Événement : %1$s</string>
     <string name="unknown_date">date inconnue</string>
     <string name="stale_content">Actualisation impossible. Le contenu affiché peut être ancien. Réessaie.</string>
-    <string name="demo_tools">Scénarios</string>
-    <string name="demo_tools_title">Scénario de démonstration</string>
-    <string name="simulate_check">Simuler une vérification</string>
-    <string name="reset_demo">Réinitialiser le service fictif</string>
-    <string name="demo_normal">Parcours réussi</string>
-    <string name="demo_clarification">Précision nécessaire</string>
-    <string name="demo_partial">Portée réduite</string>
-    <string name="demo_unsupported">Accès privé indisponible</string>
-    <string name="demo_no_results">Aucun résultat</string>
-    <string name="demo_quota">Capacité épuisée</string>
-    <string name="demo_source_failure">Source en panne</string>
-    <string name="demo_offline">Connexion indisponible</string>
-    <string name="demo_command_failure">Commande échouée</string>
-    <string name="demo_lost_response">Réponse perdue après succès</string>
-    <string name="demo_expired">Proposition expirée</string>
-    <string name="demo_conflict">Conflit de version</string>
     <string name="error_offline">Connexion indisponible dans ce scénario. Choisis un autre scénario puis réessaie.</string>
     <string name="error_temporary">Réponse non confirmée. Réessaie : la même commande sera réutilisée pour éviter les doublons.</string>
     <string name="error_session">Un compte de démo est nécessaire pour confirmer. Reviens à la proposition.</string>
@@ -96,4 +79,25 @@
     <string name="error_quota">La capacité de démonstration est atteinte. Aucun nouveau suivi n’a été activé. Libère une place ou change le scénario.</string>
     <string name="error_unsupported">Cette action n’est pas disponible dans cet état. Reviens au détail du suivi.</string>
     <string name="error_input">Écris une demande avant de continuer.</string>
+    <string name="status_pending">En préparation</string>
+    <string name="operation_pending">Opération encore en attente. Actualise pour retrouver son état ; aucune nouvelle activation n’est lancée.</string>
+    <string name="remote_terms">Contrôle toutes les %1$d h · limite du compte : %2$d.</string>
+    <string name="unqualified_body">Ce service de test ne surveille pas encore tes demandes. Aucune surveillance n’a été activée.</string>
+    <string name="account_title">Compte</string>
+    <string name="account_connected">Connexion par code confirmée.</string>
+    <string name="sign_out">Se déconnecter</string>
+    <string name="email_purpose">Ton adresse sert à recevoir le code de connexion. Les alertes utiliseront les notifications du téléphone.</string>
+    <string name="email_label">Adresse e-mail</string>
+    <string name="send_code">Recevoir un code</string>
+    <string name="resend_code">Renvoyer un code</string>
+    <string name="code_sent">Si l’adresse peut être utilisée, un code a été envoyé. Il expire après 10 minutes.</string>
+    <string name="code_label">Code à six chiffres</string>
+    <string name="verify_code">Confirmer le code</string>
+    <string name="remote_stopping">Suivi suspendu ; arrêt du service distant en cours. Les coûts distants ne sont pas encore confirmés arrêtés.</string>
+    <string name="remote_unknown">État du service distant inconnu.</string>
+<string name="push_status_info">Les résultats restent accessibles si les notifications sont désactivées.</string>
+<string name="erase_account">Effacer mon compte</string>
+<string name="erase_account_info">Cette action ferme l’accès et demande l’effacement ainsi que l’arrêt distant. Une connexion par code datant de moins de cinq minutes est nécessaire.</string>
+<string name="erasure_pending">Accès au compte fermé. Effacement et arrêt distant en cours ; leur achèvement n’est pas encore confirmé.</string>
+<string name="remote_unavailable_title">Surveillance indisponible pour l’instant</string>
 </resources>

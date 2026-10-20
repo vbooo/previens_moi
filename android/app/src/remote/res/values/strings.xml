@@ -1,0 +1,6 @@
+<resources>
+    <string name="remote_banner">Connected test service · real monitoring not qualified</string>
+<string name="notification_channel">Verified findings</string>
+<string name="notification_permission">Enable notifications</string>
+<string name="app_name">Préviens-moi · Test</string>
+</resources>
