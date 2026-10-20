@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-20",
+  "source_revision": "c4c15ac5959fb493ccd9aed383e8494d62da6f61",
+  "apk": "android/app/build/outputs/apk/demo/debug/app-demo-debug.apk",
+  "apk_sha256": "15f15f104585da9cc1f80e3d1dc8f629497daa172146cb10a73c6ca39df277ea",
+  "build": "passed",
+  "unit_tests": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  "instrumentation": {
+    "device": "medium_phone API 36 ARM64",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0,
+    "version_update_hints": 6
+  },
+  "domain_boundaries": "passed",
+  "merged_demo_internet_permission": false,
+  "apk_internet_permission": false,
+  "local_launch": "passed",
+  "remote_ci": "not_run",
+  "paid_provider_requests_this_sprint": 0,
+  "limitations": [
+    "IDE window inspection timed out; project sync in IDE not verified",
+    "API 23 and API 37 runtime not yet tested",
+    "Full S2 contracts, process death, accessibility and real backend not tested"
+  ]
+}
