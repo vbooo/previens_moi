@@ -271,3 +271,74 @@ Le code utilise un port `WatchRepository` réduit à lecture/rafraîchissement, 
 Deux tests unitaires et un test sur appareil passent ; Lint : zéro erreur, zéro avertissement, six suggestions de mise à jour conservées comme informations. Ces suggestions ne bloquent pas le build afin qu’une publication amont ne change pas le verdict d’un code inchangé. Défauts d’icône et de sauvegarde réellement corrigés, aucun baseline ne les masque. APK sans permission INTERNET vérifié, règles de sauvegarde explicites, variante demo release désactivée.
 
 [Guide de reproduction](../android/README.md) · [Bilan et preuve S1](../validation/android-s1/bilan.md). La CI distante, l’authentification, la persistance durable, les commandes métier, le push et le moteur réel ne sont pas validés par ce sprint.
+
+## Contrat d’implémentation S2-01 — préparation du 20 octobre 2026
+
+**Statut : spécification prête à implémenter, aucun test S2 déclaré exécuté.** Précisions techniques dans la délégation existante ; aucune nouvelle promesse produit. Références : contrat v0 ci-dessus, documents 03/04/05, tickets S2 du document 10. Cette section précise le faux service nécessaire aux parcours ; elle ne définit ni un moteur de recherche ni le futur protocole HTTP.
+
+### Frontière et données de test
+
+Le vrai code Android (domain, ViewModels, navigation et écrans) consomme des ports Kotlin. Les adaptateurs `src/demo` simulent les réponses côté service. Aucun adaptateur de fournisseur, parcours de connexion réel ou règle d’interprétation approximative du texte n’est ajouté en S2. Les fixtures sont choisies explicitement dans un contrôle marqué « Scénario de démonstration ». Ce contrôle ne devient pas un catalogue obligatoire du produit.
+
+Utiliser un état en mémoire partagé par les repositories demo pour propositions, session, suivis, résultats et reçus de commande. L’état partagé évite plusieurs vérités incompatibles entre liste et détail. Exposer des snapshots immuables ; un seul mécanisme de sérialisation des mutations (par exemple Mutex) garantit leur atomicité. Ni SQLite ni backend local supplémentaire pour simuler ce contrat.
+
+Injecter une horloge et un générateur d’identifiants en Kotlin, avec doubles déterministes dans les tests. Les échecs sont pilotés par des scénarios et des points de suspension contrôlables, jamais par des tirages aléatoires ou un `sleep`. L’annulation reste une annulation. Un problème inattendu n’est pas transformé silencieusement en succès ou en refus métier.
+
+Les fixtures portent un sujet synthétique d’événement ponctuel et un sujet synthétique de suivi général. Elles réutilisent la même structure et ne prouvent aucune couverture de catégorie. Les sources fictives utilisent un domaine réservé (`example.invalid`) et ne sont pas ouvertes comme preuves réelles. Prix, quotas et cadence de fixture sont des paramètres visibles de démonstration ; ils ne deviennent pas des valeurs d’offre publique. Le contrat expose la limite reçue au lieu de la recopier en constante dans chaque écran.
+
+### Invariants des opérations
+
+| Opération / situation | Comportement exigé de l’adaptateur demo | Effet attendu côté Android |
+| --- | --- | --- |
+| Évaluer un brouillon | Associer la réponse à la révision du brouillon ; fournir Ready, NeedsClarification, Unsupported ou échec selon le scénario explicitement choisi. | Une réponse tardive d’une ancienne révision est ignorée ; aucune activation automatique. |
+| Clarifier / corriger | Conserver les réponses pertinentes ; une correction invalide la proposition précédente côté présentation. Le service vérifie la version attendue. | Afficher la nouvelle proposition avant confirmation ; ne pas réutiliser un ancien accord pour une nouvelle portée. |
+| Proposition expirée | `expiresAt <= now` est expiré. Une nouvelle activation échoue avec ProposalExpired, sans suivi créé. | Conserver le brouillon et proposer une nouvelle analyse. |
+| Activer sans session | SessionRequired, sans mutation. Le scénario de connexion crée une identité synthétique, sans adresse personnelle demandée. | Prévisualisation toujours accessible ; connexion demo au moment de confirmer, proposition conservée puis revalidée. |
+| Activer avec session | Vérifier proposition/version/expiration et capacité dans une même mutation atomique, puis créer le suivi et son reçu. Une même proposition/version déjà activée ne crée pas un second suivi. | Actif seulement après reçu confirmé ; afficher les critères de cette version. |
+| Réessayer une commande réussie | Identifiant de commande et contenu immuable conservés. Dans la même session autorisée, rejouer la même commande retourne son reçu sans nouvel effet, même si la proposition a expiré entre-temps. | La perte de réponse ne crée pas un doublon. Réutiliser le même identifiant, pas un nouvel UUID à chaque tentative. |
+| Réutiliser un identifiant avec un autre contenu | Refuser sans mutation avec conflit de commande, distinct d’un conflit de version de ressource. Ajouter ce code au contrat technique. | Ne pas réessayer aveuglément ; relire l’état et proposer une nouvelle action explicite. |
+| Mauvaise version de suivi | VersionConflict, sans mutation ni incrément. Le service ne force jamais la version demandée sur la version courante. | Recharger, montrer l’état courant, laisser confirmer à nouveau. |
+| Pause / reprise | Active → Paused ; Paused → Active seulement après confirmation et vérification de capacité. Incrémenter la version seulement lors d’une mutation. Une répétition de pause déjà effective est sans effet supplémentaire. | Garder l’ancien état pendant l’attente ou l’échec. La reprise montre un nouvel état initial, sans rattrapage automatique d’alertes. |
+| Modification du plan | Remplacer la version de plan uniquement après nouvelle proposition confirmée. Les résultats antérieurs gardent leur référence de version. | Ne pas présenter un ancien résultat comme preuve des nouveaux critères. |
+| Suppression | Supprimer l’accès normal au suivi et à ses résultats dans la même mutation ; garder un reçu technique sans contenu pour le rejeu dans la session demo. | Retirer le suivi après confirmation ; un lien restauré vers le suivi supprimé affiche l’indisponibilité. |
+| Quota / capacité indisponible | Échec typé avec portée, limite et reprise connue ou inconnue ; aucune réservation partielle ni modification du contenu confirmé. | Distinguer limite d’usage et impossibilité technique de répondre à la demande. |
+| Source dégradée | Garder le statut de contrôle et la dernière réussite ; actualiser séparément santé et dernier échec. | Ne pas afficher « aucune nouveauté » en conclusion d’une panne. |
+| Lecture vide / lecture en échec | Succès avec liste vide distinct d’un échec typé. Une donnée précédente conservée porte un état de fraîcheur explicite. | État vide, panne et ancien contenu restent trois situations différentes. |
+
+Le rejeu d’un reçu suppose toujours une session autorisée ; le cache d’idempotence n’est pas un moyen de contourner l’accès à un autre compte. Les tests d’isolation sur un vrai serveur appartiennent à S3 : le faux service ne prouve pas une sécurité de production. Les contraintes financières atomiques sont exercées avec une capacité de fixture injectée ; le calcul de la capacité commerciale reste au document 07/S3-01.
+
+### États et restauration à brancher aux tickets suivants
+
+- `CreateViewModel` possède le brouillon, sa révision et l’état du parcours ; aucune deuxième copie modifiable dans les composables. Les composants reçoivent état et callbacks.
+- Une navigation vers la confirmation porte un identifiant/version, pas une proposition complète figée dans la route. Une réponse du service prévaut sur la copie de présentation.
+- Une commande en attente porte son identifiant et ses paramètres ; double clic ignoré. Un abandon de l’attente ne prouve pas l’annulation de la mutation côté service.
+- DataStore conserve le brouillon et les réponses, pas une session ou un état de surveillance présenté comme confirmé. Effacer le brouillon après activation confirmée ou abandon explicitement demandé. Aucune synchronisation distante du brouillon.
+- Après recréation d’Activity, conserver les petits états de parcours. Après perte du processus demo, les identifiants absents de la mémoire du faux service conduisent à « Démonstration réinitialisée » ; le brouillon local peut être repris. Aucun rejeu automatique d’une activation au simple réaffichage.
+- Notification push, permission système et lien reçu de l’extérieur restent à S3-05. S2 affiche honnêtement que les notifications ne sont pas disponibles en démonstration.
+
+### Cas d’acceptation à rendre exécutables
+
+Ces cas sont des attentes, pas des résultats. Leur implémentation sera reliée aux noms des tests dans le bilan de ticket. Les cas de port seront regroupés dans une suite réutilisable : adaptateur demo maintenant, serveur/adaptateur remote lorsque S3 le permettra.
+
+| ID / ticket | Étant donné / action | Résultat vérifiable | Exigence reliée |
+| --- | --- | --- | --- |
+| S2-C01 / S2-01 | Proposition valide, puis horloge exactement à son expiration ; activation | ProposalExpired ; aucun suivi ni reçu de succès ajouté | ARCH-A07 |
+| S2-C02 / S2-01 | Mutation d’activation réussie mais réponse perdue ; rejeu du même identifiant/contenu | Même suivi et même reçu, un seul effet ; testé également après expiration de la proposition | ARCH-A02 |
+| S2-C03 / S2-01 | Même identifiant de commande avec paramètres différents | Conflit explicite ; état inchangé | ARCH-R06 |
+| S2-C04 / S2-01 | Deux commandes concurrentes pour deux propositions avec une capacité fixture restante de 1 | Une seule activation réussit ; l’autre retourne QuotaExceeded ; compte final égal à 1 | REV-A05, COST-A04 |
+| S2-C05 / S2-01 | Nouvelle activation sans session puis avec version périmée | SessionRequired puis VersionConflict selon le cas ; aucune mutation | ARCH-R04, ARCH-R06 |
+| S2-C06 / S2-01 | Pause/modification échouée ou en conflit de version | Statut et version précédents conservés | MVP-A12, ARCH-A08 |
+| S2-C07 / S2-01 | Dernière réussite connue, puis panne de source, puis réussite sans nouveauté | Panne : réussite inchangée ; succès suivant : réussite actualisée, aucun résultat inventé | MVP-A08, REV-A04 |
+| S2-C08 / S2-01 | Suppression confirmée, commande rejouée puis relecture suivi/résultat | Même confirmation de suppression ; relectures indisponibles ; pas de contenu révélé par le reçu | ARCH-R09 |
+| S2-C09 / S2-02 | Réponse lente pour brouillon A ; correction en B ; réponse A arrive ensuite | Seule B peut produire la proposition confirmable ; aucun écran de succès tardif pour A | UX-D05, ARCH-R08 |
+| S2-C10 / S2-02–03 | Demande de suivi général dans le scénario clarification, puis portée partielle | Clarification accessible ; critères et réduction visibles ; connexion demo seulement après confirmation | MVP-A02, MVP-A07, UX-D02 |
+| S2-C11 / S2-03–05 | Activation sans résultat initial, puis reprise de liste/détail | Suivi visible sans faux résultat ; absence initiale de résultat ne devient pas un refus | REV-A01, REV-A06 |
+| S2-C12 / S2-04–05 | Pause/reprise et remplacement de critères avec résultat antérieur | Pas de rattrapage automatique ; ancienne version du résultat conservée et expliquée | AL-D09, ARCH-R07 |
+| S2-C13 / S2-05 | Résultat dont la date de publication est inconnue | Date inconnue affichée ; observation et événement restent distincts ; preuve fictive signalée | REV-A03, ARCH-R07 |
+| S2-C14 / S2-06 | Retour, recréation puis mort du processus demo pendant un parcours | Aucun doublon de commande ; brouillon récupérable ; mémoire serveur perdue expliquée | UX-D05, ARCH-A02 |
+
+### Prêt à démarrer / terminé
+
+**Prêt :** exigences produit référencées, contrats et invariants ci-dessus, cas attendus écrits, dépendances S1 passantes, aucun accès externe ni nouveau budget nécessaire. **Terminé S2-01 :** modèles/ports/adaptateurs codés, cas C01–C08 exécutés, tests S1 toujours passants, absence de réseau conservée, limites et preuve enregistrées. Une description en Markdown ne remplace pas ces tests.
+
+Le premier parcours visible recherché en S2 reste saisie → proposition → connexion demo → suivi confirmé. Les autres états sont ajoutés selon les tickets, sans multiplier les écrans ou bâtir un moteur fictif généraliste. Le bilan de sprint montrera ce parcours et expliquera le rôle de chaque composant pour l’apprentissage Android.

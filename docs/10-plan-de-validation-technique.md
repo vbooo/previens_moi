@@ -124,6 +124,10 @@ Objectif : Fabien peut ouvrir le projet dans Android Studio, lancer l'applicatio
 
 Objectif : tester le produit Android et apprendre ses composants avant de payer des recherches. Les fixtures ne prouvent ni l'intelligence ni la fiabilité du futur moteur. Réseau métier : zéro.
 
+**Préparation vérifiée le 20 octobre :** le [document 08](08-architecture-et-donnees.md#contrat-dimplémentation-s2-01--préparation-du-20-octobre-2026) précise maintenant mutations, rejeu, concurrence, expiration, restauration et cas S2-C01 à C14. S2-01 est prêt à implémenter ; aucun test S2 exécuté à ce stade. Les comportements visibles restent dans le document 04. Pas de nouvelle stack, dépense ni choix produit requis pour démarrer. La connexion IDE non vérifiée de S1 reste un contrôle de prise en main à faire, sans bloquer les builds CLI déjà éprouvés.
+
+Ordre par ticket : préciser l’attendu → écrire les tests pertinents → implémenter → contrôler le comportement → relire la modification → enregistrer le bilan. Une ambiguïté technique est résolue et documentée ; une modification de la promesse produit est soumise à Fabien avant code. Le fonctionnement simulé de S2 ne sera pas présenté comme une surveillance Web réelle.
+
 | Ticket | Travail / éléments concernés | Dépendance | Critère de fin vérifiable |
 | --- | --- | --- | --- |
 | S2-01 | Modèles, erreurs et repository demo conformes au contrat v0 ; fixtures et scénarios de test | S1 | Répétition de commande, expiration, conflit, quota et source dégradée testables sans réseau ni temporisation réelle. |
