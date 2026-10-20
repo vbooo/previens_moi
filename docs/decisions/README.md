@@ -4,7 +4,7 @@ Conserver ici les décisions structurantes une fois prises. Les hypothèses et q
 
 Chaque décision précise la date, le statut, le problème, les options étudiées, le choix, ses raisons, les conséquences et les conditions d’une éventuelle révision. Une décision remplacée reste consultable avec un lien vers celle qui la remplace.
 
-Les décisions validées couvrent le produit, l'architecture et la qualité de publication. Les fournisseurs concrets, les quotas et les seuils chiffrés de fonctionnement restent à choisir après essais.
+Les décisions validées couvrent le produit, l'architecture et la qualité de publication. Les fournisseurs de surveillance, les quotas et les seuils de fonctionnement restent à qualifier après essais. Le socle du service est précisé en ADR 0011, sans adoption commerciale ou déploiement implicite.
 
 ## Décisions enregistrées
 
@@ -29,3 +29,5 @@ Les décisions validées couvrent le produit, l'architecture et la qualité de p
 - [Plan de validation des 3 et 12 octobre 2026](0010-plan-de-validation-technique.md) : audit comparatif de Yutori, Exa et Firecrawl, banc d'essai transversal sans sélection de pays ou de catégories, critères avant essais, puis tranche Android/service. Les exemples arbitraires et l'étude préalable des besoins français ont été retirés.
 
 Révision du 12 octobre : document 10 comme plan courant, audit des services complets avant nouveau code moteur, playbook par lot et conservation des preuves historiques. Aucun fournisseur de production adopté.
+
+- [Service réel S3 du 20 octobre 2026](0011-service-reel-s3.md) : Supabase pour API/base/identité, FCM pour push, code e-mail géré ; choix d’implémentation locale, ouverture cloud et facture complète encore conditionnelles.

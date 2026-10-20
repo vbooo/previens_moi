@@ -172,3 +172,8 @@ Avant la phase 1, une fiche d'essai indique fournisseur et tarifs revérifiés, 
 | COST-D04 | Bloquer d'abord les nouvelles activations ; si l'existant doit s'arrêter, afficher la suspension et requalifier avant reprise. | Comportement visible et testable, sans fausse impression de fraîcheur. |
 
 Les montants d'exploitation, quotas, cadence et choix de fournisseurs restent ouverts. La validation de ce document n'autorise ni achat, ni appel facturable, ni offre payante.
+
+
+## Mise à jour S3-01 — 20 octobre 2026
+
+La [spécification du service](11-service-et-contrat-s3.md#budget-de-préparation-et-ouverture-du-pilote) chiffre les postes connus et distingue ceux qui restent inconnus. Supabase gratuit et FCM permettent de préparer l’intégration sans abonnement. Domaine d’expédition e-mail, sauvegarde indépendante, analyse qualifiée et consommation réelle restent à préciser avant de conclure sur une facture complète. [Scénarios reproductibles](../validation/s3-01/cost-scenarios.json). Aucune dépense fournisseur nouvelle, aucune réactivation de monitor ni hausse du plafond historique.

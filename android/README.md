@@ -75,4 +75,13 @@ Navigation 3 1.2.0 exige API 24 ; la version stable 1.1.0 conserve notre minimum
 
 Lint traite les avertissements comme erreurs ; six suggestions de mises à jour restent informatives pour préserver la matrice compatible. Le manifeste fusionné et l’APK doivent rester sans permission INTERNET. Aucun secret dans Android. La CI GitHub Actions compile, teste le domaine/ViewModels et exécute Lint et le contrôle de frontières ; ses tests sur appareil restent locaux à ce stade. **Aucun dépôt distant ni exécution de CI distante n’est prétendu.**
 
-La prochaine étape est S3-01 : choix et spécification du service réel, identité, API et coûts, avant toute intégration payante. Surveillance réelle, authentification, accès entre comptes, push, performance, revue complète TalkBack et publication ne sont pas validés par cette démo.
+S3-01 a démarré : choix et spécification du service réel, identité, API et coûts ; voir la mise à jour ci-dessous. Surveillance réelle, authentification, accès entre comptes, push, performance, revue complète TalkBack et publication ne sont pas validés par cette démo.
+
+
+## Début de S3 : réseau préparé, démo inchangée
+
+`data/remote/ApplicationApi.kt` décrit les routes Retrofit, `WireModels.kt` les DTO sérialisables et `ApiClient.kt` le transport. Ils ne sont pas encore assemblés aux repositories de l’application. La démo conserve son service simulé et son absence de permission Internet ; cette permission est retirée explicitement lorsqu’une bibliothèque la déclare.
+
+Les tests `ApplicationApiTest` utilisent un serveur HTTP local : ils vérifient réponse en attente, réessai identique, erreurs/quota, absence de fuite des secrets sur redirection, lecture vide, champs inconnus, annulation et dates sans précision inventée. Les ressources JSON communes viennent de `contracts/` dans les tests uniquement. Versions résolues : Retrofit/converter 3.0.0, OkHttp/MockWebServer 5.5.0, kotlinx.serialization JSON 1.9.0.
+
+[Spécification S3](../docs/11-service-et-contrat-s3.md) · [Bilan de démarrage](../validation/s3-01/bilan.md). Le serveur réel, la session persistée et les tests d’isolation sur PostgreSQL restent à implémenter. Ces tests HTTP ne prouvent pas le fonctionnement d’un backend hébergé.

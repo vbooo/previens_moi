@@ -1,0 +1,2477 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Préviens-moi — API applicative",
+    "version": "1.0.0-draft.1",
+    "description": "Contrat de développement S3-01, non déployé. Auth OTP gérée par Supabase, hors contrat métier. Champs supplémentaires des réponses à ignorer côté client ; champs supplémentaires des requêtes à rejeter. La stricte validation des fixtures ci-dessous porte sur cette version précise."
+  },
+  "servers": [
+    {
+      "url": "https://project-ref.supabase.invalid/functions/v1",
+      "description": "Adresse réservée, aucun projet distant créé."
+    }
+  ],
+  "paths": {
+    "/public/v1/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "getHealth",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/v1/preview-sessions": {
+      "post": {
+        "operationId": "createPreviewSession",
+        "summary": "createPreviewSession",
+        "security": [],
+        "responses": {
+          "201": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewSession"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/v1/evaluations": {
+      "post": {
+        "operationId": "evaluateDraft",
+        "summary": "evaluateDraft",
+        "security": [
+          {
+            "PreviewToken": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/v1/evaluations/{id}": {
+      "get": {
+        "operationId": "getEvaluation",
+        "summary": "getEvaluation",
+        "security": [
+          {
+            "PreviewToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/public/v1/proposals/{id}": {
+      "get": {
+        "operationId": "getProposal",
+        "summary": "getProposal",
+        "security": [
+          {
+            "PreviewToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/commands": {
+      "post": {
+        "operationId": "submitCommand",
+        "summary": "submitCommand",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Commande déjà terminée ou mutation locale terminée ; le reçu porte l’état distant séparément.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandReceipt"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Command"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/commands/{id}": {
+      "get": {
+        "operationId": "getCommand",
+        "summary": "getCommand",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommandReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/watches": {
+      "get": {
+        "operationId": "listWatches",
+        "summary": "listWatches",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchPage"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/watches/{id}": {
+      "get": {
+        "operationId": "getWatch",
+        "summary": "getWatch",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Watch"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/watches/{id}/findings": {
+      "get": {
+        "operationId": "listFindings",
+        "summary": "listFindings",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindingPage"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/findings/{id}": {
+      "get": {
+        "operationId": "getFinding",
+        "summary": "getFinding",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Finding"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/account": {
+      "get": {
+        "operationId": "getAccount",
+        "summary": "getAccount",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/deletion": {
+      "post": {
+        "operationId": "deleteAccount",
+        "summary": "deleteAccount",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeletionReceipt"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeletionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/devices/{id}": {
+      "put": {
+        "operationId": "registerDevice",
+        "summary": "registerDevice",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Association confirmée ou retrait idempotent ; aucun corps."
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceRegistration"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "removeDevice",
+        "summary": "removeDevice",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Association confirmée ou retrait idempotent ; aucun corps."
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserJWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT utilisateur Supabase valide, compte non supprimé ; jamais une clé de service."
+      },
+      "PreviewToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Preview-Token",
+        "description": "Secret de session de prévisualisation, pas une identité utilisateur."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "invalid_input",
+              "session_required",
+              "access_denied",
+              "not_found",
+              "proposal_expired",
+              "version_conflict",
+              "command_conflict",
+              "command_expired",
+              "quota_exceeded",
+              "temporary_failure",
+              "unsupported_client"
+            ]
+          },
+          "requestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "retryAfterSeconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "account",
+                  "global",
+                  "provider",
+                  "preview",
+                  "email"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "requestId",
+          "retryAfterSeconds",
+          "scope"
+        ]
+      },
+      "Answer": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "questionId",
+          "value"
+        ]
+      },
+      "Draft": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "fr",
+              "en"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "once",
+              "continuous"
+            ]
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Answer"
+            },
+            "minItems": 0,
+            "maxItems": 10
+          }
+        },
+        "required": [
+          "text",
+          "language",
+          "mode",
+          "revision",
+          "answers"
+        ]
+      },
+      "Question": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            "minItems": 0,
+            "maxItems": 10
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "options",
+          "required"
+        ]
+      },
+      "TemporalEvidence": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "precision": {
+                "const": "date"
+              },
+              "value": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            "required": [
+              "precision",
+              "value"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "precision": {
+                "const": "instant"
+              },
+              "value": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              }
+            },
+            "required": [
+              "precision",
+              "value"
+            ]
+          }
+        ]
+      },
+      "Limits": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "activePerAccount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "globalAvailable": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "previewRemaining": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "resetsAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "activePerAccount",
+          "globalAvailable",
+          "previewRemaining",
+          "resetsAt"
+        ]
+      },
+      "Source": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://",
+            "maxLength": 2048
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          }
+        },
+        "required": [
+          "url",
+          "label"
+        ]
+      },
+      "Proposal": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "draft": {
+            "$ref": "#/components/schemas/Draft"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "criteria": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "minItems": 1,
+            "maxItems": 20
+          },
+          "exclusions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "coverage": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "partial": {
+            "type": "boolean"
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "web_search",
+              "known_page",
+              "public_feed",
+              "public_api"
+            ]
+          },
+          "intervalHours": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8760
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "minItems": 0,
+            "maxItems": 20
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "draft",
+          "title",
+          "criteria",
+          "exclusions",
+          "coverage",
+          "partial",
+          "sources",
+          "method",
+          "intervalHours",
+          "limitations",
+          "limits",
+          "expiresAt"
+        ]
+      },
+      "PreviewSession": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 43,
+            "maxLength": 128,
+            "description": "Secret opaque, jamais dans URL ou logs ; haché côté serveur."
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          }
+        },
+        "required": [
+          "token",
+          "expiresAt"
+        ]
+      },
+      "EvaluationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "description": "UUIDv7. Âge maximum 14 jours, avance horloge maximum 5 minutes ; contrôles serveur, jamais déduits de la seule validation JSON."
+          },
+          "draft": {
+            "$ref": "#/components/schemas/Draft"
+          },
+          "previousEvaluationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "draft",
+          "previousEvaluationId"
+        ]
+      },
+      "Evaluation": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "draftRevision": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "status": {
+                "const": "pending"
+              }
+            },
+            "required": [
+              "id",
+              "draftRevision",
+              "updatedAt",
+              "status"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "draftRevision": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "status": {
+                "const": "ready"
+              },
+              "proposal": {
+                "$ref": "#/components/schemas/Proposal"
+              }
+            },
+            "required": [
+              "id",
+              "draftRevision",
+              "updatedAt",
+              "status",
+              "proposal"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "draftRevision": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "status": {
+                "const": "clarification"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Question"
+                },
+                "minItems": 1,
+                "maxItems": 10
+              }
+            },
+            "required": [
+              "id",
+              "draftRevision",
+              "updatedAt",
+              "status",
+              "questions"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "draftRevision": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "status": {
+                "const": "unsupported"
+              },
+              "reason": {
+                "type": "string",
+                "enum": [
+                  "private_data",
+                  "unqualified_method",
+                  "unverifiable_condition",
+                  "unsupported_delay"
+                ]
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "id",
+              "draftRevision",
+              "updatedAt",
+              "status",
+              "reason",
+              "explanation"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "draftRevision": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2147483647
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "status": {
+                "const": "failed"
+              },
+              "error": {
+                "$ref": "#/components/schemas/Error"
+              }
+            },
+            "required": [
+              "id",
+              "draftRevision",
+              "updatedAt",
+              "status",
+              "error"
+            ]
+          }
+        ]
+      },
+      "Watch": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "plan": {
+            "$ref": "#/components/schemas/Proposal"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "paused",
+              "completed",
+              "suspended_by_capacity"
+            ]
+          },
+          "health": {
+            "type": "string",
+            "enum": [
+              "not_checked_yet",
+              "healthy",
+              "degraded"
+            ]
+          },
+          "lastSuccessAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lastFailureAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "baselineAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          },
+          "nextCheckAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pendingCommandId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "remoteState": {
+            "type": "string",
+            "enum": [
+              "running",
+              "stopped",
+              "starting",
+              "stopping",
+              "unknown"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "plan",
+          "status",
+          "health",
+          "lastSuccessAt",
+          "lastFailureAt",
+          "baselineAt",
+          "nextCheckAt",
+          "pendingCommandId",
+          "remoteState"
+        ]
+      },
+      "Evidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://",
+            "maxLength": 2048
+          },
+          "quote": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          },
+          "publication": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TemporalEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "url",
+          "quote",
+          "observedAt",
+          "publication"
+        ]
+      },
+      "Finding": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "watchId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "planId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "planVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "fact": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "criteriaSnapshot": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "minItems": 1,
+            "maxItems": 20
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Evidence"
+            },
+            "minItems": 1,
+            "maxItems": 10
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          },
+          "event": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TemporalEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "noveltyBasis": {
+            "type": "string",
+            "enum": [
+              "verified_publication",
+              "baseline_change"
+            ]
+          },
+          "correctsFindingId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "watchId",
+          "planId",
+          "planVersion",
+          "title",
+          "fact",
+          "reason",
+          "criteriaSnapshot",
+          "evidence",
+          "observedAt",
+          "event",
+          "noveltyBasis",
+          "correctsFindingId"
+        ]
+      },
+      "Command": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "description": "UUIDv7. Âge maximum 14 jours, avance horloge maximum 5 minutes ; contrôles serveur, jamais déduits de la seule validation JSON."
+              },
+              "operation": {
+                "const": "activate"
+              },
+              "proposalId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "proposalVersion": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "proposalToken": {
+                "type": "string",
+                "minLength": 43,
+                "maxLength": 128
+              },
+              "acceptPartial": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "operation",
+              "proposalId",
+              "proposalVersion",
+              "proposalToken",
+              "acceptPartial"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "description": "UUIDv7. Âge maximum 14 jours, avance horloge maximum 5 minutes ; contrôles serveur, jamais déduits de la seule validation JSON."
+              },
+              "operation": {
+                "const": "replace"
+              },
+              "watchId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "proposalId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "proposalVersion": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "proposalToken": {
+                "type": "string",
+                "minLength": 43,
+                "maxLength": 128
+              },
+              "acceptPartial": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "id",
+              "operation",
+              "watchId",
+              "expectedVersion",
+              "proposalId",
+              "proposalVersion",
+              "proposalToken",
+              "acceptPartial"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                "description": "UUIDv7. Âge maximum 14 jours, avance horloge maximum 5 minutes ; contrôles serveur, jamais déduits de la seule validation JSON."
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "pause",
+                  "resume",
+                  "delete"
+                ]
+              },
+              "watchId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedVersion": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              }
+            },
+            "required": [
+              "id",
+              "operation",
+              "watchId",
+              "expectedVersion"
+            ]
+          }
+        ]
+      },
+      "CommandReceipt": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "remoteState": {
+                "type": "string",
+                "enum": [
+                  "running",
+                  "stopped",
+                  "starting",
+                  "stopping",
+                  "unknown"
+                ]
+              },
+              "state": {
+                "const": "pending"
+              },
+              "watchId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "updatedAt",
+              "remoteState",
+              "state",
+              "watchId"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "remoteState": {
+                "type": "string",
+                "enum": [
+                  "running",
+                  "stopped",
+                  "starting",
+                  "stopping",
+                  "unknown"
+                ]
+              },
+              "state": {
+                "const": "succeeded"
+              },
+              "watchId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "watchVersion": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2147483647
+              },
+              "deleted": {
+                "const": false
+              }
+            },
+            "required": [
+              "id",
+              "updatedAt",
+              "remoteState",
+              "state",
+              "watchId",
+              "watchVersion",
+              "deleted"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "remoteState": {
+                "type": "string",
+                "enum": [
+                  "running",
+                  "stopped",
+                  "starting",
+                  "stopping",
+                  "unknown"
+                ]
+              },
+              "state": {
+                "const": "succeeded"
+              },
+              "watchId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "watchVersion": {
+                "type": "null"
+              },
+              "deleted": {
+                "const": true
+              }
+            },
+            "required": [
+              "id",
+              "updatedAt",
+              "remoteState",
+              "state",
+              "watchId",
+              "watchVersion",
+              "deleted"
+            ]
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$",
+                "description": "Instant UTC RFC3339, suffixe Z."
+              },
+              "remoteState": {
+                "type": "string",
+                "enum": [
+                  "running",
+                  "stopped",
+                  "starting",
+                  "stopping",
+                  "unknown"
+                ]
+              },
+              "state": {
+                "const": "failed"
+              },
+              "watchId": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "error": {
+                "$ref": "#/components/schemas/Error"
+              }
+            },
+            "required": [
+              "id",
+              "updatedAt",
+              "remoteState",
+              "state",
+              "watchId",
+              "error"
+            ]
+          }
+        ]
+      },
+      "WatchPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Watch"
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "serverTime": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "serverTime"
+        ]
+      },
+      "FindingPage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Finding"
+            },
+            "minItems": 0,
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "serverTime": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "serverTime"
+        ]
+      },
+      "DeviceRegistration": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fcmToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "fr",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "fcmToken",
+          "language"
+        ]
+      },
+      "Account": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "fr",
+              "en"
+            ]
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          }
+        },
+        "required": [
+          "id",
+          "language",
+          "limits"
+        ]
+      },
+      "DeletionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+            "description": "UUIDv7. Âge maximum 14 jours, avance horloge maximum 5 minutes ; contrôles serveur, jamais déduits de la seule validation JSON."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "DeletionReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "const": "accepted"
+          },
+          "accessRevokedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$",
+            "description": "Instant UTC RFC3339, suffixe Z."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "accessRevokedAt",
+          "description"
+        ]
+      },
+      "Health": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ]
+          },
+          "apiVersion": {
+            "const": "1"
+          }
+        },
+        "required": [
+          "status",
+          "apiVersion"
+        ]
+      }
+    }
+  }
+}

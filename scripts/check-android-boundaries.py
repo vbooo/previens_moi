@@ -15,7 +15,11 @@ for path in root.rglob("*.kt"):
     if "/presentation/" in str(path):
         errors += [f"{path}: presentation imports data {i}" for i in imports if i.startswith("fr.previensmoi.data.")]
 for path in root.rglob("AndroidManifest.xml"):
-    if "android.permission.INTERNET" in path.read_text(): errors.append(f"{path}: demo network permission")
+    for permission in ET.parse(path).getroot().findall("uses-permission"):
+        name = permission.get("{http://schemas.android.com/apk/res/android}name")
+        action = permission.get("{http://schemas.android.com/tools}node")
+        if name == "android.permission.INTERNET" and action != "remove":
+            errors.append(f"{path}: demo network permission")
 if "--merged" in sys.argv:
     manifest = root.parent / "build/intermediates/merged_manifests/demoDebug/processDemoDebugManifest/AndroidManifest.xml"
     if not manifest.exists(): errors.append("Build demoDebug before checking its merged manifest")

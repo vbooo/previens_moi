@@ -1,6 +1,6 @@
 # Architecture et données
 
-Validé par Fabien le 3 octobre 2026, avec MVVM et Clean Architecture comme choix explicites pour Android. Ce document traduit les [parcours](04-parcours-et-ecrans.md), [règles d'alerte](05-regles-des-alertes.md), [méthodes de recherche](06-sources-et-strategie-de-recherche.md) et [limites de coût](07-couts-et-modele-economique.md) validés en responsabilités techniques et en données à conserver. Les décisions figurent dans la [décision 0008](decisions/0008-architecture-et-donnees.md) ; les paramètres encore ouverts sont signalés à la fin. Aucun fournisseur cloud ou prestataire IA n'est sélectionné.
+Validé par Fabien le 3 octobre 2026, avec MVVM et Clean Architecture comme choix explicites pour Android. Ce document traduit les [parcours](04-parcours-et-ecrans.md), [règles d'alerte](05-regles-des-alertes.md), [méthodes de recherche](06-sources-et-strategie-de-recherche.md) et [limites de coût](07-couts-et-modele-economique.md) validés en responsabilités techniques et en données à conserver. Les décisions figurent dans la [décision 0008](decisions/0008-architecture-et-donnees.md) ; les paramètres encore ouverts sont signalés à la fin. Le socle cloud est désormais précisé pour l’implémentation locale dans l’[ADR 0011](decisions/0011-service-reel-s3.md) ; aucun prestataire IA de production n’est qualifié.
 
 ## Principe directeur
 
@@ -351,3 +351,10 @@ Le premier parcours visible recherché en S2 reste saisie → proposition → co
 Les ports du domaine sont implémentés par un service demo partagé, avec mutations atomiques, reçus idempotents et horloge injectable. Les ViewModels exposent un état observable ; les composables affichent cet état et transmettent les actions. DataStore conserve le brouillon, SavedStateHandle les petits identifiants de parcours. Une perte du processus efface honnêtement la mémoire du service demo et ne déclenche aucune activation automatique. L’assemblage de cette variante est isolé dans `src/demo`.
 
 Validation : 24 tests unitaires, cinq parcours Compose dans trois configurations, restauration après mort réelle du processus, Lint et contrôle des frontières passants. Aucun réseau métier ni coût fournisseur. Les limites de qualification de production sont détaillées dans le bilan. La prochaine étape technique est S3-01 : ADR du service réel, contrat HTTP, identité, stockage, push et chiffrage avant intégration.
+
+
+## Préparation S3 — 20 octobre 2026
+
+Le [document 11](11-service-et-contrat-s3.md) et l’[ADR 0011](decisions/0011-service-reel-s3.md) précisent le service réel. Le [contrat OpenAPI](../contracts/application-v1.openapi.json) définit les échanges avant raccordement. Les anciens modèles S2 simplifiés restent la référence de la démo ; les DTO de S3 enrichissent questions, preuves, dates et opérations en attente dans `data/remote`, sans modifier les écrans ou le domaine à ce stade.
+
+Le client HTTP est testé sur serveur local et n’est pas injecté dans la démo. Retrofit 3.0.0 et OkHttp 5.5.0 ont été résolus/compilés ; la permission Internet apportée par la bibliothèque est explicitement retirée du manifeste demo et le binaire est contrôlé. Les exemples contractuels ne sont empaquetés que dans les tests JVM. Les validations de format ne prouvent ni l’identité, ni les transactions serveur, ni la détection réelle.

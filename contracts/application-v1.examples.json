@@ -1,0 +1,599 @@
+[
+  {
+    "name": "preview_secret",
+    "schema": "PreviewSession",
+    "valid": true,
+    "payload": {
+      "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "expiresAt": "2026-10-20T12:00:00Z"
+    }
+  },
+  {
+    "name": "draft_fr",
+    "schema": "Draft",
+    "valid": true,
+    "payload": {
+      "text": "Préviens-moi des nouvelles annonces de concerts dans cette salle.",
+      "language": "fr",
+      "mode": "continuous",
+      "revision": 1,
+      "answers": []
+    }
+  },
+  {
+    "name": "draft_en",
+    "schema": "Draft",
+    "valid": true,
+    "payload": {
+      "text": "Notify me of newly announced concerts.",
+      "language": "en",
+      "mode": "continuous",
+      "revision": 1,
+      "answers": []
+    }
+  },
+  {
+    "name": "analysis_pending",
+    "schema": "Evaluation",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "draftRevision": 1,
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "status": "pending"
+    }
+  },
+  {
+    "name": "analysis_ready",
+    "schema": "Evaluation",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "draftRevision": 1,
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "status": "ready",
+      "proposal": {
+        "id": "019a05be-8000-7000-8000-000000000001",
+        "version": 1,
+        "draft": {
+          "text": "Préviens-moi des nouvelles annonces de concerts dans cette salle.",
+          "language": "fr",
+          "mode": "continuous",
+          "revision": 1,
+          "answers": []
+        },
+        "title": "Annonces de concerts",
+        "criteria": [
+          "Nouvelle annonce publiée par la salle"
+        ],
+        "exclusions": [],
+        "coverage": "Annonces publiques de la salle confirmée",
+        "partial": false,
+        "sources": [],
+        "method": "web_search",
+        "intervalHours": 24,
+        "limitations": [
+          "Pas de garantie de disponibilité des billets"
+        ],
+        "limits": {
+          "activePerAccount": 1,
+          "globalAvailable": 2,
+          "previewRemaining": 1,
+          "resetsAt": null
+        },
+        "expiresAt": "2026-10-21T12:00:00Z"
+      }
+    }
+  },
+  {
+    "name": "needs_clarification",
+    "schema": "Evaluation",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "draftRevision": 1,
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "status": "clarification",
+      "questions": [
+        {
+          "id": "venue",
+          "label": "Quelle salle ?",
+          "options": [],
+          "required": true
+        }
+      ]
+    }
+  },
+  {
+    "name": "unsupported_private_data",
+    "schema": "Evaluation",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "draftRevision": 1,
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "status": "unsupported",
+      "reason": "private_data",
+      "explanation": "Connexion à un service privé indisponible."
+    }
+  },
+  {
+    "name": "failed_not_empty",
+    "schema": "Evaluation",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "draftRevision": 1,
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "status": "failed",
+      "error": {
+        "code": "quota_exceeded",
+        "requestId": "019a05be-8000-7000-8000-000000000001",
+        "retryAfterSeconds": null,
+        "scope": "global"
+      }
+    }
+  },
+  {
+    "name": "proposal_with_no_initial_sources",
+    "schema": "Proposal",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "version": 1,
+      "draft": {
+        "text": "Préviens-moi des nouvelles annonces de concerts dans cette salle.",
+        "language": "fr",
+        "mode": "continuous",
+        "revision": 1,
+        "answers": []
+      },
+      "title": "Annonces de concerts",
+      "criteria": [
+        "Nouvelle annonce publiée par la salle"
+      ],
+      "exclusions": [],
+      "coverage": "Annonces publiques de la salle confirmée",
+      "partial": false,
+      "sources": [],
+      "method": "web_search",
+      "intervalHours": 24,
+      "limitations": [
+        "Pas de garantie de disponibilité des billets"
+      ],
+      "limits": {
+        "activePerAccount": 1,
+        "globalAvailable": 2,
+        "previewRemaining": 1,
+        "resetsAt": null
+      },
+      "expiresAt": "2026-10-21T12:00:00Z"
+    }
+  },
+  {
+    "name": "watch_without_findings",
+    "schema": "Watch",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000002",
+      "version": 1,
+      "plan": {
+        "id": "019a05be-8000-7000-8000-000000000001",
+        "version": 1,
+        "draft": {
+          "text": "Préviens-moi des nouvelles annonces de concerts dans cette salle.",
+          "language": "fr",
+          "mode": "continuous",
+          "revision": 1,
+          "answers": []
+        },
+        "title": "Annonces de concerts",
+        "criteria": [
+          "Nouvelle annonce publiée par la salle"
+        ],
+        "exclusions": [],
+        "coverage": "Annonces publiques de la salle confirmée",
+        "partial": false,
+        "sources": [],
+        "method": "web_search",
+        "intervalHours": 24,
+        "limitations": [
+          "Pas de garantie de disponibilité des billets"
+        ],
+        "limits": {
+          "activePerAccount": 1,
+          "globalAvailable": 2,
+          "previewRemaining": 1,
+          "resetsAt": null
+        },
+        "expiresAt": "2026-10-21T12:00:00Z"
+      },
+      "status": "active",
+      "health": "not_checked_yet",
+      "lastSuccessAt": null,
+      "lastFailureAt": null,
+      "baselineAt": "2026-10-20T12:00:00Z",
+      "nextCheckAt": null,
+      "pendingCommandId": null,
+      "remoteState": "running"
+    }
+  },
+  {
+    "name": "unknown_publication_and_date_only_event",
+    "schema": "Finding",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "planId": "019a05be-8000-7000-8000-000000000001",
+      "planVersion": 1,
+      "title": "Exemple de changement vérifié",
+      "fact": "Valeur publique modifiée depuis l’état initial",
+      "reason": "Comparaison explicite avec l’état initial",
+      "criteriaSnapshot": [
+        "Changement observé"
+      ],
+      "evidence": [
+        {
+          "url": "https://example.invalid/source",
+          "quote": "Exemple synthétique, pas une preuve réelle",
+          "observedAt": "2026-10-20T12:00:00Z",
+          "publication": null
+        }
+      ],
+      "observedAt": "2026-10-20T12:00:00Z",
+      "event": {
+        "precision": "date",
+        "value": "2026-11-12"
+      },
+      "noveltyBasis": "baseline_change",
+      "correctsFindingId": null
+    }
+  },
+  {
+    "name": "activate",
+    "schema": "Command",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "activate",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": 1,
+      "proposalToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "acceptPartial": false
+    }
+  },
+  {
+    "name": "pause",
+    "schema": "Command",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "pause",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "expectedVersion": 1
+    }
+  },
+  {
+    "name": "replace",
+    "schema": "Command",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "replace",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": 1,
+      "proposalToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "acceptPartial": false,
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "expectedVersion": 1
+    }
+  },
+  {
+    "name": "command_pending",
+    "schema": "CommandReceipt",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "state": "pending",
+      "watchId": null,
+      "remoteState": "starting"
+    }
+  },
+  {
+    "name": "command_failed",
+    "schema": "CommandReceipt",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "state": "failed",
+      "watchId": null,
+      "remoteState": "unknown",
+      "error": {
+        "code": "quota_exceeded",
+        "requestId": "019a05be-8000-7000-8000-000000000001",
+        "retryAfterSeconds": null,
+        "scope": "global"
+      }
+    }
+  },
+  {
+    "name": "paused_remote_still_stopping",
+    "schema": "CommandReceipt",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "state": "succeeded",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "watchVersion": 2,
+      "deleted": false,
+      "remoteState": "stopping"
+    }
+  },
+  {
+    "name": "delete_without_content",
+    "schema": "CommandReceipt",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "state": "succeeded",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "watchVersion": null,
+      "deleted": true,
+      "remoteState": "stopping"
+    }
+  },
+  {
+    "name": "empty_is_success",
+    "schema": "WatchPage",
+    "valid": true,
+    "payload": {
+      "items": [],
+      "nextCursor": null,
+      "serverTime": "2026-10-20T12:00:00Z"
+    }
+  },
+  {
+    "name": "account_deletion_accepted",
+    "schema": "DeletionReceipt",
+    "valid": true,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "state": "accepted",
+      "accessRevokedAt": "2026-10-20T12:00:00Z",
+      "description": "Accès fermé ; purge en cours."
+    }
+  },
+  {
+    "name": "forged_owner",
+    "schema": "Command",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "activate",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": 1,
+      "proposalToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "acceptPartial": false,
+      "ownerId": "019a05be-8000-7000-8000-000000000002"
+    }
+  },
+  {
+    "name": "activation_without_claim_secret",
+    "schema": "Command",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "activate",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": 1,
+      "acceptPartial": false
+    }
+  },
+  {
+    "name": "activation_without_consent_field",
+    "schema": "Command",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "activate",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": 1,
+      "proposalToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    }
+  },
+  {
+    "name": "negative_version",
+    "schema": "Command",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "operation": "activate",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": -1,
+      "proposalToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "acceptPartial": false
+    }
+  },
+  {
+    "name": "empty_criteria",
+    "schema": "Proposal",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "version": 1,
+      "draft": {
+        "text": "Préviens-moi des nouvelles annonces de concerts dans cette salle.",
+        "language": "fr",
+        "mode": "continuous",
+        "revision": 1,
+        "answers": []
+      },
+      "title": "Annonces de concerts",
+      "criteria": [],
+      "exclusions": [],
+      "coverage": "Annonces publiques de la salle confirmée",
+      "partial": false,
+      "sources": [],
+      "method": "web_search",
+      "intervalHours": 24,
+      "limitations": [
+        "Pas de garantie de disponibilité des billets"
+      ],
+      "limits": {
+        "activePerAccount": 1,
+        "globalAvailable": 2,
+        "previewRemaining": 1,
+        "resetsAt": null
+      },
+      "expiresAt": "2026-10-21T12:00:00Z"
+    }
+  },
+  {
+    "name": "invalid_unknown_date",
+    "schema": "Finding",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "planId": "019a05be-8000-7000-8000-000000000001",
+      "planVersion": 1,
+      "title": "Exemple de changement vérifié",
+      "fact": "Valeur publique modifiée depuis l’état initial",
+      "reason": "Comparaison explicite avec l’état initial",
+      "criteriaSnapshot": [
+        "Changement observé"
+      ],
+      "evidence": [
+        {
+          "url": "https://example.invalid/source",
+          "quote": "Exemple synthétique, pas une preuve réelle",
+          "observedAt": "2026-10-20T12:00:00Z",
+          "publication": null
+        }
+      ],
+      "observedAt": "2026-10-20T12:00:00Z",
+      "event": {
+        "precision": "date",
+        "value": "not a date"
+      },
+      "noveltyBasis": "baseline_change",
+      "correctsFindingId": null
+    }
+  },
+  {
+    "name": "invented_midnight_without_precision",
+    "schema": "Finding",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "planId": "019a05be-8000-7000-8000-000000000001",
+      "planVersion": 1,
+      "title": "Exemple de changement vérifié",
+      "fact": "Valeur publique modifiée depuis l’état initial",
+      "reason": "Comparaison explicite avec l’état initial",
+      "criteriaSnapshot": [
+        "Changement observé"
+      ],
+      "evidence": [
+        {
+          "url": "https://example.invalid/source",
+          "quote": "Exemple synthétique, pas une preuve réelle",
+          "observedAt": "2026-10-20T12:00:00Z",
+          "publication": null
+        }
+      ],
+      "observedAt": "2026-10-20T12:00:00Z",
+      "event": "2026-11-12T00:00:00Z",
+      "noveltyBasis": "baseline_change",
+      "correctsFindingId": null
+    }
+  },
+  {
+    "name": "missing_evidence",
+    "schema": "Finding",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "planId": "019a05be-8000-7000-8000-000000000001",
+      "planVersion": 1,
+      "title": "Exemple de changement vérifié",
+      "fact": "Valeur publique modifiée depuis l’état initial",
+      "reason": "Comparaison explicite avec l’état initial",
+      "criteriaSnapshot": [
+        "Changement observé"
+      ],
+      "evidence": [],
+      "observedAt": "2026-10-20T12:00:00Z",
+      "event": {
+        "precision": "date",
+        "value": "2026-11-12"
+      },
+      "noveltyBasis": "baseline_change",
+      "correctsFindingId": null
+    }
+  },
+  {
+    "name": "no_proposal_in_ready",
+    "schema": "Evaluation",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "draftRevision": 1,
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "status": "ready"
+    }
+  },
+  {
+    "name": "pending_is_not_success",
+    "schema": "CommandReceipt",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-7000-8000-000000000001",
+      "updatedAt": "2026-10-20T12:00:00Z",
+      "state": "pending",
+      "watchId": "019a05be-8000-7000-8000-000000000002",
+      "watchVersion": 1,
+      "remoteState": "running"
+    }
+  },
+  {
+    "name": "short_secret",
+    "schema": "PreviewSession",
+    "valid": false,
+    "payload": {
+      "token": "abc",
+      "expiresAt": "2026-10-20T12:00:00Z"
+    }
+  },
+  {
+    "name": "wrong_command_uuid_version",
+    "schema": "Command",
+    "valid": false,
+    "payload": {
+      "id": "019a05be-8000-4000-8000-000000000001",
+      "operation": "activate",
+      "proposalId": "019a05be-8000-7000-8000-000000000002",
+      "proposalVersion": 1,
+      "proposalToken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "acceptPartial": false
+    }
+  },
+  {
+    "name": "error_code_not_provider_prose",
+    "schema": "Error",
+    "valid": false,
+    "payload": {
+      "code": "Everything seems fine",
+      "requestId": "019a05be-8000-7000-8000-000000000001",
+      "retryAfterSeconds": null,
+      "scope": "global"
+    }
+  }
+]

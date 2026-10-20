@@ -25,6 +25,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures { compose = true }
+    sourceSets.getByName("test").resources.directories.add("../../contracts")
     lint {
         abortOnError = true
         warningsAsErrors = true
@@ -46,6 +47,10 @@ dependencies {
     implementation(libs.navigation.runtime)
     implementation(libs.navigation.ui)
     implementation(libs.serialization)
+    implementation(libs.serialization.json)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.okhttp)
     implementation(libs.coroutines)
     implementation(libs.datastore)
     implementation(libs.hilt)
@@ -55,6 +60,7 @@ dependencies {
     androidTestImplementation(libs.android.test.runner)
     androidTestImplementation(libs.android.test.junit)
     testImplementation(libs.junit)
+    testImplementation(libs.mockwebserver)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.turbine)
 }
