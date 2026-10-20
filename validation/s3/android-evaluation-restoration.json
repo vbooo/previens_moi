@@ -1,0 +1,9 @@
+{
+  "scope": "controlled local pending response; real Android process death; no AI/provider activation",
+  "passed": true,
+  "newProviderCalls": 0,
+  "sameEvaluationIdentifier": true,
+  "noDuplicateEvaluation": true,
+  "encryptedPreviewRestored": true,
+  "pendingShown": true
+}

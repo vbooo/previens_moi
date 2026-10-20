@@ -1,13 +1,13 @@
 {
   "unit": {
     "demo": {
-      "tests": 43,
+      "tests": 49,
       "failures": 0,
       "errors": 0,
       "skipped": 0
     },
     "remote": {
-      "tests": 22,
+      "tests": 27,
       "failures": 0,
       "errors": 0,
       "skipped": 0
@@ -30,7 +30,7 @@
   },
   "compose": {
     "demoTests": 5,
-    "remoteTestsPerLanguage": 1,
+    "remoteTestsPerLanguage": 3,
     "languages": [
       "fr",
       "en"
@@ -41,15 +41,23 @@
   },
   "apks": {
     "demo": {
-      "sha256": "3f0a628bf422cdddea0f4a595e8333b8eb470e7de111d57a212796ab12e77a50",
+      "sha256": "72300eadbff69abaf7938a1d8840274f45bb3cdbecf712b5c939dc7ef07dc4b5",
       "privilegedCredentialMarkersFound": false,
-      "scope": "built APK; marker scan is not a universal secret audit"
+      "privilegedJwtRoleFound": false,
+      "scope": "built APK marker/JWT-role scan; not a universal secret audit"
     },
     "remote": {
-      "sha256": "3816a502409eb3aee292e25487ef6122e0e8d9baacf5043190845d0bb46f26a7",
+      "sha256": "f77c518af509764054b01c98aa738c153809792582a92455d48fd8604c42c3a4",
       "privilegedCredentialMarkersFound": false,
-      "scope": "built APK; marker scan is not a universal secret audit"
+      "privilegedJwtRoleFound": false,
+      "scope": "built APK marker/JWT-role scan; not a universal secret audit"
     }
   },
-  "backendQualification": "not inferred from Android HTTP fixtures"
+  "backendQualification": "not inferred from Android HTTP fixtures",
+  "processDeath": {
+    "command": true,
+    "evaluation": true,
+    "controlledLocalFixtures": true,
+    "realProviderActivation": false
+  }
 }

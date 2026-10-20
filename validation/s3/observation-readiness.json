@@ -7,14 +7,17 @@
   "fcm_execution_enabled": false,
   "real_capacity": 0,
   "remaining_gates": [
-    "qualify natural-language admission and discovery using frozen A1/REV cases",
-    "implement and qualify actual provider reconciliation and bounded recurring execution",
-    "confirm real remote pause/deletion and all in-flight emission races",
-    "configure dedicated Firebase Spark project and prove real device delivery",
-    "configure dedicated Supabase environment and public email transport when authorized",
-    "finish and prove complete account/identity erasure",
-    "qualify full chain and expected reference results before observation"
+    "A1 interpretation: 7/9; fix and independently qualify two failed cases without changing thresholds",
+    "qualify discovery, novelty, freshness, semantic judgments and semantic deduplication; current changes fail visibly",
+    "dedicated Supabase project and public signed webhook tests",
+    "dedicated Firebase Spark project and real FCM receipt including permission, delay, reauthentication and deletion",
+    "prove actual provider stop/erasure and in-flight limits against real delivery",
+    "independent backup and cloud recovery",
+    "qualify full chain and expected references before S4 observation"
   ],
-  "additional_paid_calls": 0,
-  "additional_spend": 0
+  "additional_paid_calls": 9,
+  "additional_estimated_usd": 0.004634,
+  "local_erasure_and_restore_passed": true,
+  "provider_steps_implemented": true,
+  "real_method_qualified": false
 }

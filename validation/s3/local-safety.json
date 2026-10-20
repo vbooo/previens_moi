@@ -1,7 +1,10 @@
 {
   "providerExecutionEnabled": false,
+  "admissionExecutionEnabled": false,
+  "fcmExecutionEnabled": false,
   "realCapacity": 0,
   "allMethodsDisabled": true,
+  "workerScheduleEnabled": false,
   "migrations": [
     "202610200001",
     "202610200002",
@@ -9,13 +12,35 @@
     "202610200004",
     "202610200005",
     "202610200006",
-    "202610200007"
+    "202610200007",
+    "202610200008",
+    "202610200009",
+    "202610200010",
+    "202610200011",
+    "202610200012",
+    "202610200013",
+    "202610200014",
+    "202610200015",
+    "202610200016",
+    "202610200017",
+    "202610200018",
+    "202610200019",
+    "202610200020",
+    "202610200021",
+    "202610200022",
+    "202610200023",
+    "202610200024",
+    "202610200025",
+    "202610200026"
   ],
+  "freshInstallationPassed": true,
+  "fixtureWatchesRemoved": true,
+  "fcmConfigured": false,
+  "additionalPaidCalls": 9,
+  "additionalEstimatedOpenAIUSD": 0.004634,
   "postgresLogSettings": {
     "log_statement": "ddl",
     "log_parameter_max_length_on_error": "0"
   },
-  "fixtureWatchesRemoved": true,
-  "fcmConfigured": false,
-  "additionalPaidCalls": 0
+  "existingDoklearContainersStillRunning": true
 }

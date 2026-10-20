@@ -1,23 +1,32 @@
 {
   "authorizedCumulativeMaxEUR": 2,
-  "additionalProviderCalls": 0,
-  "additionalSpendEUR": 0,
+  "additionalProviderCalls": 11,
+  "additionalPaidOpenAICalls": 9,
+  "additionalFirecrawlReadOnlyCalls": 2,
+  "additionalEstimatedOpenAIUSD": 0.004634000000000001,
+  "additionalFirecrawlCreditsConsumed": 0,
+  "additionalExaCalls": 0,
   "subscriptionOrTopUp": false,
-  "historical": {
+  "historicalBeforeResumption": {
     "openaiEstimatedUSD": 0.0476092,
     "exaDisplayedRoundedUSD": 0.02,
-    "firecrawlFreeCreditsConsumed": 15,
-    "lastKnownFirecrawlCredits": 985,
-    "lastKnownBalanceDate": "2026-10-15"
+    "firecrawlFreeCreditsConsumed": 15
   },
-  "firecrawlBalanceRechecked": false,
-  "reason": "No new provider usage in S3 local implementation",
+  "current": {
+    "openaiEstimatedCumulativeUSD": 0.0522432,
+    "firecrawlCredits": 985,
+    "firecrawlBalanceDate": "2026-10-20"
+  },
+  "newCampaignUpperUSD": 0.1,
+  "newActualReservedUpperUSD": 0.0640672,
+  "cumulativeConservativeUpperEUR": 1.3827645000000002,
+  "conservativeCalculation": "full historic OpenAI reservations + USD0.05 other historic allowance + USD0.10 new envelope, multiplied by 1.5 EUR/USD and 1.25 tax buffer; not a claimed actual exchange rate",
+  "invoiceReconciled": false,
   "productionForecastClosed": false,
+  "monthlyBudgetAuthorized": false,
   "remainingCostUnknowns": [
-    "verified sending domain purchase/renewal if required",
+    "qualified monitoring/judgment cost",
     "independent backup destination",
-    "qualified monitoring and analysis cost",
-    "taxes/exchange and public email operations"
-  ],
-  "monthlyBudgetAuthorized": false
+    "public email operations and sending domain only if required"
+  ]
 }

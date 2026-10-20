@@ -62,7 +62,7 @@ Android persiste les identifiants des opérations en cours, pas une commande com
 
 Les reçus complets durent 14 jours, sans texte privé supplémentaire. Après cette fenêtre, les reprises d'une commande ne sont plus admises : le serveur vérifie l'âge de son identifiant UUIDv7, conserve les marqueurs de consommation nécessaires à empêcher une réactivation, et renvoie `command_expired`. UUIDv7 horodaté futur de plus de cinq minutes refusé. Après suppression du compte, aucun reçu ne restitue son contenu. Les propositions sont consommables une seule fois, même avec un nouvel identifiant de commande.
 
-## Base et contraintes à implémenter
+## Base et contraintes retenues
 
 | Ensemble | Contraintes minimales |
 | --- | --- |
@@ -135,7 +135,7 @@ Configuration initiale : `provider_execution_enabled=false`, capacité réelle 0
 | S3-A14 | Compte effacé puis restauration sauvegarde | S3-04/S4 : accès et envois restent fermés ; effacement rejoué |
 | S3-A15 | Ancienne app, champs nouveaux/statut inconnu, date sans heure | S3-02 : compatibilité explicitée ; pas de crash ni date inventée |
 
-Les validations de schémas et exemples S3-01 prouvent seulement la cohérence du contrat. **Aucun cas d'intégration ci-dessus n'est annoncé passant aujourd'hui.** Les tests de compréhension et détection auront des entrées exactes et attentes indépendantes avant exécution S3-03 ; ne pas extrapoler un taux de réussite depuis une documentation fournisseur.
+Les validations de schémas et exemples S3-01 prouvent seulement la cohérence du contrat. **Résultats actuels : voir le bilan S3, qui distingue 29 scénarios locaux réussis et les preuves externes manquantes.** Les tests de compréhension et détection auront des entrées exactes et attentes indépendantes avant exécution S3-03 ; ne pas extrapoler un taux de réussite depuis une documentation fournisseur.
 
 ## Ordre d'exécution suivant et accès nécessaires
 
@@ -146,3 +146,8 @@ Aucune variable Supabase/Firebase/Resend trouvée dans le `.env` du projet lors 
 ## Sources officielles
 
 Consultées le 20 octobre 2026 : [Supabase tarifs](https://supabase.com/pricing), [Auth OTP](https://supabase.com/docs/guides/auth/auth-email-passwordless), [SMTP](https://supabase.com/docs/guides/auth/auth-smtp), [hook e-mail](https://supabase.com/docs/guides/auth/auth-hooks/send-email-hook), [limites Auth](https://supabase.com/docs/guides/auth/rate-limits), [sécurité des fonctions](https://supabase.com/docs/guides/functions/auth), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [limites fonctions](https://supabase.com/docs/guides/functions/limits), [planification](https://supabase.com/docs/guides/functions/schedule-functions), [sauvegardes](https://supabase.com/docs/guides/platform/backups), [Resend tarifs](https://resend.com/pricing), [domaines Resend](https://resend.com/docs/dashboard/domains/introduction), [FCM HTTP v1](https://firebase.google.com/docs/cloud-messaging/send/v1-api), [Firebase tarifs](https://firebase.google.com/pricing), [Firecrawl recherche récurrente](https://docs.firecrawl.dev/features/monitoring-web-scale), [Firecrawl tarifs](https://www.firecrawl.dev/pricing).
+
+
+## Complément local du 20 octobre
+
+Questions/polling/reprise chiffrée raccordés dans Android ; 26 migrations installées à neuf ; file fournisseur avec création rapprochée, passage réservé et arrêt/suppression ; émission atomique et effacement Auth avec rejeu des marqueurs restaurés. A1 réel : 7/9 et zéro activation. Les deux défauts sont conservés ; aucune méthode réelle qualifiée. Source de vérité : [bilan](../validation/s3/bilan.md), [service](../service/README.md). Les accès dédiés restent indispensables aux preuves d'ingress public et de FCM réel.

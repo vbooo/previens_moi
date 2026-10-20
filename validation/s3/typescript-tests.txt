@@ -1,10 +1,42 @@
-Task test deno test tests/fcm_test.ts
+Task test deno test tests/
+running 4 tests from ./tests/admission_test.ts
+understanding does not create a watch without independent source evidence ... ok (0ms)
+complete verified scope still requires qualified method ... ok (0ms)
+private requests and clarifications cannot become ready through source claims ... ok (0ms)
+Responses call has no tools, no storage and bounded output; refusal stays failure ... ok (0ms)
+running 3 tests from ./tests/admission_worker_test.ts
+admission worker is disabled without key and does not lease ... ok (0ms)
+worker preserves identified questions and accounts for tokens before persisting ... ok (3ms)
+lost response holds unknown reservation and never retries; inconsistent A04 is failed ... ok (1ms)
+running 2 tests from ./tests/erasure_test.ts
+erasure retries after Auth failure without claiming completion or exposing identity ... ok (0ms)
+erasure processes other eligible accounts despite one interrupted deletion ... ok (0ms)
 running 6 tests from ./tests/fcm_test.ts
-disabled push performs no lease or network call ... ok (5ms)
-pause after lease prevents HTTP emission ... ok (1ms)
+disabled push performs no lease or network call ... ok (0ms)
+pause after lease prevents HTTP emission ... ok (0ms)
 FCM contains identifiers only and bounded TTL ... ok (0ms)
-acceptance is recorded and does not claim delivery ... ok (7ms)
+acceptance is recorded and does not claim delivery ... ok (1ms)
 lost response is unknown without automatic duplicate POST ... ok (0ms)
 provider 503 is unknown; permanent 400 is failed ... ok (0ms)
+running 7 tests from ./tests/firecrawl_test.ts
+disabled provider and invalid path emit no HTTP and never reveal key ... ok (0ms)
+stop requires authenticated paused monitor and no current check ... ok (1ms)
+signed completion must match authenticated API monitor check source and summary ... ok (0ms)
+lost run response is unknown, pause still occurs and no second run is sent ... ok (0ms)
+near automatic schedule is refused before reservation or unpause ... ok (0ms)
+lost creation is reconciled by service identity and never recreated ... ok (9ms)
+remote erasure confirms absence; a lost DELETE is reconciled without claiming completion ... ok (0ms)
+running 5 tests from ./tests/provider_worker_test.ts
+provider execution requires dedicated public receiver and does not lease otherwise ... ok (0ms)
+baseline waits for signed completion then remains silent ... ok (1ms)
+same check succeeds; unqualified semantic change becomes visible failure ... ok (8ms)
+lost run intent never triggers another provider POST ... ok (0ms)
+source mismatch is visible and cannot confirm baseline or create a result ... ok (0ms)
+running 3 tests from ./tests/stop_test.ts
+stop worker does not lease when disabled and does not confirm ambiguous creation ... ok (0ms)
+stop worker confirms only after authenticated paused state has no running check ... ok (1ms)
+stop reconciles a lost creation by durable job name before acknowledging cleanup ... ok (0ms)
+running 1 test from ./tests/worker_auth_test.ts
+worker requires secret or valid fresh one-use MAC; replay expired and tampered requests fail ... ok (5ms)
 
-ok | 6 passed | 0 failed (27ms)
+ok | 31 passed | 0 failed (346ms)

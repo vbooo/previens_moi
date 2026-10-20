@@ -1,6 +1,6 @@
 
-fr.previensmoi.app.LocalServiceTest:.
+fr.previensmoi.app.LocalServiceTest:...
 
-Time: 10.112
+Time: 14.199
 
-OK (1 test)
+OK (3 tests)

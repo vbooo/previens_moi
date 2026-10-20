@@ -1,57 +1,63 @@
-# Sprint 3 — bilan local du 20 octobre 2026
+# Sprint 3 — bilan du complément du 20 octobre 2026
 
-**S3 reste ouvert.** Le socle Supabase/PostgreSQL/Auth local et la variante Android connectée sont implémentés et testés. Cela ne constitue pas une application de surveillance réelle terminée. Aucun service cloud, fournisseur récurrent ou push FCM réel n'a été qualifié ou activé. Aucune observation de sept jours commencée.
+**S3 reste ouvert.** Les raccordements locaux, les reprises, l'effacement et les étapes fournisseur ont été complétés et testés. Les projets Supabase/Firebase dédiés manquent pour les essais externes. L'admission A1 réellement exécutée obtient **7/9** ; ses deux échecs restent enregistrés. Aucun moteur général qualifié, aucune surveillance activée, aucune notification FCM réelle annoncée comme reçue.
 
-Implémentation enregistrée dans le commit local `c658b4f`. Les preuves et statuts sont enregistrés dans le commit documentaire suivant.
+Travail dans le dépôt existant `/Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi`, sur `main`, sans dépôt distant ni publication. Le socle précédent était enregistré dans `c658b4f` et `914518e`. Le complément de code et tests est enregistré dans **`68c6755`**. Les conteneurs Doklear restent inchangés. Projet local distinct `previens-moi-s3` ; les **26 migrations** ont aussi été réinstallées depuis une base de test vide.
 
-Travail réalisé dans le dépôt existant `/Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi`, depuis `4772eb3`, sur `main`, sans remote, sans réinitialiser les modifications du projet. Les conteneurs Doklear sont restés actifs et inchangés. Environnement local distinct `previens-moi-s3`, ports 56321/56322/56324.
+## Travail terminé dans ce complément
+
+- **Android connecté :** questions identifiées, choix et réponses obligatoires, réponses conservées, explications de refus affichées, polling borné. Identifiant, requête et secret de prévisualisation enregistrés **avant** l'appel dans un fichier chiffré Keystore exclu des sauvegardes. Après mort du processus, même analyse ; stockage défaillant ou secret expiré : aucun nouvel appel automatique. Une analyse en attente est distinguée d'une activation en attente.
+- **Admission serveur :** appel OpenAI structuré, contrôle des incohérences, séparation compréhension/capacité vérifiée ; file et réservations durables. Réponse perdue : réservation maintenue et absence de réessai aveugle. Coût sous-estimé : gel, résultat de quota explicite. Une interprétation ne peut pas fabriquer une proposition activable.
+- **Exécution fournisseur :** création rapprochée par identité durable après réponse perdue, conservation d'un identifiant tardif pendant pause, étapes création/lancement/polling, monitor en pause au repos, réservation par passage, récurrence sans réutiliser l'ancienne réservation, signature et lecture API concordantes avant état initial silencieux ou contrôle inchangé. Arrêt/suppression vérifiés par API avant confirmation ; perte d'un dernier bail visible et capacité gelée.
+- **Envois concurrents :** prise d'émission atomique sérialisée avec pause/suppression, trace indépendante survivant à la suppression du résultat, attente des émissions engagées avant arrêt confirmé. FCM data-only, expiration aussi pendant WorkManager, déduplication d'affichage persistée par compte. La prise locale avant affichage peut perdre ce push si le processus meurt à cette frontière ; le résultat reste dans l'application. Aucune garantie exactement une fois revendiquée.
+- **Effacement :** fermeture des accès, arrêt et suppression des identités fournisseur, purge des données privées puis suppression Auth via API Admin, reprise après interruption. Les seuls coûts non rapprochés restent en borne minimale sans propriétaire ni plan. Marqueurs rejoués après restauration ; ancienne identité refusée et demandes d'arrêt recréées.
+- **Planification :** réveil du worker préparé mais désactivé. Signature unique valable 90 secondes dans la file HTTP ; aucun secret durable n'y est envoyé. Rétention horaire locale conservée. Sauvegarde hors du volume Docker, restauration dans une base jetable distincte et rejeu d'un effacement postérieur au snapshot vérifiés.
+
+## Résultat A1 réel, sans changement du seuil
+
+Neuf cas figés avant les appels : A01–A08 historiques et D01 Accor Arena. Même modèle `gpt-4.1-mini-2025-04-14`, sortie structurée, aucun outil, aucun stockage demandé au fournisseur, aucune recherche ni création de monitor.
+
+**7 réussites / 9.** A01 inclut la marque dans la référence (`Ninja AF300EU` au lieu de `AF300EU`). A04 associe une question de pays à un statut « compris » et une zone vide. Cette incohérence est rejetée par le validateur du service ; elle n'est pas transformée en activation. Les autres cas, dont référence fictive conservée sans inventer de source, compte privé refusé et demande de concerts comprise sans prétendre couvrir toutes les annonces, passent cette exécution.
+
+[Résultats](admission-a1.json) · [Manifeste figé](admission-a1-manifest.json). Le seuil reste zéro critère explicite déformé et zéro activation sans capacité prouvée. Ce passage échoué ne qualifie pas l'admission générale. Il ne mesure pas la découverte, le rappel, la récence ou la déduplication sémantique.
+
+## Vérifications finales
+
+| Vérification | Résultat et portée |
+| --- | --- |
+| Installation neuve | 26 migrations appliquées dans le seul projet local dédié |
+| PostgreSQL/Auth/Edge réels locaux | **29 scénarios réussis**, dont worker HTTP, effacement Auth effectif, vraie concurrence de transactions pause/envoi, files et budget, récurrence, réponse de création tardive et restauration. Les confirmations fournisseur restent des fixtures explicites. [Rapport](local-integration.json) |
+| TypeScript/Deno | **31 tests réussis** : admission, reprise/effacement, signatures worker, FCM et fournisseur avec HTTP injecté. Aucun Google ni nouvelle surveillance réelle dans ces tests. [Sortie](typescript-tests.txt) |
+| Android unitaires | **49 demo et 27 remote**, une partie commune ; zéro échec. Ne pas additionner comme méthodes distinctes. [Rapport](android-check.json) |
+| Android interface | **3 parcours remote en FR et EN**, sombre, police 1,3 : véritable code Mailpit, session et fichier d'analyse chiffrés, questions et refus, doublon local persistant. Les questions sont un port de test explicite, pas une preuve NLP. **5 parcours demo** rejoués |
+| Mort du processus | Commande pending relue sans nouvelle activation ; analyse pending reprise depuis son fichier chiffré sans nouvel identifiant ni nouvelle évaluation. Fixtures locales contrôlées. [Commande](android-process-restoration.json), [analyse](android-evaluation-restoration.json) |
+| Sauvegarde/restauration | Archive hors du volume de base, base jetable distincte, compte ressuscité refusé après rejeu. Ce n'est pas une sauvegarde cloud indépendante ni un test de récupération des clés. [Rapport](local-backup-restore.json) |
+| Contrat/frontières/Lint | 15 opérations, 23 schémas, **34 exemples** ; frontières passantes ; deux APK compilées ; Lint sans erreur/avertissement ; marqueurs de secrets privilégiés absents des APK contrôlées |
+| État Firecrawl existant | **985 crédits**, trois anciens suivis Préviens-moi listés en pause sans passage courant. Deux lectures seulement, aucune mutation ni consommation supplémentaire. Portée limitée à la page retournée. [État](firecrawl-readonly-state.json) |
+
+Les captures de `android-phone/` proviennent de l'émulateur. Elles ne prouvent pas API23, tablette, téléphone physique, TalkBack, performance ni qualité de livraison réelle. La première reprise d'analyse a révélé une capture d'interface indisponible au démarrage : le harnais attend désormais un arbre valide avant d'agir ; l'assertion de même identifiant et les limites de polling sont conservées.
 
 ## État des six tâches
 
-| Tâche | Livré et prouvé localement | Ce qui empêche la clôture |
+| Tâche | Situation actuelle | Condition de clôture restante |
 | --- | --- | --- |
-| S3-01 | Choix Supabase/FCM conservé, outillage verrouillé, contrat versionné cohérent, exécution externe fermée et budget repris. | Facture complète d'ouverture encore conditionnelle : domaine d'expédition si nécessaire, sauvegarde indépendante et coût du moteur qualifié. Aucun achat à demander maintenant. |
-| S3-02 | Sept migrations appliquées, PostgreSQL/RLS réels, API Edge, codes e-mail dans la boîte locale, accès A/B, sessions Android Keystore et variante remote branchée aux ports. | Environnement cloud dédié et transport public de codes non configurés ; adaptation complète des questions identifiées, polling d'évaluations et de certains détails de méthode/correction à terminer avant raccordement d'une admission réelle. |
-| S3-03 | Critères conservés avant nouveaux appels, refus explicite d'une méthode non qualifiée, aucune activation mensongère. Rejeu des régressions existantes sans réseau. | Admission libre, découverte, pertinence, récence et déduplication sémantique non qualifiées. Adaptateur fournisseur réel et récurrence bornée encore à implémenter/éprouver. Les résultats F0–F3 ne sont pas réinterprétés comme une réussite générale. |
-| S3-04 | HMAC avant stockage, inbox durable, transactions résultat/outbox, quotas concurrents, baux et reprises bornées, pause/reprise/remplacement/suppression avec générations et arrêt explicite. | Arrêt fournisseur et arrêt des coûts non prouvés réellement ; confirmations testées via fixtures SQL. Rapprochement API fournisseur absent. Fenêtre autorisation/envoi HTTP concurrent à qualifier. Fermeture des accès et rejeu du marqueur prouvés ; purge complète d'identité/compte et sauvegarde indépendante non prouvées. |
-| S3-05 | FCM/WorkManager Android isolés dans remote ; worker HTTP v1 serveur, identifiants seuls, relecture authentifiée du résultat et du suivi, permission et navigation préparées. | Fabien a confirmé l'absence de projets dédiés. Aucun projet Firebase configuré ni notification réellement reçue. Refus de permission, retards, session expirée au clic et résultat supprimé doivent encore être qualifiés par les parcours de livraison réelle. |
-| S3-06 | État de préparation explicite, coûts et preuves séparés, distinctions silence/panne/quota testées localement. | Chaîne réelle et références attendues manquantes ; observation non lancée. Les sept jours et la publication restent S4. |
+| S3-01 | Architecture et outillage conservés ; budget cumulé tracé ; contrôle des fichiers de raccordement prêt | Coût d'ouverture complet et sauvegarde indépendante à établir avant exploitation |
+| S3-02 | Raccordements Android, questions/polling, reprises chiffrées, service local/Auth/isolation testés | Projet Supabase dédié, sessions et codes e-mail externes ; aucune délivrabilité publique prétendue |
+| S3-03 | Admission réellement évaluée, file et étapes fournisseur bornées implémentées | **A1 échoué 7/9** ; découverte, nouveauté/récence, jugement général et déduplication sémantique non qualifiés. Le chemin actuel rejette visiblement un changement sans jugement qualifié ; il ne publie pas d'affirmation générale |
+| S3-04 | Transactions, budget, reprises, arrêt/suppression, émission concurrente, purge Auth et restauration éprouvés localement | Webhook public, arrêt/coût/suppression fournisseur réellement confirmés via la chaîne déployée ; limites des messages déjà en vol à qualifier |
+| S3-05 | Transport serveur et garde Android, expiration et déduplication testés | Projet Firebase Spark et **réception FCM réelle**, permission refusée, retards, session expirée au clic et résultat supprimé dans cette chaîne |
+| S3-06 | Preuves et préparation actualisées ; exécution désactivée | Chaîne réelle et références attendues avant observation ; les sept jours restent S4 |
 
-Le travail restant n'est donc **pas seulement une question d'accès**. Il comprend aussi l'admission et l'adaptateur fournisseur qualifiés, les courses d'envoi, la purge complète et les derniers raccordements de contrat.
+Le manque d'accès n'efface donc pas les échecs de qualité. Ils restent des conditions explicites de S3 ; aucune case n'est fermée par la seule présence de clés ou par des doubles réseau.
 
-## Ce qui fonctionne réellement
+## Budget et état laissé
 
-Une personne peut installer la variante locale, recevoir un vrai code Supabase dans Mailpit, se connecter et retrouver sa session chiffrée après recréation et arrêt du processus. Le mail reste dans la boîte de test ; rien n'est envoyé à une adresse externe. L'e-mail sert à la connexion ; les futures alertes passeront par les notifications Android.
+**Neuf appels OpenAI : 0,004634 USD estimés supplémentaires**, cumul OpenAI **0,0522432 USD**. Enveloppe de la campagne 0,10 USD, sans réessai automatique. Le contrôle préalable conservateur, incluant les réservations historiques entières et des marges change/taxes, reste à **1,3827645 € sous le plafond inchangé de 2 € cumulés**. Ce montant est une borne de contrôle, pas une facture convertie. Exa inchangé à 0,02 USD affiché arrondi ; Firecrawl reste à 15 crédits gratuits consommés et 985 disponibles. Aucun abonnement, recharge, Blaze ou nouveau budget. [Registre](costs.json).
 
-Le serveur refuse un JWT altéré et les accès croisés. Les commandes ont des UUIDv7, un reçu idempotent et une version attendue ; une ancienne réussite ne confirme pas une autre action. Une préparation n'est pas présentée comme active. La pause bloque les nouvelles intentions, conserve la place jusqu'à l'arrêt confirmé et expose `stopping/unknown`. Reprise et remplacement attendent un nouvel état initial. La première intention légitime d'un suivi ponctuel n'est pas annulée par son passage à terminé.
+Aucune capacité réelle ouverte, méthodes non qualifiées, admission/fournisseur/FCM désactivés et réveil du worker inactif. Les fixtures de surveillance sont retirées à la fin ; aucun suivi distant nouveau créé. Aucun Git push, aucun déploiement public ni publication Play. [État final](local-safety.json).
 
-Les créations dont la réponse est perdue restent ambiguës, sans seconde création aveugle. Un arrêt définitivement en échec gèle les nouvelles activations. Une sous-estimation de coût gèle aussi l'exécution et garde la réservation à rapprocher. Ces règles sont testées avec des unités de fixture, pas avec une facture fournisseur.
+## Accès à préparer
 
-La variante demo reste sans INTERNET et sans Firebase/WorkManager. Les écrans connectés signalent le service de test et l'absence de surveillance réelle. Les sources, critères et preuves sont enrichis ; une date sans heure n'est pas transformée en instant fictif.
+Fabien a confirmé l'absence de projets dédiés. Les essais externes nécessitent un projet **Supabase gratuit en UE** et un projet **Firebase Spark**, application Android `fr.previensmoi.prototype.remote`. Les trois fichiers attendus dans `.local/cloud/` sont `supabase.env`, `google-services.json` et `firebase-service-account.json`. Aucun secret à mettre dans la conversation. Le contrôle `scripts/check-cloud-config.py` est purement local ; il n'a constaté aucun de ces raccordements. [Préparation](external-readiness.json).
 
-## Vérifications exécutées
-
-- **17 scénarios d'intégration** sur PostgreSQL, Supabase Auth et Edge HTTP réels locaux : code invalide/expiré, JWT altéré, propriété A/B, RLS, quota concurrent, reçus rejoués après expiration, reprise après bail, résultats/outbox, arrêt, remplacement, effacement, RPC direct et pagination. [Rapport](local-integration.json).
-- **43 tests unitaires demo et 22 remote**, avec une partie commune : transport HTTP, DTO, ViewModels, OTP/session, rotation coordonnée, déconnexion, commande pending après recréation, réessai authentifié avec le même corps et refus persistant après rafraîchissement. Ces tests HTTP contrôlés ne sont pas une preuve du backend réel ; la ligne précédente couvre celui-ci localement.
-- **5 parcours Compose demo** et **1 parcours connecté exécuté en FR et EN** sur téléphone émulé API36, sombre et police 1,3 : code réellement reçu, connexion, recréation, fichier chiffré et refus honnête de surveillance. Des premiers passages ont échoué : course sur rappel identique du champ, attente après déconnexion et actions pendant la fermeture du clavier. Correctif métier et préparation explicite du clavier ajoutés ; les délais/critères n'ont pas été élargis pour faire réussir la démo.
-- **Arrêt réel du processus Android** avec une commande pending injectée localement : même identifiant, session relue depuis Keystore, suivi en préparation et aucune commande supplémentaire. Ce n'est pas une activation fournisseur. [Rapport](android-process-restoration.json).
-- **6 tests TypeScript du transport FCM** : désactivation sans appel, arrêt avant autorisation, identifiants seuls et TTL borné, acceptation distincte de livraison, réponse perdue sans double POST, erreurs permanentes/temporaires. Aucun appel Google réel.
-- **75 tests hors ligne du laboratoire existant**, sans nouvel essai fournisseur. [Portée](lab-regression.json).
-- Contrat **15 opérations, 23 schémas, 34 exemples** (21 positifs, 13 négatifs), snapshot Edge identique ; contrôle des frontières ; compilation des deux variantes ; Lint sans erreur ni avertissement. Les indications de versions plus récentes sont informatives ; pas de mise à jour gratuite des dépendances existantes.
-
-Les captures sous `android-phone/` proviennent de l'émulateur. Ce passage ne remplace pas les contrôles API23, tablette, téléphone physique, TalkBack, qualité de livraison ni observation S4. Android Studio n'est pas annoncé ouvert/synchronisé par ce lot.
-
-## Budget et état final
-
-**Dépense fournisseur supplémentaire : 0 €. Aucun nouvel appel OpenAI, Exa ou Firecrawl.** Plafond maintenu à **2 € cumulés** ; pas d'abonnement, recharge ou passage payant. Historique inchangé : OpenAI estimé 0,0476092 USD ; Exa affiché 0,02 USD arrondis ; 15 crédits gratuits Firecrawl consommés, dernier solde connu 985 le 15 octobre. Ce solde n'a pas été recontrôlé puisqu'aucun nouvel usage n'a été lancé. [Registre](costs.json).
-
-À la fin, les surveillances et commandes de fixture sont retirées ; capacité réelle zéro et toutes les méthodes désactivées. FCM non configuré et désactivé. Aucun cron fournisseur, aucun push, aucune publication et aucun push Git. Seule la purge locale de rétention est planifiée. [État contrôlé](local-safety.json).
-
-## Reprise concrète
-
-1. Qualifier l'admission et le moteur avec les cas A1/REV et références indépendantes, sans changer les seuils. Avant tout nouvel appel, vérifier les soldes et réserver une borne dans le reliquat historique de 2 € ; pas de nouvelle réserve ouverte par ce bilan.
-2. Terminer le raccordement fournisseur, son rapprochement authentifié, la récurrence/coût bornés et la preuve d'arrêt réel. Achever le mapping des questions/pending et la purge complète du compte.
-3. Au moment des preuves externes, créer/configurer les projets **gratuits dédiés** Supabase (région UE) et Firebase Spark, puis fournir la configuration dans les fichiers locaux appropriés. Aucun secret à coller dans la conversation. Ne pas acheter de domaine prématurément ; la délivrabilité publique des codes reste une condition distincte.
-4. Prouver FCM et la chaîne avec les cas de permission, session expirée, suppression, doublons et panne. Seulement alors déclencher l'observation S4 et ses références attendues.
-
-Guide reproductible : [service](../../service/README.md), [Android](../../android/README.md). Le [plan 10](../../docs/10-plan-de-validation-technique.md) reste ouvert conformément à ces preuves.
+Le transport SMTP de test Supabase reste limité aux membres de l'équipe et à deux messages/heure ; les premiers essais peuvent utiliser ces adresses. L'envoi public de codes et une éventuelle nécessité de domaine/SMTP restent distincts, sans achat demandé maintenant. Les accès permettront d'éprouver les preuves externes ; ils n'autorisent pas à déclarer les critères de qualité A1/REV satisfaits.

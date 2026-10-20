@@ -1,9 +1,19 @@
 {
-  "implementationCommit": "c658b4f0ef198aa4d5f630cebb6536e793a13cf8",
+  "implementationCommit": "68c6755b5b5902266afd744eefd2d99cf1441352",
   "baselineCommit": "4772eb3",
   "branch": "main",
   "remoteConfigured": false,
   "publicDeployment": false,
   "playPublication": false,
-  "additionalProviderSpendEUR": 0
+  "initialImplementationCommit": "c658b4f0ef198aa4d5f630cebb6536e793a13cf8",
+  "previousEvidenceCommit": "914518e",
+  "validatedAt": "2026-10-20T20:47:21.062312+00:00",
+  "additionalEstimatedOpenAIUSD": 0.004634,
+  "additionalPaidCalls": 9,
+  "sprintClosed": false,
+  "admissionA1": {
+    "passed": 7,
+    "total": 9,
+    "qualified": false
+  }
 }

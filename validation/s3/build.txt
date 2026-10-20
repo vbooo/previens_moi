@@ -31,12 +31,13 @@
 > Task :app:compileDemoDebugJavaWithJavac UP-TO-DATE
 > Task :app:hiltCollectClassesDemoDebug
 > Task :app:hiltAggregateDepsDemoDebug UP-TO-DATE
+> Task :app:kspRemoteDebugKotlin
 > Task :app:hiltJavaCompileDemoDebug UP-TO-DATE
-> Task :app:transformDemoDebugClassesWithAsm
-> Task :app:bundleDemoDebugClassesToRuntimeJar
 > Task :app:processDemoDebugJavaRes UP-TO-DATE
+> Task :app:transformDemoDebugClassesWithAsm
 > Task :app:bundleDemoDebugClassesToCompileJar
 > Task :app:kspDemoDebugUnitTestKotlin
+> Task :app:bundleDemoDebugClassesToRuntimeJar
 > Task :app:compileDemoDebugUnitTestKotlin
 > Task :app:processDemoDebugUnitTestJavaRes UP-TO-DATE
 > Task :app:compileDemoDebugUnitTestJavaWithJavac NO-SOURCE
@@ -44,9 +45,13 @@
 > Task :app:hiltAggregateDepsDemoDebugUnitTest UP-TO-DATE
 > Task :app:hiltJavaCompileDemoDebugUnitTest NO-SOURCE
 > Task :app:transformDemoDebugUnitTestClassesWithAsm
-> Task :app:kspRemoteDebugKotlin
+> Task :app:compileRemoteDebugKotlin
 > Task :app:testDemoDebugUnitTest
 > Task :app:javaPreCompileRemoteDebug UP-TO-DATE
+> Task :app:compileRemoteDebugJavaWithJavac
+> Task :app:hiltCollectClassesRemoteDebug
+> Task :app:hiltAggregateDepsRemoteDebug UP-TO-DATE
+> Task :app:hiltJavaCompileRemoteDebug
 > Task :app:checkRemoteDebugAarMetadata UP-TO-DATE
 > Task :app:mapRemoteDebugSourceSetPaths UP-TO-DATE
 > Task :app:compileRemoteDebugNavigationResources UP-TO-DATE
@@ -58,72 +63,25 @@
 > Task :app:processRemoteDebugManifestForPackage UP-TO-DATE
 > Task :app:processRemoteDebugResources UP-TO-DATE
 > Task :app:preRemoteDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileRemoteDebugUnitTest UP-TO-DATE
-> Task :app:mergeDemoDebugNativeDebugMetadata NO-SOURCE
-> Task :app:generateDemoDebugAssets UP-TO-DATE
-> Task :app:mergeDemoDebugAssets UP-TO-DATE
-> Task :app:compressDemoDebugAssets UP-TO-DATE
-> Task :app:generateDemoDebugGlobalSynthetics UP-TO-DATE
-> Task :app:mergeDemoDebugJavaResource UP-TO-DATE
-> Task :app:checkDemoDebugDuplicateClasses UP-TO-DATE
-> Task :app:desugarDemoDebugFileDependencies UP-TO-DATE
-> Task :app:mergeExtDexDemoDebug UP-TO-DATE
-> Task :app:mergeLibDexDemoDebug UP-TO-DATE
-> Task :app:compileRemoteDebugKotlin
-> Task :app:dexBuilderDemoDebug
-> Task :app:compileRemoteDebugJavaWithJavac
-> Task :app:hiltCollectClassesRemoteDebug
-> Task :app:hiltAggregateDepsRemoteDebug UP-TO-DATE
-> Task :app:hiltJavaCompileRemoteDebug
 > Task :app:processRemoteDebugJavaRes UP-TO-DATE
 > Task :app:transformRemoteDebugClassesWithAsm
 > Task :app:bundleRemoteDebugClassesToCompileJar
-> Task :app:bundleRemoteDebugClassesToRuntimeJar
 > Task :app:kspRemoteDebugUnitTestKotlin
-> Task :app:mergeProjectDexDemoDebug
-> Task :app:mergeDemoDebugJniLibFolders UP-TO-DATE
-> Task :app:mergeDemoDebugNativeLibs UP-TO-DATE
-> Task :app:stripDemoDebugDebugSymbols UP-TO-DATE
-> Task :app:validateSigningDemoDebug UP-TO-DATE
-> Task :app:writeDemoDebugAppMetadata UP-TO-DATE
-> Task :app:writeDemoDebugSigningConfigVersions UP-TO-DATE
-> Task :app:packageDemoDebug
-> Task :app:createDemoDebugApkListingFileRedirect UP-TO-DATE
-> Task :app:assembleDemoDebug
-> Task :app:mergeRemoteDebugNativeDebugMetadata NO-SOURCE
-> Task :app:generateRemoteDebugAssets UP-TO-DATE
-> Task :app:mergeRemoteDebugAssets UP-TO-DATE
-> Task :app:compressRemoteDebugAssets UP-TO-DATE
-> Task :app:generateRemoteDebugGlobalSynthetics UP-TO-DATE
-> Task :app:checkRemoteDebugDuplicateClasses UP-TO-DATE
-> Task :app:desugarRemoteDebugFileDependencies UP-TO-DATE
-> Task :app:mergeExtDexRemoteDebug UP-TO-DATE
-> Task :app:mergeLibDexRemoteDebug UP-TO-DATE
+> Task :app:bundleRemoteDebugClassesToRuntimeJar
+> Task :app:javaPreCompileRemoteDebugUnitTest UP-TO-DATE
+> Task :app:preDemoDebugAndroidTestBuild SKIPPED
 > Task :app:compileRemoteDebugUnitTestKotlin
-> Task :app:dexBuilderRemoteDebug
+> Task :app:generateDemoDebugAndroidTestLintModel
 > Task :app:processRemoteDebugUnitTestJavaRes UP-TO-DATE
 > Task :app:compileRemoteDebugUnitTestJavaWithJavac NO-SOURCE
 > Task :app:hiltCollectClassesRemoteDebugUnitTest
 > Task :app:hiltAggregateDepsRemoteDebugUnitTest UP-TO-DATE
 > Task :app:hiltJavaCompileRemoteDebugUnitTest NO-SOURCE
-> Task :app:transformRemoteDebugUnitTestClassesWithAsm
-> Task :app:mergeProjectDexRemoteDebug
-> Task :app:testRemoteDebugUnitTest
-> Task :app:mergeRemoteDebugJavaResource UP-TO-DATE
-> Task :app:mergeRemoteDebugJniLibFolders UP-TO-DATE
-> Task :app:mergeRemoteDebugNativeLibs UP-TO-DATE
-> Task :app:stripRemoteDebugDebugSymbols UP-TO-DATE
-> Task :app:validateSigningRemoteDebug UP-TO-DATE
-> Task :app:writeRemoteDebugAppMetadata UP-TO-DATE
-> Task :app:writeRemoteDebugSigningConfigVersions UP-TO-DATE
-> Task :app:preDemoDebugAndroidTestBuild SKIPPED
-> Task :app:generateDemoDebugAndroidTestLintModel
 > Task :app:extractProguardFiles UP-TO-DATE
 > Task :app:generateDemoDebugLintReportModel
+> Task :app:transformRemoteDebugUnitTestClassesWithAsm
 > Task :app:generateDemoDebugUnitTestLintModel
-> Task :app:packageRemoteDebug
-> Task :app:createRemoteDebugApkListingFileRedirect UP-TO-DATE
-> Task :app:assembleRemoteDebug
+> Task :app:testRemoteDebugUnitTest
 > Task :app:lintAnalyzeDemoDebugAndroidTest
 > Task :app:lintAnalyzeDemoDebugUnitTest
 > Task :app:preRemoteDebugAndroidTestBuild SKIPPED
@@ -134,11 +92,135 @@
 > Task :app:lintReportDemoDebug
 > Task :app:lintDemoDebug
 > Task :app:lintAnalyzeRemoteDebugAndroidTest
-> Task :app:lintAnalyzeRemoteDebugUnitTest
 > Task :app:lintAnalyzeRemoteDebug
+> Task :app:mergeDemoDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDemoDebugAssets UP-TO-DATE
+> Task :app:mergeDemoDebugAssets UP-TO-DATE
+> Task :app:compressDemoDebugAssets UP-TO-DATE
+> Task :app:generateDemoDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeDemoDebugJavaResource
+> Task :app:checkDemoDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDemoDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDemoDebug UP-TO-DATE
+> Task :app:mergeLibDexDemoDebug UP-TO-DATE
+> Task :app:lintAnalyzeRemoteDebugUnitTest
+> Task :app:dexBuilderDemoDebug
 > Task :app:lintReportRemoteDebug
 > Task :app:lintRemoteDebug
+> Task :app:mergeDemoDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDemoDebugNativeLibs UP-TO-DATE
+> Task :app:stripDemoDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDemoDebug UP-TO-DATE
+> Task :app:writeDemoDebugAppMetadata UP-TO-DATE
+> Task :app:writeDemoDebugSigningConfigVersions UP-TO-DATE
+> Task :app:mergeRemoteDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateRemoteDebugAssets UP-TO-DATE
+> Task :app:mergeRemoteDebugAssets UP-TO-DATE
+> Task :app:compressRemoteDebugAssets UP-TO-DATE
+> Task :app:generateRemoteDebugGlobalSynthetics UP-TO-DATE
+> Task :app:checkRemoteDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarRemoteDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexRemoteDebug UP-TO-DATE
+> Task :app:mergeLibDexRemoteDebug UP-TO-DATE
+> Task :app:mergeProjectDexDemoDebug
+> Task :app:dexBuilderRemoteDebug
+> Task :app:mergeProjectDexRemoteDebug
+> Task :app:mergeRemoteDebugJavaResource UP-TO-DATE
+> Task :app:mergeRemoteDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeRemoteDebugNativeLibs UP-TO-DATE
+> Task :app:stripRemoteDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningRemoteDebug UP-TO-DATE
+> Task :app:writeRemoteDebugAppMetadata UP-TO-DATE
+> Task :app:writeRemoteDebugSigningConfigVersions UP-TO-DATE
+> Task :app:packageDemoDebug
+> Task :app:createDemoDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleDemoDebug
+> Task :app:mergeDemoDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processDemoDebugAndroidTestManifest UP-TO-DATE
+> Task :app:generateDemoDebugAndroidTestBuildConfig UP-TO-DATE
+> Task :app:generateDemoDebugAndroidTestResources UP-TO-DATE
+> Task :app:packageDemoDebugAndroidTestResources UP-TO-DATE
+> Task :app:processDemoDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:parseDemoDebugAndroidTestLocalResources UP-TO-DATE
+> Task :app:generateDemoDebugAndroidTestRFile UP-TO-DATE
+> Task :app:kspDemoDebugAndroidTestKotlin
+> Task :app:packageRemoteDebug
+> Task :app:createRemoteDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleRemoteDebug
+> Task :app:javaPreCompileDemoDebugAndroidTest UP-TO-DATE
+> Task :app:generateDemoDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeDemoDebugAndroidTestAssets UP-TO-DATE
+> Task :app:compressDemoDebugAndroidTestAssets UP-TO-DATE
+> Task :app:generateDemoDebugAndroidTestGlobalSynthetics UP-TO-DATE
+> Task :app:checkDemoDebugAndroidTestDuplicateClasses UP-TO-DATE
+> Task :app:desugarDemoDebugAndroidTestFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDemoDebugAndroidTest UP-TO-DATE
+> Task :app:mergeLibDexDemoDebugAndroidTest UP-TO-DATE
+> Task :app:checkDemoDebugAndroidTestAarMetadata UP-TO-DATE
+> Task :app:mapDemoDebugAndroidTestSourceSetPaths UP-TO-DATE
+> Task :app:compileDemoDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:mergeDemoDebugAndroidTestResources UP-TO-DATE
+> Task :app:processDemoDebugAndroidTestResources UP-TO-DATE
+> Task :app:mergeDemoDebugAndroidTestJniLibFolders UP-TO-DATE
+> Task :app:mergeDemoDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripDemoDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningDemoDebugAndroidTest UP-TO-DATE
+> Task :app:writeDemoDebugAndroidTestSigningConfigVersions UP-TO-DATE
+> Task :app:mergeRemoteDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processRemoteDebugAndroidTestManifest UP-TO-DATE
+> Task :app:generateRemoteDebugAndroidTestBuildConfig UP-TO-DATE
+> Task :app:generateRemoteDebugAndroidTestResources UP-TO-DATE
+> Task :app:packageRemoteDebugAndroidTestResources UP-TO-DATE
+> Task :app:processRemoteDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:parseRemoteDebugAndroidTestLocalResources UP-TO-DATE
+> Task :app:generateRemoteDebugAndroidTestRFile UP-TO-DATE
+> Task :app:kspRemoteDebugAndroidTestKotlin
+> Task :app:compileRemoteDebugAndroidTestKotlin
+> Task :app:javaPreCompileRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:compileRemoteDebugAndroidTestJavaWithJavac UP-TO-DATE
+> Task :app:generateRemoteDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeRemoteDebugAndroidTestAssets UP-TO-DATE
+> Task :app:compressRemoteDebugAndroidTestAssets UP-TO-DATE
+> Task :app:generateRemoteDebugAndroidTestGlobalSynthetics UP-TO-DATE
+> Task :app:checkRemoteDebugAndroidTestDuplicateClasses UP-TO-DATE
+> Task :app:desugarRemoteDebugAndroidTestFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:mergeLibDexRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:hiltCollectClassesRemoteDebugAndroidTest
+> Task :app:hiltAggregateDepsRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:hiltJavaCompileRemoteDebugAndroidTest NO-SOURCE
+> Task :app:checkRemoteDebugAndroidTestAarMetadata UP-TO-DATE
+> Task :app:mapRemoteDebugAndroidTestSourceSetPaths UP-TO-DATE
+> Task :app:compileRemoteDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:mergeRemoteDebugAndroidTestResources UP-TO-DATE
+> Task :app:processRemoteDebugAndroidTestResources UP-TO-DATE
+> Task :app:transformRemoteDebugAndroidTestClassesWithAsm
+> Task :app:dexBuilderRemoteDebugAndroidTest
+> Task :app:mergeProjectDexRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:processRemoteDebugAndroidTestJavaRes UP-TO-DATE
+> Task :app:mergeRemoteDebugAndroidTestJavaResource UP-TO-DATE
+> Task :app:mergeRemoteDebugAndroidTestJniLibFolders UP-TO-DATE
+> Task :app:mergeRemoteDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripRemoteDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:writeRemoteDebugAndroidTestSigningConfigVersions UP-TO-DATE
+> Task :app:packageRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:createRemoteDebugAndroidTestApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleRemoteDebugAndroidTest UP-TO-DATE
+> Task :app:compileDemoDebugAndroidTestKotlin
+> Task :app:compileDemoDebugAndroidTestJavaWithJavac UP-TO-DATE
+> Task :app:processDemoDebugAndroidTestJavaRes UP-TO-DATE
+> Task :app:mergeDemoDebugAndroidTestJavaResource UP-TO-DATE
+> Task :app:hiltCollectClassesDemoDebugAndroidTest
+> Task :app:hiltAggregateDepsDemoDebugAndroidTest UP-TO-DATE
+> Task :app:hiltJavaCompileDemoDebugAndroidTest NO-SOURCE
+> Task :app:transformDemoDebugAndroidTestClassesWithAsm
+> Task :app:dexBuilderDemoDebugAndroidTest
+> Task :app:mergeProjectDexDemoDebugAndroidTest UP-TO-DATE
+> Task :app:packageDemoDebugAndroidTest UP-TO-DATE
+> Task :app:createDemoDebugAndroidTestApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleDemoDebugAndroidTest UP-TO-DATE
 
-BUILD SUCCESSFUL in 59s
-119 actionable tasks: 42 executed, 77 up-to-date
+BUILD SUCCESSFUL in 38s
+189 actionable tasks: 51 executed, 138 up-to-date
 Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html
