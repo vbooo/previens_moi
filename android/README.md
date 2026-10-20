@@ -1,10 +1,10 @@
-# Socle Android — Préviens-moi
+# Android — Préviens-moi
 
-Application native de démonstration du sprint 1. Données synthétiques, aucune surveillance réelle, aucun appel Exa/Firecrawl/OpenAI, aucune notification. Les deux écrans servent à éprouver les fondations ; le parcours produit complet appartient au sprint 2.
+Application native de démonstration des sprints 1 et 2. Parcours de création, clarification, proposition, identification fictive, gestion des suivis et consultation des résultats. **Aucun texte n’est interprété par une IA, aucun site surveillé, aucune notification envoyée.** Les scénarios sont choisis explicitement dans le menu « Scénarios ».
 
 ## Ouvrir et compiler
 
-Ouvrir ce dossier `android/` dans Android Studio. Choisir la variante `demoDebug`. Installer la plateforme Android 37.0 et Build Tools 36.0.0 via le SDK Manager, et sélectionner un JDK 17 pour Gradle. Le fichier `local.properties` porte le chemin SDK propre au poste et est exclu de Git.
+Ouvrir le dossier `android/` dans Android Studio et choisir `demoDebug`. Installer la plateforme Android 37.0 et Build Tools 36.0.0 ; sélectionner un JDK 17 pour Gradle. `local.properties` porte le chemin SDK propre au poste, exclu de Git.
 
 ```sh
 ./gradlew assembleDemoDebug testDemoDebugUnitTest lintDemoDebug
@@ -13,30 +13,66 @@ python3 ../scripts/check-android-boundaries.py --merged
 ./gradlew connectedDemoDebugAndroidTest
 ```
 
-Sur le poste de Fabien, les outils du projet sont dans `../.local/` : JDK dans `jdk/Contents/Home`, SDK dans `sdk/`, cache Gradle dans `gradle-home/`. Android Studio est installé dans `~/Applications/Android Studio.app`. Pour les commandes hors IDE, définir `JAVA_HOME` vers le JDK et `GRADLE_USER_HOME` vers ce cache. Ces chemins ne constituent pas une dépendance de la CI.
+Sur le poste de Fabien : outils dans `../.local/`, JDK `jdk/Contents/Home`, SDK `sdk/`, cache Gradle `gradle-home/`. Définir `JAVA_HOME` et `GRADLE_USER_HOME` vers ces chemins hors IDE. Android Studio est dans `~/Applications/Android Studio.app`. Ces chemins ne sont pas une dépendance de la CI. Le lancement de l’IDE est acquis en S1, pas la vérification visuelle de sa synchronisation.
 
-## Versions
+## Essayer le parcours
 
-AGP 9.4.1, Gradle 9.6.0, Kotlin/compilateur Compose/sérialisation 2.3.21, KSP 2.3.12, Hilt 2.60.1. Compose BOM 2026.09.00, Activity 1.13.0, Lifecycle 2.11.0, Navigation 3 **1.1.0**, coroutines 1.11.0. Catalogue : `gradle/libs.versions.toml`.
+1. Saisir une demande ; éventuellement activer le suivi dans la durée. « Prévisualiser » affiche une proposition synthétique contenant le texte saisi.
+2. Confirmer, utiliser le compte fictif, puis confirmer à nouveau. L’identification ne déclenche aucune activation automatique.
+3. Dans le détail, mettre en pause, reprendre ou modifier les critères. Supprimer demande confirmation.
+4. Menu « Scénarios » → « Simuler une vérification » : fabriquer un résultat fictif. Le mode ponctuel se termine au premier résultat ; le mode continu reste actif.
+5. Tester « Précision nécessaire », « Portée réduite », « Aucun résultat », « Source en panne », « Capacité épuisée », « Réponse perdue après succès » et les autres erreurs. Changer de scénario puis réessayer l’action permet de tester la récupération.
 
-Navigation 3 1.2.0 a été écarté à la compilation : son manifeste exige API 24. La version stable 1.1.0 conserve API 23, notre minimum. `compileSdk`/`targetSdk` 37 ; le téléphone virtuel fourni par le profil Android CLI `medium_phone` utilise API 36 ARM64. API 23 et 37 restent à tester avant publication.
+La capacité de 1 et l’intervalle de 24 h sont des paramètres de fixture. Aucun minuteur ne tourne ; ces chiffres ne fixent pas l’offre commerciale. Le brouillon est enregistré par DataStore. Les comptes, propositions, suivis et résultats vivent uniquement dans la mémoire du service demo : un arrêt du processus les efface. L’interface explique leur indisponibilité, sans prétendre qu’ils continuent à surveiller le Web.
 
-AGP fournit Kotlin intégré ; aucun plugin `org.jetbrains.kotlin.android` ajouté. Les plugins Compose et sérialisation alignent le compilateur Kotlin à 2.3.21. Le wrapper vérifie l’empreinte SHA-256 de Gradle. Aucun artefact demo release n’est généré.
+## Lire le code dans cet ordre
 
-## Lire l’architecture
+| Rôle | Fichier depuis ce dossier |
+| --- | --- |
+| Modèles et erreurs métier, sans Android | `app/src/main/kotlin/fr/previensmoi/domain/model/Watch.kt` |
+| Ports du domaine | `app/src/main/kotlin/fr/previensmoi/domain/repository/WatchRepository.kt` |
+| Service simulé : commandes, versions, reçus, quota atomique | `app/src/demo/kotlin/fr/previensmoi/data/demo/DemoService.kt` |
+| Persistance locale du brouillon | `app/src/main/kotlin/fr/previensmoi/data/local/LocalDraftRepository.kt` |
+| État et actions de création | `app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateViewModel.kt` |
+| Saisie et proposition Compose | `app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateScreen.kt` |
+| Liste, détail et résultat | `app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchScreens.kt` |
+| Actions sur les suivis | `app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchesViewModel.kt` |
+| Hilt et assemblage demo | `app/src/demo/kotlin/fr/previensmoi/app/DemoModule.kt` |
+| Navigation typée et entrée d’application | `app/src/demo/kotlin/fr/previensmoi/app/MainActivity.kt` |
 
-1. L’écran envoie une action `refresh()` au `WatchesViewModel`.
-2. Le ViewModel utilise le port `WatchRepository` du domaine.
-3. Hilt injecte `DemoWatchRepository`, présent uniquement dans `src/demo`.
-4. Le repository émet la liste confirmée ; le ViewModel expose un `StateFlow<WatchesUiState>` immuable.
-5. Compose collecte cet état selon le cycle de vie et redessine l’écran. Navigation 3 conserve une pile de clés sérialisables.
+**Changement de chemin en S2 :** `MainActivity` est maintenant dans `src/demo`, afin que l’assemblage et ses commandes de simulation restent isolés de la future variante réelle.
 
-Le domaine ne dépend ni d’Android ni de Hilt. Présentation et data dépendent du domaine ; l’assemblage connaît les implémentations. Un seul module Gradle : aucun cas d’usage de simple délégation ajouté pour remplir une couche. Le port S1 est volontairement réduit à lecture/rafraîchissement ; les commandes, versions et contrats complets seront implémentés avec les tests du sprint 2.
+## Expliquer l’architecture en entretien
 
-## Preuves et limites
+« J’utilise MVVM pour les écrans et des dépendances orientées vers le domaine. Une action Compose appelle le ViewModel, qui utilise un port de repository. Hilt fournit l’implémentation. Le repository possède l’état confirmé ; le ViewModel l’expose dans un `StateFlow` immuable, collecté par Compose avec le cycle de vie. La navigation repose sur des clés sérialisables Navigation 3. »
 
-Les tests unitaires vérifient double clic, échec sans perte de données et résultat réussi. Le test sur appareil vérifie la navigation, la recréation de l’Activity et le retour système sans perte de la liste. Ce n’est pas encore un test de mort du processus, de toute l’accessibilité ni du backend.
+Exemple concret : toucher « Mettre en pause » lance une commande identifiée et versionnée. L’écran montre son traitement, mais ne change pas arbitrairement le statut. Seul l’état confirmé par le service modifie la liste et le détail. En cas de réponse perdue, une nouvelle tentative réutilise la même commande : le reçu évite un deuxième effet. **Ces garanties sont éprouvées sur un double de service, et devront être imposées au serveur réel en S3.**
 
-Android Lint traite les avertissements comme erreurs. Les suggestions de mise à jour de versions sont gardées comme informations, avec un catalogue volontairement figé et compatible. Le contrôle Python vérifie les frontières d’import et le manifeste source. L’absence de permission réseau doit aussi être vérifiée sur l’APK livré, car une dépendance peut ajouter une permission.
+Le domaine est du Kotlin indépendant d’Android et de Hilt. Présentation et data dépendent du domaine ; l’assemblage connaît les implémentations. Un seul module Gradle suffit à ce stade ; pas de couches ou de cas d’usage qui ne font que transmettre un appel. Le contrôle d’imports protège ces frontières.
 
-La CI GitHub Actions est préparée dans `../.github/workflows/android.yml` ; aucun dépôt distant ni run distant n’est présumé. Le laboratoire historique et ses secrets sont exclus de Git. Aucun nouvel appel fournisseur payant n’est nécessaire à ces commandes.
+`StateFlow` ne survit pas seul à la mort du processus. DataStore conserve le brouillon sur disque ; `SavedStateHandle` conserve de petits identifiants pour restaurer le parcours. Le repository demo, en mémoire, ne survit pas : l’UI invalide alors l’ancienne proposition. Une réponse d’évaluation tardive est rejetée si la demande a changé ou si l’évaluation a été abandonnée.
+
+## Tests et preuves
+
+- Tests de contrat réutilisables via les ports : expiration exacte, idempotence, conflit de commande, dernière place concurrente, session, suppression, source en panne, reprise et version des résultats.
+- Tests de ViewModels : état confirmé conservé en erreur, double clic, réponse tardive, consentement explicite, identification sans activation, persistance défaillante et restauration.
+- Cinq tests Compose : création, clarification/portée partielle, navigation/recréation, mutations et suppression, résultat daté honnêtement, panne distincte d’absence de résultat.
+- Test réel de mort du processus : `../scripts/check-android-process-restoration.py`. Il **efface les données de l’application demo du périphérique ciblé** avant de préparer un brouillon, envoyer l’application en arrière-plan, tuer son processus et relancer la tâche. À réserver à un émulateur de test.
+
+```sh
+python3 ../scripts/check-android-process-restoration.py \
+  --serial emulator-5554 --adb ../.local/sdk/platform-tools/adb \
+  --output ../validation/android-s2
+```
+
+Le bilan daté et la matrice d’exécution sont dans [validation/android-s2](../validation/android-s2/bilan.md). Les rapports complets Gradle sont dans `app/build/reports/`, générés localement. Les tests existants servent de non-régression ; ce terme désigne leur réexécution après changement, pas une bibliothèque supplémentaire. Les captures contrôlées ne sont pas des screenshot tests automatiques de comparaison pixel à pixel.
+
+## Versions et limites
+
+AGP 9.4.1, Gradle 9.6.0, Kotlin/Compose compiler/sérialisation 2.3.21, KSP 2.3.12, Hilt 2.60.1. Compose BOM 2026.09.00, Activity 1.13.0, Lifecycle 2.11.0, Navigation 3 **1.1.0**, coroutines 1.11.0, DataStore Preferences **1.2.1**. Catalogue : `gradle/libs.versions.toml`.
+
+Navigation 3 1.2.0 exige API 24 ; la version stable 1.1.0 conserve notre minimum API 23. Compilation/cible 37. API 23 et 37 en exécution restent à tester avant publication. AGP fournit Kotlin intégré ; aucun plugin `org.jetbrains.kotlin.android` supplémentaire. Le wrapper contrôle le SHA-256 de Gradle. Aucun artefact release demo.
+
+Lint traite les avertissements comme erreurs ; six suggestions de mises à jour restent informatives pour préserver la matrice compatible. Le manifeste fusionné et l’APK doivent rester sans permission INTERNET. Aucun secret dans Android. La CI GitHub Actions compile, teste le domaine/ViewModels et exécute Lint et le contrôle de frontières ; ses tests sur appareil restent locaux à ce stade. **Aucun dépôt distant ni exécution de CI distante n’est prétendu.**
+
+La prochaine étape est S3-01 : choix et spécification du service réel, identité, API et coûts, avant toute intégration payante. Surveillance réelle, authentification, accès entre comptes, push, performance, revue complète TalkBack et publication ne sont pas validés par cette démo.

@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.serialization)
     implementation(libs.coroutines)
+    implementation(libs.datastore)
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
     androidTestImplementation(platform(libs.compose.bom))
