@@ -1,0 +1,59 @@
+{
+  "status": "passed_after_retry",
+  "first_streaming_install": "cancelled after no response; retry without streaming",
+  "checks": [
+    {
+      "action": [
+        "install",
+        "--no-streaming",
+        "-r"
+      ],
+      "exitCode": 0,
+      "stdout": "Performing Push Install\nSuccess",
+      "stderr": "android/app/build/outputs/apk/demo/debug/app-demo-debug.apk: 1 file pushed, 0 skipped. 3.8 MB/s (13926223 bytes in 3.455s)"
+    },
+    {
+      "action": [
+        "shell",
+        "am",
+        "force-stop"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "action": [
+        "shell",
+        "am",
+        "start"
+      ],
+      "exitCode": 0,
+      "stdout": "Starting: Intent { cmp=fr.previensmoi.prototype.demo/fr.previensmoi.app.MainActivity }\nStatus: ok\nLaunchState: UNKNOWN (0)\nActivity: fr.previensmoi.prototype.demo/fr.previensmoi.app.MainActivity\nWaitTime: 12963\nComplete",
+      "stderr": ""
+    },
+    {
+      "action": [
+        "shell",
+        "pidof",
+        "fr.previensmoi.prototype.demo"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "error": "Command failed"
+    }
+  ],
+  "retry": {
+    "reason": "First process killed by ActivityManager start timeout; no app crash in crash buffer",
+    "launch_state": "COLD",
+    "launch_total_ms": 5062,
+    "pid": "18415",
+    "resumed": [
+      "topResumedActivity=ActivityRecord{160685935 u0 fr.previensmoi.prototype.demo/fr.previensmoi.app.MainActivity t81}",
+      "ResumedActivity: ActivityRecord{160685935 u0 fr.previensmoi.prototype.demo/fr.previensmoi.app.MainActivity t81}"
+    ]
+  }
+}

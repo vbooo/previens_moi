@@ -1,0 +1,74 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDemoDebugBuild UP-TO-DATE
+> Task :app:generateDemoDebugResources UP-TO-DATE
+> Task :app:packageDemoDebugResources UP-TO-DATE
+> Task :app:processDemoDebugNavigationResources UP-TO-DATE
+> Task :app:parseDemoDebugLocalResources UP-TO-DATE
+> Task :app:generateDemoDebugRFile UP-TO-DATE
+> Task :app:kspDemoDebugKotlin UP-TO-DATE
+> Task :app:compileDemoDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDemoDebug UP-TO-DATE
+> Task :app:compileDemoDebugJavaWithJavac UP-TO-DATE
+> Task :app:hiltCollectClassesDemoDebug UP-TO-DATE
+> Task :app:hiltAggregateDepsDemoDebug UP-TO-DATE
+> Task :app:hiltJavaCompileDemoDebug UP-TO-DATE
+> Task :app:checkDemoDebugAarMetadata UP-TO-DATE
+> Task :app:mapDemoDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileDemoDebugNavigationResources UP-TO-DATE
+> Task :app:mergeDemoDebugResources UP-TO-DATE
+> Task :app:createDemoDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDemoDebug UP-TO-DATE
+> Task :app:processDemoDebugMainManifest
+> Task :app:processDemoDebugManifest
+> Task :app:preDemoDebugUnitTestBuild UP-TO-DATE
+> Task :app:processDemoDebugJavaRes UP-TO-DATE
+> Task :app:javaPreCompileDemoDebugUnitTest UP-TO-DATE
+> Task :app:mergeDemoDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDemoDebugAssets UP-TO-DATE
+> Task :app:mergeDemoDebugAssets UP-TO-DATE
+> Task :app:compressDemoDebugAssets UP-TO-DATE
+> Task :app:generateDemoDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeDemoDebugJavaResource UP-TO-DATE
+> Task :app:checkDemoDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDemoDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDemoDebug UP-TO-DATE
+> Task :app:mergeLibDexDemoDebug UP-TO-DATE
+> Task :app:mergeDemoDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDemoDebugNativeLibs UP-TO-DATE
+> Task :app:stripDemoDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDemoDebug UP-TO-DATE
+> Task :app:writeDemoDebugAppMetadata UP-TO-DATE
+> Task :app:writeDemoDebugSigningConfigVersions UP-TO-DATE
+> Task :app:preDemoDebugAndroidTestBuild SKIPPED
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:generateDemoDebugLintReportModel
+> Task :app:processDemoDebugManifestForPackage
+> Task :app:processDemoDebugResources
+> Task :app:transformDemoDebugClassesWithAsm UP-TO-DATE
+> Task :app:bundleDemoDebugClassesToRuntimeJar UP-TO-DATE
+> Task :app:bundleDemoDebugClassesToCompileJar UP-TO-DATE
+> Task :app:kspDemoDebugUnitTestKotlin UP-TO-DATE
+> Task :app:compileDemoDebugUnitTestKotlin UP-TO-DATE
+> Task :app:processDemoDebugUnitTestJavaRes UP-TO-DATE
+> Task :app:compileDemoDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:hiltCollectClassesDemoDebugUnitTest UP-TO-DATE
+> Task :app:hiltAggregateDepsDemoDebugUnitTest UP-TO-DATE
+> Task :app:hiltJavaCompileDemoDebugUnitTest NO-SOURCE
+> Task :app:transformDemoDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :app:testDemoDebugUnitTest UP-TO-DATE
+> Task :app:dexBuilderDemoDebug UP-TO-DATE
+> Task :app:mergeProjectDexDemoDebug UP-TO-DATE
+> Task :app:generateDemoDebugAndroidTestLintModel
+> Task :app:generateDemoDebugUnitTestLintModel
+> Task :app:packageDemoDebug
+> Task :app:createDemoDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleDemoDebug
+> Task :app:lintAnalyzeDemoDebugAndroidTest
+> Task :app:lintAnalyzeDemoDebugUnitTest
+> Task :app:lintAnalyzeDemoDebug
+> Task :app:lintReportDemoDebug
+> Task :app:lintDemoDebug
+
+BUILD SUCCESSFUL in 10s
+59 actionable tasks: 13 executed, 46 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.0/userguide/configuration_cache_enabling.html

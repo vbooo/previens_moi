@@ -1,0 +1,95 @@
+{
+  "source_revision": "2f78dc5b1c9d9193937868df2bddc99a028c9d23",
+  "tests": [
+    {
+      "suite": "fr.previensmoi.contract.DemoWatchContractTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "C11_activationWithoutInitialResultIsValid",
+        "C12_resumeDoesNotCatchUpAndOldResultsKeepPlanVersion",
+        "C01_expirationIncludesExactBoundary",
+        "C04_lastSlotIsAtomic",
+        "C08_deleteReplaysWithoutRevealingDeletedContent",
+        "C13_unknownPublicationRemainsUnknownAndOnceCompletes",
+        "C06_failedPauseAndStaleReplacementPreserveState",
+        "C05_sessionAndVersionAreValidatedBeforeMutation",
+        "capacitySuspensionCannotBeResumedUntilCapacityIsAvailable",
+        "C02_lostResponseReplayAfterExpiryAndNewIdNeverDuplicates",
+        "C07_sourceFailureDoesNotReplaceLastSuccess",
+        "C03_commandIdCannotChangeMeaning"
+      ]
+    },
+    {
+      "suite": "fr.previensmoi.data.remote.ApplicationApiTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "cancellation propagates and transport failure does not claim airplane mode",
+        "every positive contract example is decodable without losing unknown dates",
+        "204 deletion response is handled without a fake JSON body",
+        "successful empty list is distinct from malformed and unknown responses",
+        "unknown response fields are compatible and optional dates stay null",
+        "202 remains pending and retry sends the same command with no duplicate identity",
+        "quota retains machine readable error and does not become an empty success",
+        "diagnostic strings redact preview and push secrets",
+        "preview credentials do not leak into public requests and redirects are not followed",
+        "cleartext and credentials in production base URL are rejected",
+        "large or non JSON errors retain their failure HTTP status"
+      ]
+    },
+    {
+      "suite": "fr.previensmoi.feature.create.presentation.CreateViewModelTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "cancelled preview cannot resurrect after revise",
+        "C10 partial general request requires consent then login then another confirmation",
+        "draft storage failure is visible without pretending data is saved",
+        "C14 restored proposal lost with process reports reset and restores draft without activation",
+        "edit failure keeps confirmed plan and retry commits then clears draft",
+        "C09 late response for A cannot replace B even when cancellation is ignored",
+        "lost activation reply retries same command after proposal expires",
+        "unsupported expired and quota never produce activation success"
+      ]
+    },
+    {
+      "suite": "fr.previensmoi.feature.watches.presentation.WatchCommandsTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "conflict surfaces current state and requires new user command with current version",
+        "mutation waits for service confirmation and transport retry keeps same identity"
+      ]
+    },
+    {
+      "suite": "fr.previensmoi.feature.watches.presentation.WatchesViewModelTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "successful refresh exposes repository data",
+        "failed refresh retains confirmed data and ignores double tap"
+      ]
+    }
+  ],
+  "total": 35,
+  "lint": {
+    "Error": 0,
+    "Warning": 0,
+    "Hint": 7
+  },
+  "apk_sha256": "3671673c21499a47ed3ea14fa00532fad602e11a462016aa6e7aa9c2ee10456b",
+  "provider_calls": 0,
+  "new_provider_cost": 0,
+  "scope": "HTTP client against local mock server; demo regressions; no real identity or business backend"
+}

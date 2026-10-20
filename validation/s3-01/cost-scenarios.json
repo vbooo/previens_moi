@@ -1,0 +1,69 @@
+{
+  "status": "conditional_estimate_not_invoice",
+  "date": "2026-10-20",
+  "new_provider_spend": 0,
+  "execution_enabled": false,
+  "actual_capacity": 0,
+  "known_historical_trial_cap_eur": 2,
+  "hosting_scenario": {
+    "people": 10,
+    "business_requests_per_person_daily": 20,
+    "days": 30,
+    "business_requests": 6000,
+    "five_minute_wakeups": 8640,
+    "other_requests_assumed": 1000,
+    "total_function_requests": 15640,
+    "assumed_mean_response_bytes": 20000,
+    "estimated_response_bytes": 312800000
+  },
+  "firecrawl_sensitivity": [
+    {
+      "active_watches": 1,
+      "checks_per_watch": 30,
+      "search_only_credits": 60,
+      "search_plus_ten_new_judgments": 360,
+      "high_plus_20_percent": 432
+    },
+    {
+      "active_watches": 2,
+      "checks_per_watch": 30,
+      "search_only_credits": 120,
+      "search_plus_ten_new_judgments": 720,
+      "high_plus_20_percent": 864
+    },
+    {
+      "active_watches": 5,
+      "checks_per_watch": 30,
+      "search_only_credits": 300,
+      "search_plus_ten_new_judgments": 1800,
+      "high_plus_20_percent": 2160
+    },
+    {
+      "active_watches": 10,
+      "checks_per_watch": 30,
+      "search_only_credits": 600,
+      "search_plus_ten_new_judgments": 3600,
+      "high_plus_20_percent": 4320
+    },
+    {
+      "active_watches": 50,
+      "checks_per_watch": 30,
+      "search_only_credits": 3000,
+      "search_plus_ten_new_judgments": 18000,
+      "high_plus_20_percent": 21600
+    }
+  ],
+  "unknown_cost_items": [
+    "email domain acquisition/renewal",
+    "independent encrypted backup destination",
+    "qualified admission model and token budget",
+    "actual provider account balance and plan",
+    "tax and exchange rate"
+  ],
+  "source_urls": [
+    "https://supabase.com/pricing",
+    "https://resend.com/pricing",
+    "https://firebase.google.com/pricing",
+    "https://docs.firecrawl.dev/features/monitoring-web-scale"
+  ]
+}
