@@ -1,0 +1,16 @@
+# Local tools, credentials and experimental raw data
+.local/
+.env
+.env.*
+!.env.example
+engine-lab/
+.DS_Store
+.idea/
+.gradle/
+.kotlin/
+**/build/
+**/local.properties
+*.jks
+*.keystore
+*.hprof
+captures/

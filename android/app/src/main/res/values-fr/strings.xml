@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Préviens-moi · Démo</string>
+    <string name="demo_banner">Démo · données fictives · aucune alerte envoyée</string>
+    <string name="title">Tes suivis</string>
+    <string name="empty">Aucun suivi dans cette démonstration.</string>
+    <string name="refresh">Charger l’exemple</string>
+    <string name="loading">Chargement…</string>
+    <string name="failure">Impossible de charger l’exemple. Réessaie.</string>
+    <string name="sample_title">Annonces de concerts · salle fictive</string>
+    <string name="sample_detail">Cet exemple fictif sert à tester l’interface Android. Aucun site n’est surveillé.</string>
+    <string name="open_detail">Voir l’exemple</string>
+    <string name="back">Retour</string>
+</resources>

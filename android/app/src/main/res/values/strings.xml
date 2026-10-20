@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Préviens-moi · Demo</string>
+    <string name="demo_banner">Demo · fictional data · no alerts sent</string>
+    <string name="title">Your watches</string>
+    <string name="empty">No watches in this demonstration.</string>
+    <string name="refresh">Load the example</string>
+    <string name="loading">Loading…</string>
+    <string name="failure">The example could not load. Try again.</string>
+    <string name="sample_title">Concert announcements · fictional venue</string>
+    <string name="sample_detail">This is a synthetic example used to test the Android interface. No website is monitored.</string>
+    <string name="open_detail">View the example</string>
+    <string name="back">Back</string>
+</resources>
