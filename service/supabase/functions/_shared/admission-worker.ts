@@ -12,7 +12,7 @@ export async function interpretOne(port:AdmissionPort,key:string,enabled:boolean
   const value=await response.json();const usage=value.usage;
   if(!Number.isSafeInteger(usage?.input_tokens)||usage.input_tokens<0||!Number.isSafeInteger(usage?.output_tokens)||usage.output_tokens<0)throw new Error('Unknown usage');
   actual=Math.ceil(usage.input_tokens*.4+usage.output_tokens*1.6);
-  parsed=parseAdmissionResponse(value);
+  parsed=parseAdmissionResponse(value,job.request.draft);
   if(parsed.status==='clarify')result={...base,status:'clarification',questions:parsed.questions};
   else {
    // Understanding alone cannot make a proposal. Independent source/quality gates remain closed.

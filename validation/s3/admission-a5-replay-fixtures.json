@@ -1,0 +1,277 @@
+[
+  {
+    "id": "A01",
+    "input": "Préviens-moi quand le Ninja AF300EU neuf passe sous 150 €, livraison comprise en France métropolitaine, sans abonnement ni reprise.",
+    "expected": {
+      "status": "proposal",
+      "criteria": {
+        "model": "AF300EU",
+        "condition": [
+          "new"
+        ],
+        "ceiling_cents": 15000,
+        "operator": "lt",
+        "currency": "EUR",
+        "delivery_zone": "FR-METRO",
+        "shipping_included": true,
+        "no_subscription": true,
+        "no_trade_in": true,
+        "version": 1,
+        "mode": "continuous"
+      },
+      "questions": []
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":\"Ninja\",\"retail_evidence\":{\"delivery_country\":\"France métropolitaine\",\"conditions\":[{\"state\":\"new\",\"quote\":\"neuf\"}]},\"decision\":{\"family\":\"retail\",\"status\":\"understood\",\"criteria\":{\"model\":\"AF300EU\",\"ceiling_cents\":15000,\"operator\":\"lt\",\"currency\":\"EUR\",\"delivery_zone\":\"FR-METRO\",\"shipping_included\":true,\"no_subscription\":true,\"no_trade_in\":true,\"version\":1,\"mode\":\"continuous\"},\"subject\":null,\"location\":null,\"questions\":[],\"explanation\":\"L'utilisateur demande une alerte pour le Ninja AF300EU neuf à moins de 150 € avec livraison en France métropolitaine, sans abonnement ni reprise. Toutes les informations nécessaires sont présentes pour comprendre la demande.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A02",
+    "input": "Notify me when a new Ninja AF300EU goes below EUR 150 including delivery to mainland France, without a subscription or trade-in.",
+    "expected": {
+      "status": "proposal",
+      "criteria": {
+        "model": "AF300EU",
+        "condition": [
+          "new"
+        ],
+        "ceiling_cents": 15000,
+        "operator": "lt",
+        "currency": "EUR",
+        "delivery_zone": "FR-METRO",
+        "shipping_included": true,
+        "no_subscription": true,
+        "no_trade_in": true,
+        "version": 1,
+        "mode": "continuous"
+      },
+      "questions": []
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":\"Ninja\",\"retail_evidence\":{\"delivery_country\":\"mainland France\",\"conditions\":[]},\"decision\":{\"family\":\"retail\",\"status\":\"understood\",\"criteria\":{\"model\":\"AF300EU\",\"ceiling_cents\":15000,\"operator\":\"lt\",\"currency\":\"EUR\",\"delivery_zone\":\"FR-METRO\",\"shipping_included\":true,\"no_subscription\":true,\"no_trade_in\":true,\"version\":1,\"mode\":\"continuous\"},\"subject\":null,\"location\":null,\"questions\":[],\"explanation\":\"The user requests a retail watch for the Ninja AF300EU model with a price below EUR 150 including delivery to mainland France, explicitly excluding subscription and trade-in. All decisive criteria are present and extracted.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A03",
+    "input": "Un airfryer pas cher",
+    "expected": {
+      "status": "clarify",
+      "criteria": null,
+      "questions": [
+        "product",
+        "budget"
+      ]
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":null,\"conditions\":[]},\"decision\":{\"family\":\"retail\",\"status\":\"clarify\",\"criteria\":null,\"subject\":null,\"location\":null,\"questions\":[{\"id\":\"product\",\"label\":\"Quel produit recherchez-vous exactement ?\",\"options\":[],\"required\":true},{\"id\":\"budget\",\"label\":\"Quel est votre budget maximal en centimes ?\",\"options\":[],\"required\":true},{\"id\":\"delivery_zone\",\"label\":\"Dans quel pays ou région souhaitez-vous la livraison ?\",\"options\":[],\"required\":true}],\"explanation\":\"Votre demande est trop vague. Veuillez préciser le modèle exact de l'airfryer, votre budget maximal en centimes, et le pays ou la région de livraison.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A04",
+    "input": "AF300EU neuf sous 150 € livraison comprise sans abonnement ni reprise",
+    "expected": {
+      "status": "clarify",
+      "criteria": null,
+      "questions": [
+        "delivery_zone"
+      ]
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":null,\"conditions\":[{\"state\":\"new\",\"quote\":\"neuf\"}]},\"decision\":{\"family\":\"retail\",\"status\":\"clarify\",\"criteria\":null,\"subject\":null,\"location\":null,\"questions\":[{\"id\":\"product\",\"label\":\"Quel est le modèle exact du produit ?\",\"options\":[],\"required\":true},{\"id\":\"budget\",\"label\":\"Quel est votre budget maximal en centimes ?\",\"options\":[],\"required\":true},{\"id\":\"delivery_zone\",\"label\":\"Dans quelle zone souhaitez-vous la livraison ?\",\"options\":[],\"required\":true},{\"id\":\"condition\",\"label\":\"Quel état du produit acceptez-vous ?\",\"options\":[\"neuf\",\"reconditionné\",\"occasion\"],\"required\":true},{\"id\":\"shipping\",\"label\":\"La livraison doit-elle être comprise dans le prix ?\",\"options\":[\"oui\",\"non\"],\"required\":true}],\"explanation\":\"Le modèle est donné comme AF300EU, mais il manque la confirmation explicite de la zone de livraison. Veuillez préciser la zone de livraison pour finaliser les critères.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A05",
+    "input": "AF300EU neuf sous 150 € livré en France métropolitaine sans abonnement ni reprise ; finalement le reconditionné me convient aussi",
+    "expected": {
+      "status": "proposal",
+      "criteria": {
+        "model": "AF300EU",
+        "condition": [
+          "new",
+          "refurbished"
+        ],
+        "ceiling_cents": 15000,
+        "operator": "lt",
+        "currency": "EUR",
+        "delivery_zone": "FR-METRO",
+        "shipping_included": true,
+        "no_subscription": true,
+        "no_trade_in": true,
+        "version": 1,
+        "mode": "continuous"
+      },
+      "questions": []
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":\"France métropolitaine\",\"conditions\":[{\"state\":\"new\",\"quote\":\"neuf\"},{\"state\":\"refurbished\",\"quote\":\"reconditionné\"}]},\"decision\":{\"family\":\"retail\",\"status\":\"understood\",\"criteria\":{\"model\":\"AF300EU\",\"ceiling_cents\":15000,\"operator\":\"lt\",\"currency\":\"EUR\",\"delivery_zone\":\"FR-METRO\",\"shipping_included\":true,\"no_subscription\":true,\"no_trade_in\":true,\"version\":1,\"mode\":\"continuous\"},\"subject\":null,\"location\":null,\"questions\":[],\"explanation\":\"Critères complets extraits : modèle AF300EU, prix sous 150 €, livré en France métropolitaine, neuf ou reconditionné accepté, sans abonnement ni reprise.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A06",
+    "input": "AF300EU neuf 150 € maximum livré en France métropolitaine sans abonnement ni reprise",
+    "expected": {
+      "status": "proposal",
+      "criteria": {
+        "model": "AF300EU",
+        "condition": [
+          "new"
+        ],
+        "ceiling_cents": 15000,
+        "operator": "lte",
+        "currency": "EUR",
+        "delivery_zone": "FR-METRO",
+        "shipping_included": true,
+        "no_subscription": true,
+        "no_trade_in": true,
+        "version": 1,
+        "mode": "continuous"
+      },
+      "questions": []
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":\"France métropolitaine\",\"conditions\":[{\"state\":\"new\",\"quote\":\"neuf\"}]},\"decision\":{\"family\":\"retail\",\"status\":\"understood\",\"criteria\":{\"model\":\"AF300EU\",\"ceiling_cents\":15000,\"operator\":\"lte\",\"currency\":\"EUR\",\"delivery_zone\":\"FR-METRO\",\"shipping_included\":true,\"no_subscription\":true,\"no_trade_in\":true,\"version\":1,\"mode\":\"continuous\"},\"subject\":null,\"location\":null,\"questions\":[],\"explanation\":\"Le critère est complet et explicite : modèle AF300EU, prix maximum 150 €, livré en France métropolitaine, neuf, sans abonnement ni reprise.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A07",
+    "input": "Préviens-moi d’un prélèvement sur mon compte bancaire",
+    "expected": {
+      "status": "unsupported",
+      "criteria": null,
+      "questions": []
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":null,\"conditions\":[]},\"decision\":{\"family\":\"private\",\"status\":\"unsupported\",\"criteria\":null,\"subject\":null,\"location\":null,\"questions\":[],\"explanation\":\"La demande concerne une alerte sur un prélèvement bancaire privé, ce qui est hors du champ d'interprétation des montres de prix retail ou annonces publiques.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "A08",
+    "input": "Préviens-moi pour le modèle TEST-X42 neuf sous 90 € livraison comprise en France métropolitaine sans abonnement ni reprise",
+    "expected": {
+      "status": "proposal",
+      "criteria": {
+        "model": "TEST-X42",
+        "condition": [
+          "new"
+        ],
+        "ceiling_cents": 9000,
+        "operator": "lt",
+        "currency": "EUR",
+        "delivery_zone": "FR-METRO",
+        "shipping_included": true,
+        "no_subscription": true,
+        "no_trade_in": true,
+        "version": 1,
+        "mode": "continuous"
+      },
+      "questions": []
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":\"France métropolitaine\",\"conditions\":[{\"state\":\"new\",\"quote\":\"neuf\"}]},\"decision\":{\"family\":\"retail\",\"status\":\"understood\",\"criteria\":{\"model\":\"TEST-X42\",\"ceiling_cents\":9000,\"operator\":\"lte\",\"currency\":\"EUR\",\"delivery_zone\":\"FR-METRO\",\"shipping_included\":true,\"no_subscription\":true,\"no_trade_in\":true,\"version\":1,\"mode\":\"continuous\"},\"subject\":null,\"location\":null,\"questions\":[],\"explanation\":\"La demande est claire : modèle TEST-X42 neuf, prix au plus 90 € livraison comprise, livraison en France métropolitaine, sans abonnement ni reprise.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "D01",
+    "input": "Préviens-moi des nouveaux concerts annoncés à l’Accor Arena Paris.",
+    "expected": {
+      "family": "concert",
+      "status": "understood",
+      "subject": "Accor Arena",
+      "location": "Paris"
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"manufacturer\":null,\"retail_evidence\":{\"delivery_country\":null,\"conditions\":[]},\"decision\":{\"family\":\"concert\",\"status\":\"understood\",\"criteria\":null,\"subject\":\"Accor Arena\",\"location\":\"Paris\",\"questions\":[],\"explanation\":\"L'utilisateur demande des annonces de concerts à l'Accor Arena à Paris, ce qui correspond à une demande de type concert avec sujet et localisation explicites.\"}}"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]
