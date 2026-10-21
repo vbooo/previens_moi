@@ -1,4 +1,5 @@
 import {Firecrawl,createPaused,runBounded,reconcile} from './firecrawl.ts';
+import {textChangePlan,textChangeFinding} from './page-change.ts';
 export interface ProviderJob {
  id:string;lease_token:string;kind:'start'|'check';watch_id:string;generation:number;
  plan:{method:string;sources:{url:string}[];draft:{text:string}};providerId:string|null;
@@ -10,7 +11,7 @@ export interface ProviderPort {
  allowed(job:ProviderJob):Promise<boolean>;
  settle(job:ProviderJob,credits:number):Promise<void>;
  event(monitor:string,check:string):Promise<Record<string,unknown>|null>;
- complete(job:ProviderJob,observed:string,outcome:'baseline'|'no_change'|'failed',credits:number):Promise<void>;
+ complete(job:ProviderJob,observed:string,outcome:'baseline'|'no_change'|'failed'|'finding',credits:number,verified?:{finding:Record<string,unknown>;factKey:string}):Promise<void>;
 }
 export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boolean,webhook:string):Promise<string> {
  // The public receiver is a prerequisite, not an optional mocked URL in production.
@@ -23,7 +24,7 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
   if(!job.attempt&&job.kind==='check')await checkpoint('begin');
   const phase=job.attempt?.phase??(job.kind==='start'?'create':'run');
   if(phase==='create') {
-   await createPaused(client,job.id,source,job.plan.draft.text,webhook,{async begin(){return await checkpoint('begin');},async remember(id){await checkpoint('remember',{id});},async unknown(){await checkpoint('unknown');}});
+   await createPaused(client,job.id,source,job.plan.draft.text,webhook,{async begin(){return await checkpoint('begin');},async remember(id){await checkpoint('remember',{id});},async unknown(){await checkpoint('unknown');}},Date.now(),!textChangePlan(job.plan));
    await checkpoint('later');return 'created_paused';
   }
   const monitor=job.attempt?.monitor_id??job.providerId;if(!monitor)throw new Error('Remote identity missing');
@@ -55,7 +56,12 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
    } else {
     // A change is not an affirmative finding. Generic semantic judging remains
     // unqualified after A1 and must fail visibly, never become silent no_change.
-    await port.complete(job,value.observedAt,value.outcome==='no_change'?'no_change':'failed',actual);
+    if(value.outcome==='candidate_requires_evidence'&&value.page?.status==='changed'&&textChangePlan(job.plan)) {
+     let verified;
+     try {verified=await textChangeFinding(job.plan,job.watch_id,value.page,value.observedAt);}
+     catch {await port.complete(job,value.observedAt,'failed',actual);return 'checked';}
+     await port.complete(job,value.observedAt,verified?'finding':'no_change',actual,verified??undefined);
+    } else await port.complete(job,value.observedAt,value.outcome==='no_change'?'no_change':'failed',actual);
    }
    return job.kind==='start'?'baseline':'checked';
   }

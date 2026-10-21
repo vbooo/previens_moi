@@ -1,4 +1,28 @@
-# Sprint 3 — bilan du complément du 20 octobre 2026
+# Sprint 3 — état au 21 octobre 2026
+
+**Le premier pilote réel de changements textuels est vérifié et ouvert pour un essai limité. S3 reste ouvert et la V1 générale n’est pas terminée.** La saisie libre d’événements ou de sujets, la découverte et le jugement général restent dans le périmètre initial ; ce pilote ne les remplace pas.
+
+Le faux message d’échec d’actualisation à la déconnexion est remplacé par une invitation à se connecter. Les lignes privées et le bouton d’actualisation ne sont plus affichés sans compte. Vérification Android en français et anglais, avec un état contenant volontairement une ancienne erreur et un ancien suivi.
+
+La demande `Préviens-moi de tout changement sur https://…` (ou sa forme anglaise `Notify me of any change on https://…`) produit une proposition partielle pour une URL publique, avec critères, exclusions et intervalle. Après confirmation, première lecture silencieuse, comparaison textuelle, preuve sourcée et notification Android. Maximum 20 lignes / 1 000 caractères ; même modification exacte dédupliquée. Ce n’est pas un jugement de pertinence, de nouveauté Web ou de récence de publication.
+
+**Preuve réelle :** source publique fictive modifiée par HTTP, lectures Firecrawl réelles, webhook signé reçu dans Supabase, rapprochement API, résultat créé par le worker et relu sous authentification, notification FCM reçue sur l’émulateur. Pause puis suppression distante confirmées par absence HTTP 404 ; compte, source et données de contrôle retirés. Le second contrôle a été avancé uniquement pour ce suivi de test : aucune heure complète ou observation de sept jours n’est revendiquée. Un réveil automatique du worker par le planificateur cloud a ensuite été observé sans suivi utilisateur actif. [Preuves](page-change-pilot.json).
+
+Un premier essai a exposé la comparaison erronée de l’ordre des champs JSON : corrigée, régression ajoutée et vrai message reçu rejoué avec succès. Un essai préliminaire avait rencontré un HTTP 429 ; arrêt confirmé et nettoyage des deux essais échoués. Aucun échec n’a été transformé en état initial valide.
+
+**Vérifications utiles :** 57 tests Deno, 31 intégrations locales PostgreSQL/Auth/Edge, 49 tests unitaires demo et 27 remote (partie commune : ne pas additionner comme méthodes distinctes), deux parcours de déconnexion FR/EN. APK recompilées, clés privilégiées contrôlées absentes. L’enregistrement du terminal et la réception réelle sont des tests cloud séparés, sans nouvelle demande de code e-mail.
+
+**État laissé :** 29 migrations et quatre fonctions déployées. Un emplacement global, contrôles horaires, jusqu’à 12 crédits gratuits supplémentaires pour l’essai utilisateur. Seule la proposition textuelle explicite est ouverte ; admission IA désactivée, aucune nouvelle clé/permission payante activée. Pause ou suppression retire l’ancien objet fournisseur ; une reprise établit un nouvel état initial. L’interface indique la portée limitée. Le planificateur peut continuer sans cette conversation ni l’ordinateur.
+
+**Budget :** 4 crédits Firecrawl gratuits consommés pendant ce complément, solde 981 avant l’essai utilisateur. Aucun nouvel appel OpenAI/Exa, abonnement, recharge ou plan payant. Borne conservatrice cumulée inchangée : **1,9414335 € / 2 €**, distincte d’une facture rapprochée. [Registre](costs.json). Git reste local ; aucun push.
+
+**Pour finir la V1 :** qualifier indépendamment la compréhension libre, la découverte de sources, la récence et les jugements sémantiques ; vérifier la déduplication entre sources, les cas limites de notification dans la chaîne déployée et la restauration cloud. S4 reste l’observation de sept jours, les contrôles de diffusion, confidentialité/accessibilité/performance et la publication après régularisation du compte Play. Aucun accès supplémentaire n’est nécessaire pour essayer ce pilote. [Plan initial](../../docs/10-plan-de-validation-technique.md).
+
+## Historique des compléments précédents
+
+Les chiffres, gardes fermées et accès manquants ci-dessous sont les états historiques de leurs dates ; l’état courant est celui décrit ci-dessus.
+
+### Bilan du complément du 20 octobre 2026
 
 **Mise à jour du 21 octobre :** les deux défauts d’admission sont corrigés ; A5 passe **9/9**, avec **50 tests Deno** et **29 intégrations**. Les campagnes intermédiaires et coûts sont conservés dans le [rapport de correction](correction-admission.md). Le bilan du 20 octobre ci-dessous reste historique.
 

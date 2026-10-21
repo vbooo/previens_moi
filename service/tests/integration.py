@@ -110,7 +110,7 @@ class Integration(unittest.TestCase):
  @classmethod
  def tearDownClass(cls):
   # Leave no active fixture/capacity on completion (even on test failures).
-  sql("update private.capacity set enabled=false,slots=reserved");sql("update private.method_qualifications set qualified=false");sql("update private.admission_capacity set enabled=false,qualified=false")
+  sql('update private.page_change_pilot set enabled=false');sql("update private.capacity set enabled=false,slots=reserved");sql("update private.method_qualifications set qualified=false");sql("update private.admission_capacity set enabled=false,qualified=false")
  def setUp(self):
   sql('truncate private.watches cascade');sql('truncate private.inbox');sql('update private.method_qualifications set qualified=true')
   reset_capacity()
@@ -492,6 +492,39 @@ class Integration(unittest.TestCase):
   self.assertIsNone(sql('select public.s3_provider_lease()',one=True))
   self.assertEqual('ambiguous',sql('select state from private.jobs where id=%s',(job,),True));self.assertFalse(sql('select enabled from private.capacity',one=True))
   self.assertEqual(('unknown','degraded'),sql('select remote_state,health from private.watches where id=%s',(wid,))[0])
+ def test_30_text_page_pilot_proposal_is_explicit_idempotent_and_does_not_drop_criteria(self):
+  sql('update private.page_change_pilot set enabled=true')
+  try:
+   t=preview();h={'X-Preview-Token':t};jobs_before=sql('select count(*) from private.admission_jobs',one=True)
+   cases=[('fr','Préviens-moi de tout changement sur https://source.example/page',True),('en','Notify me of any change on https://source.example/page',True),('fr','Préviens-moi de tout changement sur https://source.example/page et seulement les prix',False),('fr','Préviens-moi de tout changement sur https://127.0.0.1/page',False),('fr','Préviens-moi des nouveaux concerts dans ma ville',False)]
+   for language,text,ready in cases:
+    request={'id':v7(),'draft':{'text':text,'language':language,'mode':'continuous','revision':1,'answers':[]},'previousEvaluationId':None}
+    code,result=http('/functions/v1/public/v1/evaluations','POST',request,headers=h)
+    self.assertEqual(202,code,result);self.assertEqual('ready' if ready else 'unsupported',result['status'])
+    if ready:
+     p=result['proposal'];self.assertTrue(p['partial']);self.assertEqual('known_page',p['method']);self.assertEqual(text,p['draft']['text']);self.assertEqual(1,len(p['sources']))
+     self.assertEqual(result,http('/functions/v1/public/v1/evaluations','POST',request,headers=h)[1])
+     self.assertEqual(p,http('/functions/v1/public/v1/proposals/'+p['id'],headers=h)[1])
+   self.assertEqual(jobs_before,sql('select count(*) from private.admission_jobs',one=True))
+  finally:sql('update private.page_change_pilot set enabled=false')
+ def test_31_verified_text_delta_completion_is_atomic_and_deduplicated(self):
+  wid,p=fixture_watch(self.a);p['criteria']=['Ajouts et suppressions de texte sur la page indiquée.'];p['method']='known_page';p['sources']=[{'url':'https://source.example/page','label':'Page de test'}]
+  sql('update private.watches set plan=%s where id=%s',(Jsonb(p),wid))
+  device_id=str(uuid.uuid4());sql("insert into private.devices(id,owner_id,token,language) values(%s,%s,%s,'fr')",(device_id,self.a,'local-'+uuid.uuid4().hex))
+  for n in range(2):
+   job=str(uuid.uuid4());lease=str(uuid.uuid4());observed=ISO()
+   sql("insert into private.jobs(id,watch_id,generation,kind,state,lease_token,lease_until) values(%s,%s,1,'check','leased',%s,now()+interval '1 minute')",(job,wid,lease))
+   sql("insert into private.provider_attempts(job_id,phase,monitor_id,check_id,credits_before,run_intent_at) values(%s,'poll',%s,%s,100,now()-interval '1 second')",(job,'fixture-'+wid,'delta-'+str(n)))
+   sql('select public.s3_reserve(%s,%s,2)',(job,wid))
+   f=finding(wid,p);f['observedAt']=observed;f['evidence'][0].update(url=p['sources'][0]['url'],observedAt=observed)
+   bad=json.loads(json.dumps(f));bad['criteriaSnapshot']=['Autre critère']
+   with self.assertRaises(psycopg.Error):sql("select public.s3_provider_complete(%s,%s,%s,'finding',1,%s,%s)",(job,lease,observed,'a'*64,Jsonb(bad)))
+   self.assertEqual(n,sql('select used_units from private.capacity',one=True))
+   sql("select public.s3_provider_complete(%s,%s,%s,'finding',1,%s,%s)",(job,lease,observed,'a'*64,Jsonb(f)))
+   self.assertEqual('done',sql('select state from private.jobs where id=%s',(job,),True))
+  self.assertEqual(1,sql('select count(*) from private.findings where watch_id=%s',(wid,),True))
+  self.assertEqual(1,sql('select count(*) from private.outbox o join private.findings f on f.id=o.finding_id where f.watch_id=%s and o.device_id=%s',(wid,device_id),True))
+  self.assertEqual((2,0),sql('select used_units,reserved_units from private.capacity')[0])
 if __name__=='__main__':
  suite=unittest.defaultTestLoader.loadTestsFromTestCase(Integration)
  start=time.monotonic();result=unittest.TextTestRunner(verbosity=2).run(suite)

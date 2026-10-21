@@ -8,7 +8,9 @@ export async function stopOne(port:StopPort,client:Firecrawl,enabled:boolean):Pr
    if(!job.pendingCreateId||!port.rememberRemote)throw new Error('Unresolved creation');
    job.providerId=await client.findByJob(job.pendingCreateId);await port.rememberRemote(job,job.providerId);
   }
-  if(job.providerId){if(job.erase)await client.erase(job.providerId);else await client.pause(job.providerId);}
+  // Resume already establishes a fresh baseline. Remove the old remote object on
+  // pause as well, so a later watch deletion cannot strand a paused provider object.
+  if(job.providerId)await client.erase(job.providerId);
   await port.confirm(job);return 'stopped';
  } catch {await port.retry(job);return 'pending';}
 }

@@ -11,11 +11,14 @@
   "remoteAccessVerified": true,
   "cloudDeployed": true,
   "methodQualificationVerified": false,
-  "note": "Cloud, real OVH email OTP and Android repository/UI/session restore/sign-out verified. Email test split after human wait limit; no continuous full UI claim. Monitoring remains unqualified.",
+  "note": "Dedicated cloud, real email OTP/session restore and signed provider ingress verified. Real text-change source→finding→FCM chain passed. Only explicit single-URL text scope is open; general monitoring remains unqualified.",
   "actualFcmTransportVerified": true,
   "emailOtpDeliveryVerified": true,
   "cloudEvidence": "cloud-connection.json",
   "emailOtpVerificationViaApi": true,
   "androidEmailSignInVerified": true,
-  "androidEmailRequestVerified": true
+  "androidEmailRequestVerified": true,
+  "literalPageTextPilotVerified": true,
+  "actualPublicSignedWebhookVerified": true,
+  "pilotEvidence": "page-change-pilot.json"
 }

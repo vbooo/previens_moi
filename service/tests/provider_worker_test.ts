@@ -16,3 +16,14 @@ Deno.test('baseline waits for signed completion then remains silent',async()=>{c
 Deno.test('same check succeeds; unqualified semantic change becomes visible failure',async()=>{for(const changed of [false,true]){const f=fixture('check');f.check.pages[0].status=changed?'changed':'same';assert(await providerOne(f.port,f.client,true,webhook)==='checked');assert((f.complete[0] as any).outcome===(changed?'failed':'no_change'));}});
 Deno.test('lost run intent never triggers another provider POST',async()=>{const f=fixture();f.job.attempt!.phase='run';assert(await providerOne(f.port,f.client,true,webhook)==='unknown');assert(f.requests.length===0&&f.events.includes('unknown'));});
 Deno.test('source mismatch is visible and cannot confirm baseline or create a result',async()=>{const f=fixture();f.check.pages[0].url='https://foreign.example/page';assert(await providerOne(f.port,f.client,true,webhook)==='unknown');assert(f.complete.length===0);});
+
+Deno.test('qualified literal page changes produce verified findings; missing evidence is a failed check',async()=>{
+ for(const valid of [true,false]) {
+  const f=fixture('check');Object.assign(f.job.plan,{id:'00000000-0000-4000-8000-000000000002',version:1,criteria:['Ajouts et suppressions de texte sur la page indiquée.']});Object.assign(f.job.plan.draft,{language:'fr'});
+  f.job.watch_id='00000000-0000-4000-8000-000000000003';
+  Object.assign(f.check.pages[0],{status:'changed',diff:{text:valid?'@@ -1 +1 @@\n-Avant\n+Après':'not a diff'}});
+  let saved:any;f.port.complete=async(_,__,outcome,credits,proof)=>{saved={outcome,credits,proof};};
+  assert(await providerOne(f.port,f.client,true,webhook)==='checked');assert(saved.credits===1);
+  assert(valid?saved.outcome==='finding'&&saved.proof.finding.evidence[0].quote.includes('+ Après'):saved.outcome==='failed'&&!saved.proof);
+ }
+});

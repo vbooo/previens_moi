@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 LaunchedEffect(account.session) {
-                    watches.refresh()
+                    if (account.session != null) watches.refresh()
                     if (account.session != null) { creation.resumeAfterSignIn(); if (returnToProposal && stack.lastOrNull() == Account) stack.removeLastOrNull(); returnToProposal = false }
                 }
                 LaunchedEffect(create.activatedId) {
@@ -102,7 +102,7 @@ class MainActivity : ComponentActivity() {
                             onBack = { if (stack.size > 1) stack.removeLastOrNull() }, entryProvider = entryProvider {
                                 entry<Home> { HomeScreen(state, create, creation, preview = {
                                     focus.clearFocus(); keyboard?.hide(); creation.startNew(); creation.evaluate(Locale.getDefault().language); stack.add(Create)
-                                }, refresh = watches::refresh, open = { watches.clearCommandError(); stack.add(Detail(it)) }, remote = true) }
+                                }, refresh = watches::refresh, open = { watches.clearCommandError(); stack.add(Detail(it)) }, remote = true, signedIn = account.session != null, signIn = { stack.add(Account) }) }
                                 entry<Account> {
                                     Column(Modifier.fillMaxSize()) {
                                         if (Build.VERSION.SDK_INT >= 33 && account.session != null) TextButton(onClick = { permission.launch(Manifest.permission.POST_NOTIFICATIONS) }) { Text(stringResource(R.string.notification_permission)) }

@@ -25,3 +25,25 @@ Deno.test('remote erasure confirms absence; a lost DELETE is reconciled without 
  }) as typeof fetch);
  let unknown=false;try{await client.erase('remote');}catch{unknown=true;}assert(unknown&&deletes===1);await client.erase('remote');assert(deletes===1);
 });
+Deno.test('429 retries one safe pause after provider delay but never repeats a billed POST',async()=>{
+ for(const method of ['PATCH','POST']) {
+  let calls=0;const waits:number[]=[];
+  const client=new Firecrawl('key',true,(async()=>{calls++;return calls===1?new Response('{}',{status:429,headers:{'Retry-After':'12'}}):response({});}) as typeof fetch,async ms=>{waits.push(ms);});
+  let rejected=false;try{await client.call(method,'/v2/monitor/monitor',method==='PATCH'?{status:'paused'}:{});}catch{rejected=true;}
+  assert(method==='PATCH'?!rejected&&calls===2&&waits[0]===12000:rejected&&calls===1&&waits.length===0);
+ }
+});
+Deno.test('persistent rate limit has a bounded safe retry',async()=>{
+ let calls=0;const client=new Firecrawl('key',true,(async()=>{calls++;return new Response('{}',{status:429,headers:{'Retry-After':'1'}});}) as typeof fetch,async()=>{});
+ let refused=false;try{await client.monitor('monitor');}catch(e){refused=e instanceof ProviderFault&&e.state==='rate_limited';}assert(refused&&calls===2);
+});
+
+Deno.test('jsonb key order cannot reject matching signed check counters',()=>{
+ const c:Check={id:'check',monitorId:'monitor',status:'completed',startedAt:'2026-10-21 19:03:49.243+00',summary:{totalPages:1,same:0,changed:0,new:1,removed:0,error:0},pages:[{url:'https://source.example/page',status:'new'}]};
+ const summary={new:1,same:0,error:0,changed:0,removed:0,totalPages:1};
+ const e={id:'check',type:'monitor.check.completed',success:true,data:[{monitorId:'monitor',checkId:'check',status:'completed',summary}]};
+ assert(reconcile(e,c,'monitor','https://source.example/page').observedAt==='2026-10-21T19:03:49.243Z');
+ for(const bad of [{...summary,totalPages:2},{...summary,error:-1},{...summary,foreign:0}]) {
+  let refused=false;try{reconcile({...e,data:[{...e.data[0],summary:bad}]},c,'monitor','https://source.example/page');}catch{refused=true;}assert(refused);
+ }
+});

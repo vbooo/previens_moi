@@ -82,7 +82,7 @@
     <string name="status_pending">En préparation</string>
     <string name="operation_pending">Opération encore en attente. Actualise pour retrouver son état ; aucune nouvelle activation n’est lancée.</string>
     <string name="remote_terms">Contrôle toutes les %1$d h · limite du compte : %2$d.</string>
-    <string name="unqualified_body">Ce service de test ne surveille pas encore tes demandes. Aucune surveillance n’a été activée.</string>
+    <string name="unqualified_body">Essai limité aux changements de texte d’une page publique. Écris : Préviens-moi de tout changement sur https://… La proposition précise la portée avant activation. Les demandes générales restent en préparation.</string>
     <string name="account_title">Compte</string>
     <string name="account_connected">Connexion par code confirmée.</string>
     <string name="sign_out">Se déconnecter</string>
@@ -102,4 +102,6 @@
 <string name="remote_unavailable_title">Surveillance indisponible pour l’instant</string>
     <string name="correction_notice">Ce résultat corrige un résultat précédent.</string>
     <string name="analysis_pending">Analyse encore en attente. Réessaie pour consulter son état ; aucune seconde analyse ne sera lancée.</string>
+    <string name="sign_in_to_view_watches">Connecte-toi pour retrouver tes suivis.</string>
+    <string name="sign_in">Se connecter</string>
 </resources>

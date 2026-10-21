@@ -1,16 +1,27 @@
 /** Bounded authenticated provider adapter. Disabled until external qualification. */
-export class ProviderFault extends Error {constructor(public state:'disabled'|'unknown'|'failed'|'pending'|'mismatch'|'not_found'){super(state);}}
+export class ProviderFault extends Error {constructor(public state:'disabled'|'unknown'|'failed'|'pending'|'mismatch'|'not_found'|'rate_limited'){super(state);}}
 export interface Monitor {id:string;status:string;currentCheckId:string|null;nextRunAt:string|null;name:string}
 export interface Check {id:string;monitorId:string;status:string;startedAt:string;summary:unknown;pages?:Page[]}
 export interface Page {url:string;status:string;judgment?:{meaningful:boolean;meaningfulChanges?:{type:string;after?:string}[]};diff?:{text?:string}}
 export class Firecrawl {
- constructor(private key:string,private enabled=false,private request:typeof fetch=fetch){}
+ private rateRetryUsed=false;
+ constructor(private key:string,private enabled=false,private request:typeof fetch=fetch,private wait:(ms:number)=>Promise<void>=ms=>new Promise(resolve=>setTimeout(resolve,ms))){}
  async call(method:string,path:string,body?:unknown):Promise<Record<string,unknown>> {
   if(!this.enabled||!this.key)throw new ProviderFault('disabled');
   if(!/^\/v2\/(monitor(?:\/[A-Za-z0-9_-]+(?:\/checks(?:\/[A-Za-z0-9_-]+)?|\/run)?)?|team\/credit-usage)$/.test(path))throw new ProviderFault('failed');
   let response:Response;
   try {response=await this.request('https://api.firecrawl.dev'+path,{method,headers:{Authorization:'Bearer '+this.key,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body),redirect:'error',signal:AbortSignal.timeout(20000)});}catch{throw new ProviderFault('unknown');}
-  if(!response.ok){await response.body?.cancel();throw new ProviderFault(response.status===404?'not_found':response.status>=500?'unknown':'failed');}
+  if(!response.ok){
+   const status=response.status;
+   const retry=Number(response.headers.get('Retry-After')??'60');
+   await response.body?.cancel();
+   const safe=method==='GET'||(method==='PATCH'&&JSON.stringify(body)==='{"status":"paused"}');
+   // Only idempotent reads/pause may retry a rate-limit response. Never repeat a POST.
+   if(status===429&&safe&&!this.rateRetryUsed&&Number.isFinite(retry)&&retry>=0&&retry<=60){
+    this.rateRetryUsed=true;await this.wait(Math.max(1,retry)*1000);return await this.call(method,path,body);
+   }
+   throw new ProviderFault(status===404?'not_found':status===429?'rate_limited':status>=500?'unknown':'failed');
+  }
   const reader=response.body?.getReader();if(!reader)throw new ProviderFault('unknown');let size=0;const chunks:Uint8Array[]=[];
   for(;;){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>524288){await reader.cancel();throw new ProviderFault('unknown');}chunks.push(part.value);}
   const raw=new Uint8Array(size);let offset=0;for(const chunk of chunks){raw.set(chunk,offset);offset+=chunk.length;}
@@ -36,9 +47,15 @@ export class Firecrawl {
  }
  async check(monitor:string,id:string):Promise<Check>{const c=await this.call('GET',`/v2/monitor/${monitor}/checks/${id}`) as unknown as Check;if(c.id!==id||c.monitorId!==monitor)throw new ProviderFault('mismatch');return c;}
 }
+// PostgreSQL jsonb may reorder keys. Compare counter values, never serialization order.
+function sameSummary(a:unknown,b:unknown):boolean {
+ if(!a||!b||typeof a!=='object'||typeof b!=='object'||Array.isArray(a)||Array.isArray(b))return false;
+ const left=a as Record<string,unknown>,right=b as Record<string,unknown>,keys=Object.keys(left);
+ return keys.length>0&&keys.length===Object.keys(right).length&&keys.every(k=>Object.hasOwn(right,k)&&Number.isSafeInteger(left[k])&&Number(left[k])>=0&&left[k]===right[k]);
+}
 export function reconcile(event:Record<string,unknown>,check:Check,monitor:string,source:string) {
  const data=event.data as Record<string,unknown>[];
- if(event.type!=='monitor.check.completed'||event.id!==check.id||data?.length!==1||data[0].monitorId!==monitor||data[0].checkId!==check.id||check.monitorId!==monitor||data[0].status!==check.status||JSON.stringify(data[0].summary)!==JSON.stringify(check.summary)||event.success!==(check.status==='completed'))throw new ProviderFault('mismatch');
+ if(event.type!=='monitor.check.completed'||event.id!==check.id||data?.length!==1||data[0].monitorId!==monitor||data[0].checkId!==check.id||check.monitorId!==monitor||data[0].status!==check.status||!sameSummary(data[0].summary,check.summary)||event.success!==(check.status==='completed'))throw new ProviderFault('mismatch');
  const observed=Date.parse(check.startedAt.replace(/([+-]\d{2})$/,'$1:00'));if(!Number.isFinite(observed))throw new ProviderFault('mismatch');
  if(!['completed','failed','partial'].includes(check.status))throw new ProviderFault('pending');
  if(check.status!=='completed')return {outcome:'failed',observedAt:new Date(observed).toISOString()};
@@ -84,7 +101,7 @@ export interface CreatePort {
  remember(id:string):Promise<void>;
  unknown():Promise<void>;
 }
-export async function createPaused(client:Firecrawl,jobId:string,source:string,goal:string,webhook:string,port:CreatePort,now=Date.now()):Promise<string> {
+export async function createPaused(client:Firecrawl,jobId:string,source:string,goal:string,webhook:string,port:CreatePort,now=Date.now(),judgeEnabled=true):Promise<string> {
  if(!/^[0-9a-f-]{36}$/.test(jobId))throw new ProviderFault('failed');
  for(const value of [source,webhook]) {
   const u=new URL(value);
@@ -103,7 +120,7 @@ export async function createPaused(client:Firecrawl,jobId:string,source:string,g
   if(await port.begin()) {
    const far=new Date(now+7*86400000);
    try {
-    const value=await client.call('POST','/v2/monitor',{name,schedule:{cron:`0 0 ${far.getUTCDate()} ${far.getUTCMonth()+1} *`,timezone:'UTC'},goal,judgeEnabled:true,retentionDays:14,targets:[{type:'scrape',urls:[source]}],webhook:{url:webhook,events:['monitor.page','monitor.check.completed']}});
+    const value=await client.call('POST','/v2/monitor',{name,schedule:{cron:`0 0 ${far.getUTCDate()} ${far.getUTCMonth()+1} *`,timezone:'UTC'},goal,judgeEnabled,retentionDays:14,notification:{email:{enabled:false}},targets:[{type:'scrape',urls:[source],scrapeOptions:{formats:['markdown'],onlyMainContent:false,maxAge:0}}],webhook:{url:webhook,events:['monitor.page','monitor.check.completed']}});
     if(typeof value.id!=='string')throw new ProviderFault('unknown');id=value.id;
    } catch {id=await reconcileCreate();}
   } else id=await reconcileCreate(); // Never create twice after an uncertain response.

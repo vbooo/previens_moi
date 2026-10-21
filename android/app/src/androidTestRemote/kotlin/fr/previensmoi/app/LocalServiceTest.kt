@@ -52,6 +52,26 @@ class LocalServiceTest {
     }
     private fun tap(tag: String) { closeKeyboard(); compose.waitUntil(10000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().size == 1 }; compose.onNodeWithTag(tag).performScrollTo().performClick() }
     private fun account() { compose.onNodeWithText(compose.activity.getString(R.string.account_title)).performClick() }
+    @Test fun signedOutHomeShowsSignInInsteadOfRefreshFailureOrPrivateRows() {
+        var openedAccount = false
+        val vm = ViewModelProvider(compose.activity)[CreateViewModel::class.java]
+        compose.runOnUiThread {
+            compose.activity.setContent { MaterialTheme {
+                fr.previensmoi.feature.watches.presentation.HomeScreen(
+                    fr.previensmoi.feature.watches.presentation.WatchesUiState(refreshFailed = true,
+                        watches = listOf(Watch("private-watch", Proposal("p", 1, RequestDraft("Private saved watch"), Long.MAX_VALUE), baselineAt = 0))),
+                    fr.previensmoi.feature.create.presentation.CreateUiState(loaded = true), vm,
+                    preview = {}, refresh = { error("Signed-out refresh must not be offered") }, open = {},
+                    remote = true, signedIn = false, signIn = { openedAccount = true })
+            } }
+        }
+        compose.onNodeWithTag("signed_out_watches").assertIsDisplayed()
+        compose.onNodeWithText(compose.activity.getString(R.string.stale_content)).assertDoesNotExist()
+        compose.onNodeWithTag("watch_private-watch").assertDoesNotExist()
+        compose.onNodeWithText(compose.activity.getString(R.string.refresh_list)).assertDoesNotExist()
+        compose.onNodeWithTag("sign_in_watches").performScrollTo().performClick()
+        assertTrue(openedAccount)
+    }
     @Test fun emailCodeSessionRecreationAndHonestAdmission() {
         assumeTrue("Requires dedicated local Supabase configuration",BuildConfig.LOCAL_SERVICE)
         val email = "android-${System.currentTimeMillis()}@example.test"

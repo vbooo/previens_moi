@@ -14,8 +14,8 @@
   },
   "current": {
     "openaiEstimatedCumulativeUSD": 0.081134,
-    "firecrawlCredits": 985,
-    "firecrawlBalanceDate": "2026-10-20",
+    "firecrawlCredits": 981,
+    "firecrawlBalanceDate": "2026-10-21",
     "openaiCallsCumulative": 128
   },
   "newCampaignUpperUSD": 0.1,
@@ -78,5 +78,17 @@
     "realFcmSendCount": 1,
     "realEmailSentCount": 3,
     "sdkNetworkCallCountMeasured": false
+  },
+  "pageTextPilot20261021": {
+    "newOpenAICalls": 0,
+    "newExaCalls": 0,
+    "newPaidCalls": 0,
+    "freeFirecrawlCreditsConsumed": 4,
+    "freeFirecrawlCreditsAfterTests": 981,
+    "additionalUserPilotFreeCreditCap": 12,
+    "billingEnabled": false,
+    "subscriptionOrTopUp": false,
+    "authorizedCumulativeMaxEUR": 2,
+    "conservativeCumulativeUpperEUR": 1.9414335
   }
 }

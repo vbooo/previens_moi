@@ -1,7 +1,7 @@
 {
   "date": "2026-10-21",
   "supabase": {
-    "migrationCount": 26,
+    "migrationCount": 29,
     "functions": [
       "public",
       "api",
@@ -104,12 +104,13 @@
   },
   "stateLeft": {
     "admissionExecutionEnabled": false,
-    "providerExecutionEnabled": false,
-    "fcmExecutionEnabled": false,
-    "capacityEnabled": false,
+    "providerExecutionEnabled": true,
+    "fcmExecutionEnabled": true,
+    "capacityEnabled": true,
     "admissionCapacityEnabled": false,
-    "workerScheduleEnabled": false,
-    "qualifiedMethodCount": 0
+    "workerScheduleEnabled": true,
+    "qualifiedMethodCount": 1,
+    "literalPageTextPilotOnly": true
   },
   "costs": {
     "newOpenAICalls": 0,
@@ -122,10 +123,13 @@
   },
   "limits": [
     "Synthetic transport fixture does not qualify monitoring or source discovery.",
-    "Public signed provider ingress, autonomous recurrence, cloud restore and notification edge cases remain unproven.",
+    "General monitoring, hourly wall-clock duration, cloud restore and notification edge cases remain unproven; current signed ingress and literal text-change chain are evidenced in page-change-pilot.json.",
     "No seven-day S4 observation started.",
     "Earlier admission and regression results were not rerun during this cloud-only connection task.",
     "Emulator rendering was slow; performance is not qualified.",
     "Cloud email test was split after human input wait expired; continuous email/code button path is not claimed as passing. Earlier local email UI test remains separate."
-  ]
+  ],
+  "pageTextPilotEvidence": "page-change-pilot.json",
+  "latestSignedOutUiVerifiedFrenchAndEnglish": true,
+  "scope": "Initial cloud transport/OTP evidence. Fields under firebase describe the initial injected finding; latest real source-change finding evidence is page-change-pilot.json. stateLeft describes current pilot switches."
 }

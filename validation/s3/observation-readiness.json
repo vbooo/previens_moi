@@ -3,21 +3,21 @@
   "observation_started": false,
   "seven_days_proven": false,
   "public_deployment": false,
-  "provider_execution_enabled": false,
-  "fcm_execution_enabled": false,
-  "real_capacity": 0,
+  "provider_execution_enabled": true,
+  "fcm_execution_enabled": true,
+  "real_capacity": 1,
   "remaining_gates": [
-    "A1 original 7/9 preserved; A5 corrected hybrid parsing 9/9 on the same development cases; broader independent free-input qualification still required",
-    "qualify discovery, novelty, freshness, semantic judgments and semantic deduplication; current changes fail visibly",
-    "dedicated Supabase project and public signed webhook tests",
-    "dedicated Firebase Spark project and real FCM receipt including permission, delay, reauthentication and deletion",
-    "prove actual provider stop/erasure and in-flight limits against real delivery",
-    "independent backup and cloud recovery",
-    "qualify full chain and expected references before S4 observation"
+    "Broader independent free-input admission qualification beyond the same nine development cases",
+    "General discovery, novelty, freshness, semantic judgments and cross-source deduplication",
+    "Cloud recovery and independent backup before public operation",
+    "Notification permission refusal, delayed delivery, expired session/deleted result in deployed chain",
+    "Full expected-result reference before starting seven-day S4 observation"
   ],
   "additional_paid_calls": 45,
   "additional_estimated_usd": 0.0335248,
   "local_erasure_and_restore_passed": true,
   "provider_steps_implemented": true,
-  "real_method_qualified": false
+  "real_method_qualified": false,
+  "literal_page_text_pilot_qualified": true,
+  "pilot_evidence": "page-change-pilot.json"
 }

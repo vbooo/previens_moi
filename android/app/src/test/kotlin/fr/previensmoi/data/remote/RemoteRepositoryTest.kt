@@ -36,9 +36,9 @@ class RemoteRepositoryTest {
             assertEquals("account-a",session.observeSession().first()?.id)
             assertEquals("Bearer secret-access",session.bearer())
             assertFalse(vault.value.toString().contains("secret"))
-            val otp = server.takeRequest(); assertEquals("/auth/v1/otp",otp.url.encodedPath)
+            val otp = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!; assertEquals("/auth/v1/otp",otp.url.encodedPath)
             assertEquals("public-test",otp.headers["apikey"])
-            val verification = server.takeRequest(); assertTrue(verification.body!!.utf8().contains("123456"))
+            val verification = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!; assertTrue(verification.body!!.utf8().contains("123456"))
         }
     }
     @Test fun `concurrent refresh uses one rotation and logout clears local secrets even if server fails`() = runTest {
@@ -69,8 +69,8 @@ class RemoteRepositoryTest {
             assertEquals(id,journal.read("a"))
             server.enqueue(response(pending))
             assertEquals(Outcome.Error(Failure.OperationPending),repository().execute(Command("new-must-not-send",Operation.Delete,"w",1)))
-            assertEquals("POST",server.takeRequest().method)
-            val resumed = server.takeRequest();assertEquals("GET",resumed.method);assertTrue(resumed.url.encodedPath.endsWith(id))
+            assertEquals("POST",server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.method)
+            val resumed = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;assertEquals("GET",resumed.method);assertTrue(resumed.url.encodedPath.endsWith(id))
             server.enqueue(response("""{"id":"$id","state":"succeeded","updatedAt":"2026-10-20T00:00:00Z","remoteState":"stopped","watchId":"w","watchVersion":2,"deleted":false}"""))
             assertEquals(Outcome.Error(Failure.VersionConflict),repository().execute(Command("again",Operation.Pause,"w",1)))
             assertNull(journal.read("a"))
@@ -84,7 +84,7 @@ class RemoteRepositoryTest {
             server.enqueue(response("""{"access_token":"fresh","refresh_token":"rotated","expires_in":3600,"user":{"id":"a"}}"""))
             server.enqueue(response("""{"id":"cmd","state":"pending","updatedAt":"2026-10-20T00:00:00Z","remoteState":"stopping","watchId":"w"}""",202))
             assertEquals(Outcome.Error(Failure.OperationPending),repository.execute(Command("cmd",Operation.Pause,"w",1)))
-            val first = server.takeRequest();server.takeRequest();val retry = server.takeRequest()
+            val first = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val retry = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
             assertEquals(first.body!!.utf8(),retry.body!!.utf8());assertEquals("Bearer fresh",retry.headers["Authorization"])
         }
     }
@@ -111,18 +111,18 @@ class RemoteRepositoryTest {
         MockWebServer().apply { start() }.use { server ->
             val session = auth(server, MemoryVault())
             val repository = RemoteRepositories(ApiClient.create(server.url("/"),true),session,MemoryPending(),IdGenerator { "eval-id" })
-            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2026-10-21T00:00:00Z"}"""))
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
             server.enqueue(response("""{"id":"eval-id","status":"pending","draftRevision":2,"updatedAt":"2026-10-20T00:00:00Z"}""",202))
             val questions = """{"id":"eval-id","status":"clarification","draftRevision":2,"updatedAt":"2026-10-20T00:00:00Z","questions":[{"id":"zone","label":"Où ?","options":["France","Belgique"],"required":true},{"id":"budget","label":"Budget ?","options":[],"required":false}]}"""
             server.enqueue(response(questions))
             val result = repository.evaluate(RequestDraft("Produit",revision=2)) as Outcome.Success
             val items = (result.value as Evaluation.Questions).items
             assertEquals(listOf("zone","budget"),items.map { it.id });assertEquals(listOf("France","Belgique"),items[0].options)
-            server.takeRequest();val post=server.takeRequest();val poll=server.takeRequest()
+            server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val post=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val poll=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
             assertEquals("GET",poll.method);assertTrue(poll.url.encodedPath.endsWith("eval-id"))
             server.enqueue(response(questions.replace("\"draftRevision\":2","\"draftRevision\":3")))
             repository.evaluate(RequestDraft("Produit",revision=3,answers=mapOf("zone" to "France","budget" to "100 €")))
-            val answered=ApiClient.json.parseToJsonElement(server.takeRequest().body!!.utf8()).jsonObject
+            val answered=ApiClient.json.parseToJsonElement(server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8()).jsonObject
             assertEquals("eval-id",answered["previousEvaluationId"]!!.jsonPrimitive.content)
             assertEquals(setOf("zone","budget"),answered["draft"]!!.jsonObject["answers"]!!.jsonArray.map { it.jsonObject["questionId"]!!.jsonPrimitive.content }.toSet())
             assertTrue(post.body!!.utf8().contains("eval-id"))
@@ -132,14 +132,14 @@ class RemoteRepositoryTest {
         MockWebServer().apply { start() }.use { server ->
             var generated=0
             val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault()),MemoryPending(),IdGenerator { generated++; "eval-id" })
-            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2026-10-21T00:00:00Z"}"""))
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
             val pending="""{"id":"eval-id","status":"pending","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z"}"""
             repeat(11) { server.enqueue(response(pending)) }
             assertEquals(Outcome.Error(Failure.AnalysisPending),repository.evaluate(RequestDraft("test")))
-            assertEquals(12,server.requestCount);server.takeRequest();val original=server.takeRequest().body!!.utf8();repeat(10){ server.takeRequest() }
+            assertEquals(12,server.requestCount);server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val original=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8();repeat(10){ server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!! }
             server.enqueue(response(pending.replace("\"draftRevision\":0","\"draftRevision\":99")))
             assertEquals(Outcome.Error(Failure.VersionConflict),repository.evaluate(RequestDraft("test")))
-            assertEquals(original,server.takeRequest().body!!.utf8());assertEquals(1,generated)
+            assertEquals(original,server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8());assertEquals(1,generated)
         }
     }
 
@@ -158,11 +158,11 @@ class RemoteRepositoryTest {
             server.enqueue(response("""{"id":"eval-id","status":"pending","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z"}""",202));server.enqueue(response("{}",503))
             val first=RemoteRepositories(api,session,MemoryPending(),IdGenerator { "eval-id" },cache)
             assertEquals(Outcome.Error(Failure.TemporaryFailure),first.evaluate(RequestDraft("secret-demand")))
-            server.takeRequest();val posted=server.takeRequest();server.takeRequest()
+            server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val posted=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
             val second=RemoteRepositories(api,session,MemoryPending(),IdGenerator { error("A second id must not be generated") },cache)
             server.enqueue(response("""{"id":"eval-id","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Not qualified"}"""))
             assertTrue(second.evaluate(RequestDraft("secret-demand")) is Outcome.Success)
-            val replay=server.takeRequest();assertEquals(posted.url.encodedPath,replay.url.encodedPath);assertEquals(posted.body!!.utf8(),replay.body!!.utf8());assertEquals("preview-secret",replay.headers["X-Preview-Token"])
+            val replay=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;assertEquals(posted.url.encodedPath,replay.url.encodedPath);assertEquals(posted.body!!.utf8(),replay.body!!.utf8());assertEquals("preview-secret",replay.headers["X-Preview-Token"])
             assertFalse(cache.value.toString().contains("secret"))
         }
     }
@@ -172,7 +172,7 @@ class RemoteRepositoryTest {
             val broken=object: EvaluationJournal {override fun read(): EvaluationCache?=null;override fun write(value: EvaluationCache){throw java.io.IOException()} }
             server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
             assertEquals(Outcome.Error(Failure.StorageFailure),RemoteRepositories(api,session,MemoryPending(),IdGenerator { "eval" },broken).evaluate(RequestDraft("test")))
-            assertEquals(1,server.requestCount);server.takeRequest()
+            assertEquals(1,server.requestCount);server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
             val expired=object: EvaluationJournal {var value=EvaluationCache("old-secret",null,null,1);override fun read()=value;override fun write(value: EvaluationCache){this.value=value} }
             val repository=RemoteRepositories(api,session,MemoryPending(),IdGenerator { "new-eval" },expired)
             assertEquals(Outcome.Error(Failure.ProposalExpired),repository.evaluate(RequestDraft("test")));assertEquals(1,server.requestCount)

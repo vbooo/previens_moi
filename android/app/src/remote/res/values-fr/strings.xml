@@ -1,5 +1,5 @@
 <resources>
-    <string name="remote_banner">Service de test connecté · surveillance réelle non qualifiée</string>
+    <string name="remote_banner">Version d’essai · changements de texte d’une page</string>
 <string name="notification_channel">Résultats vérifiés</string>
 <string name="notification_permission">Activer les notifications</string>
 <string name="app_name">Préviens-moi · Test</string>

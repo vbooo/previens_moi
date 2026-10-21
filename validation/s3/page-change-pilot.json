@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-21",
+  "scope": "Literal text additions/removals on one explicitly requested public URL; partial pilot, not general V1 qualification",
+  "signedOutUi": {
+    "passedFrenchAndEnglish": true,
+    "staleErrorAndPrivateRowsHidden": true,
+    "signInActionVerified": true
+  },
+  "tests": {
+    "denoPassed": 57,
+    "localIntegrationPassed": 31,
+    "androidDemoUnitPassed": 49,
+    "androidRemoteUnitPassed": 27,
+    "androidSignedOutUiLocalesPassed": 2
+  },
+  "realSourceTest": {
+    "scope": "Actual monitored change on a controlled public HTML test source; not a general search qualification",
+    "maxFreeCredits": 6,
+    "newOpenAICalls": 0,
+    "newExaCalls": 0,
+    "userEmailCount": 0,
+    "baselineSilent": true,
+    "findingFromActualDiff": true,
+    "creditsBefore": 983,
+    "signedBaselineReceipt": true,
+    "sourceChangedOverHttp": true,
+    "authenticatedFindingRead": true,
+    "fcmAccepted": true,
+    "androidNotificationReceived": true,
+    "pauseConfirmed": true,
+    "remoteDeletionConfirmed": true,
+    "watchDeletionConfirmed": true,
+    "creditsAfter": 981,
+    "creditsConsumed": 2,
+    "temporaryAccountAndBusinessDataRemoved": true,
+    "temporarySourceRemoved": true,
+    "passed": true
+  },
+  "actualStoredReceiptReplayAfterFixPassed": true,
+  "failedAttempt": {
+    "baselineConfirmed": false,
+    "freeCreditsConsumed": 1,
+    "remoteDeletionConfirmed": true,
+    "temporaryDataRemoved": true,
+    "cause": "PostgreSQL jsonb reordered summary keys; fixed comparison of identical numeric counters, with regression test and replay of actual received data"
+  },
+  "preliminaryProviderCheck": {
+    "passed": false,
+    "freeCreditsConsumed": 1,
+    "cause": "HTTP 429",
+    "cleaned": true
+  },
+  "currentPilot": {
+    "configured": true,
+    "scope": "literal text changes on one explicit public URL",
+    "globalSlots": 1,
+    "intervalHours": 1,
+    "additionalFreeCreditCap": 12,
+    "newPaidModelCallsAllowed": false,
+    "scheduleConfigured": true,
+    "scheduleObserved": true,
+    "cumulativeConservativeUpperEUR": 1.9414335,
+    "observedAt": "2026-10-21T19:23:05.549658+00:00",
+    "scheduledWorkerHttpStatus": 200,
+    "scheduledWorkerProviderState": "empty",
+    "cronSucceeded": true
+  },
+  "apkChecks": {
+    "app-remote-debug.apk": {
+      "privilegedSecretFound": false
+    },
+    "app-remote-debug-androidTest.apk": {
+      "privilegedSecretFound": false
+    }
+  },
+  "limits": [
+    "General source discovery, semantic relevance, recency and cross-source deduplication are not qualified.",
+    "Test uses a fictitious controlled source, changed over HTTP; no finding or webhook was injected.",
+    "Second check was advanced only for this synthetic watch; hourly wall-clock monitoring and seven days are not claimed as observed.",
+    "Real FCM notification received; opening a previous synthetic transport finding is separate prior evidence.",
+    "No S4 observation started, no public Play release, cloud recovery remains unproven."
+  ]
+}

@@ -15,7 +15,7 @@ import fr.previensmoi.feature.common.presentation.*
 import fr.previensmoi.feature.create.presentation.*
 
 @Composable
-fun HomeScreen(state: WatchesUiState, creation: CreateUiState, createVm: CreateViewModel, preview: () -> Unit, refresh: () -> Unit, open: (String) -> Unit, remote: Boolean = false) {
+fun HomeScreen(state: WatchesUiState, creation: CreateUiState, createVm: CreateViewModel, preview: () -> Unit, refresh: () -> Unit, open: (String) -> Unit, remote: Boolean = false, signedIn: Boolean = true, signIn: () -> Unit = {}) {
     Page {
         RequestFields(creation, createVm)
         Text(stringResource(if (remote) R.string.unqualified_body else R.string.demo_explanation), style = MaterialTheme.typography.bodySmall)
@@ -25,6 +25,11 @@ fun HomeScreen(state: WatchesUiState, creation: CreateUiState, createVm: CreateV
         Button(onClick = preview, enabled = creation.loaded, modifier = Modifier.testTag("preview")) { Text(stringResource(R.string.analyse)) }
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
         Text(stringResource(R.string.title), style = MaterialTheme.typography.titleLarge)
+        if (remote && !signedIn) {
+            Text(stringResource(R.string.sign_in_to_view_watches), modifier = Modifier.testTag("signed_out_watches"))
+            TextButton(onClick = signIn, modifier = Modifier.testTag("sign_in_watches")) { Text(stringResource(R.string.sign_in)) }
+            return@Page
+        }
         if (state.refreshFailed) Text(stringResource(R.string.stale_content), color = MaterialTheme.colorScheme.error)
         if (state.refreshing) Busy()
         if (state.watches.isEmpty()) Text(stringResource(R.string.empty_watches))

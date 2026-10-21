@@ -82,7 +82,7 @@
     <string name="status_pending">Preparing</string>
     <string name="operation_pending">Operation still pending. Refresh to check its status; no new activation is started.</string>
     <string name="remote_terms">Check every %1$d h · account limit: %2$d.</string>
-    <string name="unqualified_body">This test service does not monitor requests yet. No monitoring has been activated.</string>
+    <string name="unqualified_body">Pilot limited to text changes on one public page. Write: Notify me of any change on https://… The proposal explains coverage before activation. General requests remain in preparation.</string>
     <string name="account_title">Account</string>
     <string name="account_connected">Email code sign-in confirmed.</string>
     <string name="sign_out">Sign out</string>
@@ -102,4 +102,6 @@
 <string name="remote_unavailable_title">Monitoring is not available yet</string>
     <string name="correction_notice">This finding corrects an earlier result.</string>
     <string name="analysis_pending">Analysis is still pending. Try again to check the same analysis; a second analysis will not be started.</string>
+    <string name="sign_in_to_view_watches">Sign in to see your watches.</string>
+    <string name="sign_in">Sign in</string>
 </resources>
