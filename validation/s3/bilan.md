@@ -1,5 +1,7 @@
 # Sprint 3 — bilan du complément du 20 octobre 2026
 
+**Mise à jour du 21 octobre :** les deux défauts d’admission sont corrigés ; A5 passe **9/9**, avec **50 tests Deno** et **29 intégrations**. Les campagnes intermédiaires et coûts sont conservés dans le [rapport de correction](correction-admission.md). Le bilan du 20 octobre ci-dessous reste historique.
+
 **S3 reste ouvert.** Les raccordements locaux, les reprises, l'effacement et les étapes fournisseur ont été complétés et testés. Les projets Supabase/Firebase dédiés manquent pour les essais externes. L'admission A1 réellement exécutée obtient **7/9** ; ses deux échecs restent enregistrés. Aucun moteur général qualifié, aucune surveillance activée, aucune notification FCM réelle annoncée comme reçue.
 
 Travail dans le dépôt existant `/Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi`, sur `main`, sans dépôt distant ni publication. Le socle précédent était enregistré dans `c658b4f` et `914518e`. Le complément de code et tests est enregistré dans **`68c6755`**. Les conteneurs Doklear restent inchangés. Projet local distinct `previens-moi-s3` ; les **26 migrations** ont aussi été réinstallées depuis une base de test vide.

@@ -1,0 +1,283 @@
+{
+  "createdAt": "2026-10-21T09:37:46.078940+00:00",
+  "manifestSha256": "020caabc9784b7752cba5a4d4727e6876a3ccf9fddaccda34559e471763ab8aa",
+  "specSha256": "d01b5dfae2fd4c1fd55360f8de3434a9d7f2a3305341b98b62bfd3d97e2ffb75",
+  "results": [
+    {
+      "id": "A01",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Demande claire pour un Ninja AF300EU neuf à moins de 150 € livré en France métropolitaine, sans abonnement ni reprise."
+      },
+      "activationAllowed": false,
+      "manufacturer": "Ninja",
+      "estimatedUsd": 0.0007288,
+      "inputTokens": 1322,
+      "outputTokens": 125
+    },
+    {
+      "id": "A02",
+      "passed": false,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new",
+            "refurbished",
+            "used"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Demande claire pour un Ninja AF300EU neuf ou d'occasion, prix inférieur à 150 EUR livré en France métropolitaine, sans abonnement ni reprise."
+      },
+      "activationAllowed": false,
+      "manufacturer": "Ninja",
+      "estimatedUsd": 0.0007444,
+      "inputTokens": 1321,
+      "outputTokens": 135
+    },
+    {
+      "id": "A03",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "clarify",
+        "criteria": null,
+        "subject": null,
+        "location": null,
+        "questions": [
+          {
+            "id": "product",
+            "label": "Quel est le modèle exact du produit recherché ?",
+            "options": [],
+            "required": true
+          },
+          {
+            "id": "budget",
+            "label": "Quel est votre budget maximal en centimes (ex: 10000 pour 100 €) ?",
+            "options": [],
+            "required": true
+          }
+        ],
+        "explanation": "Le terme 'pas cher' est trop vague pour définir un critère de prix précis. Merci de préciser le modèle exact et votre budget maximal."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0007216,
+      "inputTokens": 1300,
+      "outputTokens": 126
+    },
+    {
+      "id": "A04",
+      "passed": false,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "/",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères extraits : modèle AF300EU, état neuf, prix inférieur à 150 euros, livraison comprise, sans abonnement ni reprise. La zone de livraison n'est pas précisée explicitement, donc '/' indique absence de précision."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0007472000000000001,
+      "inputTokens": 1308,
+      "outputTokens": 140
+    },
+    {
+      "id": "A05",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new",
+            "refurbished"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères extraits : modèle AF300EU, conditions neuve ou reconditionnée, prix inférieur à 150 €, livré en France métropolitaine, sans abonnement ni reprise, livraison incluse."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0007524,
+      "inputTokens": 1321,
+      "outputTokens": 140
+    },
+    {
+      "id": "A06",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lte",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères complets extraits : modèle AF300EU, état neuf, prix maximum 150 euros, livraison en France métropolitaine incluse, sans abonnement ni reprise."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0007344000000000001,
+      "inputTokens": 1312,
+      "outputTokens": 131
+    },
+    {
+      "id": "A07",
+      "passed": true,
+      "interpretation": {
+        "family": "private",
+        "status": "unsupported",
+        "criteria": null,
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "La demande concerne un prélèvement sur un compte bancaire privé, ce qui est hors du cadre des montres de prix pour produits en vente au détail ou autres catégories publiques prises en charge."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0006372000000000001,
+      "inputTokens": 1305,
+      "outputTokens": 72
+    },
+    {
+      "id": "A08",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "TEST-X42",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 9000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Demande claire pour un modèle TEST-X42 neuf à moins de 90 € livré en France métropolitaine, sans abonnement ni reprise."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.000726,
+      "inputTokens": 1319,
+      "outputTokens": 124
+    },
+    {
+      "id": "D01",
+      "passed": true,
+      "interpretation": {
+        "family": "concert",
+        "status": "understood",
+        "criteria": null,
+        "subject": "Accor Arena",
+        "location": "Paris",
+        "questions": [],
+        "explanation": "L'utilisateur souhaite être informé des nouveaux concerts annoncés à l'Accor Arena à Paris. La famille est 'concert' avec sujet et localisation précisés, sans critères de produit."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0006456,
+      "inputTokens": 1310,
+      "outputTokens": 76
+    }
+  ],
+  "passed": 7,
+  "total": 9,
+  "completed": 9,
+  "failure": null,
+  "newReservedUpperUsd": 0.075364,
+  "newEstimatedUsageUsd": 0.0064376,
+  "previousA1EstimatedOpenAIUsd": 0.004634000000000001,
+  "historicalEstimatedOpenAIUsd": 0.0476092,
+  "cumulativeEstimatedOpenAIUsd": 0.0586808,
+  "newCapUsd": 0.1,
+  "cumulativeConservativeUpperEur": 1.5028905000000001,
+  "methodsQualified": false,
+  "surveillanceActivated": false,
+  "claims": "A2 correction retest once only; no source coverage, recurrence, freshness or semantic deduplication claim."
+}

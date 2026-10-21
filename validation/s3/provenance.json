@@ -7,13 +7,27 @@
   "playPublication": false,
   "initialImplementationCommit": "c658b4f0ef198aa4d5f630cebb6536e793a13cf8",
   "previousEvidenceCommit": "914518e",
-  "validatedAt": "2026-10-20T20:47:21.062312+00:00",
-  "additionalEstimatedOpenAIUSD": 0.004634,
-  "additionalPaidCalls": 9,
+  "validatedAt": "2026-10-21T09:48:35.877785+00:00",
+  "additionalEstimatedOpenAIUSD": 0.0335248,
+  "additionalPaidCalls": 45,
   "sprintClosed": false,
   "admissionA1": {
     "passed": 7,
     "total": 9,
     "qualified": false
+  },
+  "admissionCorrection": {
+    "campaign": "A5",
+    "passed": 9,
+    "total": 9,
+    "localRegressionsPassed": 50,
+    "newCallsThisCorrection": 36,
+    "newEstimatedUSD": 0.028890799999999998,
+    "hybridLiteralAndModelParsing": true,
+    "independentHoldoutQualification": false,
+    "generalAdmissionQualified": false,
+    "implementationCommit": "165bed64da809e65577a77cbeb4631b78d810439",
+    "finalResponseReplayPassed": 9,
+    "finalLocalSafetyGuardsAfterA5": true
   }
 }

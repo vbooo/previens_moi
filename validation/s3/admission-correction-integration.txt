@@ -1,0 +1,34 @@
+test_01_auth_invalid_and_cross_account (__main__.Integration) ... ok
+test_02_preview_scope_expiry_and_idempotence (__main__.Integration) ... ok
+test_03_atomic_last_slot (__main__.Integration) ... ok
+test_04_budget_and_lost_create (__main__.Integration) ... ok
+test_05_atomic_results_dedup_and_pause (__main__.Integration) ... ok
+test_06_once_and_failure_no_false_success (__main__.Integration) ... ok
+test_07_disabled_admission_and_contract (__main__.Integration) ... ok
+test_08_deleted_account_old_jwt (__main__.Integration) ... ok
+test_09_device_transfer_and_deleted_finding (__main__.Integration) ... ok
+test_10_mail_otp_invalid_expired_and_refresh (__main__.Integration) ... ok
+test_11_webhook_raw_signature_replay_and_limits (__main__.Integration) ... ok
+test_12_rpc_privileges_and_global_preview_limit (__main__.Integration) ... ok
+test_13_resume_replace_confirmed_only_after_new_baseline (__main__.Integration) ... ok
+test_14_direct_rpc_cannot_bypass_expected_version (__main__.Integration) ... ok
+test_15_account_deletion_and_restore_marker_replay (__main__.Integration) ... ok
+test_16_pagination_is_stable_and_scoped (__main__.Integration) ... ok
+test_17_failed_stop_freezes_new_work (__main__.Integration) ... ok
+test_18_full_erasure_waits_for_remote_stop_and_deletes_identity (__main__.Integration) ... ok
+test_19_emission_claim_survives_delete_and_blocks_stop_until_settled (__main__.Integration) ... ok
+test_20_worker_auth_and_real_identity_erasure (__main__.Integration) ... ok
+test_21_emission_and_pause_serialize_on_real_database_lock (__main__.Integration) ... ok
+test_22_admission_queue_idempotence_budget_and_lost_call (__main__.Integration) ... ok
+test_23_admission_result_cannot_bypass_source_gate_and_cost_overrun_freezes (__main__.Integration) ... ok
+test_24_short_lived_worker_mac_replay_and_real_scheduler_transport (__main__.Integration) ... ok
+test_25_identified_clarification_is_retrievable_and_settles_known_usage (__main__.Integration) ... ok
+test_26_durable_provider_baseline_and_each_recurrence_has_own_reservation (__main__.Integration) ... ok
+test_27_pause_during_create_retains_late_remote_identity_for_cleanup (__main__.Integration) ... ok
+test_28_unsettled_cost_does_not_retain_personal_plan_after_remote_erasure (__main__.Integration) ... ok
+test_29_provider_and_stop_crash_after_last_lease_remain_visible_and_freeze (__main__.Integration) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 8.900s
+
+OK

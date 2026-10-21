@@ -1,0 +1,72 @@
+Task test deno test tests/
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/admission_corpus_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/admission_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/admission_worker_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/erasure_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/fcm_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/firecrawl_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/provider_worker_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/stop_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/worker_auth_test.ts
+running 9 tests from ./tests/admission_corpus_test.ts
+real A5 response regression A01 ... ok (15ms)
+real A5 response regression A02 ... ok (0ms)
+real A5 response regression A03 ... ok (0ms)
+real A5 response regression A04 ... ok (0ms)
+real A5 response regression A05 ... ok (0ms)
+real A5 response regression A06 ... ok (0ms)
+real A5 response regression A07 ... ok (0ms)
+real A5 response regression A08 ... ok (0ms)
+real A5 response regression D01 ... ok (0ms)
+running 14 tests from ./tests/admission_test.ts
+understanding does not create a watch without independent source evidence ... ok (0ms)
+complete verified scope still requires qualified method ... ok (0ms)
+private requests and clarifications cannot become ready through source claims ... ok (0ms)
+Responses call has no tools, no storage and bounded output; refusal stays failure ... ok (2ms)
+A01 regression: separate any manufacturer from exact reference, no SKU rewriting ... ok (1ms)
+A04 regression: missing delivery requires clarification, contradictory branches rejected ... ok (0ms)
+branch guards preserve concert and private scope, reject fabricated extra fields ... ok (0ms)
+country absence or fabricated quote clarifies without inferring France from EUR or language ... ok (0ms)
+only explicitly quoted condition states survive extraction; missing or fabricated evidence stays safe ... ok (0ms)
+venue contraction is normalized only when grounded after a preposition; proper capital L preserved ... ok (1ms)
+understood retail cannot omit the evidence container ... ok (0ms)
+literal FR/EN retail grammar preserves explicit criteria with unfamiliar references; missing country asks only country ... ok (1ms)
+literal path refuses extra colour, merchant or quantity conditions rather than losing them ... ok (0ms)
+literal path preserves leading qualifiers by falling back to general interpretation ... ok (0ms)
+running 3 tests from ./tests/admission_worker_test.ts
+admission worker is disabled without key and does not lease ... ok (0ms)
+worker preserves identified questions and accounts for tokens before persisting ... ok (4ms)
+lost response holds unknown reservation and never retries; inconsistent A04 is failed ... ok (1ms)
+running 2 tests from ./tests/erasure_test.ts
+erasure retries after Auth failure without claiming completion or exposing identity ... ok (0ms)
+erasure processes other eligible accounts despite one interrupted deletion ... ok (0ms)
+running 6 tests from ./tests/fcm_test.ts
+disabled push performs no lease or network call ... ok (0ms)
+pause after lease prevents HTTP emission ... ok (0ms)
+FCM contains identifiers only and bounded TTL ... ok (0ms)
+acceptance is recorded and does not claim delivery ... ok (1ms)
+lost response is unknown without automatic duplicate POST ... ok (0ms)
+provider 503 is unknown; permanent 400 is failed ... ok (0ms)
+running 7 tests from ./tests/firecrawl_test.ts
+disabled provider and invalid path emit no HTTP and never reveal key ... ok (0ms)
+stop requires authenticated paused monitor and no current check ... ok (1ms)
+signed completion must match authenticated API monitor check source and summary ... ok (0ms)
+lost run response is unknown, pause still occurs and no second run is sent ... ok (0ms)
+near automatic schedule is refused before reservation or unpause ... ok (0ms)
+lost creation is reconciled by service identity and never recreated ... ok (8ms)
+remote erasure confirms absence; a lost DELETE is reconciled without claiming completion ... ok (0ms)
+running 5 tests from ./tests/provider_worker_test.ts
+provider execution requires dedicated public receiver and does not lease otherwise ... ok (0ms)
+baseline waits for signed completion then remains silent ... ok (1ms)
+same check succeeds; unqualified semantic change becomes visible failure ... ok (8ms)
+lost run intent never triggers another provider POST ... ok (0ms)
+source mismatch is visible and cannot confirm baseline or create a result ... ok (0ms)
+running 3 tests from ./tests/stop_test.ts
+stop worker does not lease when disabled and does not confirm ambiguous creation ... ok (0ms)
+stop worker confirms only after authenticated paused state has no running check ... ok (1ms)
+stop reconciles a lost creation by durable job name before acknowledging cleanup ... ok (0ms)
+running 1 test from ./tests/worker_auth_test.ts
+worker requires secret or valid fresh one-use MAC; replay expired and tampered requests fail ... ok (4ms)
+
+ok | 50 passed | 0 failed (520ms)
+

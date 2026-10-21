@@ -151,3 +151,6 @@ Consultées le 20 octobre 2026 : [Supabase tarifs](https://supabase.com/pricing)
 ## Complément local du 20 octobre
 
 Questions/polling/reprise chiffrée raccordés dans Android ; 26 migrations installées à neuf ; file fournisseur avec création rapprochée, passage réservé et arrêt/suppression ; émission atomique et effacement Auth avec rejeu des marqueurs restaurés. A1 réel : 7/9 et zéro activation. Les deux défauts sont conservés ; aucune méthode réelle qualifiée. Source de vérité : [bilan](../validation/s3/bilan.md), [service](../service/README.md). Les accès dédiés restent indispensables aux preuves d'ingress public et de FCM réel.
+
+
+Mise à jour du 21 octobre 2026 : les deux défauts d’admission initiaux sont corrigés ; A5 passe 9/9 sur les mêmes cas, avec 50 régressions et 29 intégrations locales. Les résultats historiques restent conservés. La qualification indépendante de la compréhension générale et les essais externes restent ouverts. Voir le [rapport de correction](../validation/s3/correction-admission.md).

@@ -7,7 +7,7 @@
   "fcm_execution_enabled": false,
   "real_capacity": 0,
   "remaining_gates": [
-    "A1 interpretation: 7/9; fix and independently qualify two failed cases without changing thresholds",
+    "A1 original 7/9 preserved; A5 corrected hybrid parsing 9/9 on the same development cases; broader independent free-input qualification still required",
     "qualify discovery, novelty, freshness, semantic judgments and semantic deduplication; current changes fail visibly",
     "dedicated Supabase project and public signed webhook tests",
     "dedicated Firebase Spark project and real FCM receipt including permission, delay, reauthentication and deletion",
@@ -15,8 +15,8 @@
     "independent backup and cloud recovery",
     "qualify full chain and expected references before S4 observation"
   ],
-  "additional_paid_calls": 9,
-  "additional_estimated_usd": 0.004634,
+  "additional_paid_calls": 45,
+  "additional_estimated_usd": 0.0335248,
   "local_erasure_and_restore_passed": true,
   "provider_steps_implemented": true,
   "real_method_qualified": false

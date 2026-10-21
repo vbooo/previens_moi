@@ -1,9 +1,9 @@
 {
   "authorizedCumulativeMaxEUR": 2,
-  "additionalProviderCalls": 11,
-  "additionalPaidOpenAICalls": 9,
+  "additionalProviderCalls": 47,
+  "additionalPaidOpenAICalls": 45,
   "additionalFirecrawlReadOnlyCalls": 2,
-  "additionalEstimatedOpenAIUSD": 0.004634000000000001,
+  "additionalEstimatedOpenAIUSD": 0.0335248,
   "additionalFirecrawlCreditsConsumed": 0,
   "additionalExaCalls": 0,
   "subscriptionOrTopUp": false,
@@ -13,14 +13,15 @@
     "firecrawlFreeCreditsConsumed": 15
   },
   "current": {
-    "openaiEstimatedCumulativeUSD": 0.0522432,
+    "openaiEstimatedCumulativeUSD": 0.081134,
     "firecrawlCredits": 985,
-    "firecrawlBalanceDate": "2026-10-20"
+    "firecrawlBalanceDate": "2026-10-20",
+    "openaiCallsCumulative": 128
   },
   "newCampaignUpperUSD": 0.1,
-  "newActualReservedUpperUSD": 0.0640672,
-  "cumulativeConservativeUpperEUR": 1.3827645000000002,
-  "conservativeCalculation": "full historic OpenAI reservations + USD0.05 other historic allowance + USD0.10 new envelope, multiplied by 1.5 EUR/USD and 1.25 tax buffer; not a claimed actual exchange rate",
+  "newActualReservedUpperUSD": 0.3776912,
+  "cumulativeConservativeUpperEUR": 1.9414335000000003,
+  "conservativeCalculation": "full historic OpenAI reservations + full A1–A4 reservations + USD0.05 other historic allowance + USD0.10 final A5 envelope, multiplied by 1.5 EUR/USD and 1.25 tax buffer; not an actual exchange rate or reconciled invoice",
   "invoiceReconciled": false,
   "productionForecastClosed": false,
   "monthlyBudgetAuthorized": false,
@@ -28,5 +29,42 @@
     "qualified monitoring/judgment cost",
     "independent backup destination",
     "public email operations and sending domain only if required"
+  ],
+  "admissionCampaigns": [
+    {
+      "id": "A1",
+      "calls": 9,
+      "passed": 7,
+      "estimatedUSD": 0.004634000000000001,
+      "reservedUSD": 0.0640672
+    },
+    {
+      "id": "A2",
+      "calls": 9,
+      "passed": 7,
+      "estimatedUSD": 0.0064376,
+      "reservedUSD": 0.075364
+    },
+    {
+      "id": "A3",
+      "calls": 9,
+      "passed": 6,
+      "estimatedUSD": 0.007157199999999999,
+      "reservedUSD": 0.0787912
+    },
+    {
+      "id": "A4",
+      "calls": 9,
+      "passed": 5,
+      "estimatedUSD": 0.0077480000000000005,
+      "reservedUSD": 0.07973440000000001
+    },
+    {
+      "id": "A5",
+      "calls": 9,
+      "passed": 9,
+      "estimatedUSD": 0.007548,
+      "reservedUSD": 0.07973440000000001
+    }
   ]
 }

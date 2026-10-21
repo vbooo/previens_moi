@@ -1,0 +1,181 @@
+{
+  "createdAt": "2026-10-21T09:40:14.080774+00:00",
+  "expiresAt": "2026-10-22T00:00:00Z",
+  "cases": [
+    {
+      "id": "A01",
+      "text": "Préviens-moi quand le Ninja AF300EU neuf passe sous 150 €, livraison comprise en France métropolitaine, sans abonnement ni reprise.",
+      "expected": {
+        "status": "proposal",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "questions": []
+      }
+    },
+    {
+      "id": "A02",
+      "text": "Notify me when a new Ninja AF300EU goes below EUR 150 including delivery to mainland France, without a subscription or trade-in.",
+      "expected": {
+        "status": "proposal",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "questions": []
+      }
+    },
+    {
+      "id": "A03",
+      "text": "Un airfryer pas cher",
+      "expected": {
+        "status": "clarify",
+        "criteria": null,
+        "questions": [
+          "product",
+          "budget"
+        ]
+      }
+    },
+    {
+      "id": "A04",
+      "text": "AF300EU neuf sous 150 € livraison comprise sans abonnement ni reprise",
+      "expected": {
+        "status": "clarify",
+        "criteria": null,
+        "questions": [
+          "delivery_zone"
+        ]
+      }
+    },
+    {
+      "id": "A05",
+      "text": "AF300EU neuf sous 150 € livré en France métropolitaine sans abonnement ni reprise ; finalement le reconditionné me convient aussi",
+      "expected": {
+        "status": "proposal",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new",
+            "refurbished"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "questions": []
+      }
+    },
+    {
+      "id": "A06",
+      "text": "AF300EU neuf 150 € maximum livré en France métropolitaine sans abonnement ni reprise",
+      "expected": {
+        "status": "proposal",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lte",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "questions": []
+      }
+    },
+    {
+      "id": "A07",
+      "text": "Préviens-moi d’un prélèvement sur mon compte bancaire",
+      "expected": {
+        "status": "unsupported",
+        "criteria": null,
+        "questions": []
+      }
+    },
+    {
+      "id": "A08",
+      "text": "Préviens-moi pour le modèle TEST-X42 neuf sous 90 € livraison comprise en France métropolitaine sans abonnement ni reprise",
+      "expected": {
+        "status": "proposal",
+        "criteria": {
+          "model": "TEST-X42",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 9000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "questions": []
+      }
+    },
+    {
+      "id": "D01",
+      "text": "Préviens-moi des nouveaux concerts annoncés à l’Accor Arena Paris.",
+      "expected": {
+        "family": "concert",
+        "status": "understood",
+        "subject": "Accor Arena",
+        "location": "Paris"
+      }
+    }
+  ],
+  "specSha256": "85f4f17f08e68225e1929d5c4fb025e4135cae3ac8b1d3166bd0cfdd560c3dbd",
+  "callsMax": 9,
+  "retries": 0,
+  "inputBytesMax": 20000,
+  "maxOutputTokens": 2200,
+  "model": "gpt-4.1-mini-2025-04-14",
+  "newUpperUsd": 0.1,
+  "previousCampaignsReservedUsd": 0.1394312,
+  "previousCampaignsActualUsd": 0.011071600000000001,
+  "historicalReservedUsd": 0.5874744000000001,
+  "historicalActualUsd": 0.0476092,
+  "otherHistoricalAllowanceUsd": 0.05,
+  "fxUpperEurPerUsd": 1.5,
+  "taxMultiplier": 1.25,
+  "cumulativeConservativeUpperEur": 1.644198,
+  "criteria": "zero explicit criterion deformed; zero activation from interpretation; no post-result tuning",
+  "scope": "interpretation only; no monitor, Exa call, Firecrawl call or push"
+}

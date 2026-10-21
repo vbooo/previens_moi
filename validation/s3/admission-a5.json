@@ -1,0 +1,274 @@
+{
+  "createdAt": "2026-10-21T09:47:05.840464+00:00",
+  "manifestSha256": "adef45d8c593392b1b9eb75c08f216ea25c4cd2a10860a2736b025aa713f766d",
+  "specSha256": "e38de03c7463cb979595f6f3ce2b24a768a34926593d3063df2f04d6a7c186fe",
+  "results": [
+    {
+      "id": "A01",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères explicites de la demande conservés ; les sources restent à vérifier."
+      },
+      "activationAllowed": false,
+      "manufacturer": "Ninja",
+      "estimatedUsd": 0.0008664000000000001,
+      "inputTokens": 1518,
+      "outputTokens": 162
+    },
+    {
+      "id": "A02",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Explicit request criteria preserved; sources still need verification."
+      },
+      "activationAllowed": false,
+      "manufacturer": "Ninja",
+      "estimatedUsd": 0.0008452,
+      "inputTokens": 1517,
+      "outputTokens": 149
+    },
+    {
+      "id": "A03",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "clarify",
+        "criteria": null,
+        "subject": null,
+        "location": null,
+        "questions": [
+          {
+            "id": "product",
+            "label": "Quel produit recherchez-vous exactement ?",
+            "options": [],
+            "required": true
+          },
+          {
+            "id": "budget",
+            "label": "Quel est votre budget maximal en centimes ?",
+            "options": [],
+            "required": true
+          }
+        ],
+        "explanation": "Votre demande est trop vague. Veuillez préciser le modèle exact de l'airfryer, votre budget maximal en centimes, et le pays ou la région de livraison."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0008447999999999999,
+      "inputTokens": 1496,
+      "outputTokens": 154
+    },
+    {
+      "id": "A04",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "clarify",
+        "criteria": null,
+        "subject": null,
+        "location": null,
+        "questions": [
+          {
+            "id": "delivery_zone",
+            "label": "Dans quel pays faut-il livrer ?",
+            "options": [],
+            "required": true
+          }
+        ],
+        "explanation": "Le pays de livraison manque."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.00096,
+      "inputTokens": 1504,
+      "outputTokens": 224
+    },
+    {
+      "id": "A05",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new",
+            "refurbished"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères explicites de la demande conservés ; les sources restent à vérifier."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0008724000000000001,
+      "inputTokens": 1517,
+      "outputTokens": 166
+    },
+    {
+      "id": "A06",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "AF300EU",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 15000,
+          "operator": "lte",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères explicites de la demande conservés ; les sources restent à vérifier."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0008448,
+      "inputTokens": 1508,
+      "outputTokens": 151
+    },
+    {
+      "id": "A07",
+      "passed": true,
+      "interpretation": {
+        "family": "private",
+        "status": "unsupported",
+        "criteria": null,
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "La demande concerne une alerte sur un prélèvement bancaire privé, ce qui est hors du champ d'interprétation des montres de prix retail ou annonces publiques."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0007316,
+      "inputTokens": 1501,
+      "outputTokens": 82
+    },
+    {
+      "id": "A08",
+      "passed": true,
+      "interpretation": {
+        "family": "retail",
+        "status": "understood",
+        "criteria": {
+          "model": "TEST-X42",
+          "condition": [
+            "new"
+          ],
+          "ceiling_cents": 9000,
+          "operator": "lt",
+          "currency": "EUR",
+          "delivery_zone": "FR-METRO",
+          "shipping_included": true,
+          "no_subscription": true,
+          "no_trade_in": true,
+          "version": 1,
+          "mode": "continuous"
+        },
+        "subject": null,
+        "location": null,
+        "questions": [],
+        "explanation": "Critères explicites de la demande conservés ; les sources restent à vérifier."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.000846,
+      "inputTokens": 1515,
+      "outputTokens": 150
+    },
+    {
+      "id": "D01",
+      "passed": true,
+      "interpretation": {
+        "family": "concert",
+        "status": "understood",
+        "criteria": null,
+        "subject": "Accor Arena",
+        "location": "Paris",
+        "questions": [],
+        "explanation": "L'utilisateur demande des annonces de concerts à l'Accor Arena à Paris, ce qui correspond à une demande de type concert avec sujet et localisation explicites."
+      },
+      "activationAllowed": false,
+      "manufacturer": null,
+      "estimatedUsd": 0.0007367999999999999,
+      "inputTokens": 1506,
+      "outputTokens": 84
+    }
+  ],
+  "passed": 9,
+  "total": 9,
+  "completed": 9,
+  "failure": null,
+  "newReservedUpperUsd": 0.07973440000000001,
+  "newEstimatedUsageUsd": 0.007548,
+  "previousCampaignsEstimatedOpenAIUsd": 0.0259768,
+  "historicalEstimatedOpenAIUsd": 0.0476092,
+  "cumulativeEstimatedOpenAIUsd": 0.081134,
+  "newCapUsd": 0.1,
+  "cumulativeConservativeUpperEur": 1.9414335000000003,
+  "methodsQualified": false,
+  "surveillanceActivated": false,
+  "claims": "A5 literal verified extraction retest once only; no source coverage, recurrence, freshness or semantic deduplication claim."
+}

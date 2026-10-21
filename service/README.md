@@ -52,7 +52,7 @@ Ne jamais placer une identité serveur dans Android. Les données publiques Fire
 
 ## Preuves et limites
 
-Voir le [bilan S3](../validation/s3/bilan.md). A1 réel : **7/9**, deux échecs conservés, aucune qualification ouverte. Le transport fournisseur, ses reprises et la récurrence sont testés avec réseau injecté et PostgreSQL réel, sans nouvelle surveillance externe. Les anciens suivis Firecrawl listés sont toujours en pause, solde 985 crédits recontrôlé.
+Voir le [bilan S3](../validation/s3/bilan.md). A1 historique : **7/9**, conservé. Le [correctif du 21 octobre](../validation/s3/correction-admission.md) passe **9/9** sur les mêmes cas avec 50 régressions locales ; la qualification générale reste ouverte. Le transport fournisseur, ses reprises et la récurrence sont testés avec réseau injecté et PostgreSQL réel, sans nouvelle surveillance externe. Les anciens suivis Firecrawl listés sont toujours en pause, solde 985 crédits recontrôlé.
 
 `scripts/check-local-backup-restore.py` prouve une reconstruction depuis un fichier hors du volume Docker et le rejeu d'un effacement postérieur au snapshot. Ce test local ne prouve ni une sauvegarde indépendante hébergée, ni une récupération de clés, ni la restauration du cloud.
 
