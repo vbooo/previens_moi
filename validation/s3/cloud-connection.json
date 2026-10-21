@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-21",
+  "supabase": {
+    "migrationCount": 26,
+    "functions": [
+      "public",
+      "api",
+      "webhook",
+      "worker"
+    ],
+    "httpChecks": {
+      "health": {
+        "httpStatus": 200,
+        "responseCode": null
+      },
+      "account_without_session": {
+        "httpStatus": 401,
+        "responseCode": "UNAUTHORIZED_NO_AUTH_HEADER"
+      },
+      "unsigned_worker": {
+        "httpStatus": 403,
+        "responseCode": "access_denied"
+      },
+      "unsigned_webhook": {
+        "httpStatus": 403,
+        "responseCode": "access_denied"
+      },
+      "preview_session": {
+        "httpStatus": 201,
+        "tokenPresent": true
+      }
+    },
+    "syntheticAuthenticatedAccount": {
+      "syntheticAuthSessionCreated": true,
+      "emailDeliveryProven": false,
+      "accountHttpStatus": 200,
+      "accountMatched": true,
+      "gatewayCode": null,
+      "gatewayMessage": null
+    }
+  },
+  "firebase": {
+    "realFcmSendCount": 1,
+    "outboxAcceptedAttempts": 1,
+    "androidNotificationReceived": true,
+    "notificationOpen": {
+      "notificationOpenedControlledResult": true,
+      "technicalTitleVisible": true,
+      "uiTreeAvailable": true
+    },
+    "findingWasSynthetic": true,
+    "realSourceDetectionProven": false
+  },
+  "android": {
+    "cloudBuildPassed": true,
+    "optInInstrumentationTestsPassed": 4,
+    "privilegedSecretsAbsentFromApks": {
+      "app-remote-debug.apk": {
+        "privilegedSecretFound": false
+      },
+      "app-remote-debug-androidTest.apk": {
+        "privilegedSecretFound": false
+      }
+    }
+  },
+  "cleanup": {
+    "oneAttemptAccepted": true,
+    "paidExecutionGatesClosed": true,
+    "syntheticBusinessDataRemoved": true,
+    "syntheticAuthIdentityRemoved": true
+  },
+  "emailOtp": {
+    "length": 6,
+    "expirySeconds": 600,
+    "deliveryVerified": true,
+    "blocker": null,
+    "realEmailSentCount": 3,
+    "smtpAuthenticationVerified": true,
+    "smtpConfigured": true,
+    "codeTemplatesConfigured": true,
+    "smtpProvider": "OVH MX Plan",
+    "senderPurpose": "OVH address temporarily authorized for tests",
+    "sendRequestHttpStatus": 200,
+    "requestedVia": "Supabase Auth API",
+    "appEmailRequestVerified": true,
+    "codeVerifiedViaAuthApi": true,
+    "authenticatedAccountHttpStatus": 200,
+    "serverTestSessionRevoked": true,
+    "appSignInVerified": true,
+    "emailRateLimitPerHour": 6,
+    "perUserCooldownSeconds": 60,
+    "androidTestState": "Passed verification/resume and fresh-process restore/sign-out phases",
+    "previousFailureCause": "Remote email_sent rate limit remained 2/hour after custom SMTP setup; configured to 6/hour for testing.",
+    "androidRepositoryOtpVerificationVerified": true,
+    "androidAccountUiVerified": true,
+    "encryptedSessionVerified": true,
+    "sessionSurvivedActivityRecreation": true,
+    "sessionSurvivedProcessRestart": true,
+    "signOutVerified": true,
+    "localCredentialsRemoved": true,
+    "privateCodeFilesCleared": true,
+    "continuousUiEmailEntryToCodeButtonTestPassed": false,
+    "testFlowNote": "Request proven from Android UI. Full UI test reached its human-entry wait limit. Existing real code then verified through the actual Android session repository, without injecting a session. Connected UI/account HTTP 200, encrypted storage, activity recreation and fresh-process restore/sign-out passed. Cloud code-field/button phase was not replayed in one continuous run."
+  },
+  "stateLeft": {
+    "admissionExecutionEnabled": false,
+    "providerExecutionEnabled": false,
+    "fcmExecutionEnabled": false,
+    "capacityEnabled": false,
+    "admissionCapacityEnabled": false,
+    "workerScheduleEnabled": false,
+    "qualifiedMethodCount": 0
+  },
+  "costs": {
+    "newOpenAICalls": 0,
+    "newExaCalls": 0,
+    "newFirecrawlCalls": 0,
+    "billingEnabled": false,
+    "subscriptionOrTopUp": false,
+    "authorizedCumulativeMaxEUR": 2,
+    "conservativeCumulativeUpperEUR": 1.9414335
+  },
+  "limits": [
+    "Synthetic transport fixture does not qualify monitoring or source discovery.",
+    "Public signed provider ingress, autonomous recurrence, cloud restore and notification edge cases remain unproven.",
+    "No seven-day S4 observation started.",
+    "Earlier admission and regression results were not rerun during this cloud-only connection task.",
+    "Emulator rendering was slow; performance is not qualified.",
+    "Cloud email test was split after human input wait expired; continuous email/code button path is not claimed as passing. Earlier local email UI test remains separate."
+  ]
+}

@@ -66,5 +66,17 @@
       "estimatedUSD": 0.007548,
       "reservedUSD": 0.07973440000000001
     }
-  ]
+  ],
+  "cloudConnection20261021": {
+    "newOpenAICalls": 0,
+    "newExaCalls": 0,
+    "newFirecrawlCalls": 0,
+    "billingEnabled": false,
+    "subscriptionOrTopUp": false,
+    "authorizedCumulativeMaxEUR": 2,
+    "conservativeCumulativeUpperEUR": 1.9414335,
+    "realFcmSendCount": 1,
+    "realEmailSentCount": 3,
+    "sdkNetworkCallCountMeasured": false
+  }
 }

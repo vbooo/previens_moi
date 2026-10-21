@@ -21,3 +21,6 @@ validation/preuves/
 service/supabase/.temp/
 service/supabase/.branches/
 service/.runtime/
+
+# Supabase CLI metadata when launched from the repository root
+supabase/.temp/

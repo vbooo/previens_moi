@@ -1,16 +1,21 @@
 {
-  "configurationComplete": false,
+  "configurationComplete": true,
   "checks": {
-    "dedicatedSupabaseUrl": false,
-    "SUPABASE_ANON_KEY": false,
-    "SUPABASE_SERVICE_ROLE_KEY": false,
-    "databasePassword": false,
-    "firebaseAndroidApp": false,
-    "firebaseServerIdentity": false
+    "dedicatedSupabaseUrl": true,
+    "SUPABASE_ANON_KEY": true,
+    "SUPABASE_SERVICE_ROLE_KEY": true,
+    "databasePassword": true,
+    "firebaseAndroidApp": true,
+    "firebaseServerIdentity": true
   },
-  "remoteAccessVerified": false,
-  "cloudDeployed": false,
+  "remoteAccessVerified": true,
+  "cloudDeployed": true,
   "methodQualificationVerified": false,
-  "networkCalls": 0,
-  "note": "Files only; this does not validate IAM, project quotas, email delivery or real FCM."
+  "note": "Cloud, real OVH email OTP and Android repository/UI/session restore/sign-out verified. Email test split after human wait limit; no continuous full UI claim. Monitoring remains unqualified.",
+  "actualFcmTransportVerified": true,
+  "emailOtpDeliveryVerified": true,
+  "cloudEvidence": "cloud-connection.json",
+  "emailOtpVerificationViaApi": true,
+  "androidEmailSignInVerified": true,
+  "androidEmailRequestVerified": true
 }

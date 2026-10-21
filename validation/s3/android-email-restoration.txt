@@ -1,0 +1,5 @@
+fr.previensmoi.app.CloudEmailSignInTest:.
+
+Time: 3.649
+
+OK (1 test)
