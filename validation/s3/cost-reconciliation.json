@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-22",
+  "scope": "Saved completed request usage reconciliation, not invoice reconciliation",
+  "completedResponsesMatched": 128,
+  "missingOrAmbiguousHistoricalRequests": 0,
+  "model": "gpt-4.1-mini-2025-04-14",
+  "tier": "default",
+  "uncachedInputUSDPerMillion": 0.4,
+  "outputUSDPerMillion": 1.6,
+  "pricingSource": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+  "usageUpperUSD": 0.081134,
+  "completedReservationExcessReleasedUSD": 0.8840316,
+  "otherHistoricalAllowanceUSD": 0.05,
+  "fxUpperEURPerUSD": 1.5,
+  "taxMultiplier": 1.25,
+  "settledConservativeUpperEUR": 0.24587625,
+  "invoiceReconciled": false,
+  "campaigns": [
+    {
+      "id": "A1",
+      "completedCalls": 9,
+      "usageUpperUSD": 0.004634,
+      "formerReservedUSD": 0.0640672
+    },
+    {
+      "id": "A2",
+      "completedCalls": 9,
+      "usageUpperUSD": 0.0064376,
+      "formerReservedUSD": 0.075364
+    },
+    {
+      "id": "A3",
+      "completedCalls": 9,
+      "usageUpperUSD": 0.0071572,
+      "formerReservedUSD": 0.0787912
+    },
+    {
+      "id": "A4",
+      "completedCalls": 9,
+      "usageUpperUSD": 0.007748,
+      "formerReservedUSD": 0.0797344
+    },
+    {
+      "id": "A5",
+      "completedCalls": 9,
+      "usageUpperUSD": 0.007548,
+      "formerReservedUSD": 0.0797344
+    }
+  ],
+  "noNetworkCalls": true,
+  "authorizationMaxEUR": 2,
+  "newCallsMade": 0
+}

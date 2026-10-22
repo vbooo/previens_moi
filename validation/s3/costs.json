@@ -20,8 +20,8 @@
   },
   "newCampaignUpperUSD": 0.1,
   "newActualReservedUpperUSD": 0.3776912,
-  "cumulativeConservativeUpperEUR": 1.9414335000000003,
-  "conservativeCalculation": "full historic OpenAI reservations + full A1–A4 reservations + USD0.05 other historic allowance + USD0.10 final A5 envelope, multiplied by 1.5 EUR/USD and 1.25 tax buffer; not an actual exchange rate or reconciled invoice",
+  "cumulativeConservativeUpperEUR": 0.99587625,
+  "conservativeCalculation": "128 saved completed Responses reconciled at uncached rates, historical other-cost allowance USD0.05 retained, plus USD0.40 maximum new S3 engine envelope, EUR/USD ceiling1.5 and tax multiplier1.25. Not an invoice.",
   "invoiceReconciled": false,
   "productionForecastClosed": false,
   "monthlyBudgetAuthorized": false,
@@ -99,5 +99,15 @@
     "globalBudgetMaxUnits": 14,
     "cumulativeConservativeUpperEUR": 1.9414335,
     "providerBalanceNotReadAgain": true
+  },
+  "formerFullReservationConservativeUpperEUR": 1.9414335000000003,
+  "costReconciliationEvidence": "cost-reconciliation.json",
+  "generalEngine20261022": {
+    "newEnvelopeUSD": 0.4,
+    "unknownResponsesRetainReservation": true,
+    "automaticRetries": 0,
+    "maxEURIncludingThisEnvelope": 0.99587625,
+    "authorizedCumulativeMaxEUR": 2,
+    "invoiceReconciled": false
   }
 }

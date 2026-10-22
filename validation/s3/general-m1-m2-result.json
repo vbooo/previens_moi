@@ -1,0 +1,604 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "8f72b33ec33408af43c41ef8e2a76123ab887cca3e5947273f95b5ddba8ff98d",
+  "results": [
+    {
+      "id": "I01",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance prix casque AKG K371 neuf en Belgique",
+        "criteria": [
+          {
+            "id": "crit1",
+            "text": "Le produit doit être un casque AKG K371 neuf",
+            "quote": "un casque AKG K371 neuf"
+          },
+          {
+            "id": "crit2",
+            "text": "Le prix doit être inférieur à 120 €",
+            "quote": "à moins de 120 €"
+          },
+          {
+            "id": "crit3",
+            "text": "Le prix doit inclure la livraison en Belgique",
+            "quote": "livraison comprise en Belgique"
+          },
+          {
+            "id": "crit4",
+            "text": "L'offre ne doit pas nécessiter d'abonnement ni de reprise",
+            "quote": "sans abonnement ni reprise"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "casque AKG K371 neuf moins de 120 euros livraison Belgique",
+          "offre casque AKG K371 neuf prix inférieur 120 euros livraison Belgique sans abonnement ni reprise"
+        ],
+        "explanation": "Vous souhaitez être informé dès qu'un casque AKG K371 neuf est proposé à un prix inférieur à 120 € avec la livraison incluse en Belgique, sans obligation d'abonnement ni de reprise. Toutes ces conditions sont prises en compte pour surveiller les offres correspondantes."
+      },
+      "factKey": null,
+      "usageUSD": 0.0005332000000000001
+    },
+    {
+      "id": "I02",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Mitski concert announcements in Bristol, UK in 2027 excluding festivals",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Artist must be Mitski",
+            "quote": "Mitski"
+          },
+          {
+            "id": "c2",
+            "text": "Concert location must be Bristol, UK",
+            "quote": "Bristol, UK"
+          },
+          {
+            "id": "c3",
+            "text": "Concert date must be in the year 2027",
+            "quote": "in 2027"
+          },
+          {
+            "id": "c4",
+            "text": "Exclude any concerts that are part of festivals",
+            "quote": "excluding festivals"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Mitski concert announcements Bristol UK 2027 -festival",
+          "Mitski live show Bristol 2027 NOT festival"
+        ],
+        "explanation": "You requested notifications for when Mitski announces a concert in Bristol, UK during 2027, explicitly excluding any festival appearances. The criteria reflect these exact conditions to monitor relevant public information sources accordingly."
+      },
+      "factKey": null,
+      "usageUSD": 0.0004608000000000001
+    },
+    {
+      "id": "I03",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Articles scientifiques évalués par les pairs sur l’efficacité des toits végétalisés dans les villes françaises",
+        "criteria": [
+          {
+            "id": "1",
+            "text": "Les articles doivent être des articles scientifiques évalués par les pairs",
+            "quote": "articles scientifiques évalués par les pairs"
+          },
+          {
+            "id": "2",
+            "text": "Le sujet doit porter sur l’efficacité des toits végétalisés",
+            "quote": "efficacité des toits végétalisés"
+          },
+          {
+            "id": "3",
+            "text": "Le contexte géographique doit être les villes françaises",
+            "quote": "dans les villes françaises"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "toits végétalisés efficacité site:.fr peer-reviewed",
+          "toits végétalisés efficacité villes françaises article scientifique évalué par les pairs"
+        ],
+        "explanation": "La demande porte sur la surveillance de la publication de nouveaux articles scientifiques évalués par les pairs traitant de l’efficacité des toits végétalisés spécifiquement dans les villes françaises. Les critères incluent la nature scientifique et évaluée par les pairs des articles, le sujet précis des toits végétalisés et leur efficacité, ainsi que le contexte géographique limité aux villes françaises."
+      },
+      "factKey": null,
+      "usageUSD": 0.0005272
+    },
+    {
+      "id": "I04",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Stable LibreOffice releases for Linux excluding beta and release-candidate builds",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Notify me of stable LibreOffice releases for Linux",
+            "quote": "stable LibreOffice releases for Linux"
+          },
+          {
+            "id": "c2",
+            "text": "Exclude beta and release-candidate builds",
+            "quote": "exclude beta and release-candidate builds"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "LibreOffice stable releases Linux -beta -\"release candidate\"",
+          "LibreOffice official stable Linux release announcements"
+        ],
+        "explanation": "You requested notifications about stable LibreOffice releases specifically for Linux, explicitly excluding any beta or release-candidate builds. The criteria reflect these conditions exactly, ensuring only stable versions are considered and pre-release versions are excluded."
+      },
+      "factKey": null,
+      "usageUSD": 0.000396
+    },
+    {
+      "id": "I05",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.0005944000000000001
+    },
+    {
+      "id": "I06",
+      "passed": false,
+      "expectedStatuses": [
+        "unsupported"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Notification de réception de 50 € sur compte bancaire privé",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Le compte bancaire doit être privé",
+            "quote": "mon compte bancaire privé"
+          },
+          {
+            "id": "c2",
+            "text": "Le montant reçu doit être au moins 50 €",
+            "quote": "reçoit 50 €"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "notification réception 50 euros compte bancaire privé",
+          "alerte versement 50 euros compte bancaire personnel"
+        ],
+        "explanation": "Vous souhaitez être prévenu dès que votre compte bancaire privé reçoit un montant de 50 € ou plus. Les critères incluent que le compte soit privé et que le montant reçu soit exactement ou au moins 50 €."
+      },
+      "factKey": null,
+      "usageUSD": 0.000386
+    },
+    {
+      "id": "I07",
+      "passed": false,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Concerts à Rouen et à Nice le même jour dans une seule salle",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Le concert doit avoir lieu uniquement à Rouen",
+            "quote": "uniquement à Rouen"
+          },
+          {
+            "id": "c2",
+            "text": "Le concert doit avoir lieu uniquement à Nice",
+            "quote": "uniquement à Nice"
+          },
+          {
+            "id": "c3",
+            "text": "Les concerts doivent avoir lieu le même jour",
+            "quote": "le même jour"
+          },
+          {
+            "id": "c4",
+            "text": "Le concert doit se dérouler dans une seule salle",
+            "quote": "dans une seule salle"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "concerts à Rouen et Nice même jour salle unique",
+          "événements musicaux Rouen Nice même date salle unique"
+        ],
+        "explanation": "Vous souhaitez être informé uniquement des concerts qui ont lieu à la fois à Rouen et à Nice le même jour, et qui se déroulent dans une seule salle. Les critères précisent que les concerts doivent être exclusivement dans ces deux villes, le même jour, et dans une seule salle."
+      },
+      "factKey": null,
+      "usageUSD": 0.0005048
+    },
+    {
+      "id": "I08",
+      "passed": false,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Price Alert for Refurbished XZT-92 Phone",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Product must be an XZT-92 phone.",
+            "quote": "XZT-92 refurbished phone"
+          },
+          {
+            "id": "c2",
+            "text": "Product condition must be refurbished.",
+            "quote": "refurbished"
+          },
+          {
+            "id": "c3",
+            "text": "Price must be below £180.",
+            "quote": "below £180"
+          },
+          {
+            "id": "c4",
+            "text": "Price must include delivery (delivered).",
+            "quote": "£180 delivered"
+          },
+          {
+            "id": "c5",
+            "text": "Excludes any subscription plans.",
+            "quote": "excluding subscriptions"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "XZT-92 refurbished phone price below £180 delivered",
+          "buy refurbished XZT-92 phone under £180 no subscription"
+        ],
+        "explanation": "You requested notifications for when an XZT-92 refurbished phone is available for less than £180 including delivery, without any subscription plans. The criteria reflect the exact product model, condition, price threshold including delivery, and exclusion of subscriptions. The queries are designed to find relevant listings or offers matching these conditions."
+      },
+      "factKey": null,
+      "usageUSD": 0.0005164000000000001
+    },
+    {
+      "id": "I09",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des sorties stables du logiciel Zephyr sur https://example.com/releases",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Surveille uniquement les sorties stables du logiciel Zephyr",
+            "quote": "sorties stables du logiciel Zephyr"
+          },
+          {
+            "id": "c2",
+            "text": "Exclut les notifications concernant les changements de mise en page",
+            "quote": "pas des changements de mise en page"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "site:https://example.com/releases Zephyr stable release",
+          "site:https://example.com/releases Zephyr stable version"
+        ],
+        "explanation": "Vous souhaitez être informé uniquement des sorties stables du logiciel Zephyr sur la page https://example.com/releases, en excluant toute notification liée aux changements de mise en page. Les critères ont été extraits textuellement de votre demande pour garantir une surveillance précise."
+      },
+      "factKey": null,
+      "usageUSD": 0.000438
+    },
+    {
+      "id": "I10",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Notification d'une nocturne gratuite un vendredi au Musée des Beaux-Arts d’Angers",
+        "criteria": [
+          {
+            "id": "crit1",
+            "text": "Le Musée des Beaux-Arts d’Angers annonce une nocturne gratuite",
+            "quote": "nocturne gratuite"
+          },
+          {
+            "id": "crit2",
+            "text": "La nocturne a lieu un vendredi",
+            "quote": "un vendredi"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Musée des Beaux-Arts d’Angers annonce nocturne gratuite vendredi",
+          "nocturne gratuite vendredi site:angers.fr Musée des Beaux-Arts"
+        ],
+        "explanation": "Vous souhaitez être informé dès que le Musée des Beaux-Arts d’Angers communique une nocturne gratuite qui se déroule un vendredi. Les critères incluent explicitement que la nocturne soit gratuite et qu'elle ait lieu un vendredi. Les requêtes proposées ciblent ces annonces spécifiques sur des sources officielles ou locales."
+      },
+      "factKey": null,
+      "usageUSD": 0.00046680000000000007
+    },
+    {
+      "id": "J01",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Aurora annonce un concert à Nantes le 9 mars 2027",
+        "reason": "Le document source indique explicitement que 'Aurora annonce un concert à Nantes le 9 mars 2027', ce qui satisfait tous les critères de l'utilisateur.",
+        "identity": {
+          "who": "Aurora",
+          "what": "annonce un concert",
+          "where": "Nantes",
+          "when": "9 mars 2027",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/annonces",
+            "quote": "Aurora annonce un concert"
+          },
+          {
+            "criterionId": "city",
+            "url": "https://source.example/annonces",
+            "quote": "à Nantes"
+          }
+        ]
+      },
+      "factKey": "ff8f5da6677af59d8ad1face652a7368e71a3d87dab06340c53a5eb184881390",
+      "usageUSD": 0.00047440000000000004
+    },
+    {
+      "id": "J02",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document mentionne un concert d'Aurora à Lyon, pas à Nantes, donc le critère de lieu n'est pas satisfait.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0003304
+    },
+    {
+      "id": "J03",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document fourni annonce un concert de LEON à Nantes, pas un concert d'Aurora. Aucun élément dans le document ne mentionne Aurora ou un concert d'Aurora à Nantes.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.000348
+    },
+    {
+      "id": "J04",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document ne contient pas la phrase complète 'Aurora annonce un concert à Nantes'. Il mentionne seulement 'Nouveau pied de page bleu.' dans le texte modifié, sans preuve d'annonce de concert à Nantes par Aurora.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0003584
+    },
+    {
+      "id": "J05",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.00037520000000000007
+    },
+    {
+      "id": "J06",
+      "passed": true,
+      "expectedStatuses": [
+        "uncertain",
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document indique qu'Aurora annonce un concert à Nantes, mais il ne mentionne pas que le concert est gratuit, ce qui est une condition nécessaire selon les critères de l'utilisateur.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0003528
+    },
+    {
+      "id": "J07",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.0005176
+    },
+    {
+      "id": "J08",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.0005016
+    },
+    {
+      "id": "J09",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Aurora annonce un concert à Nantes le 9 mars 2027.",
+        "reason": "Le document fournit une annonce explicite d'un concert d'Aurora à Nantes, satisfaisant tous les critères de l'utilisateur.",
+        "identity": {
+          "who": "Aurora",
+          "what": "concert",
+          "where": "Nantes",
+          "when": "2027-03-09",
+          "variant": null
+        },
+        "sameAs": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/annonces",
+            "quote": "Aurora annonce un concert à Nantes le 9 mars 2027."
+          },
+          {
+            "criterionId": "city",
+            "url": "https://source.example/annonces",
+            "quote": "Aurora annonce un concert à Nantes le 9 mars 2027."
+          }
+        ]
+      },
+      "factKey": "0e4d417196c2798814dc252bb1bff521b7c90dd71b9feb660d31ac13a45530a3",
+      "usageUSD": 0.0005404000000000001
+    },
+    {
+      "id": "J10",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Aurora annonce un concert à Nantes le 10 mars 2027.",
+        "reason": "Le document fournit une annonce explicite d'un concert d'Aurora à Nantes, satisfaisant tous les critères de l'utilisateur.",
+        "identity": {
+          "who": "Aurora",
+          "what": "concert",
+          "where": "Nantes",
+          "when": "2027-03-10",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/annonces",
+            "quote": "Aurora annonce un concert"
+          },
+          {
+            "criterionId": "city",
+            "url": "https://source.example/annonces",
+            "quote": "à Nantes"
+          }
+        ]
+      },
+      "factKey": "db7b11ddac6e0f3f48747b6cc55dd972c248ab2402a0f99a789fc6dd446cb5bb",
+      "usageUSD": 0.00048520000000000003
+    },
+    {
+      "id": "J11",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "L'annonce a été publiée le 3 mai 2024, ce qui est avant le 22 octobre 2026, donc elle ne satisfait pas le critère de récence.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.00037320000000000007
+    },
+    {
+      "id": "J12",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.0005376000000000001
+    }
+  ],
+  "completed": 22,
+  "total": 22,
+  "passed": 14,
+  "stopped": null,
+  "actualCalls": 22,
+  "newEstimatedUSD": 0.0100184,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.26466075,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "M1 intent preservation and M2 factual judgment on explicit controlled excerpts; no discovery or recurring coverage claim"
+}
