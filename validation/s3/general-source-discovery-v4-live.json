@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-22",
+  "scope": "Actual public source search and authenticated source-body retrieval; access proof does not qualify coverage, relevance or ongoing monitoring",
+  "results": [
+    {
+      "id": "I03",
+      "passed": true,
+      "sourceCount": 2,
+      "sources": [
+        {
+          "url": "https://sustainabilitydigitalage.org/en-vedette/quel-toit-est-le-plus-efficace-contre-la-chaleur-urbaine-le-blanc-ou-le-vert/",
+          "title": "Quel toit est le plus efficace contre la chaleur urbaine, le blanc ou le vert? – Durabilité à l’Ère Numérique et le pôle canadien de Future Earth",
+          "readCharacters": 7998,
+          "publicationPresent": false
+        },
+        {
+          "url": "https://geoconfluences.ens-lyon.fr/informations-scientifiques/dossiers-regionaux/etats-unis-espaces-de-la-puissance-espaces-en-crises/articles-scientifiques/le-toit-vegetalise-chicago",
+          "title": "Le toit végétalisé, marqueur des dynamiques de distinctions métropolitaines : le cas de Chicago — Géoconfluences",
+          "readCharacters": 8000,
+          "publicationPresent": false
+        }
+      ],
+      "reservedUpperCredits": 6,
+      "sourceAccessOnly": true
+    }
+  ],
+  "creditsBefore": 963,
+  "creditsAfter": 957,
+  "creditsConsumed": 6,
+  "maxFreeCredits": 8,
+  "newOpenAICalls": 0,
+  "newPaidPlan": false,
+  "newMonitorCount": 0,
+  "userWatchChanged": false
+}

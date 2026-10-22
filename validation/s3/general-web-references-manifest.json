@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-22",
+  "scope": "New model judgments on actual independently searched and scraped pages. First case excludes non-peer-reviewed/wrong-geography sources; second establishes a silent current release baseline. Does not qualify recurrence, universal coverage or cloud execution.",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "cases": [
+    {
+      "id": "WEB-I03",
+      "kind": "judgment",
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "dataFile": ".local/s3-general-20261022/WEB-I03-web-input.json",
+      "dataSha256": "f81f33fd25a5e94f2dc134d414409a36131f6094b2744e9a2d437ee0d33a2a01"
+    },
+    {
+      "id": "WEB-I04",
+      "kind": "judgment",
+      "expectedStatuses": [
+        "match"
+      ],
+      "dataFile": ".local/s3-general-20261022/WEB-I04-web-input.json",
+      "dataSha256": "6e5ed6abb94bae76f156911c9174deccc45cacb64780e98475717afab45eeca7"
+    }
+  ],
+  "codeSha256": {
+    "service/supabase/functions/_shared/semantic.ts": "e8297ffb0d4f9b651129b935eb3ce61c3bfbb6578d74d250b5aaf748f2b5de02",
+    "scripts/semantic-request.ts": "03f274320299b1f39384e70a613a7f506c0cfc8c24985a7078ae89ede908af32",
+    "scripts/qualify-general-semantics.py": "977814b3cd28c436000897a2e9260c57c2018c28cb68cdedbadcd974769c826c"
+  },
+  "maxPaidCalls": 2,
+  "newTotalEnvelopeUSD": 0.4,
+  "retries": 0,
+  "freezeBeforeCalls": true,
+  "success": "all decisions correct; zero affirmative on negative/unknown reference cases; every decisive criterion retained; known fact linked and distinct date not merged",
+  "revision": "v2",
+  "previousFailedResult": "general-m1-m2-result.json",
+  "qualificationScope": "Retest of development cases after recorded failure; independent holdout still needed."
+}

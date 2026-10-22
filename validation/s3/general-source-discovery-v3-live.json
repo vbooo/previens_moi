@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-22",
+  "scope": "Actual public source search and authenticated source-body retrieval; access proof does not qualify coverage, relevance or ongoing monitoring",
+  "results": [
+    {
+      "id": "I04",
+      "passed": true,
+      "sourceCount": 2,
+      "sources": [
+        {
+          "url": "https://www.libreoffice.org/download/",
+          "title": "Download — LibreOffice",
+          "readCharacters": 8000,
+          "publicationPresent": false
+        },
+        {
+          "url": "https://www.libreoffice.org/release-notes/",
+          "title": "Release Notes — LibreOffice",
+          "readCharacters": 2002,
+          "publicationPresent": false
+        }
+      ],
+      "reservedUpperCredits": 6,
+      "sourceAccessOnly": true
+    }
+  ],
+  "creditsBefore": 969,
+  "creditsAfter": 963,
+  "creditsConsumed": 6,
+  "maxFreeCredits": 8,
+  "newOpenAICalls": 0,
+  "newPaidPlan": false,
+  "newMonitorCount": 0,
+  "userWatchChanged": false
+}

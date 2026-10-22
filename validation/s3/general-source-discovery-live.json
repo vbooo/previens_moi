@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-22",
+  "scope": "Actual public source search and authenticated source-body retrieval; access proof does not qualify coverage, relevance or ongoing monitoring",
+  "results": [
+    {
+      "id": "I03",
+      "passed": false,
+      "reason": "Provider/response unavailable; no automatic retry"
+    }
+  ],
+  "creditsBefore": 978,
+  "creditsAfter": 977,
+  "creditsConsumed": 1,
+  "maxFreeCredits": 24,
+  "newOpenAICalls": 0,
+  "newPaidPlan": false,
+  "newMonitorCount": 0,
+  "userWatchChanged": false
+}

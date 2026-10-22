@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
 """Frozen, one-shot generic intent/evidence qualification. Never retries a paid call."""
-import datetime as dt,hashlib,json,sqlite3,subprocess,urllib.request,urllib.error,unicodedata,os
+import datetime as dt,hashlib,json,sqlite3,subprocess,urllib.request,urllib.error,unicodedata,os,re
 from pathlib import Path
-R=Path(__file__).resolve().parents[1];OUT=R/'.local/s3-general-20261022';MANIFEST=R/'validation/s3/general-m1-m2-manifest.json';DENO=str(R/'service/node_modules/.bin/deno');HELPER=str(R/'scripts/semantic-request.ts')
+R=Path(__file__).resolve().parents[1];CAMPAIGN='web-proof' if '--web-proof' in os.sys.argv else 'holdout' if '--holdout' in os.sys.argv else 'v2' if '--v2' in os.sys.argv else 'v1';OUT=R/'.local/s3-general-20261022'/(CAMPAIGN if CAMPAIGN!='v1' else '.');MANIFEST=R/('validation/s3/general-web-proof-manifest.json' if CAMPAIGN=='web-proof' else 'validation/s3/general-holdout-manifest.json' if CAMPAIGN=='holdout' else 'validation/s3/general-m1-m2-v2-manifest.json' if CAMPAIGN=='v2' else 'validation/s3/general-m1-m2-manifest.json');DENO=str(R/'service/node_modules/.bin/deno');HELPER=str(R/'scripts/semantic-request.ts')
+if '--campaign' in os.sys.argv:
+ CAMPAIGN=os.sys.argv[os.sys.argv.index('--campaign')+1];assert re.fullmatch(r'[a-z][a-z0-9-]{0,40}',CAMPAIGN)
+ OUT=R/'.local/s3-general-20261022'/CAMPAIGN;MANIFEST=R/('validation/s3/general-'+CAMPAIGN+'-manifest.json')
 def run(value):
  r=subprocess.run([DENO,'run',HELPER],input=json.dumps(value,ensure_ascii=False),text=True,capture_output=True,check=True);return r.stdout.strip()
 def folded(s):return ''.join(c for c in unicodedata.normalize('NFD',s.lower()) if not unicodedata.combining(c))
 def main():
- m=json.loads(MANIFEST.read_text());assert len(m['cases'])<=m['maxPaidCalls']==22 and m['newTotalEnvelopeUSD']==.4
+ m=json.loads(MANIFEST.read_text())
+ if 'privateManifestFile' in m:
+  archive=(R/m['privateManifestFile']).resolve();assert archive.is_relative_to((R/'.local/s3-general-20261022').resolve());raw=archive.read_bytes();assert hashlib.sha256(raw).hexdigest()==m['privateManifestSha256'];m=json.loads(raw)
+ assert len(m['cases'])==m['maxPaidCalls']<=30 and m['newTotalEnvelopeUSD']==.4
  for f,h in m['codeSha256'].items():assert hashlib.sha256((R/f).read_bytes()).hexdigest()==h,'Code changed after freeze'
  baseline=json.loads((R/'validation/s3/cost-reconciliation.json').read_text());assert baseline['missingOrAmbiguousHistoricalRequests']==0 and baseline['completedResponsesMatched']==128
  assert (baseline['usageUpperUSD']+.05+m['newTotalEnvelopeUSD'])*1.5*1.25<2
  requests=[]
  for case in m['cases']:
+  if 'dataFile' in case:
+   path=(R/case['dataFile']).resolve();assert path.is_relative_to((R/'.local/s3-general-20261022').resolve())
+   raw_data=path.read_bytes();assert hashlib.sha256(raw_data).hexdigest()==case['dataSha256'];case['data']=json.loads(raw_data)
   raw=run({'operation':'request','kind':case['kind'],'data':case['data']});body=json.loads(raw)
   upper=((len(raw.encode())+4096)*.4+body['max_output_tokens']*1.6)/1e6
   assert upper<.03 and body['model']==m['model'] and body['service_tier']=='default' and body['store'] is False
@@ -26,7 +35,10 @@ def main():
  ledger.execute('create table if not exists calls(label text primary key,status text,reserved real,actual real,input_tokens integer,output_tokens integer)')
  results=[];stopped=None
  for case,raw,upper in requests:
-  held=ledger.execute('select coalesce(sum(coalesce(actual,reserved)),0) from calls').fetchone()[0];assert held+upper<=.4
+  held=0
+  for file in (R/'.local/s3-general-20261022').rglob('ledger.sqlite'):
+   with sqlite3.connect('file:'+str(file)+'?mode=ro',uri=True) as other:held+=other.execute('select coalesce(sum(coalesce(actual,reserved)),0) from calls').fetchone()[0]
+  assert held+upper<=.4
   ledger.execute('insert into calls(label,status,reserved) values(?,\'reserved\',?)',(case['id'],upper));ledger.commit()
   value=None;actual=None
   try:
@@ -47,5 +59,5 @@ def main():
    results.append({'id':case['id'],'passed':False,'failure':type(e).__name__,'usageUSD':actual});print(json.dumps({'id':case['id'],'passed':False,'failure':type(e).__name__}),flush=True)
  used,held,count=ledger.execute('select coalesce(sum(actual),0),coalesce(sum(case when actual is null then reserved else 0 end),0),count(*) from calls').fetchone()
  report={'date':'2026-10-22','manifestSha256':hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),'results':results,'completed':len(results),'total':len(m['cases']),'passed':sum(x['passed'] for x in results),'stopped':stopped,'actualCalls':count,'newEstimatedUSD':used,'unknownReservedUSD':held,'newEnvelopeUSD':.4,'cumulativeConservativeUpperEUR':(baseline['usageUpperUSD']+.05+used+held)*1.5*1.25,'independentSourceDiscoveryQualified':False,'methodsEnabledInApp':False,'recurringGeneralMonitoringQualified':False,'scope':m['scope']}
- (R/'validation/s3/general-m1-m2-result.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k] for k in ['completed','passed','total','stopped','newEstimatedUSD','unknownReservedUSD']}),flush=True)
+ (R/(('validation/s3/general-'+CAMPAIGN+'-result.json') if '--campaign' in os.sys.argv else ('validation/s3/general-web-proof-result.json' if CAMPAIGN=='web-proof' else 'validation/s3/general-holdout-result.json' if CAMPAIGN=='holdout' else 'validation/s3/general-m1-m2-v2-result.json' if CAMPAIGN=='v2' else 'validation/s3/general-m1-m2-result.json'))).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k] for k in ['completed','passed','total','stopped','newEstimatedUSD','unknownReservedUSD']}),flush=True)
 if __name__=='__main__':main()

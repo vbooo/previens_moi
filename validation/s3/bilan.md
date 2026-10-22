@@ -89,3 +89,11 @@ Aucune capacité réelle ouverte, méthodes non qualifiées, admission/fournisse
 Fabien a confirmé l'absence de projets dédiés. Les essais externes nécessitent un projet **Supabase gratuit en UE** et un projet **Firebase Spark**, application Android `fr.previensmoi.prototype.remote`. Les trois fichiers attendus dans `.local/cloud/` sont `supabase.env`, `google-services.json` et `firebase-service-account.json`. Aucun secret à mettre dans la conversation. Le contrôle `scripts/check-cloud-config.py` est purement local ; il n'a constaté aucun de ces raccordements. [Préparation](external-readiness.json).
 
 Le transport SMTP de test Supabase reste limité aux membres de l'équipe et à deux messages/heure ; les premiers essais peuvent utiliser ces adresses. L'envoi public de codes et une éventuelle nécessité de domaine/SMTP restent distincts, sans achat demandé maintenant. Les accès permettront d'éprouver les preuves externes ; ils n'autorisent pas à déclarer les critères de qualité A1/REV satisfaits.
+
+## Complément du 22 octobre — moteur général en cours
+
+Les preuves actuelles et le travail restant sont détaillés dans la section « Avancement moteur du 22 octobre » du [plan courant](../../docs/10-plan-de-validation-technique.md). Les échecs intermédiaires sont conservés. Le contrôle final confirme le pilote utilisateur actif/sain, zéro méthode générale qualifiée dans le cloud et admission générale désactivée.
+
+Les nouveaux composants isolés passent 76 tests de service et 34 exemples de contrat ; deux jugements nouveaux sur des pages réellement découvertes passent après correction de citations inventées. L’intégration complète au service récurrent reste ouverte. Les nouveaux tests cloud d’accès aux résultats passent et leurs identités synthétiques ont été supprimées. Le script de sauvegarde chiffrée est préparé mais l’export sensible attend une autorisation explicite après refus du contrôle automatique. **S3 reste ouvert ; aucune observation S4 n’est déclenchée.**
+
+Le registre financier actualisé totalise 186 appels modèle, 0,118928 USD estimés cumulés et une enveloppe conservatrice sous 1 EUR pour le travail autorisé, sans prétendre disposer d’une facture rapprochée. GitHub reste différé à la demande de Fabien.

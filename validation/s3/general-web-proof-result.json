@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "113c8e49c1aee5472505556c01761adfe71e802407409f9578a1370b56d8ee74",
+  "results": [
+    {
+      "id": "WEB-I03",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Les documents fournis ne contiennent pas d'articles scientifiques évalués par les pairs portant spécifiquement sur l'efficacité des toits végétalisés dans les villes françaises. Le premier document traite d'une étude sur Londres, au Royaume-Uni, et le second concerne Chicago, aux États-Unis. Aucun ne satisfait simultanément les critères d'être une publication scientifique évaluée par les pairs, portant sur l'efficacité des toits végétalisés, et concernant les villes françaises.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0023124
+    },
+    {
+      "id": "WEB-I04",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.0021072000000000005
+    }
+  ],
+  "completed": 2,
+  "total": 2,
+  "passed": 1,
+  "stopped": null,
+  "actualCalls": 2,
+  "newEstimatedUSD": 0.004419600000000001,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.254163,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "New model judgments on actual independently searched and scraped pages. First case excludes non-peer-reviewed/wrong-geography sources; second establishes a silent current release baseline. Does not qualify recurrence, universal coverage or cloud execution."
+}

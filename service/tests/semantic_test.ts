@@ -35,3 +35,38 @@ Deno.test('incomplete or unexpected model output cannot pass price or qualificat
  assert((responseValue(response) as Intent).status==='understood');
  for(const bad of [{...response,status:'incomplete'},{...response,model:'unknown'},{...response,service_tier:'priority'},{...response,output:[]}])refused(()=>responseValue(bad));
 });
+Deno.test('grounded capability and country evidence cannot turn into a web-ready private request or infer a delivery country',()=>{
+ const wire={accessMode:'private_account',privateEvidence:'mon compte bancaire privé',deliveryRequiredEvidence:null,deliveryCountryEvidence:null,contradictionEvidence:null,subjectivityEvidence:null,decision:{...intent,status:'unsupported',criteria:[],queries:[]}};
+ assert(parseIntent(wire,{...draft,text:'Préviens-moi quand mon compte bancaire privé reçoit 50 €.'}).status==='unsupported');
+ refused(()=>parseIntent({...wire,privateEvidence:'an invented phrase'},draft));
+ const country={...wire,accessMode:'public_web',privateEvidence:null,deliveryRequiredEvidence:'delivered',decision:{...intent,criteria:[{id:'p',text:'Delivered',quote:'delivered'}]}};
+ const result=parseIntent(country,{...draft,text:'Phone below £180 delivered.'});assert(result.status==='clarify'&&result.questions[0].id==='delivery_zone'&&!result.queries.length);
+});
+Deno.test('wire schema forbids affirmative payloads on negative decisions',()=>{
+ const no={decision:{status:'no_match',fact:'',reason:'Wrong city.',identity:null,sameAs:null,evidence:[]}};
+ assert(parseJudgment(no,draft,intent,docs,[]).status==='no_match');
+ refused(()=>parseJudgment({decision:{...judgment,status:'no_match'}},draft,intent,docs,[]));
+});
+Deno.test('a duplicate suggestion cannot merge a distinct event date or location',()=>{
+ const previous=[{key:'a'.repeat(64),identity:{...judgment.identity!,when:'2027-03-08'},text:'Earlier event'}];
+ const result=parseJudgment({...judgment,sameAs:previous[0].key},draft,intent,docs,previous);assert(result.sameAs===null);
+});
+Deno.test('wrapping quote marks can be removed only when the inner text is literally grounded',()=>{
+ const wire={accessMode:'public_web',privateEvidence:null,deliveryRequiredEvidence:null,deliveryCountryEvidence:null,contradictionEvidence:null,subjectivityEvidence:null,decision:{...intent,criteria:intent.criteria.map(c=>({...c,quote:'"'+c.quote+'"'}))}};
+ assert(parseIntent(wire,draft).status==='understood');
+ refused(()=>parseIntent({...wire,decision:{...intent,criteria:[{id:'x',text:'Wrong',quote:'"invented"'}]}},draft));
+});
+
+Deno.test('model references resolve only to existing source passages; fabricated references cannot become quotes',()=>{
+ const wire={decision:{...judgment,evidence:[{criterionId:'artist',passageId:'d0p0'},{criterionId:'place',passageId:'d0p0'}]}};
+ const result=parseJudgment(wire,draft,intent,docs,[]);assert(result.evidence[0].quote===docs[0].text);
+ refused(()=>parseJudgment({decision:{...wire.decision,evidence:[{criterionId:'artist',passageId:'invented'}]}},draft,intent,docs,[]));
+ const request=JSON.parse(modelRequest('judgment',{draft,intent,documents:docs,previous:[]}));
+ assert(JSON.parse(request.input).documents[0].passages[0].text===docs[0].text&&request.text.format.schema.properties.decision.anyOf[0].properties.evidence.items.properties.passageId.enum[0]==='d0p0');
+});
+
+Deno.test('short real additions remain selectable inside a longer unchanged source body',()=>{
+ const long=[{...docs[0],text:'Old header. '.repeat(30)+docs[0].text+' Older footer. '.repeat(20)}];
+ const request=JSON.parse(modelRequest('judgment',{draft,intent,documents:long,previous:[]}));const p=JSON.parse(request.input).documents[0].passages.find((p:any)=>p.changed);assert(p&&p.text===docs[0].text);
+ const parsed=parseJudgment({decision:{...judgment,evidence:[{criterionId:'artist',passageId:p.id},{criterionId:'place',passageId:p.id}]}},draft,intent,long,[]);assert(parsed.status==='match');
+});

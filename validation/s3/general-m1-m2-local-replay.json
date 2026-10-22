@@ -1,0 +1,118 @@
+{
+  "scope": "Local deterministic parser replay of already paid v2 responses; not an independent model run",
+  "results": [
+    {
+      "id": "I01",
+      "passed": true,
+      "status": "understood"
+    },
+    {
+      "id": "I02",
+      "passed": true,
+      "status": "understood"
+    },
+    {
+      "id": "I03",
+      "passed": true,
+      "status": "understood"
+    },
+    {
+      "id": "I04",
+      "passed": true,
+      "status": "understood"
+    },
+    {
+      "id": "I05",
+      "passed": true,
+      "status": "clarify"
+    },
+    {
+      "id": "I06",
+      "passed": true,
+      "status": "unsupported"
+    },
+    {
+      "id": "I07",
+      "passed": true,
+      "status": "clarify"
+    },
+    {
+      "id": "I08",
+      "passed": true,
+      "status": "clarify"
+    },
+    {
+      "id": "I09",
+      "passed": true,
+      "status": "understood"
+    },
+    {
+      "id": "I10",
+      "passed": true,
+      "status": "understood"
+    },
+    {
+      "id": "J01",
+      "passed": true,
+      "status": "match"
+    },
+    {
+      "id": "J02",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J03",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J04",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J05",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J06",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J07",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J08",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J09",
+      "passed": true,
+      "status": "match"
+    },
+    {
+      "id": "J10",
+      "passed": true,
+      "status": "match"
+    },
+    {
+      "id": "J11",
+      "passed": true,
+      "status": "no_match"
+    },
+    {
+      "id": "J12",
+      "passed": true,
+      "status": "no_match"
+    }
+  ],
+  "passed": 22,
+  "total": 22,
+  "newPaidCalls": 0
+}

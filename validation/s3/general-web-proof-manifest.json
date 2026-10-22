@@ -1,0 +1,23 @@
+{
+  "scope": "Archived original failed live Web campaign. Raw public-source bodies stay in ignored local evidence with the working retention policy, not Git.",
+  "privateManifestFile": ".local/s3-general-20261022/web-proof/manifest-original.json",
+  "privateManifestSha256": "113c8e49c1aee5472505556c01761adfe71e802407409f9578a1370b56d8ee74",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "cases": [
+    {
+      "id": "WEB-I03",
+      "kind": "judgment",
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ]
+    },
+    {
+      "id": "WEB-I04",
+      "kind": "judgment",
+      "expectedStatuses": [
+        "match"
+      ]
+    }
+  ]
+}

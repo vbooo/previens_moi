@@ -1,5 +1,5 @@
 /** Bounded authenticated provider adapter. Disabled until external qualification. */
-export class ProviderFault extends Error {constructor(public state:'disabled'|'unknown'|'failed'|'pending'|'mismatch'|'not_found'|'rate_limited'){super(state);}}
+export class ProviderFault extends Error {constructor(public state:'disabled'|'unknown'|'failed'|'pending'|'mismatch'|'not_found'|'rate_limited',public httpStatus:number|null=null){super(state);}}
 export interface Monitor {id:string;status:string;currentCheckId:string|null;nextRunAt:string|null;name:string}
 export interface Check {id:string;monitorId:string;status:string;startedAt:string;summary:unknown;pages?:Page[]}
 export interface Page {url:string;status:string;judgment?:{meaningful:boolean;meaningfulChanges?:{type:string;after?:string}[]};diff?:{text?:string}}
@@ -8,9 +8,9 @@ export class Firecrawl {
  constructor(private key:string,private enabled=false,private request:typeof fetch=fetch,private wait:(ms:number)=>Promise<void>=ms=>new Promise(resolve=>setTimeout(resolve,ms))){}
  async call(method:string,path:string,body?:unknown):Promise<Record<string,unknown>> {
   if(!this.enabled||!this.key)throw new ProviderFault('disabled');
-  if(!/^\/v2\/(monitor(?:\/[A-Za-z0-9_-]+(?:\/checks(?:\/[A-Za-z0-9_-]+)?|\/run)?)?|team\/credit-usage)$/.test(path))throw new ProviderFault('failed');
+  if(!/^\/v2\/((?:search|scrape)|monitor(?:\/[A-Za-z0-9_-]+(?:\/checks(?:\/[A-Za-z0-9_-]+)?|\/run)?)?|team\/credit-usage)$/.test(path))throw new ProviderFault('failed');
   let response:Response;
-  try {response=await this.request('https://api.firecrawl.dev'+path,{method,headers:{Authorization:'Bearer '+this.key,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body),redirect:'error',signal:AbortSignal.timeout(20000)});}catch{throw new ProviderFault('unknown');}
+  try {response=await this.request('https://api.firecrawl.dev'+path,{method,headers:{Authorization:'Bearer '+this.key,'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body),redirect:'error',signal:AbortSignal.timeout(path==='/v2/search'||path==='/v2/scrape'?40000:20000)});}catch{throw new ProviderFault('unknown');}
   if(!response.ok){
    const status=response.status;
    const retry=Number(response.headers.get('Retry-After')??'60');
@@ -20,7 +20,7 @@ export class Firecrawl {
    if(status===429&&safe&&!this.rateRetryUsed&&Number.isFinite(retry)&&retry>=0&&retry<=60){
     this.rateRetryUsed=true;await this.wait(Math.max(1,retry)*1000);return await this.call(method,path,body);
    }
-   throw new ProviderFault(status===404?'not_found':status===429?'rate_limited':status>=500?'unknown':'failed');
+   throw new ProviderFault(status===404?'not_found':status===429?'rate_limited':status>=500?'unknown':'failed',status);
   }
   const reader=response.body?.getReader();if(!reader)throw new ProviderFault('unknown');let size=0;const chunks:Uint8Array[]=[];
   for(;;){const part=await reader.read();if(part.done)break;size+=part.value.length;if(size>524288){await reader.cancel();throw new ProviderFault('unknown');}chunks.push(part.value);}

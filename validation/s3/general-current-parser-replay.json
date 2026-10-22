@@ -1,0 +1,178 @@
+{
+  "scope": "Offline parser replay of stored responses, not fresh provider/model qualification. Original failed live reports remain unchanged.",
+  "newPaidCalls": 0,
+  "passed": 34,
+  "total": 34,
+  "results": [
+    {
+      "campaign": "development",
+      "id": "I01",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I02",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I03",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I04",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I05",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I06",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I07",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I08",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I09",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "I10",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J01",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J02",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J03",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J04",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J05",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J06",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J07",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J08",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J09",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J10",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J11",
+      "passed": true
+    },
+    {
+      "campaign": "development",
+      "id": "J12",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H01",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H02",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H03",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H04",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H05",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H06",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H07",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H08",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H09",
+      "passed": true
+    },
+    {
+      "campaign": "holdout",
+      "id": "H10",
+      "passed": true
+    },
+    {
+      "campaign": "web-references",
+      "id": "WEB-I03",
+      "passed": true
+    },
+    {
+      "campaign": "web-references",
+      "id": "WEB-I04",
+      "passed": true
+    }
+  ]
+}

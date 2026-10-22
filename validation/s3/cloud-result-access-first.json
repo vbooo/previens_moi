@@ -1,0 +1,6 @@
+{
+  "ownedResultReadable": 200,
+  "passed": false,
+  "failure": "Test required application Error.code even when Supabase gateway rejects missing Authorization before the function. HTTP rejection remains required; Android already handles HTTP401 independently of body.",
+  "syntheticFixturesCleaned": true
+}

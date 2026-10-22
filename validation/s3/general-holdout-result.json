@@ -1,0 +1,375 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "e1eff39ce6f44a95b25decbc10fd47cb51477a3238d35e286c528a3a68338b95",
+  "results": [
+    {
+      "id": "H01",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Monitoring new peer-reviewed papers in Nature Medicine about RNA vaccines against pancreatic cancer",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "The paper must be published in Nature Medicine",
+            "quote": "Nature Medicine"
+          },
+          {
+            "id": "c2",
+            "text": "The paper must be peer-reviewed",
+            "quote": "peer-reviewed paper"
+          },
+          {
+            "id": "c3",
+            "text": "The paper must be about RNA vaccines",
+            "quote": "RNA vaccines"
+          },
+          {
+            "id": "c4",
+            "text": "The paper must be about pancreatic cancer",
+            "quote": "pancreatic cancer"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Nature Medicine new peer-reviewed papers RNA vaccines pancreatic cancer",
+          "latest RNA vaccine research pancreatic cancer site:nature.com"
+        ],
+        "explanation": "The user requests monitoring of publicly available scientific publications in the journal Nature Medicine about RNA vaccines targeting pancreatic cancer. This is a public web monitoring task with clear criteria and no contradictions or subjective terms."
+      },
+      "factKey": null,
+      "usageUSD": 0.000708
+    },
+    {
+      "id": "H02",
+      "passed": true,
+      "expectedStatuses": [
+        "unsupported"
+      ],
+      "status": "unsupported",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "unsupported",
+        "title": "Accès à une boîte mail privée requis",
+        "criteria": [],
+        "questions": [],
+        "queries": [],
+        "explanation": "Cette surveillance Web ne peut pas consulter les données de ton compte privé."
+      },
+      "factKey": null,
+      "usageUSD": 0.000542
+    },
+    {
+      "id": "H03",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Monitor Nikon Zf body price under €1,500 including delivery to Luxembourg, no trade-in",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Product must be Nikon Zf body",
+            "quote": "Nikon Zf body"
+          },
+          {
+            "id": "c2",
+            "text": "Price must be under €1,500",
+            "quote": "under €1,500"
+          },
+          {
+            "id": "c3",
+            "text": "Price must include delivery",
+            "quote": "including delivery"
+          },
+          {
+            "id": "c4",
+            "text": "Delivery must be to Luxembourg",
+            "quote": "to Luxembourg"
+          },
+          {
+            "id": "c5",
+            "text": "No trade-in allowed",
+            "quote": "no trade-in"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Nikon Zf body price under 1500 euros including delivery to Luxembourg",
+          "Nikon Zf body sale no trade-in under 1500 euros Luxembourg"
+        ],
+        "explanation": "The user requests monitoring for a Nikon Zf camera body offered for less than €1,500 including delivery to Luxembourg, explicitly excluding trade-in offers. This is a public web monitoring request with clear criteria and delivery conditions."
+      },
+      "factKey": null,
+      "usageUSD": 0.0007976
+    },
+    {
+      "id": "H04",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Clarification needed on 'interesting news' criteria",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "What topics or categories of news are you interested in?",
+            "options": [
+              "Politics",
+              "Technology",
+              "Sports",
+              "Entertainment",
+              "Science",
+              "Business",
+              "Other"
+            ],
+            "required": true
+          },
+          {
+            "id": "q2",
+            "label": "Do you want news from a specific region or country?",
+            "options": [
+              "Yes",
+              "No"
+            ],
+            "required": true
+          },
+          {
+            "id": "q3",
+            "label": "If yes, please specify the region or country.",
+            "options": [],
+            "required": true
+          },
+          {
+            "id": "q4",
+            "label": "Do you prefer news from specific sources or any reliable news outlet?",
+            "options": [
+              "Specific sources",
+              "Any reliable source"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "The user's request for 'news that is interesting' is subjective and lacks specific criteria such as topics, regions, or sources. To provide relevant notifications, please clarify what kinds of news are considered interesting."
+      },
+      "factKey": null,
+      "usageUSD": 0.0007488000000000001
+    },
+    {
+      "id": "H05",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des nouvelles statistiques publiques de la Banque de France sur les paiements",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "La source doit être la Banque de France",
+            "quote": "Banque de France"
+          },
+          {
+            "id": "c2",
+            "text": "Les statistiques doivent être publiques",
+            "quote": "statistiques publiques"
+          },
+          {
+            "id": "c3",
+            "text": "Les statistiques doivent concerner les paiements",
+            "quote": "statistiques publiques sur les paiements"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Banque de France nouvelles statistiques publiques paiements",
+          "Banque de France publication statistiques paiements"
+        ],
+        "explanation": "La demande concerne la surveillance des publications publiques de la Banque de France relatives aux statistiques sur les paiements. Il s'agit d'une information accessible publiquement, sans mention d'un compte privé ou d'une livraison. Les critères sont donc la source (Banque de France), la nature publique des statistiques, et le sujet des paiements."
+      },
+      "factKey": null,
+      "usageUSD": 0.0007276
+    },
+    {
+      "id": "H06",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance d'annonce d'exposition gratuite au musée Fabre à Montpellier",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Le lieu doit être le musée Fabre à Montpellier",
+            "quote": "musée Fabre à Montpellier"
+          },
+          {
+            "id": "c2",
+            "text": "L'annonce doit concerner une exposition",
+            "quote": "annonce une exposition"
+          },
+          {
+            "id": "c3",
+            "text": "L'exposition doit être gratuite",
+            "quote": "exposition gratuite"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "musée Fabre Montpellier exposition gratuite annonce",
+          "musée Fabre Montpellier prochaine exposition gratuite"
+        ],
+        "explanation": "La demande porte sur la surveillance publique d'annonces concernant des expositions gratuites au musée Fabre situé à Montpellier. Il n'y a pas d'accès à un compte privé ni de conditions de livraison. Les critères sont clairs et précis."
+      },
+      "factKey": null,
+      "usageUSD": 0.000694
+    },
+    {
+      "id": "H07",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Woodkid annonce un concert à Tours le 12 avril 2027",
+        "reason": "Le document confirme que Woodkid annonce un concert à Tours, satisfaisant tous les critères de l'utilisateur.",
+        "identity": {
+          "who": "Woodkid",
+          "what": "annonce un concert",
+          "where": "Tours",
+          "when": "12 avril 2027",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/annonces",
+            "quote": "Woodkid annonce un concert"
+          },
+          {
+            "criterionId": "city",
+            "url": "https://source.example/annonces",
+            "quote": "à Tours"
+          }
+        ]
+      },
+      "factKey": "eab8e9bd4fb04be375e9e9f44d165088a57a2635210eb61faa324577b7c5e7c4",
+      "usageUSD": 0.0005064000000000001
+    },
+    {
+      "id": "H08",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document mentionne un concert de Woodkid à Dijon, pas à Tours comme requis.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.00036960000000000004
+    },
+    {
+      "id": "H09",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Woodkid annonce un concert à Tours le 13 avril 2027",
+        "reason": "Le document prouve que Woodkid annonce un concert à Tours, satisfaisant tous les critères de l'utilisateur.",
+        "identity": {
+          "who": "Woodkid",
+          "what": "concert",
+          "where": "Tours",
+          "when": "2027-04-13",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/annonces",
+            "quote": "Woodkid annonce un concert"
+          },
+          {
+            "criterionId": "city",
+            "url": "https://source.example/annonces",
+            "quote": "à Tours"
+          }
+        ]
+      },
+      "factKey": "57dd3b89a7b05a84514ffc1c6ca8351e54e901f0a7438e41c1e207a6931b1d23",
+      "usageUSD": 0.0005392000000000001
+    },
+    {
+      "id": "H10",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match",
+        "uncertain"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "L'annonce de concert de Woodkid à Tours a été publiée le 3 mai 2024, soit avant le 22 octobre 2026, donc elle ne satisfait pas le critère de récence.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0004376
+    }
+  ],
+  "completed": 10,
+  "total": 10,
+  "passed": 10,
+  "stopped": null,
+  "actualCalls": 10,
+  "newEstimatedUSD": 0.0060708,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.25725899999999996,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "New held-out public/private requests and controlled evidence after development corrections; no Web discovery qualification"
+}

@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-22T10:36:00.400725+00:00",
+  "newOpenAICalls": 58,
+  "newEstimatedUSD": 0.037794,
+  "unknownReservedUSD": 0,
+  "conservativeCumulativeMaxEUR": 0.99587625,
+  "freeCreditsRemaining": 957,
+  "generalMethodsQualifiedInCloud": 0,
+  "generalAdmissionEnabled": false,
+  "userWatchStillPresent": true,
+  "userWatchState": [
+    "active",
+    "healthy"
+  ],
+  "syntheticAccessUsersRemaining": 0,
+  "userAndroidSessionChanged": false,
+  "cloudSnapshotExported": false,
+  "cloudSnapshotApprovalPending": true,
+  "githubRemoteCreated": false
+}

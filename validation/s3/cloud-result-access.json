@@ -1,0 +1,14 @@
+{
+  "ownedResultReadable": 200,
+  "missingSessionRejected": 401,
+  "missingSessionBoundary": "Supabase gateway",
+  "deletedResultRejected": 404,
+  "removedIdentitySessionRejected": 401,
+  "passed": true,
+  "sentEmails": 0,
+  "fcmSends": 0,
+  "providerRuns": 0,
+  "userSessionChanged": false,
+  "surface": "Deployed HTTP API; no Android permission/expired-session UI walkthrough claimed",
+  "syntheticFixturesCleaned": true
+}
