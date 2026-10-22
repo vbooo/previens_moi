@@ -79,5 +79,29 @@
     "Second check was advanced only for this synthetic watch; hourly wall-clock monitoring and seven days are not claimed as observed.",
     "Real FCM notification received; opening a previous synthetic transport finding is separate prior evidence.",
     "No S4 observation started, no public Play release, cloud recovery remains unproven."
-  ]
+  ],
+  "manualAndroidTest20261022": {
+    "userReportedRealEmailCodeSignInPassed": true,
+    "proposalAndActivationPerformedByUserInAndroid": true,
+    "baselineConfirmedByScheduledWorker": true,
+    "controlledPublicPageChangedAfterBaseline": true,
+    "onlyThisWatchNextCheckAdvanced": true,
+    "findingCreatedByScheduledWorker": true,
+    "fcmAccepted": true,
+    "notificationObservedOnEmulator": true,
+    "notificationOpenedByUser": null,
+    "newPaidCalls": 0,
+    "freeProviderCreditsSettled": 2,
+    "withinExistingPilotEnvelope": true,
+    "globalBudgetUsedUnitsAfterTest": 4,
+    "globalBudgetMaxUnits": 14,
+    "watchLeftActiveAsSelectedByUser": true,
+    "uxIssuesObserved": [
+      "Connected account status unclear and manual back navigation after email login",
+      "Generic partial coverage wording and excessive technical copy",
+      "Demo-only source and active-state labels reused incorrectly in remote screens",
+      "Pending operation displayed in red despite normal preparation"
+    ],
+    "uiUxValidated": false
+  }
 }

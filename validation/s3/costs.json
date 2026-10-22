@@ -90,5 +90,14 @@
     "subscriptionOrTopUp": false,
     "authorizedCumulativeMaxEUR": 2,
     "conservativeCumulativeUpperEUR": 1.9414335
+  },
+  "manualUserTest20261022": {
+    "newPaidCalls": 0,
+    "freeFirecrawlCreditsSettled": 2,
+    "withinPreviouslyOpened12CreditPilotCap": true,
+    "globalBudgetUsedUnitsAfterTest": 4,
+    "globalBudgetMaxUnits": 14,
+    "cumulativeConservativeUpperEUR": 1.9414335,
+    "providerBalanceNotReadAgain": true
   }
 }
