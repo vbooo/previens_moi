@@ -1,0 +1,18 @@
+{
+  "scope": "Separate emulator and synthetic cloud account; actual FCM, no manual Worker enqueue.",
+  "userSessionModified": false,
+  "cases": {
+    "realPushWithPermissionDeniedKeepsResultAvailable": "passed",
+    "actualSystemNotificationTapOpensGeneralResult": "passed",
+    "prepareExpiredSyntheticSession": "passed",
+    "deletedResultOpensUnavailableState": "passed",
+    "expiredLocalSessionAndRejectedRefreshOpenSignIn": "passed",
+    "rejectedRefreshClearedSyntheticVault": "passed"
+  },
+  "tapMethod": "Host selects actual System UI title and fact, touches observed bounds, then verifies app result text without instrumentation restarting the app.",
+  "testHarnessFailuresPreserved": [
+    "Accessibility ACTION_CLICK failed to select notification",
+    "Starting instrumentation after a real tap restarted the app; replaced with external UI verification"
+  ],
+  "expiryScope": "Forced local expiry and invalid synthetic refresh, actual Auth rejection; not a naturally expired JWT test."
+}

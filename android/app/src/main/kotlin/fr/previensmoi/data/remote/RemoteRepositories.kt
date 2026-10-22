@@ -37,7 +37,10 @@ class RemoteRepositories(
     private val api: ApplicationApi, private val sessions: RemoteSessionRepository,
     private val journal: PendingCommands, private val ids: IdGenerator,
     private val evaluations: EvaluationJournal = MemoryEvaluationJournal(),
+    private val evaluationPolls: Int = 61,
+    private val evaluationPollDelayMillis: Long = 5_000,
 ) : WatchRepository, ProposalRepository, FindingRepository {
+    init { require(evaluationPolls in 1..61 && evaluationPollDelayMillis in 0..5_000) }
     private val mutex = Mutex()
     private val watches = MutableStateFlow<List<Watch>>(emptyList())
     private val findings = MutableStateFlow<List<Finding>>(emptyList())
@@ -90,15 +93,15 @@ class RemoteRepositories(
             ?: EvaluationRequestDto(ids.next(), wire, previousEvaluation.takeIf { evaluationRequest?.draft?.text == wire.text && evaluationRequest?.draft?.mode == wire.mode }).also { evaluationRequest = it }
         if (!saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
         var response = apiCall { api.evaluate(token, request) }
-        repeat(11) { attempt ->
+        repeat(evaluationPolls) { attempt ->
             when (val r = response) {
                 is ApiResult.Value -> {
                     val value = r.body
                     if (value.id != request.id || value.draftRevision != draft.revision) return Outcome.Error(Failure.VersionConflict)
                     when (value) {
                         is EvaluationDto.Pending -> {
-                            if (attempt == 10) return Outcome.Error(Failure.AnalysisPending)
-                            delay(1000)
+                            if (attempt == evaluationPolls - 1) return Outcome.Error(Failure.AnalysisPending)
+                            delay(evaluationPollDelayMillis)
                             response = apiCall { api.evaluation(token, request.id) }
                         }
                         is EvaluationDto.Ready -> return mapped { Evaluation.Ready(value.proposal.domain()) }

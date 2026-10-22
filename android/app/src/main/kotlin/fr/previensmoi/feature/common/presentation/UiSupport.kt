@@ -43,7 +43,8 @@ fun Page(content: @Composable ColumnScope.() -> Unit) {
         Failure.InvalidInput -> R.string.error_input
         Failure.StorageFailure -> R.string.storage_error
     }
-    Text(stringResource(id), color = MaterialTheme.colorScheme.error, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+    val pending = failure == Failure.AnalysisPending || failure == Failure.OperationPending
+    Text(stringResource(id), color = if (pending) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
 }
 @Composable fun dateText(value: Long?): String = value?.let { DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(it)) } ?: stringResource(R.string.unknown_date)
 fun statusLabel(status: WatchStatus) = when(status) {

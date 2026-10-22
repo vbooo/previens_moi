@@ -1,7 +1,7 @@
 /** Bounded authenticated provider adapter. Disabled until external qualification. */
 export class ProviderFault extends Error {constructor(public state:'disabled'|'unknown'|'failed'|'pending'|'mismatch'|'not_found'|'rate_limited',public httpStatus:number|null=null){super(state);}}
 export interface Monitor {id:string;status:string;currentCheckId:string|null;nextRunAt:string|null;name:string}
-export interface Check {id:string;monitorId:string;status:string;startedAt:string;summary:unknown;pages?:Page[]}
+export interface Check {id:string;monitorId:string;status:string;startedAt:string;summary:unknown;actualCredits?:number|null;billingStatus?:string;pages?:Page[]}
 export interface Page {url:string;status:string;judgment?:{meaningful:boolean;meaningfulChanges?:{type:string;after?:string}[]};diff?:{text?:string}}
 export class Firecrawl {
  private rateRetryUsed=false;

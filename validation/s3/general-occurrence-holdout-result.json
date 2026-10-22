@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "aac27108596ff80842320244afbf93c7f2197dd692d8c82eef1342788bb0e544",
+  "results": [
+    {
+      "id": "AFFIRM",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Liora a annoncé un concert confirmé à Limoges le 18 avril 2027.",
+        "reason": "Le document confirme explicitement que Liora jouera à Limoges le 18 avril 2027, avec la date confirmée.",
+        "identity": {
+          "who": "Liora",
+          "what": "concert confirmé",
+          "where": "Limoges",
+          "when": "2027-04-18",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/announcements",
+            "quote": "Annonce fictive : Liora jouera à Limoges le 18 avril 2027. La date est confirmée."
+          },
+          {
+            "criterionId": "event",
+            "url": "https://source.example/announcements",
+            "quote": "Annonce fictive : Liora jouera à Limoges le 18 avril 2027. La date est confirmée."
+          }
+        ]
+      },
+      "factKey": "932938b6dd4a2464e018f300a5f2369d051f725fb69c908640d1e4ef3f49c1da",
+      "usageUSD": 0.0006176
+    },
+    {
+      "id": "ABSENT",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Aucune date de concert confirmée de Liora à Limoges n'a été annoncée selon la source fournie.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.00048560000000000004
+    },
+    {
+      "id": "CANCEL",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document indique explicitement que le concert de Liora à Limoges prévu le 18 avril 2027 est annulé et qu'aucune nouvelle date n'a été annoncée. Il n'y a donc pas d'annonce confirmée d'un concert de Liora à Limoges.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.00055
+    },
+    {
+      "id": "MAYBE",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document indique explicitement qu'aucun concert confirmé ou annoncé de Liora à Limoges n'existe actuellement.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0004908
+    },
+    {
+      "id": "REQUESTED-ABSENCE",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Le livre Fenêtre bleue est en rupture de stock, aucune commande possible.",
+        "reason": "Le document vérifié confirme explicitement que le livre Fenêtre bleue est en rupture de stock avec la mention \"rupture de stock confirmée, aucune commande possible\".",
+        "identity": {
+          "who": "Fenêtre bleue",
+          "what": "livre en rupture de stock",
+          "where": null,
+          "when": "2026-10-22",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "book",
+            "url": "https://source.example/book",
+            "quote": "Livre Fenêtre bleue — stock indisponible : rupture de stock confirmée, aucune commande possible."
+          },
+          {
+            "criterionId": "stock",
+            "url": "https://source.example/book",
+            "quote": "Livre Fenêtre bleue — stock indisponible : rupture de stock confirmée, aucune commande possible."
+          }
+        ]
+      },
+      "factKey": "d09f1d72dd051bed24091447a52ace068b6b1ecb481115ba0cd4b7551fecf5a2",
+      "usageUSD": 0.0006244000000000001
+    }
+  ],
+  "completed": 5,
+  "total": 5,
+  "passed": 5,
+  "stopped": null,
+  "actualCalls": 5,
+  "newEstimatedUSD": 0.0027684000000000003,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.25106700000000004,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Fresh semantic holdout: affirmed versus absent/cancelled/hypothetical concert and explicitly requested stock absence. Original 6/7 bridge campaign preserved.",
+  "referenceIssueDetected": "The AFFIRM input was labelled fictional while its user request did not ask for fiction; its original positive oracle was invalid. This campaign does not qualify real-world versus fictional announcements. Replaced by an explicitly corrected independent-reference campaign.",
+  "realWorldVsFictionQualified": false
+}

@@ -1,3 +1,44 @@
+# Sprint 3 — clôture technique du 22 octobre 2026
+
+**S3-01 à S3-06 terminés pour le service d’essai borné décrit ci-dessous.** Le moteur général est raccordé et déployé : demande libre → analyse des critères → recherche Web → lecture effective → proposition → confirmation → état initial silencieux → vérifications récurrentes → fait nouveau sourcé → notification Firebase → résultat Android. Cela ne qualifie ni une couverture universelle du Web ni une V1 publiable.
+
+L’application installée sur l’émulateur utilisateur conserve sa session et son suivi existant. Les corrections d’états et de libellés distinguent le suivi réel de la démonstration ; la refonte UI/UX et de l’architecture de l’information reste à concevoir avec Fabien.
+
+| Ticket | Preuve de clôture technique |
+| --- | --- |
+| S3-01 | Supabase Free EU, Auth e-mail/SMTP OVH, PostgreSQL, Edge Functions, planificateur et FCM Spark opérationnels. Prévision complète de l’essai borné et arrêt financier documentés ; aucun budget mensuel ni achat autorisé. |
+| S3-02 | API/propriété/session/reprises Android et contrats éprouvés. 34 exemples de contrat ; 31 scénarios PostgreSQL/Auth/Edge locaux. |
+| S3-03 | Analyse libre corrigée : 12/12 cas d’intention finaux, dont un cas logiciel indépendant ; 9/9 jugements de portée/prédicat. Recherche et lecture réelles sans URL produisent une proposition Python. Cycle complet contrôlé avec source fictive : état initial vide, mauvaise ville sans résultat, trois dates distinctes, répétition inchangée sans doublon. |
+| S3-04 | Budget réservé avant appel, transactions/résultats/outbox, génération, pause, quota et suppression testés. Compte/source de qualification supprimés par le parcours réel ; comptabilité opaque conservée. Sauvegarde chiffrée cloud restaurée localement : 58 tables / 197 lignes identiques, copie refermée et base jetable retirée. |
+| S3-05 | Réception FCM réelle, refus de permission conservant l’accès au résultat, véritable clic dans le volet système, résultat supprimé et reconnexion après expiration locale/rejet réel du refresh vérifiés sur un second émulateur. |
+| S3-06 | Preuves, références attendues, échecs et coûts rapprochés ; version utilisateur installée et service d’essai ouvert avec arrêt automatique aux quotas. Observation de sept jours non commencée : elle appartient à S4. |
+
+## Limites réellement laissées
+
+- Surveillance générale toutes les **24 h** : une requête, trois candidats au maximum et **une page lue par passage**, en rotation. Les sources lues figurent dans la proposition partielle ; une source protégée, non sélectionnée ou inadéquate peut conduire à un refus. Un seul fait est évalué par passage.
+- Une page nouvellement trouvée sans date de publication vérifiée ne suffit pas à prouver une nouveauté. Un changement constaté depuis une lecture antérieure constitue une autre preuve, explicitement nommée. Publication et date d’événement restent distinctes.
+- La demande LibreOffice sans URL a été comprise, mais la page ArchWiki trouvée ne permettait pas la surveillance demandée : refus conservé, aucune activation. La proposition Python prouve découverte/lecture/admission ; son activation n’a pas été simulée. Le cycle positif complet est qualifié séparément sur une source publique fictive maîtrisée.
+- Les passages de contrôle ont été accélérés sur le **seul compte fictif**, notamment vers les tours lisant sa source fournie. Ce n’est ni une mesure de couverture Web ni une observation de 24 h ou de sept jours.
+- Une place globale et un suivi actif par compte. Pour activer un autre suivi, mettre l’ancien en pause et attendre son arrêt confirmé. L’essai général dispose de **12 crédits gratuits supplémentaires**, sans remise à zéro des 39 unités déjà imputées ; limite totale 51, plafond structurel 64. L’enveloppe modèle déployée reste 0,10 USD, déjà incluse dans les 0,40 USD communs. Aucun achat ou abonnement.
+- Le test d’expiration force la date locale et un refresh fictif invalide ; il vérifie le rejet réel Auth et l’effacement du coffre Android. Il ne prétend pas avoir attendu l’expiration naturelle d’un JWT.
+- La sauvegarde et sa clé sont sur ce Mac, dans deux dossiers séparés : perte du Mac, bascule vers un nouveau projet cloud et sauvegarde des secrets SMTP/FCM/Vault non couvertes. Destination indépendante et exploitation publique restent S4.
+
+## Vérifications et dépenses
+
+**86 tests de service**, contrôle de types, **34 exemples de contrat**, 31 intégrations locales existantes, tests transactionnels du moteur et des lectures préalables fournisseur. **50 tests unitaires demo / 28 remote**, sans additionner les parties communes comme des cas distincts ; APK utilisateur et APK de tests compilées. Les scénarios Android cloud sont des preuves distinctes. Captures natives examinées sur l’accueil français et le résultat anglais ; aucune validation complète de design, accessibilité ou performance n’en est déduite.
+
+Les échecs restent archivés : fausse occurrence à partir d’une absence, confusion fiction/réalité, citations reformulées, référence produit omise et clarifications redondantes. Les corrections ont été rejouées sur les mêmes attendus ; le cas Thunderbird est un contrôle logiciel indépendant. Les échecs du harnais Android (clic d’accessibilité, redémarrage par instrumentation et mauvaise option d’activation du bootstrap) ont été remplacés par un toucher réel de System UI et une vérification externe de l’écran ; aucun résultat applicatif n’a été fabriqué pour faire passer le test.
+
+**267 appels modèle cumulés, 0,182842 USD estimés** d’usage connu, réservations inconnues nulles au bilan. Borne prudente avec toute l’enveloppe encore autorisée, change et taxes : **0,99587625 € / 2 € cumulés**. Cela reste distinct d’une facture. Firecrawl : **915 crédits gratuits** rapprochés ; aucun abonnement, recharge, Blaze ou budget mensuel. Les objets monitor du compte sont en pause sans passage en vol ; le planificateur applicatif décide des réveils.
+
+Preuves principales : [chaîne cloud](general-cloud-chain.json), [Android cloud](general-android-cloud.json), [déploiement et quotas](general-deployment.json), [budget](general-budget-final.json), [restauration](cloud-backup-restore.json), [types et régressions](general-service-tests.txt), [intention finale](general-intent-format-v3-proof-result.json), [jugements](general-requested-scope-proof-result.json).
+
+**Suite :** conception commune des écrans/design/architecture de l’information, observation S4 sur sept jours avec enveloppe définie, accessibilité/performance/release, confidentialité et sauvegarde indépendante, déblocage Play et publication. GitHub reste différé à la demande de Fabien ; changements conservés dans Git local.
+
+## Historique antérieur à la clôture
+
+Les états ouverts, accès manquants et anciens budgets ci-dessous sont des instantanés historiques, remplacés pour l’état courant par le bilan ci-dessus.
+
 # Sprint 3 — état au 21 octobre 2026
 
 **Le premier pilote réel de changements textuels est vérifié et ouvert pour un essai limité. S3 reste ouvert et la V1 générale n’est pas terminée.** La saisie libre d’événements ou de sujets, la découverte et le jugement général restent dans le périmètre initial ; ce pilote ne les remplace pas.

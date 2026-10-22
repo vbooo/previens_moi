@@ -1,0 +1,21 @@
+{
+  "serviceTests": 86,
+  "contractFixtures": 34,
+  "existingLocalIntegrationCases": 31,
+  "demoUnitTests": 50,
+  "remoteUnitTests": 28,
+  "sharedAndroidCasesNotAddedTogether": true,
+  "intentLiveFinal": {
+    "passed": 12,
+    "total": 12
+  },
+  "judgmentScopeLiveFinal": {
+    "passed": 9,
+    "total": 9
+  },
+  "typecheckPassed": true,
+  "secretMarkerScanPassed": true,
+  "gitDiffCheckPassed": true,
+  "githubRemoteCreated": false,
+  "s4ObservationStarted": false
+}

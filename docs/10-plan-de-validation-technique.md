@@ -181,12 +181,8 @@ Pour terminer un ticket : exigences reliées, comportement vérifié, tests appr
 - **S1-05 terminé localement :** 2 tests unitaires, 1 test Android, compilation, Lint et contrôle des frontières passent. Workflow CI préparé, jamais exécuté à distance.
 - **S1-06 terminé :** [bilan, capture et empreinte](../validation/android-s1/bilan.md), [guide développeur](../android/README.md).
 - **S2-01 à S2-06 terminés :** parcours simulés livrés ; 24 tests unitaires et 5 parcours Compose dans trois configurations réussis ; mort réelle du processus, Lint et frontières vérifiés. [Bilan et preuves S2](../validation/android-s2/bilan.md). Coût fournisseur : zéro. S3/S4 restent à faire ; le moteur réel, l’admission libre, la publication Play et les performances/accessibilité complètes restent non validés.
-- **S3-01 en cours :** hébergement gratuit dédié et budget borné opérationnels ; coût de l’exploitation générale et sauvegarde indépendante encore à établir.
-- **S3-02 raccordé :** Supabase déployé, code e-mail réel via OVH, compte Android, stockage chiffré et restauration après arrêt vérifiés. Le test e-mail cloud a été scindé après attente humaine ; aucun passage continu complet n’est revendiqué. Déconnexion FR/EN corrigée et testée.
-- **S3-03 partiel :** A5 passe 9/9 sur les mêmes cas de développement ; pilote textuel d’URL explicite vérifié, sans IA. Admission libre indépendante, découverte, récence, jugement et déduplication sémantique restent ouverts.
-- **S3-04 partiel :** budget/transactions/reprises éprouvés localement ; réception publique signée et arrêt/suppression du fournisseur vérifiés sur le pilote réel. Restauration cloud indépendante encore à prouver.
-- **S3-05 partiel :** vraie notification FCM reçue pour un résultat de changement réellement détecté. Permission refusée, retard et session expirée/résultat supprimé restent à éprouver dans cette chaîne déployée.
-- **S3-06 ouvert :** pilote limité disponible pour Fabien, contrôles horaires et réveil cloud observé. Référence générale et qualification complète encore requises avant S4. Ni une heure complète ni sept jours ne sont déduits du test accéléré.
+- **S3-01 à S3-06 terminés techniquement le 22 octobre :** service d’essai borné général raccordé et chaîne cloud/Android qualifiée, coûts rapprochés, sauvegarde cloud chiffrée restaurée localement. [Bilan courant, références, limites et échecs conservés](../validation/s3/bilan.md).
+- **S4 à faire :** sept jours d’observation, conception UI/UX et architecture de l’information avec Fabien, qualité/release/confidentialité/sauvegarde indépendante, Play et publication. Aucune observation de sept jours ni V1 publiable n’est revendiquée.
 
 Les documents produit 01 à 09 et leurs conditions de clôture restent applicables. Aucun nouveau budget mensuel, abonnement ou périmètre final réduit n’est validé par ce pilote.
 
@@ -223,3 +219,8 @@ Les composants de compréhension, de preuves et de nouveauté ont été ajoutés
 Le rapprochement des 128 anciennes réponses terminées ramène leur coût estimé conservateur à 0,081134 USD. Les 58 nouveaux appels ont consommé 0,037794 USD estimés, sans réponse de coût inconnu. L’enveloppe nouvelle totale de 0,40 USD, marges de change/taxes et ancienne provision d’autres frais comprises, borne le cumul à 0,99587625 EUR, sous les 2 EUR autorisés. Ce n’est pas un rapprochement de facture ni un budget mensuel. Solde Firecrawl relu : 957 crédits gratuits ; aucun abonnement ou recharge. Voir les rapports `general-*-result.json`, `general-current-parser-replay.json`, `cloud-result-access.json`, `general-state-checkpoint.json` et `costs.json` dans `validation/s3/`.
 
 Suite technique sans arbitrage produit : terminer le raccordement demande → proposition vérifiée → collectes récurrentes → mémoire des faits et résultats, préserver les réservations de coût avant appels et éprouver cette chaîne déployée. L’autorisation de copie sensible du test de récupération a été donnée et ce test est maintenant exécuté. La refonte UX/UI reste à cadrer avec Fabien ensuite.
+
+
+### Clôture du 22 octobre — état courant
+
+Les paragraphes d’avancement M1–M4 précédents sont historiques. M1 analyse libre, M2 découverte et preuve, M3 cycle récurrent/état initial/nouveauté et M4 résultat/notification sont raccordés. Qualification générale bornée : 24 h, une page par passage, proposition partielle et quota fini ; elle ne garantit pas de trouver toute source ni tout événement. La proposition Python sans URL est prouvée, le refus de la page LibreOffice inadéquate est conservé. Le cycle positif complet, les cas négatifs et les limites Android sont éprouvés séparément sur une source publique fictive. Voir le bilan pour ne pas confondre portée contrôlée et couverture Web.

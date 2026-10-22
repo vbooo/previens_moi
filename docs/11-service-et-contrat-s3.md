@@ -154,3 +154,16 @@ Questions/polling/reprise chiffrée raccordés dans Android ; 26 migrations inst
 
 
 Mise à jour du 21 octobre 2026 : les deux défauts d’admission initiaux sont corrigés ; A5 passe 9/9 sur les mêmes cas, avec 50 régressions et 29 intégrations locales. Les résultats historiques restent conservés. La qualification indépendante de la compréhension générale et les essais externes restent ouverts. Voir le [rapport de correction](../validation/s3/correction-admission.md).
+
+
+## État déployé à la clôture S3 du 22 octobre
+
+32 migrations, moteur général `web_search` ouvert dans l’enveloppe d’essai, `known_page` conservé pour le pilote textuel. L’ancienne admission isolée reste désactivée : le nouveau worker utilise sa propre file persistée en phases interprétation/collecte/décision, chaque phase réservée avant tout appel. Le planificateur n’est pas un serveur à maintenir sur le Mac : les fonctions Supabase exécutent les travaux ; les objets monitor sont en pause entre les passages autorisés.
+
+Un appel modèle fixé à gpt-4.1-mini-2025-04-14, sans outil et sans stockage, comprend preuves sélectionnées et budget de sortie. Les citations correspondent à des identifiants de passages effectivement lus. Les sources ne sont jamais des instructions. Réponses inconnues : réservation conservée, échec visible, aucun réessai payant aveugle. La nouveauté, la génération, le résultat et l’outbox sont persistés atomiquement. Un refus de lecture préalable fournisseur avant intention d’exécution se réessaie au plus trois fois sans rejouer un passage engagé ; une panne de lecture ne gèle plus les suivis indépendants.
+
+Limites : 24 h, une requête/3 candidats/une lecture par contrôle, un fait évalué, source réelle consultée mais couverture partielle. Le quota gratuit total est 51 (39 déjà imputés + 12 d’essai), plafond structurel 64 ; aucune remise à zéro, modèle limité à 0,10 USD dans les 0,40 USD partagés. Une place globale. À quota atteint, activation/reprise refusées ou suivi suspendu, sans débit supplémentaire. Ce n’est pas une enveloppe mensuelle.
+
+Les cinq nouvelles tables privées sont les limites du moteur, les plans interprétés, la mémoire de faits/sources, la file de phases et la comptabilité opaque. Avec 27 tables Auth et 31 tables applicatives, la sauvegarde finale contient 58 tables ; les 53 précédentes n’étaient pas 53 fonctionnalités. Les données de source/contexte sont purgées suivant la rétention, la suppression du compte retire plans/mémoire/travaux possédés, la comptabilité sans texte/URL/identité persiste.
+
+Vérifications et preuves : [bilan courant](../validation/s3/bilan.md). La nouvelle sauvegarde restaure 58 tables et 197 lignes identiques, en refermant aussi `general_budget` avant usage. Elle ne couvre pas la perte de ce Mac. Les anciennes sections de préparation ci-dessus n’expriment pas l’état déployé actuel.

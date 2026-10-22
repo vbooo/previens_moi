@@ -1,0 +1,36 @@
+{
+  "scope": "Deployed free-text admission/search/read/model/state/FCM on a controlled fictional public source. No general Web-recall or seven-day observation claim.",
+  "maxModelUSD": 0.1,
+  "maxFreeCredits": 40,
+  "s4ObservationStarted": false,
+  "githubPushed": false,
+  "preflightReconciledWithoutRepeatingRun": true,
+  "freeTextProposalReady": true,
+  "baselineSilent": true,
+  "emptyBaselineContainedNoFalseFact": true,
+  "controlledSourceTurnsAccelerated": true,
+  "initialFirstWaitWithoutResult": "Two preceding cycles read other rotating Web candidates, not the controlled URL. No false alert occurred.",
+  "wrongCityProducedNoResult": true,
+  "firstRelevantResultRecorded": true,
+  "distinctEventDateProducedSecondResult": true,
+  "unchangedPageProducedNoDuplicate": true,
+  "libreOfficeNoUrlAttempt": {
+    "outcome": "unsupported",
+    "reason": "Actually read ArchWiki installation page does not expose required new stable release facts. No activation or claim of full Web coverage.",
+    "source": "https://wiki.archlinux.org/title/LibreOffice"
+  },
+  "freshNoUrlSourceDiscovery": {
+    "request": "Préviens-moi des nouvelles versions finales stables de Python.",
+    "sources": [
+      {
+        "url": "https://www.herodevs.com/blog-posts/python-end-of-life-dates-every-versions-support-timeline",
+        "label": "Python End-of-Life Dates: Every Version's Support Timeline"
+      }
+    ],
+    "method": "web_search",
+    "readyProposalOnly": true
+  },
+  "syntheticAccountAndOwnedContextsErased": true,
+  "syntheticPublicSourceDeleted": true,
+  "opaqueCostAccountingRetained": true
+}

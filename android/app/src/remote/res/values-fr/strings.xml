@@ -1,6 +1,12 @@
 <resources>
-    <string name="remote_banner">Version d’essai · changements de texte d’une page</string>
+    <string name="remote_banner">Version d’essai · surveillance de sources publiques</string>
 <string name="notification_channel">Résultats vérifiés</string>
 <string name="notification_permission">Activer les notifications</string>
 <string name="app_name">Préviens-moi · Test</string>
+    <string name="unqualified_body">Décris l’information publique à suivre. La proposition indique les sources vérifiées, la fréquence et les limites avant activation.</string>
+    <string name="partial_text">Ce suivi couvre les sources et les conditions précisées ci-dessous. Certains résultats peuvent lui échapper.</string>
+    <string name="partial_accept">J’ai compris les limites de ce suivi</string>
+    <string name="status_active">Actif</string>
+    <string name="finding_title">Résultat du suivi</string>
+    <string name="source_label">Source consultée</string>
 </resources>

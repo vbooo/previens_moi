@@ -13,10 +13,10 @@
     "firecrawlFreeCreditsConsumed": 15
   },
   "current": {
-    "openaiEstimatedCumulativeUSD": 0.118928,
-    "firecrawlCredits": 957,
+    "openaiEstimatedCumulativeUSD": 0.182842,
+    "firecrawlCredits": 915,
     "firecrawlBalanceDate": "2026-10-22",
-    "openaiCallsCumulative": 186
+    "openaiCallsCumulative": 267
   },
   "newCampaignUpperUSD": 0.1,
   "newActualReservedUpperUSD": 0.3776912,
@@ -26,9 +26,9 @@
   "productionForecastClosed": false,
   "monthlyBudgetAuthorized": false,
   "remainingCostUnknowns": [
-    "qualified monitoring/judgment cost",
-    "independent backup destination",
-    "public email operations and sending domain only if required"
+    "Public-release sending domain/mail operations",
+    "Independent off-Mac backup destination",
+    "Larger-volume production monitoring and hosting; no monthly budget authorized"
   ],
   "admissionCampaigns": [
     {
@@ -109,13 +109,22 @@
     "maxEURIncludingThisEnvelope": 0.99587625,
     "authorizedCumulativeMaxEUR": 2,
     "invoiceReconciled": false,
-    "actualCalls": 58,
-    "newEstimatedUSD": 0.037794,
+    "actualCalls": 123,
+    "newEstimatedUSD": 0.087246,
     "unknownReservedUSD": 0,
     "freeSourceDiscoveryCreditsMeasured": 18,
     "freeCreditsBalance": 957,
     "sourceDiscoveryFailuresPreserved": true,
-    "methodsEnabledInApp": false,
-    "remainingEnvelopeUSD": 0.362206
-  }
+    "methodsEnabledInApp": true,
+    "remainingEnvelopeUSD": 0.212754,
+    "deployedModelReserveUSD": 0.1,
+    "deployedCreditUpper": 40,
+    "deployedModelCalls": 16,
+    "deployedUsedUSD": 0.014462,
+    "deployedUnknownHeldUSD": 0.0,
+    "deployedFreeCreditsConservativelyCharged": 39,
+    "deployedCreditLimit": 51,
+    "additionalTrialFreeCredits": 12
+  },
+  "boundedTrialForecastClosed": true
 }

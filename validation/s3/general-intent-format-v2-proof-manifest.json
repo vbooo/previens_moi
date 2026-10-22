@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-22",
+  "scope": "Correction of contiguous criterion quotes, explicit entity references and conventional stable-release meaning. Same eleven cases and thresholds.",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "codeSha256": {
+    "service/supabase/functions/_shared/semantic.ts": "80c3929a960ade18f5b46405cf059a2ae3ca182218f237b20e1b2d948c7faee6",
+    "service/supabase/functions/_shared/coverage.ts": "c1acaaaf26cb58e203b0007140ee1a9b4c710965a90c5daa836b5d5b8b0501fd",
+    "service/supabase/functions/_shared/general-worker.ts": "b39741163014c3a11dcc2f8e50c8bbf11ceadc23d6e1b2e73b1afcd96a826b47",
+    "scripts/semantic-request.ts": "89078524d699f8caab84b3942b06ce19e7a035867fe6142778c117638eb312ff",
+    "scripts/qualify-general-semantics.py": "40e7f4d534c95806838465326d34f2ce2765b9bb9f715eee956efd2267887e9e"
+  },
+  "maxPaidCalls": 11,
+  "newTotalEnvelopeUSD": 0.4,
+  "retries": 0,
+  "freezeBeforeCalls": true,
+  "success": "all decisions correct; zero affirmative on negative/unknown reference cases; every decisive criterion retained; known fact linked and distinct date not merged",
+  "revision": "v2",
+  "previousFailedResult": "general-m1-m2-result.json",
+  "qualificationScope": "Retest of development cases after recorded failure; independent holdout still needed.",
+  "cases": [
+    {
+      "id": "LIBREOFFICE-ADMISSION",
+      "kind": "intent",
+      "data": {
+        "mode": "continuous",
+        "text": "Préviens-moi des nouvelles versions stables de LibreOffice pour Linux, en excluant les versions bêta et release candidate.",
+        "answers": [],
+        "language": "fr",
+        "revision": 1,
+        "referenceNow": "2026-10-22T14:01:43.090Z"
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "Linux",
+        "bêta",
+        "release candidate"
+      ]
+    },
+    {
+      "id": "I01",
+      "kind": "intent",
+      "data": {
+        "text": "Préviens-moi si un casque AKG K371 neuf est proposé à moins de 120 € livraison comprise en Belgique, sans abonnement ni reprise.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "K371",
+        "neuf",
+        "120",
+        "Belgique",
+        "abonnement",
+        "reprise"
+      ]
+    },
+    {
+      "id": "I02",
+      "kind": "intent",
+      "data": {
+        "text": "Notify me when Mitski announces a concert in Bristol, UK in 2027, excluding festivals.",
+        "language": "en",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "Mitski",
+        "Bristol",
+        "2027",
+        "festival"
+      ]
+    },
+    {
+      "id": "I03",
+      "kind": "intent",
+      "data": {
+        "text": "Préviens-moi des nouveaux articles scientifiques évalués par les pairs sur l’efficacité des toits végétalisés dans les villes françaises.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "pairs",
+        "toits",
+        "français"
+      ]
+    },
+    {
+      "id": "I04",
+      "kind": "intent",
+      "data": {
+        "text": "Notify me of stable LibreOffice releases for Linux; exclude beta and release-candidate builds.",
+        "language": "en",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "LibreOffice",
+        "Linux",
+        "beta",
+        "release"
+      ]
+    },
+    {
+      "id": "I05",
+      "kind": "intent",
+      "data": {
+        "text": "Préviens-moi des choses importantes en écologie.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "requiredTerms": []
+    },
+    {
+      "id": "I06",
+      "kind": "intent",
+      "data": {
+        "text": "Préviens-moi quand mon compte bancaire privé reçoit 50 €.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "unsupported"
+      ],
+      "requiredTerms": []
+    },
+    {
+      "id": "I07",
+      "kind": "intent",
+      "data": {
+        "text": "Préviens-moi d’un concert uniquement à Rouen et uniquement à Nice le même jour dans une seule salle.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "requiredTerms": []
+    },
+    {
+      "id": "I08",
+      "kind": "intent",
+      "data": {
+        "text": "Notify me when an XZT-92 refurbished phone is below £180 delivered, excluding subscriptions.",
+        "language": "en",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "requiredTerms": []
+    },
+    {
+      "id": "I09",
+      "kind": "intent",
+      "data": {
+        "text": "Sur https://example.com/releases préviens-moi uniquement des sorties stables du logiciel Zephyr, pas des changements de mise en page.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "Zephyr",
+        "stables",
+        "mise en page"
+      ]
+    },
+    {
+      "id": "I10",
+      "kind": "intent",
+      "data": {
+        "text": "Préviens-moi quand le Musée des Beaux-Arts d’Angers annonce une nocturne gratuite un vendredi.",
+        "language": "fr",
+        "revision": 1,
+        "mode": "continuous",
+        "answers": []
+      },
+      "expectedStatuses": [
+        "understood"
+      ],
+      "requiredTerms": [
+        "Angers",
+        "nocturne",
+        "gratuite",
+        "vendredi"
+      ]
+    }
+  ]
+}

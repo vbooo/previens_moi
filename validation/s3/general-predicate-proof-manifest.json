@@ -1,0 +1,405 @@
+{
+  "date": "2026-10-22",
+  "scope": "Corrected-reference semantic qualification, distinguishing requested real-world occurrences, explicit fiction, absence and cancellation. Earlier invalid fiction-positive reference retained and annotated.",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "codeSha256": {
+    "service/supabase/functions/_shared/semantic.ts": "579007534bc3a2966bc4c3175cacb8f03281d3adcb6b780724766f1f3aa3e3d6",
+    "service/supabase/functions/_shared/coverage.ts": "c1acaaaf26cb58e203b0007140ee1a9b4c710965a90c5daa836b5d5b8b0501fd",
+    "service/supabase/functions/_shared/general-worker.ts": "b39741163014c3a11dcc2f8e50c8bbf11ceadc23d6e1b2e73b1afcd96a826b47",
+    "scripts/semantic-request.ts": "89078524d699f8caab84b3942b06ce19e7a035867fe6142778c117638eb312ff",
+    "scripts/qualify-general-semantics.py": "98ddb8c687831adbcfd78298422f551058f5211a351826336353d69873650333"
+  },
+  "maxPaidCalls": 8,
+  "newTotalEnvelopeUSD": 0.4,
+  "retries": 0,
+  "freezeBeforeCalls": true,
+  "success": "all decisions correct; zero affirmative on negative/unknown reference cases; every decisive criterion retained; known fact linked and distinct date not merged",
+  "revision": "v2",
+  "previousFailedResult": "general-m1-m2-result.json",
+  "qualificationScope": "Retest of development cases after recorded failure; independent holdout still needed.",
+  "cases": [
+    {
+      "id": "AFFIRM",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand Liora annonce un concert confirmé à Limoges.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Concert confirmé à Limoges",
+              "quote": "concert confirmé à Limoges"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Annonce officielle : Liora jouera à Limoges le 18 avril 2027. La date est confirmée.",
+            "publication": null,
+            "changedText": "Annonce officielle : Liora jouera à Limoges le 18 avril 2027. La date est confirmée."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "match"
+      ]
+    },
+    {
+      "id": "ABSENT",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand Liora annonce un concert confirmé à Limoges.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Concert confirmé à Limoges",
+              "quote": "concert confirmé à Limoges"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Programmation de Liora à Limoges : aucune date de concert annoncée pour le moment.",
+            "publication": null,
+            "changedText": "Programmation de Liora à Limoges : aucune date de concert annoncée pour le moment."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "no_match"
+      ]
+    },
+    {
+      "id": "CANCEL",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand Liora annonce un concert confirmé à Limoges.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Concert confirmé à Limoges",
+              "quote": "concert confirmé à Limoges"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Le concert de Liora à Limoges du 18 avril 2027 est annulé. Aucune nouvelle date annoncée.",
+            "publication": null,
+            "changedText": "Le concert de Liora à Limoges du 18 avril 2027 est annulé. Aucune nouvelle date annoncée."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "no_match"
+      ]
+    },
+    {
+      "id": "MAYBE",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand Liora annonce un concert confirmé à Limoges.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Concert confirmé à Limoges",
+              "quote": "concert confirmé à Limoges"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Liora pourrait jouer à Limoges au printemps 2027, mais aucun concert n’est confirmé ou annoncé.",
+            "publication": null,
+            "changedText": "Liora pourrait jouer à Limoges au printemps 2027, mais aucun concert n’est confirmé ou annoncé."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "no_match"
+      ]
+    },
+    {
+      "id": "REQUESTED-ABSENCE",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand le livre Fenêtre bleue est en rupture de stock.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Rupture Fenêtre bleue",
+          "criteria": [
+            {
+              "id": "book",
+              "text": "Livre Fenêtre bleue",
+              "quote": "livre Fenêtre bleue"
+            },
+            {
+              "id": "stock",
+              "text": "En rupture de stock",
+              "quote": "en rupture de stock"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Fenêtre bleue stock"
+          ],
+          "explanation": "Rupture demandée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/book",
+            "text": "Livre Fenêtre bleue — stock indisponible : rupture de stock confirmée, aucune commande possible.",
+            "publication": null,
+            "changedText": "Livre Fenêtre bleue — stock indisponible : rupture de stock confirmée, aucune commande possible."
+          }
+        ],
+        "previous": [],
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "match"
+      ]
+    },
+    {
+      "id": "FICTION-NOT-REAL",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand Liora annonce un concert confirmé à Limoges.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Concert confirmé à Limoges",
+              "quote": "concert confirmé à Limoges"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Annonce fictive de test : Liora jouera à Limoges le 18 avril 2027. Ceci est une simulation, pas un véritable concert.",
+            "publication": null,
+            "changedText": "Annonce fictive de test : Liora jouera à Limoges le 18 avril 2027. Ceci est une simulation, pas un véritable concert."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "no_match"
+      ]
+    },
+    {
+      "id": "FICTION-REQUESTED",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi des annonces fictives de concert de Liora à Limoges.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Annonce fictive de concert à Limoges",
+              "quote": "annonces fictives de concert de Liora à Limoges"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Annonce fictive de test : Liora jouera à Limoges le 18 avril 2027. Ceci est une simulation, pas un véritable concert.",
+            "publication": null,
+            "changedText": "Annonce fictive de test : Liora jouera à Limoges le 18 avril 2027. Ceci est une simulation, pas un véritable concert."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "match"
+      ]
+    },
+    {
+      "id": "CANCELLATION-REQUESTED",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi si le concert de Liora à Limoges est annulé.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Liora à Limoges",
+          "criteria": [
+            {
+              "id": "artist",
+              "text": "Liora",
+              "quote": "Liora"
+            },
+            {
+              "id": "event",
+              "text": "Concert de Liora à Limoges annulé",
+              "quote": "concert de Liora à Limoges est annulé"
+            }
+          ],
+          "questions": [],
+          "queries": [
+            "Liora concert Limoges"
+          ],
+          "explanation": "Annonce confirmée."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/announcements",
+            "text": "Le concert de Liora à Limoges du 18 avril 2027 est annulé. Aucune nouvelle date annoncée.",
+            "publication": null,
+            "changedText": "Le concert de Liora à Limoges du 18 avril 2027 est annulé. Aucune nouvelle date annoncée."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "match"
+      ]
+    }
+  ]
+}

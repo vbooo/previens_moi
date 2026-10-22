@@ -1,0 +1,276 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "28f9facb66919e4035313d8db5f53eb25929fd6ae1a6dbb05fe5de7080807bf0",
+  "results": [
+    {
+      "id": "CLOUD-CONTEXT",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Une annonce fictive confirme un concert de MiraTest-S3 à Tours le 12 mars 2027, précisant qu'il s'agit d'une simulation et non d'un véritable concert.",
+        "reason": "Le document fournit une annonce explicite d'un concert fictif de MiraTest-S3 à Tours, correspondant exactement au critère demandé.",
+        "identity": {
+          "who": "MiraTest-S3",
+          "what": "concert fictif",
+          "where": "Tours",
+          "when": "2027-03-12",
+          "variant": "simulation"
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "1",
+            "url": "https://webhook.site/bf0d0e46-00e3-4f51-bc4a-b767501896dc",
+            "quote": "# Catalogue public de concerts fictifs\n\nAnnuaire de contrôle : toutes les annonces de cette page sont fictives.\n\n| Artiste | Ville | Annonce et date du concert |\n| --- | --- | --- |\n| MiraTest-S3 | Tours | Annonce fictive confirmée : concert de MiraTest-S3 à Tours le 12 mars 2027. Ceci est une simulation, pas un véritable concert. |\n\nSource publique de ce catalogue : https://webhook.site/bf0d0e46-00e3-4f51-bc4a-b767501896dc"
+          },
+          {
+            "criterionId": "1",
+            "url": "https://webhook.site/bf0d0e46-00e3-4f51-bc4a-b767501896dc",
+            "quote": "| MiraTest-S3 | Tours | Annonce fictive confirmée : concert de MiraTest-S3 à Tours le 12 mars 2027. Ceci est une simulation, pas un véritable concert. |"
+          }
+        ]
+      },
+      "factKey": "d58568190fd2b9f8d72edb684ffe5d6557d80b01360e891434a5edda10b86843",
+      "usageUSD": 0.0008148000000000001
+    },
+    {
+      "id": "AFFIRM",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Liora a annoncé un concert confirmé à Limoges le 18 avril 2027.",
+        "reason": "Le document officiel indique clairement que Liora jouera à Limoges le 18 avril 2027 et que la date est confirmée, satisfaisant ainsi tous les critères demandés.",
+        "identity": {
+          "who": "Liora",
+          "what": "concert confirmé",
+          "where": "Limoges",
+          "when": "2027-04-18",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/announcements",
+            "quote": "Annonce officielle : Liora jouera à Limoges le 18 avril 2027. La date est confirmée."
+          },
+          {
+            "criterionId": "event",
+            "url": "https://source.example/announcements",
+            "quote": "Annonce officielle : Liora jouera à Limoges le 18 avril 2027. La date est confirmée."
+          }
+        ]
+      },
+      "factKey": "932938b6dd4a2464e018f300a5f2369d051f725fb69c908640d1e4ef3f49c1da",
+      "usageUSD": 0.0006876
+    },
+    {
+      "id": "ABSENT",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "La source indique explicitement qu'aucune date de concert confirmée de Liora à Limoges n'est annoncée pour le moment.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0005424000000000001
+    },
+    {
+      "id": "CANCEL",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document indique explicitement que le concert de Liora à Limoges prévu le 18 avril 2027 est annulé et qu'aucune nouvelle date n'a été annoncée. Il n'y a donc pas d'annonce confirmée d'un concert de Liora à Limoges.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0006004
+    },
+    {
+      "id": "MAYBE",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "Le document indique que Liora pourrait jouer à Limoges au printemps 2027, mais aucun concert n'est confirmé ou annoncé. Il n'y a donc pas d'annonce confirmée d'un concert de Liora à Limoges.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0005764
+    },
+    {
+      "id": "REQUESTED-ABSENCE",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Le livre Fenêtre bleue est en rupture de stock, aucune commande possible.",
+        "reason": "Le document source confirme explicitement que le livre Fenêtre bleue est en rupture de stock avec la mention 'rupture de stock confirmée, aucune commande possible'.",
+        "identity": {
+          "who": "Fenêtre bleue",
+          "what": "livre en rupture de stock",
+          "where": null,
+          "when": "2026-10-22",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "book",
+            "url": "https://source.example/book",
+            "quote": "Livre Fenêtre bleue — stock indisponible : rupture de stock confirmée, aucune commande possible."
+          },
+          {
+            "criterionId": "stock",
+            "url": "https://source.example/book",
+            "quote": "Livre Fenêtre bleue — stock indisponible : rupture de stock confirmée, aucune commande possible."
+          }
+        ]
+      },
+      "factKey": "d09f1d72dd051bed24091447a52ace068b6b1ecb481115ba0cd4b7551fecf5a2",
+      "usageUSD": 0.0006732
+    },
+    {
+      "id": "FICTION-NOT-REAL",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "L'annonce mentionne explicitement qu'il s'agit d'une simulation et non d'un concert réel confirmé.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0005456
+    },
+    {
+      "id": "FICTION-REQUESTED",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Une annonce fictive de concert de Liora à Limoges est confirmée pour le 18 avril 2027.",
+        "reason": "Le document fournit une annonce explicite qualifiée de fictive et de simulation pour un concert de Liora à Limoges à cette date, ce qui correspond exactement au critère demandé.",
+        "identity": {
+          "who": "Liora",
+          "what": "Annonce fictive de concert",
+          "where": "Limoges",
+          "when": "2027-04-18",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/announcements",
+            "quote": "Annonce fictive de test : Liora jouera à Limoges le 18 avril 2027. Ceci est une simulation, pas un véritable concert."
+          },
+          {
+            "criterionId": "event",
+            "url": "https://source.example/announcements",
+            "quote": "Annonce fictive de test : Liora jouera à Limoges le 18 avril 2027. Ceci est une simulation, pas un véritable concert."
+          }
+        ]
+      },
+      "factKey": "f9bbd045ef1daf05a31391d319493ea7d9890c5a91ff37dd26ac54b9b60dd3dc",
+      "usageUSD": 0.0007104000000000001
+    },
+    {
+      "id": "CANCELLATION-REQUESTED",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Le concert de Liora à Limoges du 18 avril 2027 est annulé.",
+        "reason": "Le document confirme explicitement que le concert de Liora à Limoges prévu le 18 avril 2027 est annulé.",
+        "identity": {
+          "who": "Liora",
+          "what": "concert annulé",
+          "where": "Limoges",
+          "when": "2027-04-18",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "artist",
+            "url": "https://source.example/announcements",
+            "quote": "Le concert de Liora à Limoges du 18 avril 2027 est annulé. Aucune nouvelle date annoncée."
+          },
+          {
+            "criterionId": "event",
+            "url": "https://source.example/announcements",
+            "quote": "Le concert de Liora à Limoges du 18 avril 2027 est annulé. Aucune nouvelle date annoncée."
+          }
+        ]
+      },
+      "factKey": "3bb95866d958d014875ce1b267a6c4d145e86eb66787926f14b7c4d0fcaec991",
+      "usageUSD": 0.0006752
+    }
+  ],
+  "completed": 9,
+  "total": 9,
+  "passed": 9,
+  "stopped": null,
+  "actualCalls": 9,
+  "newEstimatedUSD": 0.0058260000000000004,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.99587625,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Original requested scope prevails over abbreviated intent, plus unchanged eight-case predicate regression.",
+  "costScope": "Historical reconciled bound plus entire shared USD0.40 new envelope, including deployed reserve; campaign usage alone is not the cumulative bound."
+}

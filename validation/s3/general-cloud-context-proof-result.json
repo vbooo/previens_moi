@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "45839b6d114d6b84f0e1d22ae5cd041c920987c1ab66c8a850880ba04f4a5ab2",
+  "results": [
+    {
+      "id": "CLOUD-CONTEXT",
+      "passed": false,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "L'annonce mentionnée est explicitement une simulation fictive et non un véritable concert. La demande porte sur une annonce confirmant un concert réel de MiraTest-S3 à Tours, ce qui n'est pas le cas ici.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0006608
+    }
+  ],
+  "completed": 1,
+  "total": 1,
+  "passed": 0,
+  "stopped": null,
+  "actualCalls": 1,
+  "newEstimatedUSD": 0.0006608,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.24711524999999998,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Frozen replay of the exact controlled cloud positive input, after an unexpected no-result."
+}

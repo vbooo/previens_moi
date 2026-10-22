@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "source": "Previously approved encrypted snapshot; schema only restored",
+  "personalRowsRestored": 0,
+  "migrationAppliedAtomically": true,
+  "executionClosedByDefault": true,
+  "privateRpcDeniedToAuthenticated": true,
+  "retentionFunctionExecuted": true,
+  "newPaidCalls": 0,
+  "cloudChanged": false
+}

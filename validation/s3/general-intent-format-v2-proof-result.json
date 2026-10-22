@@ -1,0 +1,488 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "469690394853b9863fc6c3f49155a30413740e507015564536f5f99a5ef09778",
+  "results": [
+    {
+      "id": "LIBREOFFICE-ADMISSION",
+      "passed": false,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [
+        "Linux",
+        "bêta",
+        "release candidate"
+      ],
+      "value": {
+        "status": "clarify",
+        "title": "Clarification nécessaire sur la définition de \"nouvelles versions stables\" de LibreOffice",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Que signifie exactement \"nouvelles versions stables\" ? Souhaitez-vous uniquement les versions finales publiées officiellement, sans aucune pré-version ?",
+            "options": [
+              "Oui, uniquement les versions finales officielles",
+              "Inclure aussi les versions mineures de maintenance",
+              "Autre (merci de préciser)"
+            ],
+            "required": true
+          },
+          {
+            "id": "q2",
+            "label": "Voulez-vous être informé uniquement des versions pour Linux, ou aussi pour d'autres systèmes d'exploitation ?",
+            "options": [
+              "Uniquement Linux",
+              "Linux et autres systèmes d'exploitation"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "Le terme \"nouvelles versions stables\" peut prêter à interprétation. Pour vous fournir une veille précise, il est nécessaire de clarifier ce que vous entendez par \"stables\" et si vous souhaitez uniquement les versions Linux."
+      },
+      "factKey": null,
+      "usageUSD": 0.0009160000000000001
+    },
+    {
+      "id": "I01",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance du prix d'un casque AKG K371 neuf avec livraison en Belgique",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Le casque doit être un AKG K371 neuf",
+            "quote": "un casque AKG K371 neuf"
+          },
+          {
+            "id": "c2",
+            "text": "Le prix doit être inférieur à 120 €",
+            "quote": "à moins de 120 €"
+          },
+          {
+            "id": "c3",
+            "text": "Le prix doit inclure la livraison",
+            "quote": "livraison comprise"
+          },
+          {
+            "id": "c4",
+            "text": "La livraison doit être en Belgique",
+            "quote": "en Belgique"
+          },
+          {
+            "id": "c5",
+            "text": "Pas d'abonnement ni de reprise associés",
+            "quote": "sans abonnement ni reprise"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "prix casque AKG K371 neuf moins de 120 euros livraison Belgique",
+          "offre casque AKG K371 neuf sans abonnement ni reprise livraison Belgique"
+        ],
+        "explanation": "La demande concerne la surveillance du prix public d'un casque AKG K371 neuf, avec un prix total (incluant livraison) inférieur à 120 € en Belgique, sans conditions d'abonnement ou reprise. Toutes les conditions sont explicites et compatibles avec une recherche sur le web public."
+      },
+      "factKey": null,
+      "usageUSD": 0.0009644000000000001
+    },
+    {
+      "id": "I02",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Monitoring Mitski concert announcements in Bristol, UK in 2027 excluding festivals",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Artist must be Mitski",
+            "quote": "Mitski"
+          },
+          {
+            "id": "c2",
+            "text": "Concert location must be Bristol, UK",
+            "quote": "Bristol, UK"
+          },
+          {
+            "id": "c3",
+            "text": "Concert date must be in 2027",
+            "quote": "in 2027"
+          },
+          {
+            "id": "c4",
+            "text": "Exclude festivals from announcements",
+            "quote": "excluding festivals"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Mitski concert announcement Bristol UK 2027",
+          "Mitski live show non-festival Bristol 2027"
+        ],
+        "explanation": "The user requests notifications for Mitski concerts specifically in Bristol, UK during the year 2027, explicitly excluding any festival events. This is a public information monitoring task with clear criteria and no subjective ambiguity."
+      },
+      "factKey": null,
+      "usageUSD": 0.000868
+    },
+    {
+      "id": "I03",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des articles scientifiques évalués par les pairs sur les toits végétalisés en France",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Articles scientifiques évalués par les pairs",
+            "quote": "articles scientifiques évalués par les pairs"
+          },
+          {
+            "id": "c2",
+            "text": "Sujet sur l’efficacité des toits végétalisés",
+            "quote": "efficacité des toits végétalisés"
+          },
+          {
+            "id": "c3",
+            "text": "Contexte géographique limité aux villes françaises",
+            "quote": "villes françaises"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "nouveaux articles scientifiques évalués par les pairs efficacité toits végétalisés villes françaises",
+          "publications récentes toits végétalisés efficacité milieu urbain France"
+        ],
+        "explanation": "La demande concerne la surveillance des publications scientifiques évaluées par les pairs portant sur l'efficacité des toits végétalisés spécifiquement dans les villes françaises. Toutes les conditions sont explicites et objectives, permettant une compréhension claire pour la recherche d'informations."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008944000000000001
+    },
+    {
+      "id": "I04",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Monitoring stable LibreOffice releases for Linux excluding beta and release candidates",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Stable LibreOffice releases only, excluding beta and release-candidate builds",
+            "quote": "Notify me of stable LibreOffice releases for Linux; exclude beta and release-candidate builds"
+          },
+          {
+            "id": "c2",
+            "text": "Releases must be for Linux platform",
+            "quote": "Notify me of stable LibreOffice releases for Linux"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "LibreOffice stable releases Linux",
+          "LibreOffice latest stable version Linux release notes"
+        ],
+        "explanation": "The user requests notifications about stable LibreOffice releases specifically for Linux, explicitly excluding beta and release-candidate builds. This is a public web monitoring request with clear criteria and no subjective ambiguity."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008128
+    },
+    {
+      "id": "I05",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Clarification nécessaire sur la définition de \"choses importantes en écologie\"",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Que considérez-vous comme \"important\" en écologie ?",
+            "options": [
+              "Impact environnemental majeur",
+              "Nouvelles scientifiques significatives",
+              "Politiques et réglementations clés",
+              "Autre (précisez)"
+            ],
+            "required": true
+          },
+          {
+            "id": "q2",
+            "label": "Souhaitez-vous des informations sur un domaine spécifique de l'écologie ?",
+            "options": [
+              "Changement climatique",
+              "Biodiversité",
+              "Pollution",
+              "Énergies renouvelables",
+              "Autre (précisez)"
+            ],
+            "required": true
+          },
+          {
+            "id": "q3",
+            "label": "Préférez-vous des alertes locales, nationales ou internationales ?",
+            "options": [
+              "Locale",
+              "Nationale",
+              "Internationale"
+            ],
+            "required": true
+          },
+          {
+            "id": "q4",
+            "label": "À quelle fréquence souhaitez-vous recevoir ces informations ?",
+            "options": [
+              "En continu",
+              "Quotidiennement",
+              "Hebdomadairement",
+              "Autre (précisez)"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "Le terme \"choses importantes en écologie\" est subjectif et nécessite une définition précise pour fournir des alertes pertinentes. Merci de préciser vos critères d'importance, domaines d'intérêt, zone géographique et fréquence souhaitée."
+      },
+      "factKey": null,
+      "usageUSD": 0.0010128000000000001
+    },
+    {
+      "id": "I06",
+      "passed": true,
+      "expectedStatuses": [
+        "unsupported"
+      ],
+      "status": "unsupported",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "unsupported",
+        "title": "Surveillance d'un compte bancaire privé",
+        "criteria": [],
+        "questions": [],
+        "queries": [],
+        "explanation": "Cette surveillance Web ne peut pas consulter les données de ton compte privé."
+      },
+      "factKey": null,
+      "usageUSD": 0.0007068
+    },
+    {
+      "id": "I07",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Contradiction dans la localisation des concerts",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Voulez-vous être prévenu d'un concert à Rouen ou à Nice ?",
+            "options": [
+              "Rouen uniquement",
+              "Nice uniquement",
+              "Les deux villes"
+            ],
+            "required": true
+          },
+          {
+            "id": "q2",
+            "label": "Souhaitez-vous que le concert ait lieu dans une seule salle ou dans plusieurs salles ?",
+            "options": [
+              "Une seule salle",
+              "Plusieurs salles"
+            ],
+            "required": true
+          },
+          {
+            "id": "q3",
+            "label": "Le concert doit-il avoir lieu le même jour dans les deux villes ?",
+            "options": [
+              "Oui",
+              "Non"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "Votre demande contient une contradiction : vous souhaitez être prévenu d'un concert uniquement à Rouen et uniquement à Nice le même jour dans une seule salle, ce qui est impossible géographiquement. Merci de préciser vos critères."
+      },
+      "factKey": null,
+      "usageUSD": 0.000896
+    },
+    {
+      "id": "I08",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Clarification needed on delivery country and subjective price threshold",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Which country should the delivery price condition apply to?",
+            "options": [
+              "United Kingdom",
+              "United States",
+              "Other (please specify)"
+            ],
+            "required": true
+          },
+          {
+            "id": "q2",
+            "label": "Is £180 your maximum acceptable price including delivery, or would you prefer a different currency or price threshold?",
+            "options": [
+              "£180 including delivery",
+              "Different currency or price threshold"
+            ],
+            "required": true
+          },
+          {
+            "id": "q3",
+            "label": "Do you want notifications only for refurbished XZT-92 phones without any subscription plans?",
+            "options": [
+              "Yes",
+              "No"
+            ],
+            "required": true
+          },
+          {
+            "id": "q4",
+            "label": "Does 'below £180 delivered' mean strictly less than £180 or less than or equal to £180?",
+            "options": [
+              "Strictly less than £180",
+              "Less than or equal to £180"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "The user requests notification for an XZT-92 refurbished phone below £180 delivered, excluding subscriptions. However, the delivery country is not specified, which is essential to determine delivery cost applicability. Also, the price threshold 'below £180' is subjective and needs clarification if it includes exactly £180 or strictly less. Confirmation about excluding subscription plans is needed to ensure correct filtering."
+      },
+      "factKey": null,
+      "usageUSD": 0.0011028
+    },
+    {
+      "id": "I09",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des sorties stables du logiciel Zephyr sur example.com",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Surveillance uniquement des sorties stables du logiciel Zephyr",
+            "quote": "uniquement des sorties stables du logiciel Zephyr"
+          },
+          {
+            "id": "c2",
+            "text": "Exclusion des changements de mise en page",
+            "quote": "pas des changements de mise en page"
+          },
+          {
+            "id": "c3",
+            "text": "Source d'information : https://example.com/releases",
+            "quote": "https://example.com/releases"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Zephyr stable release site:example.com/releases",
+          "Zephyr stable version release notes site:example.com/releases"
+        ],
+        "explanation": "L'utilisateur souhaite être informé uniquement des sorties stables du logiciel Zephyr sur la page https://example.com/releases, en excluant les changements de mise en page. La demande concerne une source publique accessible sur le web, sans ambiguïté ni informations privées."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008788
+    },
+    {
+      "id": "I10",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance d'annonce publique d'événement gratuit au Musée des Beaux-Arts d’Angers un vendredi",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Le lieu doit être le Musée des Beaux-Arts d’Angers",
+            "quote": "Musée des Beaux-Arts d’Angers"
+          },
+          {
+            "id": "c2",
+            "text": "L'annonce doit concerner une nocturne gratuite",
+            "quote": "une nocturne gratuite"
+          },
+          {
+            "id": "c3",
+            "text": "La nocturne doit avoir lieu un vendredi",
+            "quote": "un vendredi"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Musée des Beaux-Arts d’Angers nocturne gratuite vendredi",
+          "Musée des Beaux-Arts d’Angers annonce nocturne gratuite vendredi"
+        ],
+        "explanation": "L'utilisateur souhaite être informé dès qu'une annonce publique indique qu'une nocturne gratuite aura lieu un vendredi au Musée des Beaux-Arts d’Angers. Les critères sont clairs et précis, sans ambiguïté subjective ou contradiction."
+      },
+      "factKey": null,
+      "usageUSD": 0.0009092000000000001
+    }
+  ],
+  "completed": 11,
+  "total": 11,
+  "passed": 10,
+  "stopped": null,
+  "actualCalls": 11,
+  "newEstimatedUSD": 0.009962,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.99587625,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Correction of contiguous criterion quotes, explicit entity references and conventional stable-release meaning. Same eleven cases and thresholds."
+}

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "cumulativeAuthorizedMaxEUR": 2,
+  "conservativeCumulativeUpperEUR": 0.99587625,
+  "historicalUsageUpperUSD": 0.081134,
+  "historicalOtherAllowanceUSD": 0.05,
+  "sharedNewEnvelopeUSD": 0.4,
+  "labModelCalls": 123,
+  "labUsageUSD": 0.087246,
+  "labUnknownReservedUSD": 0,
+  "cloudPaidModelCalls": 16,
+  "cloudUsageUpperUSD": 0.014462,
+  "cloudUnknownReservedUSD": 0.0,
+  "cloudWholeReserveAlreadyInsideSharedEnvelopeUSD": 0.1,
+  "freeProviderBalance": 915,
+  "creditUsedNotReset": 39,
+  "creditTrialLimit": 51,
+  "additionalTrialFreeCredits": 12,
+  "subscriptionOrTopUp": false,
+  "monthlyBudgetAuthorized": false,
+  "invoiceReconciled": false
+}

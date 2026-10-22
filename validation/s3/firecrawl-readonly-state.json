@@ -1,10 +1,15 @@
 {
-  "createdAt": "2026-10-20T20:01:37.074Z",
+  "createdAt": "2026-10-22T14:25:56.958Z",
   "scope": "Read-only existing account; no monitor create/run/change",
   "maxCalls": 5,
   "additionalCreditsConsumed": 0,
-  "remainingCredits": 985,
+  "remainingCredits": 915,
   "knownTestMonitors": [
+    {
+      "name": "previens-moi:0174ef76-3fdb-4031-9e39-a53e4d27f788",
+      "status": "paused",
+      "currentCheckIdPresent": false
+    },
     {
       "name": "Previens-moi F3 delivery 20261015",
       "status": "paused",

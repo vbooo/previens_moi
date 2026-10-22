@@ -48,6 +48,7 @@ def main():
    local.execute("set time zone 'UTC'");assert before==fingerprints(local),'Snapshot row fingerprints differ'
    for table in ['capacity','admission_capacity','worker_schedule','page_change_pilot']:local.execute(psycopg.sql.SQL('update private.{} set enabled=false').format(psycopg.sql.Identifier(table)))
    local.execute('update private.method_qualifications set qualified=false')
+   if local.execute("select to_regclass('private.general_budget') is not null").fetchone()[0]:local.execute('update private.general_budget set enabled=false,qualified=false')
   report.update(passed=True,tableCount=len(before),rows=sum(n for n,_ in before.values()),fingerprintsMatch=True,snapshotConsistent=True,archiveBytes=len(encrypted),encrypted=True,integrityVerifiedBeforeDecrypt=True,tamperedArchiveRejected=True,keySeparatedFromArchive=True,executionClosedInRestoredDatabase=True,originalCloudUntouched=True)
  except Exception as e:
   report['failure']=type(e).__name__

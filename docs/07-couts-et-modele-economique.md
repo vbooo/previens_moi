@@ -177,3 +177,14 @@ Les montants d'exploitation, quotas, cadence et choix de fournisseurs restent ou
 ## Mise à jour S3-01 — 20 octobre 2026
 
 La [spécification du service](11-service-et-contrat-s3.md#budget-de-préparation-et-ouverture-du-pilote) chiffre les postes connus et distingue ceux qui restent inconnus. Supabase gratuit et FCM permettent de préparer l’intégration sans abonnement. Domaine d’expédition e-mail, sauvegarde indépendante, analyse qualifiée et consommation réelle restent à préciser avant de conclure sur une facture complète. [Scénarios reproductibles](../validation/s3-01/cost-scenarios.json). Aucune dépense fournisseur nouvelle, aucune réactivation de monitor ni hausse du plafond historique.
+
+
+## Prévision de l’essai S3 à la clôture du 22 octobre
+
+L’essai utilise les projets Supabase Free et Firebase Spark existants, la boîte OVH existante et un stockage chiffré local existant : aucun engagement d’achat supplémentaire. Analyse/recherche/lecture sont comptées même sans alerte. Dans le moteur général, admission : au plus deux réservations modèle de 0,02 USD chacune et une collecte de 3 crédits gratuits ; état initial : au plus 0,02 USD + 3 crédits ; contrôle : au plus 0,02 USD + 3 crédits (zéro modèle si texte inchangé). Ce sont des bornes de réservation prudentes, pas les prix mesurés par alerte. Arrêt avant appel lorsque la réservation manque ; aucune recharge automatique.
+
+Le service général garde au maximum 0,10 USD de modèle, dont 0,014462 USD déjà imputés, à l’intérieur de l’enveloppe commune de 0,40 USD. Quota gratuit : 51 unités au total, 39 imputées, 12 restantes à l’ouverture. Cela permet au plus quatre collectes supplémentaires, par exemple une admission, un état initial et deux contrôles ; ce n’est pas sept jours garantis ni un forfait mensuel. Le pilote textuel garde son propre compteur existant, sans remise à zéro, dans le même solde gratuit fournisseur.
+
+Usage modèle connu cumulé : 0,182842 USD estimés ; borne conservatrice incluant toutes les réserves encore autorisées, ancien poste d’autres coûts, change plafond 1,5 et taxes 1,25 : 0,99587625 EUR / plafond utilisateur inchangé 2 EUR. Solde fournisseur rapproché : 915 crédits gratuits. [Registre final](../validation/s3/general-budget-final.json). Pas de facture rapprochée prétendue.
+
+Une exploitation publique demande un scénario de volume, une identité d’envoi dédiée si nécessaire, une destination de sauvegarde indépendante et une nouvelle prévision incluant hébergement, e-mail, domaine, sauvegarde, sources/analyse et taxes. Aucun budget mensuel n’est autorisé ; cette décision appartient à la préparation S4, sans achat implicite pour terminer S3.

@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "2457a98aeb437cf4fada600c594a246249e3097054a5a09f82d74a38a30e50af",
+  "results": [
+    {
+      "id": "LIBREOFFICE-ADMISSION",
+      "passed": false,
+      "failure": "CalledProcessError",
+      "usageUSD": 0.0007684000000000001
+    }
+  ],
+  "completed": 1,
+  "total": 1,
+  "passed": 0,
+  "stopped": null,
+  "actualCalls": 1,
+  "newEstimatedUSD": 0.0007684000000000001,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.99587625,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Frozen actual no-URL LibreOffice admission regression."
+}

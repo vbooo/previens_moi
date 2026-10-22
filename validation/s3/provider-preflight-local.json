@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "boundedPreflightReadRetry": true,
+  "runIntentPreventsRetry": true,
+  "pauseSupersedesLateRead": true,
+  "unrelatedCapacityNotFrozen": true,
+  "newProviderCalls": 0,
+  "scope": "Isolated PostgreSQL with synthetic fixtures"
+}

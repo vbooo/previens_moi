@@ -1,0 +1,17 @@
+{
+  "primaryInstalledWithReplace": true,
+  "appDataCleared": false,
+  "frenchHomeVisible": true,
+  "secondaryEmulatorStopped": true,
+  "fullDesignReviewDeferred": true,
+  "screenshots": [
+    "android-general/user-home-fr.png",
+    "android-general/result-en.png",
+    "android-general/deleted-en.png",
+    "android-general/expired-en.png"
+  ],
+  "nativePixelsReviewed": true,
+  "primaryFrenchHomeShowsActiveExistingWatch": true,
+  "secondaryEnglishResultShowsGeneralFinding": true,
+  "remainingFullUxIaDesignWorkDeferred": true
+}

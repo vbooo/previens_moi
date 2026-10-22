@@ -1,0 +1,203 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "87e249f862c0d25f7acb0637e864f20eb29fbf1285eeb600bd00950e75e150b1",
+  "results": [
+    {
+      "id": "COV-I04",
+      "passed": true,
+      "expectedStatuses": [
+        "observable"
+      ],
+      "status": "observable",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "observable",
+        "reason": "The retrieved pages from the official LibreOffice download site explicitly list stable release versions (e.g., 26.8.1) and provide download links for Linux packages (rpm and deb). The pages distinguish stable releases from pre-release or release candidate versions (e.g., 26.2.7.1 RC is marked as a release candidate). Thus, the pages expose the version stability status (stable vs. beta/RC), the platform (Linux), and exclude beta and release candidate builds by clearly labeling them separately. This allows future checks to confirm that only stable Linux releases are notified, excluding beta and release candidates.",
+        "evidence": [
+          {
+            "criterionId": "c1",
+            "url": "https://www.libreoffice.org/download/",
+            "quote": "Language:Portuguese (Brazil) / português (Brasil)Spanish / españolEnglish (US)Dutch / NederlandsEsperantoFinnish / suomiWelsh / CymraegItalian / italianoFrench / françaisKazakh / ҚазақшаUkrainian / УкраїнськаArmenian / ՀայերենChinese (traditional) / 中文 (正體)\n\nLanguage:\n\nx\n\nDownload LibreOffice\n\n![LibreOffice](https://www.libreoffice.org/media/libreoffice-logo-plain.svg) 26.8.1\n\n\n[26.8.1 Windows"
+          },
+          {
+            "criterionId": "c2",
+            "url": "https://www.libreoffice.org/download/",
+            "quote": "(rpm)](https://download.documentfoundation.org/libreoffice/stable/26.8.1/rpm/x86_64/LibreOffice_26.8.1_Linux_x86-64_rpm.tar.gz)\n\nDownload by [torrent](https://download.documentfoundation.org/libreoffice/stable/26.8.1/rpm/x86_64/LibreOffice_26.8.1_Linux_x86-64_rpm.tar.gz.torrent) or see [all mirror links](https://download.documentfoundation.org/libreoffice/stable/26.8.1/rpm/x86_64/LibreOffice_26.8.1_Linux_x86-64_rpm.tar.gz.mirrorlist) (rpm).\n\n\n[26.8.1 Linux"
+          },
+          {
+            "criterionId": "c3",
+            "url": "https://www.libreoffice.org/download/",
+            "quote": "language?](https://www.libreoffice.org/download/#other_versions)\n\n![Illustration for customizing downloads](https://www.libreoffice.org/media/custom_download.svg)\n\nCustomize your download below.\n\nOther Versions & Installation Methods\n\n**Configure your download**\n\nSuite version:LibreOffice 26.8.1LibreOffice 26.2.6LibreOffice 26.2.7.1 RCOperating system:WindowsmacOSLinuxCPU architecture:x86-64ARM64Linux package type:rpmdeb\n\n**Note: the version you selected is a pre-release"
+          }
+        ]
+      },
+      "factKey": null,
+      "usageUSD": 0.0016668
+    },
+    {
+      "id": "COV-I03",
+      "passed": true,
+      "expectedStatuses": [
+        "unobservable",
+        "uncertain"
+      ],
+      "status": "unobservable",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "unobservable",
+        "reason": "Le document fourni est un article de vulgarisation scientifique en français qui discute d'une étude sur l'efficacité des toits végétalisés et autres types de toits pour réduire la chaleur urbaine. Cependant, il ne s'agit pas d'une publication scientifique évaluée par les pairs, mais d'un résumé ou d'une présentation médiatique. De plus, l'étude porte sur la région métropolitaine de Londres (Royaume-Uni) et non sur des villes françaises. Ainsi, aucun des critères (c1 : publication scientifique évaluée par les pairs, c2 : efficacité des toits végétalisés, c3 : villes françaises) n'est pleinement observable dans ce document.",
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0013812
+    },
+    {
+      "id": "COV-PRICE",
+      "passed": true,
+      "expectedStatuses": [
+        "observable"
+      ],
+      "status": "observable",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "observable",
+        "reason": "La page publique identifiée (d0p0) affiche explicitement le modèle 'Luma neuf' ainsi que le prix actuel (249 euros) avec la mention de la livraison incluse en France. Cela permet de vérifier à tout moment si le prix passe sous 200 euros livré en France, répondant ainsi à tous les critères explicites de l'utilisateur.",
+        "evidence": [
+          {
+            "criterionId": "model",
+            "url": "https://source.example/luma",
+            "quote": "Luma neuf. Prix actuel : 249 euros. Livraison en France : incluse. Consultez cette fiche pour les prix et disponibilités."
+          },
+          {
+            "criterionId": "price",
+            "url": "https://source.example/luma",
+            "quote": "Luma neuf. Prix actuel : 249 euros. Livraison en France : incluse. Consultez cette fiche pour les prix et disponibilités."
+          }
+        ]
+      },
+      "factKey": null,
+      "usageUSD": 0.0003596
+    },
+    {
+      "id": "COV-WALL",
+      "passed": true,
+      "expectedStatuses": [
+        "unobservable",
+        "uncertain"
+      ],
+      "status": "unobservable",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "unobservable",
+        "reason": "La page source fournie nécessite une connexion privée et n'affiche aucune offre publique. Elle ne permet donc pas d'observer ni le modèle 'Luma neuf' ni le prix sous 200 euros livré en France.",
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.00026680000000000003
+    },
+    {
+      "id": "SEM-NEW",
+      "passed": true,
+      "expectedStatuses": [
+        "match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Annonce fictive de test : concert de MiraTest à Tours le 12 mars 2027.",
+        "reason": "Le document confirme explicitement une annonce fictive de concert de MiraTest à Tours, correspondant exactement aux critères 'who' (MiraTest) et 'where' (concert fictif à Tours).",
+        "identity": {
+          "who": "MiraTest",
+          "what": "concert fictif",
+          "where": "Tours",
+          "when": "2027-03-12",
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "who",
+            "url": "https://source.example/events",
+            "quote": "Annonce fictive de test : concert de MiraTest à Tours le 12 mars 2027. Ceci est une simulation."
+          },
+          {
+            "criterionId": "where",
+            "url": "https://source.example/events",
+            "quote": "Annonce fictive de test : concert de MiraTest à Tours le 12 mars 2027. Ceci est une simulation."
+          }
+        ]
+      },
+      "factKey": "a12720e9790b64dc2c52545389751a9c50ec78e3155a7bede493eb225cd3d610",
+      "usageUSD": 0.0006084
+    },
+    {
+      "id": "SEM-WRONG",
+      "passed": true,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "no_match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "no_match",
+        "fact": "",
+        "reason": "L'annonce fictive concerne un concert de MiraTest à Angers, pas à Tours, donc elle ne correspond pas au critère de lieu demandé.",
+        "identity": null,
+        "sameAs": null,
+        "evidence": []
+      },
+      "factKey": null,
+      "usageUSD": 0.0004672
+    },
+    {
+      "id": "SEM-EMPTY",
+      "passed": false,
+      "expectedStatuses": [
+        "no_match"
+      ],
+      "status": "match",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "match",
+        "fact": "Aucune annonce fictive de concert de MiraTest à Tours n'est actuellement faite.",
+        "reason": "Le document vérifié indique explicitement qu'il n'y a aucun concert fictif annoncé à Tours pour MiraTest, ce qui correspond exactement aux critères demandés.",
+        "identity": {
+          "who": "MiraTest",
+          "what": "concert fictif",
+          "where": "Tours",
+          "when": null,
+          "variant": null
+        },
+        "sameAs": null,
+        "evidence": [
+          {
+            "criterionId": "who",
+            "url": "https://source.example/events",
+            "quote": "Programmation fictive de MiraTest : aucun concert fictif annoncé à Tours pour le moment."
+          },
+          {
+            "criterionId": "where",
+            "url": "https://source.example/events",
+            "quote": "Programmation fictive de MiraTest : aucun concert fictif annoncé à Tours pour le moment."
+          }
+        ]
+      },
+      "factKey": "124e5113770129b9c1b697530b9660e4e62007ba438ff85a90f5ce943042f6c6",
+      "usageUSD": 0.0005476
+    }
+  ],
+  "completed": 7,
+  "total": 7,
+  "passed": 6,
+  "stopped": null,
+  "actualCalls": 7,
+  "newEstimatedUSD": 0.0052976,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.25580925000000004,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Four new observability decisions (two replays of actually retrieved public-source bodies; two controlled fixtures), plus three fresh semantic holdout cases. Not a live recurring cloud qualification."
+}

@@ -1,0 +1,11 @@
+{
+  "scope": "Local PostgreSQL/HTTP; explicitly injected source/model evidence, no live semantic-quality claim",
+  "passed": true,
+  "newPaidCalls": 0,
+  "silentBaseline": true,
+  "atomicFindingAndReplayDedup": true,
+  "pauseRejectsLateGeneration": true,
+  "quotaStopsBeforeCallsAndExplainsResume": true,
+  "unknownCallHeldWithoutRetry": true,
+  "erasureRemovesGeneralContexts": true
+}

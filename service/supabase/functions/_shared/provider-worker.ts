@@ -1,4 +1,4 @@
-import {Firecrawl,createPaused,runBounded,reconcile} from './firecrawl.ts';
+import {Firecrawl,ProviderFault,createPaused,runBounded,reconcile} from './firecrawl.ts';
 import {textChangePlan,textChangeFinding} from './page-change.ts';
 export interface ProviderJob {
  id:string;lease_token:string;kind:'start'|'check';watch_id:string;generation:number;
@@ -17,6 +17,8 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
  // The public receiver is a prerequisite, not an optional mocked URL in production.
  if(!enabled||!/^https:\/\/[a-z0-9]+\.supabase\.co\/functions\/v1\/webhook$/.test(webhook))return 'disabled';
  await port.enqueueDue();const job=await port.lease();if(!job)return 'empty';
+ let mayHaveRun=false;
+ const safeReadStage=job.kind==='check'&&(!job.attempt||job.attempt.phase==='run')&&!job.attempt?.run_intent_at;
  const checkpoint=(event:string,value?:unknown)=>port.checkpoint(job,event,value);
  try {
   if(job.plan.method!=='known_page'||job.plan.sources.length!==1)throw new Error('Unqualified provider scope');
@@ -32,7 +34,7 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
    if(job.attempt?.run_intent_at)throw new Error('Run response must be reconciled; never repeat');
    const result=await runBounded(client,monitor,{
     async reserve(upper,before){if(upper!==2)throw new Error('Invalid envelope');await checkpoint('reserve',{before});},
-    async allowed(){return await port.allowed(job);},async recordRunIntent(){await checkpoint('intent');},
+    async allowed(){return await port.allowed(job);},async recordRunIntent(){mayHaveRun=true;await checkpoint('intent');},
     async recordCheck(id){await checkpoint('queued',{id});},async settle(credits){if(credits!==0)throw new Error('Unexpected cost before run');await port.settle(job,credits);},
     async unknown(){await checkpoint('unknown');},
    });
@@ -41,7 +43,7 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
   }
   if(phase==='poll') {
    const a=job.attempt!;
-   if(!a.check_id||a.credits_before===null||!a.run_intent_at||Date.now()-Date.parse(a.created_at)>15*60000)throw new Error('Unresolved provider check');
+   if(!a.check_id||a.credits_before===null||!a.run_intent_at||Date.now()-Date.parse(a.run_intent_at)>15*60000)throw new Error('Unresolved provider check');
    const check=await client.check(monitor,a.check_id);
    if(!['completed','failed','partial'].includes(check.status)){await checkpoint('later');return 'pending';}
    const event=await port.event(monitor,a.check_id);
@@ -49,7 +51,10 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
    const value=reconcile(event,check,monitor,source);
    if(Date.parse(value.observedAt)<Date.parse(a.run_intent_at))throw new Error('Stale provider observation');
    const stopped=await client.pause(monitor);if(stopped.currentCheckId!==null)throw new Error('Provider still in flight');
-   const actual=a.credits_before-await client.credits();
+   // Per-check billing is authoritative. A shared account balance can include
+   // unrelated discovery calls while this check was running.
+   if(check.billingStatus!=='confirmed'||!Number.isSafeInteger(check.actualCredits)||check.actualCredits!<0){await checkpoint('later');return 'awaiting_billing';}
+   const actual=check.actualCredits!;
    if(job.kind==='start') {
     if(value.outcome==='failed')throw new Error('No usable baseline');
     await port.complete(job,value.observedAt,'baseline',actual);
@@ -66,7 +71,8 @@ export async function providerOne(port:ProviderPort,client:Firecrawl,enabled:boo
    return job.kind==='start'?'baseline':'checked';
   }
   throw new Error('Unknown provider phase');
- } catch {
+ } catch(e) {
+  if(safeReadStage&&!mayHaveRun&&e instanceof ProviderFault&&['unknown','rate_limited'].includes(e.state)){await checkpoint('defer_read');return 'preflight_deferred';}
   await checkpoint('unknown');return 'unknown';
  }
 }

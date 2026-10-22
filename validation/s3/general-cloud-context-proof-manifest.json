@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-22",
+  "scope": "Frozen replay of the exact controlled cloud positive input, after an unexpected no-result.",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "codeSha256": {
+    "service/supabase/functions/_shared/semantic.ts": "579007534bc3a2966bc4c3175cacb8f03281d3adcb6b780724766f1f3aa3e3d6",
+    "service/supabase/functions/_shared/coverage.ts": "c1acaaaf26cb58e203b0007140ee1a9b4c710965a90c5daa836b5d5b8b0501fd",
+    "service/supabase/functions/_shared/general-worker.ts": "b39741163014c3a11dcc2f8e50c8bbf11ceadc23d6e1b2e73b1afcd96a826b47",
+    "scripts/semantic-request.ts": "89078524d699f8caab84b3942b06ce19e7a035867fe6142778c117638eb312ff",
+    "scripts/qualify-general-semantics.py": "98ddb8c687831adbcfd78298422f551058f5211a351826336353d69873650333"
+  },
+  "maxPaidCalls": 1,
+  "newTotalEnvelopeUSD": 0.4,
+  "retries": 0,
+  "freezeBeforeCalls": true,
+  "success": "all decisions correct; zero affirmative on negative/unknown reference cases; every decisive criterion retained; known fact linked and distinct date not merged",
+  "revision": "v2",
+  "previousFailedResult": "general-m1-m2-result.json",
+  "qualificationScope": "Retest of development cases after recorded failure; independent holdout still needed.",
+  "cases": [
+    {
+      "id": "CLOUD-CONTEXT",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "mode": "continuous",
+          "text": "Préviens-moi lorsqu’une nouvelle annonce fictive confirme un concert de MiraTest-S3 à Tours sur https://webhook.site/bf0d0e46-00e3-4f51-bc4a-b767501896dc",
+          "answers": [],
+          "language": "fr",
+          "revision": 1
+        },
+        "intent": {
+          "title": "Surveillance d'une annonce publique pour un concert fictif",
+          "status": "understood",
+          "queries": [
+            "nouvelle annonce concert MiraTest-S3 Tours",
+            "confirmation concert MiraTest-S3 Tours"
+          ],
+          "criteria": [
+            {
+              "id": "1",
+              "text": "Annonce d'un concert de MiraTest-S3 à Tours",
+              "quote": "une nouvelle annonce fictive confirme un concert de MiraTest-S3 à Tours"
+            }
+          ],
+          "questions": [],
+          "explanation": "Vous souhaitez être prévenu lorsqu'une nouvelle annonce publique confirme un concert du groupe fictif MiraTest-S3 à Tours. La demande porte sur une information publique accessible sur le web, sans indication de pays spécifique ni conditions de livraison. Le critère principal est la confirmation d'une annonce de concert à Tours. Aucune information privée ou contradictoire n'est présente."
+        },
+        "documents": [
+          {
+            "url": "https://webhook.site/bf0d0e46-00e3-4f51-bc4a-b767501896dc",
+            "text": "# Catalogue public de concerts fictifs\n\nAnnuaire de contrôle : toutes les annonces de cette page sont fictives.\n\n| Artiste | Ville | Annonce et date du concert |\n| --- | --- | --- |\n| MiraTest-S3 | Tours | Annonce fictive confirmée : concert de MiraTest-S3 à Tours le 12 mars 2027. Ceci est une simulation, pas un véritable concert. |\n\nSource publique de ce catalogue : https://webhook.site/bf0d0e46-00e3-4f51-bc4a-b767501896dc",
+            "label": "Catalogue public fictif de concerts",
+            "retrieval": "supplied_page",
+            "changedText": "| MiraTest-S3 | Tours | Annonce fictive confirmée : concert de MiraTest-S3 à Tours le 12 mars 2027. Ceci est une simulation, pas un véritable concert. |",
+            "publication": null
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T14:00:00Z"
+      },
+      "expectedStatuses": [
+        "match"
+      ]
+    }
+  ]
+}

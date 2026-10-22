@@ -5,10 +5,10 @@ const webhook='https://projectref.supabase.co/functions/v1/webhook';
 function fixture(kind:'start'|'check'='start') {
  const now=new Date().toISOString();const job:ProviderJob={id:'00000000-0000-4000-8000-000000000001',lease_token:'lease',kind,watch_id:'watch',generation:1,plan:{method:'known_page',sources:[{url:'https://source.example/page'}],draft:{text:'Changements de cette fiche'}},providerId:null,attempt:{phase:'poll',monitor_id:'remote',check_id:'check',credits_before:100,run_intent_at:now,created_at:now}};
  const events:string[]=[];const complete:unknown[]=[];
- const check={id:'check',monitorId:'remote',status:'completed',startedAt:now,summary:{changed:0},pages:[{url:'https://source.example/page',status:'same'}]};
+ const check={id:'check',monitorId:'remote',status:'completed',actualCredits:1,billingStatus:'confirmed',startedAt:now,summary:{changed:0},pages:[{url:'https://source.example/page',status:'same'}]};
  let event:Record<string,unknown>|null={id:'check',type:'monitor.check.completed',success:true,data:[{monitorId:'remote',checkId:'check',status:'completed',summary:check.summary}]};
  const port:ProviderPort={async enqueueDue(){events.push('enqueue');},async lease(){events.push('lease');return job;},async checkpoint(_,e){events.push(e);return true;},async allowed(){return true;},async settle(){events.push('settle');},async event(){return event;},async complete(_,observed,outcome,credits){complete.push({observed,outcome,credits});}};
- const requests:string[]=[];const client=new Firecrawl('test-key',true,(async(url,init)=>{const path=String(url);requests.push(init?.method??'GET');let data:unknown=path.endsWith('/credit-usage')?{remainingCredits:99}:path.endsWith('/checks/check')?check:{id:'remote',name:'test',status:'paused',currentCheckId:null};return new Response(JSON.stringify({success:true,data}));}) as typeof fetch);
+ const requests:string[]=[];const client=new Firecrawl('test-key',true,(async(url,init)=>{const path=String(url);requests.push(init?.method??'GET');let data:unknown=path.endsWith('/credit-usage')?{remainingCredits:5}:path.endsWith('/checks/check')?check:{id:'remote',name:'test',status:'paused',currentCheckId:null};return new Response(JSON.stringify({success:true,data}));}) as typeof fetch);
  return {job,events,complete,check,port,client,requests,setEvent(value:Record<string,unknown>|null){event=value;}};
 }
 Deno.test('provider execution requires dedicated public receiver and does not lease otherwise',async()=>{const f=fixture();assert(await providerOne(f.port,f.client,true,'http://localhost/webhook')==='disabled');assert(f.events.length===0);assert(await providerOne(f.port,f.client,false,webhook)==='disabled');});
@@ -26,4 +26,17 @@ Deno.test('qualified literal page changes produce verified findings; missing evi
   assert(await providerOne(f.port,f.client,true,webhook)==='checked');assert(saved.credits===1);
   assert(valid?saved.outcome==='finding'&&saved.proof.finding.evidence[0].quote.includes('+ Après'):saved.outcome==='failed'&&!saved.proof);
  }
+});
+
+Deno.test('confirmed per-check billing ignores unrelated account-credit changes',async()=>{
+ const f=fixture('check');assert(await providerOne(f.port,f.client,true,webhook)==='checked');assert((f.complete[0] as any).credits===1);assert(!f.requests.includes('POST')&&f.requests.length===3);
+});
+Deno.test('temporary read failure before durable run intent defers without replaying a POST',async()=>{
+ const f=fixture('check');f.job.attempt={phase:'run',monitor_id:'remote',check_id:null,credits_before:null,run_intent_at:null,created_at:new Date().toISOString()};
+ let calls=0;const client=new Firecrawl('test',true,(async()=>{calls++;throw new Error('read timeout');}) as typeof fetch);
+ assert(await providerOne(f.port,client,true,webhook)==='preflight_deferred'&&calls===1&&f.events.includes('defer_read')&&!f.events.includes('unknown'));
+});
+
+Deno.test('provider completion timeout starts at actual run intent after a delayed preflight',async()=>{
+ const f=fixture();f.job.attempt!.created_at='2025-01-01T00:00:00Z';assert(await providerOne(f.port,f.client,true,webhook)==='baseline');
 });

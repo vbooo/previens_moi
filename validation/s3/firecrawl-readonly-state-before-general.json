@@ -1,0 +1,28 @@
+{
+  "createdAt": "2026-10-20T20:01:37.074Z",
+  "scope": "Read-only existing account; no monitor create/run/change",
+  "maxCalls": 5,
+  "additionalCreditsConsumed": 0,
+  "remainingCredits": 985,
+  "knownTestMonitors": [
+    {
+      "name": "Previens-moi F3 delivery 20261015",
+      "status": "paused",
+      "currentCheckIdPresent": false
+    },
+    {
+      "name": "Previens-moi F1 controlled 20261012",
+      "status": "paused",
+      "currentCheckIdPresent": false
+    },
+    {
+      "name": "Previens-moi F0 D01 20261012",
+      "status": "paused",
+      "currentCheckIdPresent": false
+    }
+  ],
+  "allListedOwnMonitorsPaused": true,
+  "scopeLimitedToReturnedPage": true,
+  "passed": true,
+  "calls": 2
+}

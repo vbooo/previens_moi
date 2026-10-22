@@ -131,15 +131,28 @@ class RemoteRepositoryTest {
     @Test fun `evaluation polling is bounded and explicit retry reuses request`() = runTest {
         MockWebServer().apply { start() }.use { server ->
             var generated=0
-            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault()),MemoryPending(),IdGenerator { generated++; "eval-id" })
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault()),MemoryPending(),IdGenerator { generated++; "eval-id" }, evaluationPolls = 3, evaluationPollDelayMillis = 0)
             server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
             val pending="""{"id":"eval-id","status":"pending","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z"}"""
-            repeat(11) { server.enqueue(response(pending)) }
+            repeat(3) { server.enqueue(response(pending)) }
             assertEquals(Outcome.Error(Failure.AnalysisPending),repository.evaluate(RequestDraft("test")))
-            assertEquals(12,server.requestCount);server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val original=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8();repeat(10){ server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!! }
+            assertEquals(4,server.requestCount);server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!;val original=server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8();repeat(2){ server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!! }
             server.enqueue(response(pending.replace("\"draftRevision\":0","\"draftRevision\":99")))
             assertEquals(Outcome.Error(Failure.VersionConflict),repository.evaluate(RequestDraft("test")))
             assertEquals(original,server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8());assertEquals(1,generated)
+        }
+    }
+
+    @Test fun `general admission can finish after the old short polling window without another POST`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault()),MemoryPending(),IdGenerator { "eval-id" })
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
+            repeat(12) { server.enqueue(response("""{"id":"eval-id","status":"pending","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z"}""")) }
+            server.enqueue(response("""{"id":"eval-id","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Cette source ne permet pas de vérifier les critères."}"""))
+            assertTrue(repository.evaluate(RequestDraft("test")) is Outcome.Success)
+            val requests=(0 until server.requestCount).map { server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!! }
+            assertEquals(1,requests.count { it.method=="POST"&&it.url.encodedPath.endsWith("evaluations") })
+            assertTrue(requests.filter { it.method=="GET" }.all { it.url.encodedPath.endsWith("eval-id") })
         }
     }
 

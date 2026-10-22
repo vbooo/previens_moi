@@ -1,0 +1,276 @@
+{
+  "date": "2026-10-22",
+  "scope": "Four new observability decisions (two replays of actually retrieved public-source bodies; two controlled fixtures), plus three fresh semantic holdout cases. Not a live recurring cloud qualification.",
+  "model": "gpt-4.1-mini-2025-04-14",
+  "codeSha256": {
+    "service/supabase/functions/_shared/semantic.ts": "4273db5e59847548654abfe557766dc066460807ff00c9c5b0f7c3f4ff059821",
+    "service/supabase/functions/_shared/coverage.ts": "c1acaaaf26cb58e203b0007140ee1a9b4c710965a90c5daa836b5d5b8b0501fd",
+    "service/supabase/functions/_shared/general-worker.ts": "05086ee669813f6044862c41847d2dd54966884b604bb197833bc85999781de0",
+    "scripts/semantic-request.ts": "89078524d699f8caab84b3942b06ce19e7a035867fe6142778c117638eb312ff",
+    "scripts/qualify-general-semantics.py": "98ddb8c687831adbcfd78298422f551058f5211a351826336353d69873650333"
+  },
+  "maxPaidCalls": 7,
+  "newTotalEnvelopeUSD": 0.4,
+  "retries": 0,
+  "freezeBeforeCalls": true,
+  "success": "all decisions correct; zero affirmative on negative/unknown reference cases; every decisive criterion retained; known fact linked and distinct date not merged",
+  "revision": "v2",
+  "previousFailedResult": "general-m1-m2-result.json",
+  "qualificationScope": "Retest of development cases after recorded failure; independent holdout still needed.",
+  "cases": [
+    {
+      "id": "COV-I04",
+      "kind": "coverage",
+      "dataFile": ".local/s3-general-20261022/bridge-I04.json",
+      "dataSha256": "1d1b6eab2d352e8b48d2f2f9b45547e98c4fba6aa0f8c8773d8b951a5af62312",
+      "expectedStatuses": [
+        "observable"
+      ]
+    },
+    {
+      "id": "COV-I03",
+      "kind": "coverage",
+      "dataFile": ".local/s3-general-20261022/bridge-I03.json",
+      "dataSha256": "eefd015840b46fd5f681371f06f4c229e708e906c24638d9684cb92a11b363a0",
+      "expectedStatuses": [
+        "unobservable",
+        "uncertain"
+      ]
+    },
+    {
+      "id": "COV-PRICE",
+      "kind": "coverage",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand le Luma neuf passe sous 200 euros livré en France.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Luma neuf sous 200 euros",
+          "criteria": [
+            {
+              "id": "model",
+              "text": "Luma neuf",
+              "quote": "Luma neuf"
+            },
+            {
+              "id": "price",
+              "text": "Sous 200 euros livré en France",
+              "quote": "sous 200 euros livré en France"
+            }
+          ],
+          "queries": [
+            "Luma neuf France livraison"
+          ],
+          "questions": [],
+          "explanation": "Offres publiques."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/luma",
+            "text": "Luma neuf. Prix actuel : 249 euros. Livraison en France : incluse. Consultez cette fiche pour les prix et disponibilités.",
+            "publication": null,
+            "changedText": null
+          }
+        ]
+      },
+      "expectedStatuses": [
+        "observable"
+      ]
+    },
+    {
+      "id": "COV-WALL",
+      "kind": "coverage",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi quand le Luma neuf passe sous 200 euros livré en France.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Luma neuf sous 200 euros",
+          "criteria": [
+            {
+              "id": "model",
+              "text": "Luma neuf",
+              "quote": "Luma neuf"
+            },
+            {
+              "id": "price",
+              "text": "Sous 200 euros livré en France",
+              "quote": "sous 200 euros livré en France"
+            }
+          ],
+          "queries": [
+            "Luma neuf France livraison"
+          ],
+          "questions": [],
+          "explanation": "Offres publiques."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/luma",
+            "text": "Connectez-vous à votre espace privé pour consulter vos informations. La connexion est obligatoire et aucune offre publique n’est affichée.",
+            "publication": null,
+            "changedText": null
+          }
+        ]
+      },
+      "expectedStatuses": [
+        "unobservable",
+        "uncertain"
+      ]
+    },
+    {
+      "id": "SEM-NEW",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi des annonces fictives de concert de MiraTest à Tours.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Concerts fictifs MiraTest à Tours",
+          "criteria": [
+            {
+              "id": "who",
+              "text": "MiraTest",
+              "quote": "MiraTest"
+            },
+            {
+              "id": "where",
+              "text": "Concert fictif à Tours",
+              "quote": "annonces fictives de concert de MiraTest à Tours"
+            }
+          ],
+          "queries": [
+            "MiraTest Tours concert"
+          ],
+          "questions": [],
+          "explanation": "Simulation publique."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/events",
+            "text": "Annonce fictive de test : concert de MiraTest à Tours le 12 mars 2027. Ceci est une simulation.",
+            "publication": null,
+            "changedText": "Annonce fictive de test : concert de MiraTest à Tours le 12 mars 2027. Ceci est une simulation."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T12:30:00Z"
+      },
+      "expectedStatuses": [
+        "match"
+      ]
+    },
+    {
+      "id": "SEM-WRONG",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi des annonces fictives de concert de MiraTest à Tours.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Concerts fictifs MiraTest à Tours",
+          "criteria": [
+            {
+              "id": "who",
+              "text": "MiraTest",
+              "quote": "MiraTest"
+            },
+            {
+              "id": "where",
+              "text": "Concert fictif à Tours",
+              "quote": "annonces fictives de concert de MiraTest à Tours"
+            }
+          ],
+          "queries": [
+            "MiraTest Tours concert"
+          ],
+          "questions": [],
+          "explanation": "Simulation publique."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/events",
+            "text": "Annonce fictive de test : concert de MiraTest à Angers le 12 mars 2027. Ceci est une simulation.",
+            "publication": null,
+            "changedText": "Annonce fictive de test : concert de MiraTest à Angers le 12 mars 2027. Ceci est une simulation."
+          }
+        ],
+        "previous": [],
+        "baseline": false,
+        "observedAt": "2026-10-22T12:30:00Z"
+      },
+      "expectedStatuses": [
+        "no_match"
+      ]
+    },
+    {
+      "id": "SEM-EMPTY",
+      "kind": "judgment",
+      "data": {
+        "draft": {
+          "text": "Préviens-moi des annonces fictives de concert de MiraTest à Tours.",
+          "language": "fr",
+          "revision": 1,
+          "mode": "continuous",
+          "answers": []
+        },
+        "intent": {
+          "status": "understood",
+          "title": "Concerts fictifs MiraTest à Tours",
+          "criteria": [
+            {
+              "id": "who",
+              "text": "MiraTest",
+              "quote": "MiraTest"
+            },
+            {
+              "id": "where",
+              "text": "Concert fictif à Tours",
+              "quote": "annonces fictives de concert de MiraTest à Tours"
+            }
+          ],
+          "queries": [
+            "MiraTest Tours concert"
+          ],
+          "questions": [],
+          "explanation": "Simulation publique."
+        },
+        "documents": [
+          {
+            "url": "https://source.example/events",
+            "text": "Programmation fictive de MiraTest : aucun concert fictif annoncé à Tours pour le moment.",
+            "publication": null,
+            "changedText": null
+          }
+        ],
+        "previous": [],
+        "baseline": true,
+        "observedAt": "2026-10-22T12:30:00Z"
+      },
+      "expectedStatuses": [
+        "no_match"
+      ]
+    }
+  ]
+}

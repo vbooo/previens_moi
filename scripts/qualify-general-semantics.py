@@ -38,7 +38,8 @@ def main():
   held=0
   for file in (R/'.local/s3-general-20261022').rglob('ledger.sqlite'):
    with sqlite3.connect('file:'+str(file)+'?mode=ro',uri=True) as other:held+=other.execute('select coalesce(sum(coalesce(actual,reserved)),0) from calls').fetchone()[0]
-  assert held+upper<=.4
+  deployed=json.loads((R/'validation/s3/costs.json').read_text()).get('generalEngine20261022',{}).get('deployedModelReserveUSD',0)
+  assert held+upper+deployed<=.4
   ledger.execute('insert into calls(label,status,reserved) values(?,\'reserved\',?)',(case['id'],upper));ledger.commit()
   value=None;actual=None
   try:
@@ -58,6 +59,6 @@ def main():
     ledger.execute('update calls set status=\'unknown\' where label=?',(case['id'],));ledger.commit();stopped=type(e).__name__;break
    results.append({'id':case['id'],'passed':False,'failure':type(e).__name__,'usageUSD':actual});print(json.dumps({'id':case['id'],'passed':False,'failure':type(e).__name__}),flush=True)
  used,held,count=ledger.execute('select coalesce(sum(actual),0),coalesce(sum(case when actual is null then reserved else 0 end),0),count(*) from calls').fetchone()
- report={'date':'2026-10-22','manifestSha256':hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),'results':results,'completed':len(results),'total':len(m['cases']),'passed':sum(x['passed'] for x in results),'stopped':stopped,'actualCalls':count,'newEstimatedUSD':used,'unknownReservedUSD':held,'newEnvelopeUSD':.4,'cumulativeConservativeUpperEUR':(baseline['usageUpperUSD']+.05+used+held)*1.5*1.25,'independentSourceDiscoveryQualified':False,'methodsEnabledInApp':False,'recurringGeneralMonitoringQualified':False,'scope':m['scope']}
+ report={'date':'2026-10-22','manifestSha256':hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),'results':results,'completed':len(results),'total':len(m['cases']),'passed':sum(x['passed'] for x in results),'stopped':stopped,'actualCalls':count,'newEstimatedUSD':used,'unknownReservedUSD':held,'newEnvelopeUSD':.4,'cumulativeConservativeUpperEUR':(baseline['usageUpperUSD']+.05+.4)*1.5*1.25,'independentSourceDiscoveryQualified':False,'methodsEnabledInApp':False,'recurringGeneralMonitoringQualified':False,'scope':m['scope']}
  (R/(('validation/s3/general-'+CAMPAIGN+'-result.json') if '--campaign' in os.sys.argv else ('validation/s3/general-web-proof-result.json' if CAMPAIGN=='web-proof' else 'validation/s3/general-holdout-result.json' if CAMPAIGN=='holdout' else 'validation/s3/general-m1-m2-v2-result.json' if CAMPAIGN=='v2' else 'validation/s3/general-m1-m2-result.json'))).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');print(json.dumps({k:report[k] for k in ['completed','passed','total','stopped','newEstimatedUSD','unknownReservedUSD']}),flush=True)
 if __name__=='__main__':main()

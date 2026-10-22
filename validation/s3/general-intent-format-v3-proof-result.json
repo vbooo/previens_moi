@@ -1,0 +1,427 @@
+{
+  "date": "2026-10-22",
+  "manifestSha256": "9d4f0db6b741f4bbf9e3beb4e0ff68da3978e140d9738190eca69cd23044c811",
+  "results": [
+    {
+      "id": "LIBREOFFICE-ADMISSION",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des nouvelles versions stables de LibreOffice pour Linux excluant bêta et release candidate",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "nouvelles versions stables de LibreOffice pour Linux",
+            "quote": "nouvelles versions stables de LibreOffice pour Linux"
+          },
+          {
+            "id": "c2",
+            "text": "excluant les versions bêta et release candidate",
+            "quote": "en excluant les versions bêta et release candidate"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "nouvelles versions stables LibreOffice Linux",
+          "LibreOffice stable release Linux excluding beta release candidate"
+        ],
+        "explanation": "L'utilisateur souhaite être informé des nouvelles versions stables de LibreOffice pour Linux, en excluant explicitement les versions bêta et release candidate. Il s'agit d'une demande d'information publique accessible sur le web."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008788
+    },
+    {
+      "id": "I01",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance d'un casque AKG K371 neuf à moins de 120 € livraison comprise en Belgique sans abonnement ni reprise",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "un casque AKG K371 neuf",
+            "quote": "un casque AKG K371 neuf"
+          },
+          {
+            "id": "c2",
+            "text": "proposé à moins de 120 € livraison comprise en Belgique",
+            "quote": "moins de 120 € livraison comprise en Belgique"
+          },
+          {
+            "id": "c3",
+            "text": "sans abonnement ni reprise",
+            "quote": "sans abonnement ni reprise"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "casque AKG K371 neuf moins de 120 euros livraison Belgique",
+          "acheter casque AKG K371 neuf prix inférieur 120 euros livraison Belgique"
+        ],
+        "explanation": "La demande est claire : surveiller une offre publique pour un casque AKG K371 neuf à un prix inférieur à 120 € incluant la livraison en Belgique, sans conditions d'abonnement ni reprise. Toutes les conditions sont explicites et ne nécessitent pas de clarification."
+      },
+      "factKey": null,
+      "usageUSD": 0.000948
+    },
+    {
+      "id": "I02",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Monitor Mitski concert announcements in Bristol, UK in 2027 excluding festivals",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Mitski announces a concert",
+            "quote": "Mitski announces a concert"
+          },
+          {
+            "id": "c2",
+            "text": "location is Bristol, UK",
+            "quote": "Bristol, UK"
+          },
+          {
+            "id": "c3",
+            "text": "date is in 2027",
+            "quote": "in 2027"
+          },
+          {
+            "id": "c4",
+            "text": "excluding festivals",
+            "quote": "excluding festivals"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Mitski concert announcement Bristol UK 2027",
+          "Mitski live show schedule Bristol UK 2027 excluding festivals"
+        ],
+        "explanation": "The user requests notification for public announcements of Mitski concerts specifically in Bristol, UK during the year 2027, excluding any festival events. This is a public information monitoring task with clear criteria and no subjective ambiguity or private account data involved."
+      },
+      "factKey": null,
+      "usageUSD": 0.0009092000000000001
+    },
+    {
+      "id": "I03",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des articles scientifiques évalués par les pairs sur l’efficacité des toits végétalisés en France",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "nouveaux articles scientifiques évalués par les pairs",
+            "quote": "nouveaux articles scientifiques évalués par les pairs"
+          },
+          {
+            "id": "c2",
+            "text": "sur l’efficacité des toits végétalisés",
+            "quote": "sur l’efficacité des toits végétalisés"
+          },
+          {
+            "id": "c3",
+            "text": "dans les villes françaises",
+            "quote": "dans les villes françaises"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "articles scientifiques évalués par les pairs efficacité toits végétalisés villes françaises",
+          "publications récentes toits végétalisés efficacité France"
+        ],
+        "explanation": "Vous souhaitez être informé des nouveaux articles scientifiques évalués par les pairs concernant l’efficacité des toits végétalisés dans les villes françaises. Les critères incluent la nouveauté, la nature scientifique et évaluée par les pairs des articles, le sujet spécifique des toits végétalisés, et la localisation en France."
+      },
+      "factKey": null,
+      "usageUSD": 0.0009484000000000001
+    },
+    {
+      "id": "I04",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Monitoring stable LibreOffice releases for Linux excluding beta and release candidates",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "stable LibreOffice releases for Linux",
+            "quote": "stable LibreOffice releases for Linux"
+          },
+          {
+            "id": "c2",
+            "text": "exclude beta and release-candidate builds",
+            "quote": "exclude beta and release-candidate builds"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "LibreOffice stable releases Linux",
+          "LibreOffice exclude beta release candidate Linux"
+        ],
+        "explanation": "The user requests notifications about stable (final) LibreOffice releases specifically for the Linux operating system, explicitly excluding beta and release-candidate builds. This is a public web monitoring request with clear criteria and no contradictions or subjective ambiguities."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008252
+    },
+    {
+      "id": "I05",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Clarification needed on subjective importance of ecological topics",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Que signifie pour vous \"des choses importantes en écologie\" ?",
+            "options": [
+              "Actualités majeures et urgentes",
+              "Nouvelles scientifiques significatives",
+              "Politiques environnementales influentes",
+              "Autre (précisez)"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "Le terme \"des choses importantes en écologie\" est subjectif et nécessite une précision pour cibler les informations pertinentes selon vos attentes."
+      },
+      "factKey": null,
+      "usageUSD": 0.00079
+    },
+    {
+      "id": "I06",
+      "passed": true,
+      "expectedStatuses": [
+        "unsupported"
+      ],
+      "status": "unsupported",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "unsupported",
+        "title": "Demande d'accès à un compte bancaire privé",
+        "criteria": [],
+        "questions": [],
+        "queries": [],
+        "explanation": "Cette surveillance Web ne peut pas consulter les données de ton compte privé."
+      },
+      "factKey": null,
+      "usageUSD": 0.0007112
+    },
+    {
+      "id": "I07",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Contradiction dans la localisation des concerts",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Voulez-vous être prévenu d'un concert à Rouen ou à Nice ?",
+            "options": [
+              "Rouen uniquement",
+              "Nice uniquement",
+              "Les deux villes"
+            ],
+            "required": true
+          },
+          {
+            "id": "q2",
+            "label": "Souhaitez-vous que le concert ait lieu dans une seule salle ?",
+            "options": [
+              "Oui",
+              "Non"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "Vous demandez d'être prévenu d'un concert uniquement à Rouen et uniquement à Nice le même jour dans une seule salle, ce qui est contradictoire car un concert ne peut pas avoir lieu simultanément dans deux villes différentes dans une seule salle. Merci de préciser votre demande."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008828000000000001
+    },
+    {
+      "id": "I08",
+      "passed": true,
+      "expectedStatuses": [
+        "clarify"
+      ],
+      "status": "clarify",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "clarify",
+        "title": "Clarification needed on delivery country for price alert",
+        "criteria": [],
+        "questions": [
+          {
+            "id": "q1",
+            "label": "Which country should the delivery price condition apply to?",
+            "options": [
+              "United Kingdom",
+              "United States",
+              "Other (please specify)"
+            ],
+            "required": true
+          }
+        ],
+        "queries": [],
+        "explanation": "You requested a notification for an XZT-92 refurbished phone below £180 delivered, excluding subscriptions, but did not specify the delivery country. To provide accurate alerts, please specify the country for the delivery price condition."
+      },
+      "factKey": null,
+      "usageUSD": 0.000848
+    },
+    {
+      "id": "I09",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des sorties stables du logiciel Zephyr sur example.com",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "préviens-moi uniquement des sorties stables du logiciel Zephyr",
+            "quote": "uniquement des sorties stables du logiciel Zephyr"
+          },
+          {
+            "id": "c2",
+            "text": "pas des changements de mise en page",
+            "quote": "pas des changements de mise en page"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Zephyr stable release site:example.com/releases",
+          "Zephyr stable version release example.com/releases -mise en page"
+        ],
+        "explanation": "L'utilisateur souhaite être informé uniquement des sorties stables du logiciel Zephyr sur le site example.com/releases, en excluant les notifications concernant les changements de mise en page."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008432
+    },
+    {
+      "id": "I10",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance d'annonce publique d'événement gratuit au Musée des Beaux-Arts d’Angers",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "Le Musée des Beaux-Arts d’Angers annonce une nocturne gratuite",
+            "quote": "Musée des Beaux-Arts d’Angers annonce une nocturne gratuite"
+          },
+          {
+            "id": "c2",
+            "text": "L'événement a lieu un vendredi",
+            "quote": "un vendredi"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Musée des Beaux-Arts d’Angers nocturne gratuite vendredi",
+          "Musée des Beaux-Arts d’Angers annonce nocturne gratuite un vendredi"
+        ],
+        "explanation": "L'utilisateur souhaite être informé dès que le Musée des Beaux-Arts d’Angers annonce une nocturne gratuite qui se déroule un vendredi. Il s'agit d'une demande de surveillance d'information publique, sans conditions supplémentaires."
+      },
+      "factKey": null,
+      "usageUSD": 0.000896
+    },
+    {
+      "id": "SOFTWARE-HOLDOUT",
+      "passed": true,
+      "expectedStatuses": [
+        "understood"
+      ],
+      "status": "understood",
+      "missingCriteriaTerms": [],
+      "value": {
+        "status": "understood",
+        "title": "Surveillance des versions finales stables de Thunderbird pour Windows sans versions bêta ni nightly",
+        "criteria": [
+          {
+            "id": "c1",
+            "text": "versions finales stables de Thunderbird pour Windows",
+            "quote": "versions finales stables de Thunderbird pour Windows"
+          },
+          {
+            "id": "c2",
+            "text": "sans versions bêta ni nightly",
+            "quote": "sans versions bêta ni nightly"
+          }
+        ],
+        "questions": [],
+        "queries": [
+          "Thunderbird stable release Windows",
+          "Thunderbird final version Windows excluding beta nightly"
+        ],
+        "explanation": "L'utilisateur souhaite être averti uniquement des versions finales stables de Thunderbird pour Windows, en excluant explicitement les versions bêta et nightly. Cette demande est claire et précise, sans ambiguïté ni informations privées."
+      },
+      "factKey": null,
+      "usageUSD": 0.0008436000000000001
+    }
+  ],
+  "completed": 12,
+  "total": 12,
+  "passed": 12,
+  "stopped": null,
+  "actualCalls": 12,
+  "newEstimatedUSD": 0.010324400000000001,
+  "unknownReservedUSD": 0,
+  "newEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.99587625,
+  "independentSourceDiscoveryQualified": false,
+  "methodsEnabledInApp": false,
+  "recurringGeneralMonitoringQualified": false,
+  "scope": "Same eleven intent regression cases plus independent Thunderbird release-channel holdout; thresholds unchanged.",
+  "afterQualificationChange": {
+    "kind": "TypeScript-only assertion on schema builder; generated request content unchanged",
+    "finalSemanticSha256": "8810ce4e716af0d8e445bbff5e1cc5767f06b5a7e7bce54e9761f2255664eb4b",
+    "typeCheckPassed": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "createdAt": "2026-10-22T14:24:57.271519+00:00",
+  "migrations": 32,
+  "workerDeployed": true,
+  "generalEnabled": true,
+  "qualifiedControlledScope": true,
+  "previewRestrictionRemoved": true,
+  "modelCumulativeLimitUSD": 0.1,
+  "insideExistingSharedEnvelopeUSD": 0.4,
+  "additionalFreeCreditTrialAllowance": 12,
+  "consumptionNotReset": true,
+  "budget": [
+    100000,
+    14462,
+    0,
+    51,
+    39,
+    0
+  ],
+  "globalSlots": 1,
+  "activePerAccount": 1,
+  "remainingUserWatch": [
+    [
+      "active",
+      "healthy",
+      "running",
+      "known_page"
+    ]
+  ],
+  "githubPushed": false,
+  "s4ObservationStarted": false
+}
