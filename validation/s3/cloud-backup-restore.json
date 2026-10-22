@@ -1,0 +1,22 @@
+{
+  "createdAt": "20261022T121918Z",
+  "passed": true,
+  "cloudModified": false,
+  "restoredIntoNewCloudProject": false,
+  "scope": "Cloud application/Auth snapshot reconstructed in a disposable local database. No managed-platform failover, Vault/SMTP/Firebase key backup or protection against loss of this Mac.",
+  "tableCount": 53,
+  "rows": 147,
+  "fingerprintsMatch": true,
+  "snapshotConsistent": true,
+  "archiveBytes": 242048,
+  "encrypted": true,
+  "integrityVerifiedBeforeDecrypt": true,
+  "tamperedArchiveRejected": true,
+  "keySeparatedFromArchive": true,
+  "executionClosedInRestoredDatabase": true,
+  "originalCloudUntouched": true,
+  "sensitiveExportExplicitlyAuthorizedByUser": true,
+  "newPaidCalls": 0,
+  "newSubscription": false,
+  "disposableDatabaseRemoved": true
+}
