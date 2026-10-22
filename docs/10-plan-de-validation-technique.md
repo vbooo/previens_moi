@@ -189,3 +189,21 @@ Pour terminer un ticket : exigences reliées, comportement vérifié, tests appr
 - **S3-06 ouvert :** pilote limité disponible pour Fabien, contrôles horaires et réveil cloud observé. Référence générale et qualification complète encore requises avant S4. Ni une heure complète ni sept jours ne sont déduits du test accéléré.
 
 Les documents produit 01 à 09 et leurs conditions de clôture restent applicables. Aucun nouveau budget mensuel, abonnement ou périmètre final réduit n’est validé par ce pilote.
+
+
+## Suite de S3 — découpage du 22 octobre 2026
+
+Fabien confirme avoir reçu puis ouvert la notification du changement réellement détecté avec son compte. Le raccordement technique d’une page connue est acquis ; il ne clôture pas la surveillance générale du périmètre initial. Les travaux suivants sont ordonnés autour du résultat produit, sans ajouter de connecteurs ou de catégories par anticipation.
+
+| Lot | Travail concret | Condition de sortie |
+| --- | --- | --- |
+| S3-M1 — demande et plan de surveillance | Conserver les critères d’une demande libre, découvrir et vérifier des sources, établir comment les relire et annoncer leur couverture réelle. Relier l’interprétation à la qualification : actuellement, le worker comprend une demande mais renvoie encore un refus pour la surveillance générale. | Plan activable seulement si les critères décisifs sont observables dans des sources vérifiées et si le coût tient dans le plafond. Questions utiles ou impossibilité explicite sinon. Une URL proposée par un modèle ne vaut pas validation. |
+| S3-M2 — résultat pertinent et prouvé | À partir des contenus observés, vérifier le fait, les critères confirmés et les preuves ; distinguer publication, observation et date de l’événement. | Les cas positifs de référence produisent une preuve sourcée ; mauvais sujet, lieu, date, condition ou preuve insuffisante ne déclenchent pas d’alerte affirmative. Les critères et références sont fixés avant les essais. |
+| S3-M3 — nouveautés dans la durée | Relier ce jugement au moteur récurrent existant : état initial, faits nouveaux, même annonce reprise ailleurs, correction et suivi ponctuel/continu. | Cas utile de demande libre exécuté de bout en bout sur le service déployé, sans notification répétée pour le même fait ni confusion entre panne et absence de nouveauté. Les fixtures restent identifiées et ne prouvent pas la découverte Web. |
+| S3-M4 — clôture opérationnelle | Compléter seulement les vérifications critiques encore ouvertes : récupération cloud, incidents d’envoi et accès au résultat après expiration de session ou suppression. Rapprocher les coûts et les preuves du sprint. | Critères S3 effectivement satisfaits ; aucune clôture par présence de code ou par seul succès d’un test local. Préparation de l’observation S4, sans annoncer les sept jours déjà accomplis. |
+
+Les essais restent proportionnés aux changements : tests ciblés et régressions concernées ; aucun nouvel appel payant sans borne compatible avec les **2 € cumulés**. Aucun abonnement, recharge ou nouveau budget implicite. L’ouverture de nouvelles méthodes reste conditionnée à leurs preuves ; le pilote textuel actuel conserve son enveloppe séparée de crédits gratuits.
+
+**UX/UI reportées à un chantier dédié, à cadrer avec Fabien avant implémentation.** Définir d’abord les actions attendues et les parcours, puis les écrans, les informations réellement utiles, les états (connexion, préparation, actif, résultat, panne), les libellés et la navigation ; travailler ensuite la hiérarchie visuelle et le design sur des maquettes. Ne pas faire correspondre automatiquement un écran à chaque objet technique. Les problèmes fonctionnels qui empêchent un test ou donnent un état faux restent des corrections S3 ; la refonte d’interface n’est pas intégrée silencieusement au lot moteur.
+
+Défauts déjà relevés par Fabien : état connecté peu visible, retour manuel après connexion, longueur et jargon de la proposition, acceptation « portée réduite » incomprise, attente affichée en rouge, mentions de démo/fictif dans les écrans connectés, répétition de la preuve et dates techniques peu compréhensibles dans le résultat. Ils constituent des entrées de cadrage UX, pas une liste de textes à retoucher isolément sans revoir l’information affichée.

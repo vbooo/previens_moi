@@ -89,7 +89,7 @@
     "findingCreatedByScheduledWorker": true,
     "fcmAccepted": true,
     "notificationObservedOnEmulator": true,
-    "notificationOpenedByUser": null,
+    "notificationOpenedByUser": true,
     "newPaidCalls": 0,
     "freeProviderCreditsSettled": 2,
     "withinExistingPilotEnvelope": true,
@@ -102,6 +102,7 @@
       "Demo-only source and active-state labels reused incorrectly in remote screens",
       "Pending operation displayed in red despite normal preparation"
     ],
-    "uiUxValidated": false
+    "uiUxValidated": false,
+    "sourceFindingDisplayedAfterNotificationTapUserConfirmed": true
   }
 }
