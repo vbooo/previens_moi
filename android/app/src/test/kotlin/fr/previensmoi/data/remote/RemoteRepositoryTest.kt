@@ -179,7 +179,7 @@ class RemoteRepositoryTest {
             assertFalse(cache.value.toString().contains("secret"))
         }
     }
-    @Test fun `analysis storage failure prevents model POST and expired cache needs explicit retry`() = runTest {
+    @Test fun `analysis storage failure prevents model POST and expired preview renews within one user request`() = runTest {
         MockWebServer().apply { start() }.use { server ->
             val api=ApiClient.create(server.url("/"),true);val session=auth(server,MemoryVault())
             val broken=object: EvaluationJournal {override fun read(): EvaluationCache?=null;override fun write(value: EvaluationCache){throw java.io.IOException()} }
@@ -188,10 +188,12 @@ class RemoteRepositoryTest {
             assertEquals(1,server.requestCount);server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
             val expired=object: EvaluationJournal {var value=EvaluationCache("old-secret",null,null,1);override fun read()=value;override fun write(value: EvaluationCache){this.value=value} }
             val repository=RemoteRepositories(api,session,MemoryPending(),IdGenerator { "new-eval" },expired)
-            assertEquals(Outcome.Error(Failure.ProposalExpired),repository.evaluate(RequestDraft("test")));assertEquals(1,server.requestCount)
             server.enqueue(response("""{"token":"fresh-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
             server.enqueue(response("""{"id":"new-eval","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Not qualified"}"""))
             assertTrue(repository.evaluate(RequestDraft("test")) is Outcome.Success);assertEquals(3,server.requestCount)
+            assertTrue(server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.url.encodedPath.endsWith("preview-sessions"))
+            val understanding=server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!
+            assertTrue(understanding.url.encodedPath.endsWith("understandings"));assertEquals("fresh-secret",understanding.headers["X-Preview-Token"])
         }
     }
 

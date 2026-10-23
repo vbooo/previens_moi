@@ -1,0 +1,15 @@
+{
+  "newRequestRenewsExpiredPreviewOnFirstClick": true,
+  "expiredProposalConfirmationStillRejected": true,
+  "uncertainRequestReplayRegressionPassed": true,
+  "labelFR": "Me prévenir",
+  "labelEN": "Notify me",
+  "androidUnitTests": {
+    "Demo": 52,
+    "Remote": 30
+  },
+  "modelCallsDuringFix": 0,
+  "webSearchCallsDuringFix": 0,
+  "userWatchNotRestarted": true,
+  "apkUpdatedWithoutDataWipe": true
+}

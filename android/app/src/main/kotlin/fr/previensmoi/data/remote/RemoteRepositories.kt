@@ -82,7 +82,9 @@ class RemoteRepositories(
     }
     override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
         if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
-        if (expireEvaluation()) return Outcome.Error(if(saveEvaluation()) Failure.ProposalExpired else Failure.StorageFailure)
+        // A new user request renews its expired preview before the first POST.
+        // Confirmation still rejects an expired proposal; no activation is retried.
+        if (expireEvaluation() && !saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
         val token = preview ?: when (val r = apiCall { api.previewSession() }) {
             is ApiResult.Value -> r.body.token.also { previewExpires = instant(r.body.expiresAt); preview = it }
             else -> return Outcome.Error(r.failure())
