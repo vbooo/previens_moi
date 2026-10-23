@@ -1,0 +1,127 @@
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/admission_corpus_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/admission_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/admission_worker_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/erasure_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/fcm_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/firecrawl_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/general_worker_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/novelty_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/page_change_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/provider_worker_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/semantic_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/source_discovery_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/stop_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/v1_sources_test.ts
+Check file:///Users/fabienbouvet/Documents/Emploi/Mobile/Android/previens-moi/service/tests/worker_auth_test.ts
+running 9 tests from ./service/tests/admission_corpus_test.ts
+real A5 response regression A01 ... ok (15ms)
+real A5 response regression A02 ... ok (0ms)
+real A5 response regression A03 ... ok (0ms)
+real A5 response regression A04 ... ok (0ms)
+real A5 response regression A05 ... ok (0ms)
+real A5 response regression A06 ... ok (0ms)
+real A5 response regression A07 ... ok (0ms)
+real A5 response regression A08 ... ok (0ms)
+real A5 response regression D01 ... ok (0ms)
+running 14 tests from ./service/tests/admission_test.ts
+understanding does not create a watch without independent source evidence ... ok (0ms)
+complete verified scope still requires qualified method ... ok (0ms)
+private requests and clarifications cannot become ready through source claims ... ok (0ms)
+Responses call has no tools, no storage and bounded output; refusal stays failure ... ok (2ms)
+A01 regression: separate any manufacturer from exact reference, no SKU rewriting ... ok (1ms)
+A04 regression: missing delivery requires clarification, contradictory branches rejected ... ok (0ms)
+branch guards preserve concert and private scope, reject fabricated extra fields ... ok (0ms)
+country absence or fabricated quote clarifies without inferring France from EUR or language ... ok (1ms)
+only explicitly quoted condition states survive extraction; missing or fabricated evidence stays safe ... ok (0ms)
+venue contraction is normalized only when grounded after a preposition; proper capital L preserved ... ok (0ms)
+understood retail cannot omit the evidence container ... ok (0ms)
+literal FR/EN retail grammar preserves explicit criteria with unfamiliar references; missing country asks only country ... ok (1ms)
+literal path refuses extra colour, merchant or quantity conditions rather than losing them ... ok (0ms)
+literal path preserves leading qualifiers by falling back to general interpretation ... ok (0ms)
+running 3 tests from ./service/tests/admission_worker_test.ts
+admission worker is disabled without key and does not lease ... ok (0ms)
+worker preserves identified questions and accounts for tokens before persisting ... ok (5ms)
+lost response holds unknown reservation and never retries; inconsistent A04 is failed ... ok (1ms)
+running 2 tests from ./service/tests/erasure_test.ts
+erasure retries after Auth failure without claiming completion or exposing identity ... ok (0ms)
+erasure processes other eligible accounts despite one interrupted deletion ... ok (0ms)
+running 7 tests from ./service/tests/fcm_test.ts
+disabled push performs no lease or network call ... ok (0ms)
+pause after lease prevents HTTP emission ... ok (0ms)
+FCM contains identifiers only and bounded TTL ... ok (0ms)
+acceptance is recorded and does not claim delivery ... ok (1ms)
+lost response is unknown without automatic duplicate POST ... ok (0ms)
+provider 503 is unknown; permanent 400 is failed ... ok (0ms)
+preparation push is separate from findings and binds the watch version ... ok (0ms)
+running 10 tests from ./service/tests/firecrawl_test.ts
+disabled provider and invalid path emit no HTTP and never reveal key ... ok (0ms)
+stop requires authenticated paused monitor and no current check ... ok (1ms)
+signed completion must match authenticated API monitor check source and summary ... ok (0ms)
+lost run response is unknown, pause still occurs and no second run is sent ... ok (0ms)
+near automatic schedule is refused before reservation or unpause ... ok (0ms)
+lost creation is reconciled by service identity and never recreated ... ok (10ms)
+remote erasure confirms absence; a lost DELETE is reconciled without claiming completion ... ok (0ms)
+429 retries one safe pause after provider delay but never repeats a billed POST ... ok (0ms)
+persistent rate limit has a bounded safe retry ... ok (0ms)
+jsonb key order cannot reject matching signed check counters ... ok (0ms)
+running 10 tests from ./service/tests/general_worker_test.ts
+coverage assesses observability rather than requiring a target price to have occurred already ... ok (1ms)
+general interpretation leases before model HTTP and private requests never trigger source collection ... ok (1ms)
+usable source coverage yields a bounded contract-valid proposal without activating a watch ... ok (23ms)
+collection is one search and one actual body, within a pre-reserved three-credit bound ... ok (1ms)
+lost paid response is retained as unknown and never retried automatically ... ok (0ms)
+unchanged page avoids a model call and does not create an affirmative result ... ok (0ms)
+mismatching source is an explicit unsupported coverage result, never a ready plan ... ok (0ms)
+understanding-only responds with criteria before any source or coverage call ... ok (0ms)
+confirmed background preparation checks source observability before its separate baseline ... ok (1ms)
+separate background baseline remains silent when the requested event has not happened ... ok (1ms)
+running 4 tests from ./service/tests/novelty_test.ts
+silent baseline, new event, cross-source repeat and restart preserve novelty ... ok (3ms)
+newly discovered old/undated documents are not new publications; dated new article is ... ok (0ms)
+incomplete initial read cannot become an active baseline; failures stay distinct from no news ... ok (0ms)
+one-off finishes only on a proven novelty; stale generation cannot decide delivery ... ok (0ms)
+running 3 tests from ./service/tests/page_change_test.ts
+literal text scope produces source-backed delta without claiming a publication date ... ok (33ms)
+same literal text moved or whitespace-only change stays silent ... ok (0ms)
+semantic criteria, wrong source, missing proof and oversized changes cannot become findings ... ok (0ms)
+running 9 tests from ./service/tests/provider_worker_test.ts
+provider execution requires dedicated public receiver and does not lease otherwise ... ok (0ms)
+baseline waits for signed completion then remains silent ... ok (1ms)
+same check succeeds; unqualified semantic change becomes visible failure ... ok (0ms)
+lost run intent never triggers another provider POST ... ok (0ms)
+source mismatch is visible and cannot confirm baseline or create a result ... ok (0ms)
+qualified literal page changes produce verified findings; missing evidence is a failed check ... ok (32ms)
+confirmed per-check billing ignores unrelated account-credit changes ... ok (0ms)
+temporary read failure before durable run intent defers without replaying a POST ... ok (0ms)
+provider completion timeout starts at actual run intent after a delayed preflight ... ok (0ms)
+running 11 tests from ./service/tests/semantic_test.ts
+generic intent preserves grounded criteria and requires unresolved details before source discovery ... ok (1ms)
+affirmative result requires source proof for every decisive criterion and real changed text ... ok (1ms)
+uncertain and negative outcomes cannot smuggle an affirmative result or unknown prior identity ... ok (0ms)
+same factual identity has stable key across source prose and JSON key order ... ok (0ms)
+incomplete or unexpected model output cannot pass price or qualification checks ... ok (0ms)
+grounded capability and country evidence cannot turn into a web-ready private request or infer a delivery country ... ok (1ms)
+wire schema forbids affirmative payloads on negative decisions ... ok (0ms)
+a duplicate suggestion cannot merge a distinct event date or location ... ok (0ms)
+wrapping quote marks can be removed only when the inner text is literally grounded ... ok (0ms)
+model references resolve only to existing source passages; fabricated references cannot become quotes ... ok (1ms)
+short real additions remain selectable inside a longer unchanged source body ... ok (0ms)
+running 4 tests from ./service/tests/source_discovery_test.ts
+search snippets are never proof; each source body is read and modification time is not publication ... ok (2ms)
+missing capacity or unresolved intent causes no provider HTTP ... ok (0ms)
+supplied URL does not silently remove wider search; lost POST is never retried ... ok (0ms)
+one inaccessible source is reported without hiding another readable page or retrying it ... ok (0ms)
+running 3 tests from ./service/tests/stop_test.ts
+stop worker does not lease when disabled and does not confirm ambiguous creation ... ok (0ms)
+pause confirms only after no running check and authenticated remote deletion ... ok (2ms)
+stop reconciles a lost creation by durable job name before acknowledging cleanup ... ok (0ms)
+running 5 tests from ./service/tests/v1_sources_test.ts
+preparation compares search candidates, excludes wrong store geography and never uses snippets as proof ... ok (3ms)
+hourly cycle reads every retained page, does not search again and reports partial failure ... ok (0ms)
+daily rediscovery keeps checking retained sources and caps extra candidates and prepaid credits ... ok (0ms)
+first qualifying information is an initial result and completes a one-off without claiming novelty ... ok (20ms)
+coverage retains only pages actually supporting the criteria rather than all search results ... ok (9ms)
+running 1 test from ./service/tests/worker_auth_test.ts
+worker requires secret or valid fresh one-use MAC; replay expired and tampered requests fail ... ok (2ms)
+
+ok | 95 passed | 0 failed (1s)

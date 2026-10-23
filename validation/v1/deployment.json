@@ -1,0 +1,29 @@
+{
+  "budgetBefore": [
+    20151,
+    0,
+    45,
+    0,
+    100000,
+    51
+  ],
+  "limitsIncreased": false,
+  "newPaidCalls": 0,
+  "migration": "202610230035_v1_source_policy.sql",
+  "budgetAfter": [
+    20151,
+    0,
+    45,
+    0,
+    100000,
+    51
+  ],
+  "existingWatchPlansAndStatusesUnchanged": true,
+  "existingWatchCount": 2,
+  "functions": [
+    "worker",
+    "public",
+    "api"
+  ],
+  "passed": true
+}

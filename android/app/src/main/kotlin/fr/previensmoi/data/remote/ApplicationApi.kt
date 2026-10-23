@@ -11,6 +11,7 @@ interface ApplicationApi {
     @POST("public/v1/understandings") suspend fun evaluate(@Header("X-Preview-Token") token: String, @Body request: EvaluationRequestDto): Response<EvaluationDto>
     @GET("public/v1/evaluations/{id}") suspend fun evaluation(@Header("X-Preview-Token") token: String, @Path("id") id: String): Response<EvaluationDto>
     @GET("public/v1/proposals/{id}") suspend fun proposal(@Header("X-Preview-Token") token: String, @Path("id") id: String): Response<ProposalDto>
+    @PUT("public/v1/proposals/{id}/options") suspend fun proposalOptions(@Header("X-Preview-Token") token: String, @Path("id") id: String, @Body options: ProposalOptionsDto): Response<ProposalDto>
     @POST("api/v1/commands") suspend fun command(@Header("Authorization") bearer: String, @Body request: CommandDto): Response<CommandReceiptDto>
     @GET("api/v1/commands/{id}") suspend fun commandReceipt(@Header("Authorization") bearer: String, @Path("id") id: String): Response<CommandReceiptDto>
     @GET("api/v1/watches") suspend fun watches(@Header("Authorization") bearer: String, @Query("cursor") cursor: String? = null, @Query("limit") limit: Int = 20): Response<WatchPageDto>

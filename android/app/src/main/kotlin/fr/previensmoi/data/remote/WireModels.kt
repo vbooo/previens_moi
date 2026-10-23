@@ -12,12 +12,14 @@ import kotlinx.serialization.json.JsonClassDiscriminator
 @Serializable data class DraftDto(val text: String, val language: String, val mode: String, val revision: Long, val answers: List<AnswerDto>)
 @Serializable data class QuestionDto(val id: String, val label: String, val options: List<String>, val required: Boolean)
 @Serializable data class LimitsDto(val activePerAccount: Int, val globalAvailable: Int, val previewRemaining: Int, val resetsAt: String?)
+@Serializable data class ProposalOptionsDto(val version: Long, val mode: String)
 @Serializable data class SourceDto(val url: String, val label: String)
+@Serializable data class CheckCoverageDto(val verified:Int,val total:Int)
 @Serializable data class ProposalDto(
     val id: String, val version: Long, val draft: DraftDto, val title: String,
     val criteria: List<String>, val exclusions: List<String>, val coverage: String,
     val partial: Boolean, val sources: List<SourceDto>, val method: String,
-    val intervalHours: Int, val limitations: List<String>, val limits: LimitsDto, val expiresAt: String, val backgroundPreparation: Boolean = false, val preparationFailure: String? = null,
+    val intervalHours: Int, val limitations: List<String>, val limits: LimitsDto, val expiresAt: String, val backgroundPreparation: Boolean = false, val preparationFailure: String? = null, val checkCoverage: CheckCoverageDto? = null,
 )
 @Serializable data class PreviewSessionDto(val token: String, val expiresAt: String) {
     override fun toString() = "PreviewSessionDto(token=[redacted], expiresAt=$expiresAt)"

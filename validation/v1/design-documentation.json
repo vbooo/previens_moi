@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "scope": "Documentation du système visuel Android V1 uniquement",
+  "createdAt": "2026-10-23T20:19:33.047605Z",
+  "files": [
+    "DESIGN.md",
+    ".impeccable/design.json"
+  ],
+  "existingDesignFiles": false,
+  "colorTokens": 64,
+  "typographyRoles": 7,
+  "componentPreviews": 10,
+  "sourceEvidence": [
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/common/presentation/PreviensTheme.kt",
+      "sha256": "fc60f96e2232411e2e935be242ead14478f393c5cd6912a9ba4636962b765ab1"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/common/presentation/UiSupport.kt"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateScreen.kt"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchScreens.kt"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/session/presentation/SessionScreen.kt"
+    },
+    {
+      "path": "android/app/src/remote/kotlin/fr/previensmoi/app/MainActivity.kt"
+    },
+    {
+      "path": "android/gradle/libs.versions.toml"
+    },
+    {
+      "path": ".local/gradle-home/caches/modules-2/files-2.1/androidx.compose.material3/material3-android/1.4.0/6064b108969ab5557a0c19c7e026554f377cecf5/material3.aar",
+      "use": "Inherited TypeScaleTokens, TypefaceTokens, ShapeTokens, ButtonDefaults, OutlinedTextFieldTokens, ExtendedFabPrimaryTokens and ElevationTokens inspected locally."
+    }
+  ],
+  "visualEvidence": {
+    "directory": ".impeccable/review/v1",
+    "files": [
+      "v1-account.png",
+      "v1-active-dark.png",
+      "v1-active-large.png",
+      "v1-active-sources.png",
+      "v1-active.png",
+      "v1-clarify.png",
+      "v1-code.png",
+      "v1-confirm-large-choices.png",
+      "v1-confirm-large.png",
+      "v1-confirm.png",
+      "v1-delete.png",
+      "v1-email.png",
+      "v1-empty.png",
+      "v1-failed.png",
+      "v1-home-dark.png",
+      "v1-home.png",
+      "v1-limit.png",
+      "v1-paused.png",
+      "v1-preparing.png",
+      "v1-request.png",
+      "v1-result-dark.png",
+      "v1-result.png"
+    ],
+    "reviewed": [
+      "v1-home.png",
+      "v1-request.png",
+      "v1-confirm.png",
+      "v1-preparing.png",
+      "v1-active.png",
+      "v1-failed.png",
+      "v1-active-dark.png",
+      "v1-confirm-large-choices.png"
+    ],
+    "fontScaleLarge": 1.3,
+    "evidenceType": "Native fixtures; documentation review did not recapture or run the app."
+  },
+  "knownDriftNotRepaired": [
+    {
+      "path": "PRODUCT.md",
+      "finding": "Historical initial-demo capability/evidence statements are stale relative to the current remote V1. Preserved per write boundary."
+    },
+    {
+      "path": ".impeccable/review",
+      "finding": "Older phone/tablet demo captures outside v1 are historical, not current V1 authority."
+    },
+    {
+      "path": "impeccable context",
+      "finding": "Launcher returned hasVisualImplementation=false despite Kotlin production theme and native current fixtures. Code and v1 screenshots were used as authority; no configuration repair."
+    }
+  ],
+  "previewLimits": [
+    "HTML/CSS previews translate native components to a shadow DOM; Android interactions, text scaling and elevation stay library-owned.",
+    "Synthesized tonalRamp metadata is for palette inspection only. It is not an Android palette or an approved tonal scale.",
+    "The frontmatter preserves dp and sp. CSS previews map them to logical CSS pixel sizes only for consultation.",
+    "Material roles not explicitly overridden by PreviensTheme remain library defaults and are not fabricated here."
+  ],
+  "networkCalls": 0,
+  "paidCalls": 0,
+  "productionFilesChanged": false,
+  "validation": {
+    "yamlParse": "passed (system Ruby YAML safe_load)",
+    "jsonParse": "passed",
+    "canonicalSectionOrder": "passed",
+    "frontmatterPropertyAllowlist": "passed",
+    "componentReferences": "passed",
+    "colorMetaCoverage": "64/64",
+    "typographyMetaCoverage": "7/7",
+    "tonalRampSize": "8 steps for each color, preview-only metadata",
+    "componentTokenVariants": 22,
+    "noNativeImplementationEdits": true
+  }
+}

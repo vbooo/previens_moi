@@ -1141,6 +1141,88 @@
           }
         }
       }
+    },
+    "/public/v1/proposals/{id}/options": {
+      "put": {
+        "operationId": "configureProposal",
+        "summary": "getProposal",
+        "security": [
+          {
+            "PreviewToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProposalOptions"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1525,6 +1607,32 @@
               "quota",
               "technical",
               null
+            ]
+          },
+          "sourcePolicy": {
+            "type": "string",
+            "enum": [
+              "stable_v1"
+            ]
+          },
+          "checkCoverage": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "verified": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 6
+              }
+            },
+            "required": [
+              "verified",
+              "total"
             ]
           }
         },
@@ -2020,7 +2128,8 @@
             "type": "string",
             "enum": [
               "verified_publication",
-              "baseline_change"
+              "baseline_change",
+              "initial"
             ]
           },
           "correctsFindingId": {
@@ -2565,6 +2674,27 @@
         "required": [
           "status",
           "apiVersion"
+        ]
+      },
+      "ProposalOptions": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "once",
+              "continuous"
+            ]
+          }
+        },
+        "required": [
+          "version",
+          "mode"
         ]
       }
     }

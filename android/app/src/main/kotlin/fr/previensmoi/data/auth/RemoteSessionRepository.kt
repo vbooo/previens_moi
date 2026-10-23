@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 class RemoteSessionRepository(private val api: AuthApi, private val vault: SessionVault, private val clock: Clock, private val beforeSignOut: suspend (String) -> Unit = {}, private val deleteAccount: suspend (String) -> Outcome<Unit> = { Outcome.Error(Failure.Unsupported) }) : SessionRepository {
     private val mutex = Mutex()
     private var credentials = try { vault.read() } catch (_: Exception) { vault.clear(); null }
-    private val session = MutableStateFlow(credentials?.let { Session(it.userId) })
+    private val session = MutableStateFlow(credentials?.let { Session(it.userId,it.email) })
     fun currentUserId(): String? = session.value?.id
     override fun observeSession() = session.asStateFlow()
     // A real session always requires the explicit email + OTP flow.
@@ -30,7 +30,7 @@ class RemoteSessionRepository(private val api: AuthApi, private val vault: Sessi
         val response = api.verify(VerifyRequest(email, code))
         val value = response.body()
         if (!response.isSuccessful || value == null) Outcome.Error(Failure.SessionRequired)
-        else { save(value); Outcome.Success(Session(value.user.id)) }
+        else { save(value); Outcome.Success(Session(value.user.id,value.user.email)) }
     } }
     suspend fun bearer(rejected: String? = null): String? = mutex.withLock {
         val current = credentials ?: return@withLock null
@@ -44,9 +44,9 @@ class RemoteSessionRepository(private val api: AuthApi, private val vault: Sessi
         catch (_: IOException) { null }
     }
     private suspend fun save(value: AuthResponse) {
-        val next = Credentials(value.user.id, value.access_token, value.refresh_token, clock.now() + value.expires_in * 1000)
+        val next = Credentials(value.user.id, value.access_token, value.refresh_token, clock.now() + value.expires_in * 1000,value.user.email)
         withContext(Dispatchers.IO) { vault.write(next) }
-        credentials = next; session.value = Session(next.userId)
+        credentials = next; session.value = Session(next.userId,next.email)
     }
     suspend fun invalidate() = mutex.withLock { clear() }
     private suspend fun clear() { withContext(Dispatchers.IO) { vault.clear() }; credentials = null; session.value = null }

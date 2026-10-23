@@ -128,7 +128,7 @@ class PushWorker(context: Context, params: WorkerParameters,
         val response = apiCall { api.watch(bearer,watchId) }
         if (response !is ApiResult.Value) return if (response is ApiResult.ConnectionFailure) Result.retry() else Result.success()
         val watch = response.body
-        if (sessions.currentUserId() != owner || watch.version.toString() != inputData.getString("version") || !watch.plan.backgroundPreparation || watch.status !in setOf("active","paused")) return Result.success()
+        if (sessions.currentUserId() != owner || watch.version.toString() != inputData.getString("version") || !watch.plan.backgroundPreparation || watch.status !in setOf("active","paused","completed")) return Result.success()
         if (watch.status == "paused" && watch.health != "degraded") return Result.success()
         if (Build.VERSION.SDK_INT >= 33 && applicationContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return Result.success()
         val manager = applicationContext.getSystemService(NotificationManager::class.java)
@@ -137,7 +137,7 @@ class PushWorker(context: Context, params: WorkerParameters,
         val intent = Intent(applicationContext,MainActivity::class.java).setAction("preparation:$id").putExtra("watchId",watchId)
         val pending = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val builder = if (Build.VERSION.SDK_INT >= 26) Notification.Builder(applicationContext,"preparation") else Notification.Builder(applicationContext)
-        val title = applicationContext.getString(if (watch.status == "active") R.string.notification_ready else R.string.notification_preparation_failed)
+        val title = applicationContext.getString(if (watch.status in setOf("active","completed")) R.string.notification_ready else R.string.notification_preparation_failed)
         val notification = builder.setSmallIcon(R.drawable.ic_demo).setContentTitle(title).setContentText(applicationContext.getString(R.string.notification_preparation_body)).setContentIntent(pending).setAutoCancel(true).setOnlyAlertOnce(true).setVisibility(Notification.VISIBILITY_PRIVATE).build()
         if (sessions.currentUserId() == owner && System.currentTimeMillis() < expiresAt) {
             val first = try { claims.claim(owner,id) } catch (e: CancellationException) { throw e } catch (_: Exception) { return Result.retry() }

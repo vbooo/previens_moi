@@ -1,0 +1,18 @@
+{
+  "light": {
+    "primary": 6.13,
+    "active": 6.16,
+    "preparing": 6.35,
+    "paused": 6.12,
+    "warning": 6.17,
+    "secondaryText": 8.87
+  },
+  "dark": {
+    "primary": 10.69,
+    "active": 10.61,
+    "preparing": 11.01,
+    "paused": 10.61,
+    "warning": 11.89,
+    "secondaryText": 10.69
+  }
+}

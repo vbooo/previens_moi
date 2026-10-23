@@ -1,8 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="remote_banner">Trial · public-source monitoring</string>
-<string name="notification_channel">Verified findings</string>
-<string name="notification_permission">Enable notifications</string>
-<string name="app_name">Préviens-moi · Test</string>
+    <string name="notification_channel">Verified findings</string>
+    <string name="notification_permission">Enable notifications</string>
+    <string name="app_name">Préviens-moi · Test</string>
     <string name="unqualified_body">Describe the public information to follow. Before activation, the proposal shows verified sources, frequency and coverage limits.</string>
     <string name="partial_text">This watch covers the sources and conditions listed below. Some results may be missed.</string>
     <string name="partial_accept">I understand this watch’s coverage limits</string>
@@ -10,7 +11,16 @@
     <string name="finding_title">Watch result</string>
     <string name="source_label">Read source</string>
     <string name="analyse">Notify me</string>
-<string name="connected_account">Signed in</string>
-<string name="next_check">Next check: %1$s</string>
-<string name="delete_info">The watch and its results will be deleted after confirmation.</string>
+    <string name="connected_account">Signed in</string>
+    <string name="next_check">Next check: %1$s</string>
+    <string name="delete_info">The watch and its results will be deleted after confirmation.</string>
+    <string name="stale_content">Unable to refresh. Displayed information may be out of date.</string>
+    <string name="error_offline">No connection. Your text is saved. Try again when connected.</string>
+    <string name="error_temporary">Unable to complete this action. Try again; no duplicate will be created.</string>
+    <string name="error_session">Sign in to continue.</string>
+    <string name="error_expired">This proposal expired. Return to your request to confirm it again.</string>
+    <string name="error_quota">The trial limit has been reached. No new watch was activated.</string>
+    <string name="operation_pending">We are checking whether your watch was saved.</string>
+    <string name="processing">One moment…</string>
+    <string name="why">Why this result?</string>
 </resources>

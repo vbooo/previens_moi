@@ -19,46 +19,92 @@ import java.text.DateFormat
 import java.util.Date
 
 @Composable
-fun Page(content: @Composable ColumnScope.() -> Unit) {
+fun Page(
+    footer: (@Composable ColumnScope.() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
     Surface(Modifier.fillMaxSize()) {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-        Column(Modifier.widthIn(max = 720.dp).fillMaxWidth().verticalScroll(rememberScrollState()).padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp), content = content)
-    }
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+                Column(
+                    Modifier.widthIn(max = 720.dp)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 24.dp)
+                        .padding(top = 12.dp, bottom = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    content = content,
+                )
+            }
+            if (footer != null)
+                Surface(color = MaterialTheme.colorScheme.surface) {
+                    Column(
+                        Modifier.widthIn(max = 720.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                            .padding(top = 12.dp, bottom = 8.dp),
+                        content = footer,
+                    )
+                }
+        }
     }
 }
-@Composable fun FailureText(failure: Failure?) {
+
+@Composable
+fun FailureText(failure: Failure?) {
     if (failure == null) return
-    val id = when (failure) {
-        Failure.AnalysisPending -> R.string.analysis_pending
-        Failure.OperationPending -> R.string.operation_pending
-        Failure.Offline -> R.string.error_offline
-        Failure.TemporaryFailure -> R.string.error_temporary
-        Failure.SessionRequired -> R.string.error_session
-        Failure.AccessDenied -> R.string.error_access
-        Failure.NotFound -> R.string.missing
-        Failure.ProposalExpired -> R.string.error_expired
-        Failure.VersionConflict -> R.string.error_version
-        Failure.CommandConflict -> R.string.error_command
-        Failure.QuotaExceeded -> R.string.error_quota
-        Failure.Unsupported -> R.string.error_unsupported
-        Failure.InvalidInput -> R.string.error_input
-        Failure.StorageFailure -> R.string.storage_error
-    }
+    val id =
+        when (failure) {
+            Failure.AnalysisPending -> R.string.analysis_pending
+            Failure.OperationPending -> R.string.operation_pending
+            Failure.Offline -> R.string.error_offline
+            Failure.TemporaryFailure -> R.string.error_temporary
+            Failure.SessionRequired -> R.string.error_session
+            Failure.AccessDenied -> R.string.error_access
+            Failure.NotFound -> R.string.missing
+            Failure.ProposalExpired -> R.string.error_expired
+            Failure.VersionConflict -> R.string.error_version
+            Failure.CommandConflict -> R.string.error_command
+            Failure.QuotaExceeded -> R.string.error_quota
+            Failure.Unsupported -> R.string.error_unsupported
+            Failure.InvalidInput -> R.string.error_input
+            Failure.StorageFailure -> R.string.storage_error
+        }
     val pending = failure == Failure.AnalysisPending || failure == Failure.OperationPending
-    Text(stringResource(id), color = if (pending) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+    Text(
+        stringResource(id),
+        color =
+            if (pending) MaterialTheme.colorScheme.onSurfaceVariant
+            else MaterialTheme.colorScheme.error,
+        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+    )
 }
-@Composable fun dateText(value: Long?): String = value?.let { DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(it)) } ?: stringResource(R.string.unknown_date)
-fun statusLabel(status: WatchStatus) = when(status) {
-    WatchStatus.Pending -> R.string.status_pending
-    WatchStatus.Active -> R.string.status_active
-    WatchStatus.Paused -> R.string.status_paused
-    WatchStatus.Completed -> R.string.status_completed
-    WatchStatus.SuspendedByCapacity -> R.string.status_capacity
-}
-@Composable fun Busy() {
-    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+
+@Composable
+fun dateText(value: Long?): String =
+    value?.let {
+        DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).format(Date(it))
+    } ?: stringResource(R.string.unknown_date)
+
+fun statusLabel(status: WatchStatus) =
+    when (status) {
+        WatchStatus.Pending -> R.string.status_pending
+        WatchStatus.Active -> R.string.status_active
+        WatchStatus.Paused -> R.string.status_paused
+        WatchStatus.Completed -> R.string.status_completed
+        WatchStatus.SuspendedByCapacity -> R.string.status_capacity
+    }
+
+@Composable
+fun Busy() {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
-        Text(stringResource(R.string.processing), modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        Text(
+            stringResource(R.string.processing),
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+        )
     }
 }

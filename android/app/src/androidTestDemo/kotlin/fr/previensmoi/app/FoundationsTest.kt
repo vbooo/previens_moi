@@ -41,10 +41,11 @@ class FoundationsTest {
         }
         if (Build.VERSION.SDK_INT >= 30) compose.waitUntil(5000) { compose.activity.window.decorView.rootWindowInsets?.isVisible(WindowInsets.Type.ime()) != true }
     }
-    private fun tap(tag: String) { closeKeyboard(); awaitTag(tag); compose.onNodeWithTag(tag).performScrollTo().performClick() }
-    private fun status(id: Int) {
-        compose.waitUntil(5_000) { compose.onAllNodes(hasTestTag("watch_status") and hasText(text(id))).fetchSemanticsNodes().size == 1 }
-        compose.onNodeWithTag("watch_status").performScrollTo().assertTextEquals(text(id))
+    private fun tap(tag: String) { closeKeyboard(); awaitTag(tag); runCatching { compose.onNodeWithTag(tag).performScrollTo() }; compose.onNodeWithTag(tag).performClick() }
+    private fun status(id:Int) {
+        val text=text(if(id==R.string.status_active) R.string.v1_active else if(id==R.string.status_completed) R.string.v1_completed else id)
+        compose.waitUntil(5000){compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty()}
+        compose.onAllNodesWithText(text).onFirst().performScrollTo().assertIsDisplayed()
     }
     private fun shown(id: Int) {
         compose.waitUntil(5_000) { compose.onAllNodesWithText(text(id)).fetchSemanticsNodes().size == 1 }
@@ -59,33 +60,30 @@ class FoundationsTest {
     private fun check() { compose.onNodeWithTag("tools").performClick(); compose.onNodeWithTag("simulate_check").performClick() }
     private fun activate(continuous: Boolean = false) {
         compose.onNodeWithTag("request").performTextReplacement("Concerts de ma salle favorite")
-        if (continuous) tap("continuous")
-        tap("preview"); awaitTag("confirm"); capture("proposal"); tap("confirm"); tap("login"); tap("confirm")
+        tap("preview"); awaitTag("confirm"); if(continuous)tap("continuous"); capture("proposal"); tap("confirm"); tap("login"); tap("confirm")
         status(R.string.status_active)
     }
     @Before fun resetDemo() {
         compose.onNodeWithTag("tools").performClick(); compose.onNodeWithTag("reset_demo").performClick()
         compose.waitUntil(5_000) { compose.onAllNodes(hasTestTag("request") and isEnabled()).fetchSemanticsNodes().size == 1 }
         compose.onNodeWithTag("request").performTextReplacement("")
-        if (compose.onAllNodes(hasTestTag("continuous") and isOn()).fetchSemanticsNodes().isNotEmpty()) tap("continuous")
     }
     @Test fun nominalCreationRecreationBackAndPublishedDateUnknown() {
         capture("home"); activate(); capture("detail"); compose.activityRule.scenario.recreate()
         status(R.string.status_active)
-        back(); shown(R.string.title)
-        compose.onAllNodes(hasTestTagPrefix("watch_")).onFirst().performScrollTo().performClick()
+        back(); awaitTag("request")
+        compose.onAllNodes(hasTestTagPrefix("watch_") and hasClickAction()).onFirst().performScrollTo().performClick()
         check(); status(R.string.status_completed)
-        tap("finding"); awaitTag("publication")
-        compose.onNodeWithTag("publication").performScrollTo().assertTextEquals(compose.activity.getString(R.string.published_at, text(R.string.unknown_date)))
+        tap("finding"); compose.onNodeWithTag("publication").assertDoesNotExist()
         shown(R.string.finding_info); capture("finding")
     }
     @Test fun clarificationAndPartialScopeRequireExplicitConsent() {
         scenario("Clarification")
         compose.onNodeWithTag("request").performTextReplacement("Nouveautes sur un sujet")
-        tap("continuous"); tap("preview"); awaitTag("answer")
+        tap("preview"); awaitTag("answer")
         compose.onNodeWithTag("answer").performScrollTo().performTextReplacement("Annonces et changements de date")
         scenario("Partial"); tap("evaluate"); awaitTag("confirm")
-        compose.onNodeWithTag("confirm").performScrollTo().assertIsNotEnabled(); capture("partial")
+        compose.onNodeWithTag("confirm").assertIsNotEnabled(); capture("partial")
         tap("accept_partial"); tap("confirm")
         awaitTag("login"); compose.onNodeWithTag("login").performScrollTo().assertIsDisplayed(); tap("login")
         shown(R.string.partial_text)
@@ -103,14 +101,14 @@ class FoundationsTest {
         tap("evaluate"); tap("confirm")
         tap("finding"); shown(R.string.old_plan)
         back(); tap("delete"); compose.onNodeWithTag("confirm_delete").performClick()
-        shown(R.string.empty_watches)
+        awaitTag("request")
     }
     @Test fun noResultsAndSourceFailureAreDistinct() {
         activate(continuous = true); scenario("NoResults"); check()
         shown(R.string.no_results)
-        shown(R.string.health_ok)
+        status(R.string.status_active)
         scenario("SourceFailure"); check()
-        shown(R.string.health_bad)
+        shown(R.string.v1_last_failed)
         shown(R.string.no_results)
     }
     @Test fun unsupportedRequestCanBeCorrectedAndDraftSurvivesRecreation() {

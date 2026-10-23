@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "scope": "Disposable local database; injected model/source outcomes, not semantic quality or cloud transport",
+  "paidCalls": 0,
+  "activeDatabaseModified": false,
+  "migrationKeepsBudgetCountersAndLimits": true,
+  "understandingBeforeWebAndReplaySafe": true,
+  "coverageDoesNotActivatePrematurely": true,
+  "silentBaselineAndSeparateReadinessNotice": true,
+  "lateNoticeBlockedAfterPause": true,
+  "failedPreparationNotifiesWithoutActivation": true,
+  "noticeDataFollowsDeviceErasure": true,
+  "internalRpcNotExposedToUsers": true,
+  "confirmationOptionsIdempotentAndTokenBound": true,
+  "initialResultIsVisibleWithoutFalseNoveltyAndOneOffCompletes": true,
+  "hourlyStableSourcesAndPartialFailurePreserved": true,
+  "rediscoveryKeepsConfirmedCriteriaAndAllCurrentSources": true,
+  "quotaSuspendsWithoutProviderCall": true,
+  "exhaustedLiteralPilotRejectedBeforeProviderWork": true,
+  "understandingExhaustionIsQuotaNotUnsupported": true
+}

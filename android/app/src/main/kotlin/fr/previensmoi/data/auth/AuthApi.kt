@@ -18,7 +18,7 @@ import retrofit2.http.*
     override fun toString() = "VerifyRequest([redacted])"
 }
 @Serializable class RefreshRequest(val refresh_token: String) { override fun toString() = "RefreshRequest([redacted])" }
-@Serializable data class AuthUser(val id: String)
+@Serializable data class AuthUser(val id: String, val email: String = "")
 @Serializable class AuthResponse(val access_token: String, val refresh_token: String, val expires_in: Long, val user: AuthUser) {
     override fun toString() = "AuthResponse([redacted])"
 }

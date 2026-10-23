@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 @Serializable
-class Credentials(val userId: String, val accessToken: String, val refreshToken: String, val expiresAt: Long) {
+class Credentials(val userId: String, val accessToken: String, val refreshToken: String, val expiresAt: Long, val email: String = "") {
     override fun toString() = "Credentials([redacted])"
 }
 interface SessionVault {

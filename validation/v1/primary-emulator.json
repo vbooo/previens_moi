@@ -1,0 +1,11 @@
+{
+  "primaryEmulator": "medium_phone",
+  "installed": true,
+  "existingSessionRetained": true,
+  "openRequestAndBack": true,
+  "coldStartMsAfterEmulatorRestart": 2231,
+  "newPaidCalls": 0,
+  "dataWiped": false,
+  "emulatorRecovery": "Restarted with automatic GPU rendering after whole Android system ANR; compiled debug package locally; no app data reset.",
+  "scope": "Manual smoke only; no physical-device or production-performance qualification."
+}

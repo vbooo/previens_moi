@@ -23,6 +23,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import dagger.hilt.android.AndroidEntryPoint
 import fr.previensmoi.R
+import fr.previensmoi.feature.common.presentation.PreviensTheme
 import fr.previensmoi.data.demo.DemoScenario
 import fr.previensmoi.feature.create.presentation.*
 import fr.previensmoi.feature.watches.presentation.*
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
+            PreviensTheme() {
                 val state by watches.state.collectAsStateWithLifecycle()
                 val create by creation.state.collectAsStateWithLifecycle()
                 val scenario by demo.scenario.collectAsStateWithLifecycle()

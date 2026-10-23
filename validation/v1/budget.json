@@ -1,0 +1,13 @@
+{
+  "newPaidCalls": 0,
+  "generalBudgetMicroUsdUsed": 20151,
+  "generalBudgetMicroUsdHeld": 0,
+  "generalModelLimitMicroUsd": 100000,
+  "generalCreditsUsed": 45,
+  "generalCreditsHeld": 0,
+  "generalCreditLimit": 51,
+  "limitsIncreased": false,
+  "cumulativeEuroConservativeEnvelopeUpperBound": 0.99587625,
+  "authorizedEuroLimit": 2,
+  "longDurationMonitoringClaimed": false
+}

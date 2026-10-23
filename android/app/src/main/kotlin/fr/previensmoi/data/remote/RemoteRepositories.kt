@@ -80,6 +80,15 @@ class RemoteRepositories(
         if (current != owner) { watches.value = emptyList(); findings.value = emptyList(); commandInMemory = null; owner = current }
         return sessions.bearer()
     }
+    override suspend fun configure(proposal: Proposal, mode: FollowMode): Outcome<Proposal> {
+        if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
+        if (expireEvaluation()) { saveEvaluation(); return Outcome.Error(Failure.ProposalExpired) }
+        val token = preview ?: return Outcome.Error(Failure.ProposalExpired)
+        return when (val r = apiCall { api.proposalOptions(token, proposal.id, ProposalOptionsDto(proposal.version, if(mode==FollowMode.Once) "once" else "continuous")) }) {
+            is ApiResult.Value -> mapped { r.body.domain() }
+            else -> Outcome.Error(evaluationFailure(r))
+        }
+    }
     override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
         if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
         // A new user request renews its expired preview before the first POST.
@@ -219,13 +228,22 @@ class RemoteRepositories(
         if (sessions.observeSession().first()?.id != user) return Outcome.Error(Failure.SessionRequired)
         return finish(user, id, result)
     }
+    // An accepted creation consumes its preview. A later identical request needs a new
+    // evaluation, while recovery of that old receipt must leave a newer draft intact.
+    private var retiredCreationCommand: String? = null
+    private fun retireCreationPreview(commandId: String) {
+        if (retiredCreationCommand == commandId) return
+        evaluationRequest = null; previousEvaluation = null
+        saveEvaluation()
+        retiredCreationCommand = commandId
+    }
     private fun finish(user: String, id: String, result: ApiResult<CommandReceiptDto>): Outcome<CommandReceipt> = when (result) {
         is ApiResult.Value -> if (result.body.id != id) Outcome.Error(Failure.TemporaryFailure) else when (val r = result.body) {
             is CommandReceiptDto.Pending -> if ((commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace) && r.watchId != null)
-                Outcome.Success(CommandReceipt(id,checkNotNull(r.watchId),null,acceptedInBackground = true))
+                Outcome.Success(CommandReceipt(id,checkNotNull(r.watchId),null,acceptedInBackground = true)).also { retireCreationPreview(id) }
                 else Outcome.Error(Failure.OperationPending)
             is CommandReceiptDto.Failed -> { journal.clear(user); commandInMemory = null; Outcome.Error(errorFailure(r.error.code)) }
-            is CommandReceiptDto.Succeeded -> { journal.clear(user); commandInMemory = null; Outcome.Success(CommandReceipt(id, r.watchId, r.watchVersion, r.deleted)) }
+            is CommandReceiptDto.Succeeded -> { if(commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace) retireCreationPreview(id); journal.clear(user); commandInMemory = null; Outcome.Success(CommandReceipt(id, r.watchId, r.watchVersion, r.deleted)) }
         }
         is ApiResult.Rejected -> {
             if (result.httpStatus in setOf(400,403,409,410,429)) { journal.clear(user); commandInMemory = null }
@@ -247,9 +265,9 @@ internal fun instant(value: String): Long {
     val normalized = value.replace(Regex("\\.(\\d{1,6})Z$")) { "." + it.groupValues[1].padEnd(3,'0').take(3) + "Z" }
     return requireNotNull(SimpleDateFormat(if (normalized.contains('.')) "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" else "yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).apply { timeZone = TimeZone.getTimeZone("UTC"); isLenient = false }.parse(normalized)).time
 }
-internal fun ProposalDto.domain() = Proposal(id, version, RequestDraft(draft.text, draft.answers.joinToString("\n") { it.value }, draft.language,
+internal fun ProposalDto.domain() = Proposal(id, version, RequestDraft(draft.text, draft.answers.filter { it.questionId !in setOf("region","preferred_site") }.joinToString("\n") { it.value }, draft.language,
     when(draft.mode) { "once" -> FollowMode.Once; "continuous" -> FollowMode.Continuous; else -> throw IllegalArgumentException() }, draft.revision, draft.answers.associate { it.questionId to it.value }), instant(expiresAt), partial, sources.map { it.url }, intervalHours, limits.activePerAccount,
-    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure)
+    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure, sources.associate { it.url to it.label }, checkCoverage?.verified, checkCoverage?.total)
 internal fun WatchDto.domain() = Watch(id, plan.domain(), version,
     when(status) { "pending" -> WatchStatus.Pending; "active" -> WatchStatus.Active; "paused" -> WatchStatus.Paused; "completed" -> WatchStatus.Completed; "suspended_by_capacity" -> WatchStatus.SuspendedByCapacity; else -> throw IllegalArgumentException() },
     when(health) { "not_checked_yet" -> Health.NotCheckedYet; "healthy" -> Health.Healthy; "degraded" -> Health.Degraded; else -> throw IllegalArgumentException() },

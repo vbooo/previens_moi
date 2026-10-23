@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": {
+    "health": 200,
+    "watchesRequireSession": 401,
+    "optionsRequirePreview": 401
+  },
+  "modelCalls": 0,
+  "providerCalls": 0
+}

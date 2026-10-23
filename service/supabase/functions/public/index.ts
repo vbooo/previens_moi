@@ -15,6 +15,7 @@ serve(async req=>{
   }
   return json(value,value.status==='pending'?202:200,'Evaluation');
  }
+ if(req.method==='PUT' && path[1]==='proposals' && path[3]==='options' && path.length===4){const b=await body(req,'ProposalOptions');return json(await rpc('s5_proposal_options',{target:uuid(path[2]),token,expected:b.version,mode:b.mode}),200,'Proposal');}
  if(req.method==='POST' && path[1]==='evaluations' && path.length===2){const b=await body(req,'EvaluationRequest');return json(await rpc('s3_preview',{action:'evaluate',token,body:b}),202,'Evaluation');}
  if(req.method==='GET' && path.length===3 && ['evaluations','proposals'].includes(path[1]))return json(await rpc('s3_preview',{action:path[1]==='evaluations'?'evaluation':'proposal',token,resource:uuid(path[2])}),200,path[1]==='evaluations'?'Evaluation':'Proposal');
  throw new Fault('not_found',404);

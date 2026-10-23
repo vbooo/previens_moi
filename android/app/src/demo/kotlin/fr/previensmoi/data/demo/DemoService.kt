@@ -57,6 +57,12 @@ class DemoService(private val clock: Clock, private val ids: IdGenerator, privat
         Outcome.Success(Evaluation.Ready(proposal))
     }
 
+    override suspend fun configure(proposal: Proposal, mode: FollowMode): Outcome<Proposal> = mutex.withLock {
+        val current=proposals[proposal.id] ?: return@withLock Outcome.Error(Failure.NotFound)
+        if(current.version!=proposal.version)return@withLock Outcome.Error(Failure.VersionConflict)
+        val next=current.copy(version=current.version+1,draft=current.draft.copy(mode=mode))
+        proposals[next.id]=next;Outcome.Success(next)
+    }
     override suspend fun get(id: String): Outcome<Proposal> = mutex.withLock {
         unavailable()?.let { return@withLock Outcome.Error(it) }
         val proposal = proposals[id] ?: return@withLock Outcome.Error(Failure.NotFound)
@@ -107,7 +113,7 @@ class DemoService(private val clock: Clock, private val ids: IdGenerator, privat
         if (checked is Outcome.Error) return checked
         val proposal = (checked as Outcome.Success).value
         if (!hasCapacity()) return Outcome.Error(Failure.QuotaExceeded)
-        val watch = Watch(ids.next(), proposal, baselineAt = clock.now(), nextCheck = clock.now() + proposal.intervalHours * 3_600_000L)
+        val watch = Watch(ids.next(), proposal, health = Health.Healthy, lastSuccess = clock.now(), baselineAt = clock.now(), nextCheck = clock.now() + proposal.intervalHours * 3_600_000L)
         watches.value = watches.value + watch
         activated[c.targetId to c.expectedVersion] = watch.id
         return Outcome.Success(CommandReceipt(c.id, watch.id, watch.version))
@@ -133,7 +139,7 @@ class DemoService(private val clock: Clock, private val ids: IdGenerator, privat
                     if (old.status == WatchStatus.Completed) return Outcome.Error(Failure.Unsupported)
                     if (!hasCapacity(old.id)) return Outcome.Error(Failure.QuotaExceeded)
                     old.copy(status = WatchStatus.Active, version = old.version + 1, baselineAt = clock.now(),
-                        health = Health.NotCheckedYet, nextCheck = clock.now() + old.plan.intervalHours * 3_600_000L)
+                        health = Health.Healthy, lastSuccess = clock.now(), nextCheck = clock.now() + old.plan.intervalHours * 3_600_000L)
                 }
             }
             Operation.Replace -> {
@@ -141,7 +147,7 @@ class DemoService(private val clock: Clock, private val ids: IdGenerator, privat
                 val checked = validatedProposal(c.proposalId ?: return Outcome.Error(Failure.InvalidInput), c.proposalVersion ?: return Outcome.Error(Failure.InvalidInput))
                 if (checked is Outcome.Error) return checked
                 val plan = (checked as Outcome.Success).value
-                old.copy(plan = plan, version = old.version + 1, baselineAt = clock.now(), health = Health.NotCheckedYet,
+                old.copy(plan = plan, version = old.version + 1, baselineAt = clock.now(), health = Health.Healthy, lastSuccess = clock.now(),
                     nextCheck = if (old.status == WatchStatus.Active) clock.now() + plan.intervalHours * 3_600_000L else null)
             }
             else -> return Outcome.Error(Failure.InvalidInput)

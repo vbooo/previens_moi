@@ -1,0 +1,26 @@
+{
+  "unitTests": {
+    "Demo": {
+      "tests": 58,
+      "failures": 0
+    },
+    "Remote": {
+      "tests": 36,
+      "failures": 0
+    }
+  },
+  "nativeRegressionTests": {
+    "demo": 5,
+    "remote": 2
+  },
+  "serviceTests": 95,
+  "nativeScreens": 22,
+  "darkTheme": true,
+  "fontScale": 1.3,
+  "apkContainsServerSecrets": false,
+  "iconsLicensePackaged": true,
+  "apkSha256": "5dccae8b6932117507bf3fce0c8076d339df3a0355731fd7ab6a9b63ae5a940b",
+  "newPaidCalls": 0,
+  "limitEuro": 2,
+  "scope": "Local injected model/source tests, isolated database migration tests, native UI fixtures and authenticated-endpoint protection smoke checks. No new paid live end-to-end monitoring run."
+}

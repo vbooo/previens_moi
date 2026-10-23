@@ -1,8 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="remote_banner">Version d’essai · surveillance de sources publiques</string>
-<string name="notification_channel">Résultats vérifiés</string>
-<string name="notification_permission">Activer les notifications</string>
-<string name="app_name">Préviens-moi · Test</string>
+    <string name="notification_channel">Résultats vérifiés</string>
+    <string name="notification_permission">Activer les notifications</string>
+    <string name="app_name">Préviens-moi · Test</string>
     <string name="unqualified_body">Décris l’information publique à suivre. La proposition indique les sources vérifiées, la fréquence et les limites avant activation.</string>
     <string name="partial_text">Ce suivi couvre les sources et les conditions précisées ci-dessous. Certains résultats peuvent lui échapper.</string>
     <string name="partial_accept">J’ai compris les limites de ce suivi</string>
@@ -10,7 +11,16 @@
     <string name="finding_title">Résultat du suivi</string>
     <string name="source_label">Source consultée</string>
     <string name="analyse">Me prévenir</string>
-<string name="connected_account">Connecté</string>
-<string name="next_check">Prochaine vérification : %1$s</string>
-<string name="delete_info">Le suivi et ses résultats seront supprimés après confirmation.</string>
+    <string name="connected_account">Connecté</string>
+    <string name="next_check">Prochaine vérification : %1$s</string>
+    <string name="delete_info">Le suivi et ses résultats seront supprimés après confirmation.</string>
+    <string name="stale_content">Impossible d’actualiser. Les informations affichées peuvent dater.</string>
+    <string name="error_offline">Connexion indisponible. Ton texte est conservé. Réessaie quand la connexion revient.</string>
+    <string name="error_temporary">Impossible de terminer cette action. Réessaie ; aucun doublon ne sera créé.</string>
+    <string name="error_session">Connecte-toi pour continuer.</string>
+    <string name="error_expired">Cette proposition a expiré. Reviens à ta demande pour la confirmer à nouveau.</string>
+    <string name="error_quota">La limite de l’essai est atteinte. Aucun nouveau suivi n’a été activé.</string>
+    <string name="operation_pending">Nous vérifions si ton suivi a bien été enregistré.</string>
+    <string name="processing">Un instant…</string>
+    <string name="why">Pourquoi ce résultat ?</string>
 </resources>

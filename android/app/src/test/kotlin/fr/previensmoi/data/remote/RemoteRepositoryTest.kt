@@ -227,4 +227,23 @@ class RemoteRepositoryTest {
         }
     }
 
+    @Test fun `accepted creation retires its preview while later receipt recovery preserves a new draft`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val cases=ApiClient.json.parseToJsonElement(javaClass.getResourceAsStream("/application-v1.examples.json")!!.bufferedReader().readText()).jsonArray
+            val p=cases.first {it.jsonObject["schema"]?.jsonPrimitive?.content=="Proposal" && it.jsonObject["valid"]?.jsonPrimitive?.boolean==true}.jsonObject["payload"]!!
+            val dto=ApiClient.json.decodeFromJsonElement<ProposalDto>(p);val draft=dto.domain().draft
+            var number=0;val journal=MemoryPending()
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000))),journal,IdGenerator {"evaluation-${++number}"})
+            fun ready(id:String)="""{"id":"$id","status":"ready","draftRevision":${draft.revision},"updatedAt":"2026-10-23T00:00:00Z","proposal":$p}"""
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""));server.enqueue(response(ready("evaluation-1")))
+            assertTrue(repository.evaluate(draft) is Outcome.Success)
+            server.enqueue(response("""{"id":"c1","state":"pending","updatedAt":"2026-10-23T00:00:00Z","remoteState":"starting","watchId":"w"}""",202))
+            assertTrue(repository.execute(Command("c1",Operation.Activate,dto.id,dto.version)) is Outcome.Success)
+            server.enqueue(response(ready("evaluation-2")));assertTrue(repository.evaluate(draft) is Outcome.Success);assertEquals(2,number)
+            server.enqueue(response("""{"id":"c1","state":"succeeded","updatedAt":"2026-10-23T00:00:00Z","remoteState":"running","watchId":"w","watchVersion":1,"deleted":false}"""))
+            assertEquals(Outcome.Error(Failure.VersionConflict),repository.execute(Command("pause",Operation.Pause,"w",1)))
+            server.enqueue(response(ready("evaluation-2")));assertTrue(repository.evaluate(draft) is Outcome.Success);assertEquals(2,number)
+        }
+    }
+
 }

@@ -1,0 +1,15 @@
+{
+  "disposition": "ship",
+  "scope": "Native phone UI fixtures and production presentation source",
+  "materialFindings": [
+    {
+      "id": "preparation-failure-health-copy",
+      "severity": "P2",
+      "state": "resolved"
+    }
+  ],
+  "limitations": [
+    "No physical-device or TalkBack verification",
+    "No paid provider/model qualification in this delivery"
+  ]
+}

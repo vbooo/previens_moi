@@ -11,6 +11,7 @@ interface WatchRepository {
 interface ProposalRepository {
     suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation>
     suspend fun get(id: String): Outcome<Proposal>
+    suspend fun configure(proposal: Proposal, mode: FollowMode): Outcome<Proposal> = Outcome.Error(Failure.Unsupported)
 }
 interface FindingRepository {
     fun observeFindings(): Flow<List<Finding>>
