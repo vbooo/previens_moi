@@ -17,7 +17,7 @@ import kotlinx.serialization.json.JsonClassDiscriminator
     val id: String, val version: Long, val draft: DraftDto, val title: String,
     val criteria: List<String>, val exclusions: List<String>, val coverage: String,
     val partial: Boolean, val sources: List<SourceDto>, val method: String,
-    val intervalHours: Int, val limitations: List<String>, val limits: LimitsDto, val expiresAt: String,
+    val intervalHours: Int, val limitations: List<String>, val limits: LimitsDto, val expiresAt: String, val backgroundPreparation: Boolean = false, val preparationFailure: String? = null,
 )
 @Serializable data class PreviewSessionDto(val token: String, val expiresAt: String) {
     override fun toString() = "PreviewSessionDto(token=[redacted], expiresAt=$expiresAt)"

@@ -1,0 +1,8 @@
+
+fr.previensmoi.app.CloudConnectionTest:.
+
+Time: 2,014
+
+OK (1 test)
+
+

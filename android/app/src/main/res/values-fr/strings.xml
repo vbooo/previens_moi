@@ -104,4 +104,24 @@
     <string name="analysis_pending">Analyse encore en attente. Réessaie pour consulter son état ; aucune seconde analyse ne sera lancée.</string>
     <string name="sign_in_to_view_watches">Connecte-toi pour retrouver tes suivis.</string>
     <string name="sign_in">Se connecter</string>
+    <string name="understanding_title">Voici ce que j’ai compris</string>
+    <string name="understanding_loading">Je reformule ta demande…</string>
+    <string name="confirm_prepare">Confirmer et préparer le suivi</string>
+    <string name="prepare_explanation">Après confirmation, nous chercherons des sources adaptées. Tu peux quitter l’application : une notification t’indiquera si ton suivi est prêt.</string>
+    <string name="prepare_limits">Essai limité : sources publiques, vérification quotidienne et couverture partielle. La préparation peut échouer ; tes critères ne seront pas modifiés sans ton accord.</string>
+    <string name="preparing_title">En préparation</string>
+    <string name="preparing_body">Nous cherchons les sources à surveiller. Tu peux fermer l’application ; nous te préviendrons quand le suivi sera prêt.</string>
+    <string name="preparation_failed_title">Le suivi n’a pas pu démarrer</string>
+    <string name="preparation_failed_body">La préparation a rencontré un problème technique. Le suivi n’est pas actif. Réessaie plus tard ou modifie ta demande.</string>
+    <string name="cancel_preparation">Annuler la préparation</string>
+    <string name="refresh_short">Actualiser</string>
+    <string name="connected_account">Mon compte · connecté</string>
+    <string name="notification_ready">Ton suivi est prêt</string>
+    <string name="notification_preparation_failed">Ton suivi n’a pas pu démarrer</string>
+    <string name="notification_preparation_body">Ouvre le suivi pour consulter son état et ses sources.</string>
+    <string name="new_watch">Nouveau suivi</string>
+    <string name="preparation_source_failed">Aucune source consultée ne permet de vérifier ta demande. Le suivi n’est pas actif. Tu peux modifier ta demande.</string>
+    <string name="preparation_quota_failed">La limite de l’essai est atteinte. Le suivi n’a pas démarré.</string>
+    <string name="prepared_sources">Sources consultées</string>
+    <string name="prepared_sources_body">Sources vérifiées pendant la préparation. Les prochaines vérifications peuvent en trouver d’autres.</string>
 </resources>

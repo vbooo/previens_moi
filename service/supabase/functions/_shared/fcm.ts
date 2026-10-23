@@ -1,5 +1,5 @@
 /** Server-only FCM HTTP v1 transport. No retries after an ambiguous HTTP outcome. */
-export interface Delivery { id:string;lease:string;token:string;findingId:string;watchId:string;planVersion:string }
+export interface Delivery { id:string;lease:string;token:string;findingId:string;watchId:string;planVersion:string;kind?:'preparation';noticeId?:string;watchVersion?:string }
 export interface Outbox {
  lease():Promise<Delivery|null>;
  allowed(delivery:Delivery):Promise<boolean>;
@@ -7,7 +7,7 @@ export interface Outbox {
 }
 export interface FcmIdentity { projectId:string;accessToken():Promise<string> }
 export function message(delivery:Delivery) {
- return {message:{token:delivery.token,data:{findingId:delivery.findingId,watchId:delivery.watchId,planVersion:delivery.planVersion},android:{priority:'normal',ttl:'86400s'}}};
+ return {message:{token:delivery.token,data:delivery.kind==='preparation'?{kind:'preparation',noticeId:delivery.noticeId!,watchId:delivery.watchId,watchVersion:delivery.watchVersion!}:{findingId:delivery.findingId,watchId:delivery.watchId,planVersion:delivery.planVersion},android:{priority:'normal',ttl:'86400s'}}};
 }
 export async function sendOne(outbox:Outbox,identity:FcmIdentity,enabled:boolean,request:typeof fetch=fetch):Promise<string> {
  if(!enabled)return 'disabled';

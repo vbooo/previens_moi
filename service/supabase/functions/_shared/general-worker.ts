@@ -4,7 +4,7 @@ import {discoverSources,type RetrievedSource} from './source-discovery.ts';
 import {decideNovelty,type Memory} from './novelty.ts';
 import {Firecrawl} from './firecrawl.ts';
 import {valid} from './http.ts';
-export interface GeneralWork {id:string;lease:string;kind:'admission'|'start'|'check';phase:'interpret'|'collect'|'decide';generation:number;watchId:string|null;context:{draft:Draft;referenceNow?:string;intent?:Intent;documents?:RetrievedSource[];priorDocuments?:Document[];memory?:Memory;cycle?:number;plan?:any;retrievalHealthy?:boolean}}
+export interface GeneralWork {id:string;lease:string;kind:'admission'|'start'|'check';phase:'interpret'|'collect'|'decide'|'baseline';generation:number;watchId:string|null;context:{draft:Draft;referenceNow?:string;intent?:Intent;documents?:RetrievedSource[];priorDocuments?:Document[];memory?:Memory;cycle?:number;plan?:any;retrievalHealthy?:boolean;understandingOnly?:boolean;prepared?:boolean}}
 export interface GeneralPort {lease():Promise<GeneralWork|null>;finish(work:GeneralWork,result:unknown,actualMicroUsd:number|null,credits:number|null):Promise<void>}
 /** One bounded phase per wakeup. Reservations are committed by lease BEFORE HTTP.
  * A lost response leaves the reservation held and is never automatically retried. */
@@ -21,7 +21,15 @@ export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,en
   actual=Math.ceil(value.usage.input_tokens*.4+value.usage.output_tokens*1.6);if(actual>20000)throw new Error('Unexpected model charge');return responseValue(value);
  };
  try {
-  if(work.phase==='interpret')result={intent:parseIntent(await model(modelRequest('intent',{...c.draft,referenceNow:c.referenceNow??new Date().toISOString()})),c.draft)};
+  if(work.phase==='interpret'){
+   const intent=parseIntent(await model(modelRequest('intent',{...c.draft,referenceNow:c.referenceNow??new Date().toISOString()})),c.draft);
+   result={intent};
+   if(c.understandingOnly&&intent.status==='understood'){
+    const fr=c.draft.language==='fr';
+    const proposal={id:crypto.randomUUID(),version:1,draft:c.draft,title:intent.title,criteria:intent.criteria.map(x=>x.text),exclusions:[],coverage:fr?'Après confirmation, recherche de sources publiques correspondant à ces critères. La surveillance commence après une préparation réussie.':'After confirmation, public sources matching these criteria will be sought. Monitoring starts after successful preparation.',partial:true,sources:[],method:'web_search',backgroundPreparation:true,intervalHours:24,limitations:[fr?'Vérification quotidienne, couverture partielle et quota d’essai limité.':'Daily checks, partial coverage and a finite trial quota.'],limits:{activePerAccount:1,globalAvailable:0,previewRemaining:0,resetsAt:null},expiresAt:new Date(Date.now()+30*60000).toISOString()};
+    if(!valid('Proposal',proposal))throw new Error('Invalid understanding');result={intent,proposal};
+   }
+  }
   else if(work.phase==='collect'){
    if(!c.intent)throw new Error('Missing criteria');let held=0,unknown=false;const n=c.cycle??0;
    const intent={...c.intent,queries:[c.intent.queries[n%c.intent.queries.length]]};
@@ -32,13 +40,13 @@ export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,en
   } else {
    const intent=c.intent!,documents=c.documents??[];
    if(!intent||!documents.length)throw new Error('No source evidence');
-   if(work.kind==='admission'){
+   if(work.kind==='admission'||work.kind==='start'&&c.plan?.backgroundPreparation&&!c.prepared){
     const coverage=parseCoverage(await model(coverageRequest(c.draft,intent,documents)),intent,documents);
     result={coverage};
     if(coverage.status==='observable'){
      const fr=c.draft.language==='fr';const expiresAt=new Date(Date.now()+30*60000).toISOString();
      const proposal={id:crypto.randomUUID(),version:1,draft:c.draft,title:intent.title,criteria:intent.criteria.map(x=>x.text),exclusions:[fr?'Comptes privés, contenu inaccessible et sources non lues.':'Private accounts, inaccessible content and unread sources.'],coverage:fr?'Recherche Web publique bornée : une requête, trois candidats au maximum et une page lue par passage. Les requêtes et candidats alternent entre les passages. Les sources ci-dessous ont été lues ; elles peuvent évoluer avec la recherche. Ce suivi ne couvre pas tout le Web.':'Bounded public web search: one query, up to three candidates and one page read per pass. Queries and candidates rotate between passes. Sources below were read and may change with discovery. This does not cover the whole web.',partial:true,sources:documents.map(d=>({url:d.url,label:d.label})),method:'web_search',intervalHours:24,limitations:[fr?'L’enveloppe d’essai est limitée : le suivi est suspendu à épuisement du quota.':'The trial envelope is finite: monitoring suspends when its quota is exhausted.',fr?'Première lecture sans notification ; ensuite, seuls les faits nouveaux prouvés sont signalés.':'Initial reading is silent; subsequent alerts require proven new facts.',fr?'Une page nouvellement trouvée sans date de publication vérifiée ne suffit pas à prouver une nouveauté.':'A newly found page without a verified publication date does not establish novelty.',fr?'Un fait au plus évalué par passage. Les pages protégées, absentes de l’index ou non sélectionnées peuvent manquer.':'At most one fact assessed per pass. Protected, unindexed or unselected pages may be missed.'],limits:{activePerAccount:1,globalAvailable:0,previewRemaining:0,resetsAt:null},expiresAt};
-     if(!valid('Proposal',proposal))throw new Error('Invalid general proposal');result={coverage,proposal};
+     if(!valid('Proposal',proposal))throw new Error('Invalid general proposal');result=work.kind==='admission'?{coverage,proposal}:{coverage,preparedPlan:{...c.plan,sources:proposal.sources,coverage:proposal.coverage,exclusions:proposal.exclusions,limitations:proposal.limitations}};
     }
    } else {
     const memory=c.memory!;let judgment;

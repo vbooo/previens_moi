@@ -21,7 +21,7 @@ interface PendingCommands {
     fun clear(owner: String)
 }
 @Serializable
-class EvaluationCache(val token: String, val request: EvaluationRequestDto?, val previousId: String?, val expiresAt: Long = Long.MAX_VALUE) {
+class EvaluationCache(val token: String, val request: EvaluationRequestDto?, val previousId: String?, val expiresAt: Long = Long.MAX_VALUE, val workflowVersion: Int = 1) {
     override fun toString() = "EvaluationCache([redacted])"
 }
 interface EvaluationJournal {
@@ -51,12 +51,12 @@ class RemoteRepositories(
     private var evaluationLoaded = false
     private fun restoreEvaluation(): Boolean = try {
         if (!evaluationLoaded) {
-            evaluations.read()?.let { preview = it.token.takeIf(String::isNotEmpty); previewExpires = it.expiresAt; evaluationRequest = it.request; previousEvaluation = it.previousId }
+            evaluations.read()?.let { preview = it.token.takeIf(String::isNotEmpty); previewExpires = it.expiresAt; evaluationRequest = it.request.takeIf { _ -> it.workflowVersion >= 2 }; previousEvaluation = it.previousId.takeIf { _ -> it.workflowVersion >= 2 } }
             evaluationLoaded = true
         }; true
     } catch (_: Exception) { false }
     private fun saveEvaluation(): Boolean = try {
-        evaluations.write(EvaluationCache(preview.orEmpty(),evaluationRequest,previousEvaluation,previewExpires));true
+        evaluations.write(EvaluationCache(preview.orEmpty(),evaluationRequest,previousEvaluation,previewExpires,workflowVersion = 2));true
     } catch (_: Exception) { false }
     private var owner: String? = null
     private var commandInMemory: CommandDto? = null
@@ -170,9 +170,18 @@ class RemoteRepositories(
         val user = owner ?: return@withLock Outcome.Error(Failure.SessionRequired)
         val pending = journal.read(user)
         if (pending != null) {
-            val previous = recover(bearer, user, pending)
-            // A recovered old success must never confirm the new action that triggered lookup.
-            return@withLock if (pending != command.id && previous is Outcome.Success) Outcome.Error(Failure.VersionConflict) else previous
+            // Once the server identifies the pending watch, cancelling that same watch
+            // is a new fenced command, even after process death. Never infer its identity.
+            val cancelling = pending != command.id && command.operation in setOf(Operation.Pause, Operation.Delete)
+            val receipt = if (cancelling) authorized(bearer) { api.commandReceipt(it, pending) } else null
+            val known = (receipt as? ApiResult.Value)?.body as? CommandReceiptDto.Pending
+            if (known?.watchId == command.targetId && known.remoteState == "starting" && sessions.observeSession().first()?.id == user) {
+                journal.clear(user); commandInMemory = null
+            } else {
+                val previous = if (receipt != null) finish(user,pending,receipt) else recover(bearer, user, pending)
+                // A recovered old success must never confirm the new action that triggered lookup.
+                return@withLock if (pending != command.id && previous is Outcome.Success) Outcome.Error(Failure.VersionConflict) else previous
+            }
         }
         val token = preview
         val dto = when (command.operation) {
@@ -210,7 +219,9 @@ class RemoteRepositories(
     }
     private fun finish(user: String, id: String, result: ApiResult<CommandReceiptDto>): Outcome<CommandReceipt> = when (result) {
         is ApiResult.Value -> if (result.body.id != id) Outcome.Error(Failure.TemporaryFailure) else when (val r = result.body) {
-            is CommandReceiptDto.Pending -> Outcome.Error(Failure.OperationPending)
+            is CommandReceiptDto.Pending -> if ((commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace) && r.watchId != null)
+                Outcome.Success(CommandReceipt(id,checkNotNull(r.watchId),null,acceptedInBackground = true))
+                else Outcome.Error(Failure.OperationPending)
             is CommandReceiptDto.Failed -> { journal.clear(user); commandInMemory = null; Outcome.Error(errorFailure(r.error.code)) }
             is CommandReceiptDto.Succeeded -> { journal.clear(user); commandInMemory = null; Outcome.Success(CommandReceipt(id, r.watchId, r.watchVersion, r.deleted)) }
         }
@@ -236,7 +247,7 @@ internal fun instant(value: String): Long {
 }
 internal fun ProposalDto.domain() = Proposal(id, version, RequestDraft(draft.text, draft.answers.joinToString("\n") { it.value }, draft.language,
     when(draft.mode) { "once" -> FollowMode.Once; "continuous" -> FollowMode.Continuous; else -> throw IllegalArgumentException() }, draft.revision, draft.answers.associate { it.questionId to it.value }), instant(expiresAt), partial, sources.map { it.url }, intervalHours, limits.activePerAccount,
-    title, criteria, exclusions, coverage, limitations, method)
+    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure)
 internal fun WatchDto.domain() = Watch(id, plan.domain(), version,
     when(status) { "pending" -> WatchStatus.Pending; "active" -> WatchStatus.Active; "paused" -> WatchStatus.Paused; "completed" -> WatchStatus.Completed; "suspended_by_capacity" -> WatchStatus.SuspendedByCapacity; else -> throw IllegalArgumentException() },
     when(health) { "not_checked_yet" -> Health.NotCheckedYet; "healthy" -> Health.Healthy; "degraded" -> Health.Degraded; else -> throw IllegalArgumentException() },

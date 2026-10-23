@@ -39,3 +39,19 @@ Deno.test('unchanged page avoids a model call and does not create an affirmative
 Deno.test('mismatching source is an explicit unsupported coverage result, never a ready plan',async()=>{
  const {p,events}=port(job('decide'));await generalOne(p,'test',unused,true,(async()=>reply({status:'unobservable',reason:'La page ne permet pas de vérifier la livraison.',evidence:[]})) as typeof fetch);assert(events[1].result.coverage.status==='unobservable'&&!events[1].result.proposal);
 });
+Deno.test('understanding-only responds with criteria before any source or coverage call',async()=>{
+ const work=job('interpret');work.context.understandingOnly=true;const {p,events}=port(work);let calls=0;
+ await generalOne(p,'test',unused,true,(async()=>{calls++;return reply(intent);}) as typeof fetch);
+ const result=events[1].result;assert(calls===1&&result.proposal.backgroundPreparation&&result.proposal.sources.length===0&&result.proposal.criteria.join('|')===intent.criteria.map(c=>c.text).join('|'));
+ assert(events[1].credits===0&&!('coverage' in result));
+});
+Deno.test('confirmed background preparation checks source observability before its separate baseline',async()=>{
+ const work=job('decide','start');work.context.plan.backgroundPreparation=true;const {p,events}=port(work);
+ await generalOne(p,'test',unused,true,(async()=>reply({status:'observable',reason:'Fields are exposed.',evidence:[{criterionId:'product',passageId:'d0p0'},{criterionId:'price',passageId:'d0p0'}]})) as typeof fetch);
+ const r=events[1].result;assert(r.preparedPlan&&r.preparedPlan.criteria===work.context.plan.criteria&&!r.decision&&!r.findings);
+});
+Deno.test('separate background baseline remains silent when the requested event has not happened',async()=>{
+ const work=job('baseline','start');work.context.plan.backgroundPreparation=true;work.context.prepared=true;work.context.retrievalHealthy=true;const {p,events}=port(work);
+ await generalOne(p,'test',unused,true,(async()=>reply({decision:{status:'no_match',fact:'',reason:'The target price is not reached.',identity:null,sameAs:null,evidence:[]}})) as typeof fetch);
+ assert(events[1].result.decision.outcome==='baseline'&&events[1].result.findings.length===0);
+});

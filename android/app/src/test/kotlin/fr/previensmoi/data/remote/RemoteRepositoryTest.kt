@@ -151,7 +151,7 @@ class RemoteRepositoryTest {
             server.enqueue(response("""{"id":"eval-id","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Cette source ne permet pas de vérifier les critères."}"""))
             assertTrue(repository.evaluate(RequestDraft("test")) is Outcome.Success)
             val requests=(0 until server.requestCount).map { server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!! }
-            assertEquals(1,requests.count { it.method=="POST"&&it.url.encodedPath.endsWith("evaluations") })
+            assertEquals(1,requests.count { it.method=="POST"&&it.url.encodedPath.endsWith("understandings") })
             assertTrue(requests.filter { it.method=="GET" }.all { it.url.encodedPath.endsWith("eval-id") })
         }
     }
@@ -192,6 +192,36 @@ class RemoteRepositoryTest {
             server.enqueue(response("""{"token":"fresh-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
             server.enqueue(response("""{"id":"new-eval","status":"unsupported","draftRevision":0,"updatedAt":"2026-10-20T00:00:00Z","reason":"unqualified_method","explanation":"Not qualified"}"""))
             assertTrue(repository.evaluate(RequestDraft("test")) is Outcome.Success);assertEquals(3,server.requestCount)
+        }
+    }
+
+
+    @Test fun `activation returns accepted preparation without waiting for provider and retains recovery identifier`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val session=auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000)))
+            val journal=MemoryPending()
+            val cache=object: EvaluationJournal {override fun read()=EvaluationCache("preview",null,null);override fun write(value: EvaluationCache){} }
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),session,journal,IdGenerator { "unused" },cache)
+            server.enqueue(response("{}",404));repository.get("p")
+            server.enqueue(response("""{"id":"cmd","state":"pending","updatedAt":"2026-10-20T00:00:00Z","remoteState":"starting","watchId":"w"}""",202))
+            val result=repository.execute(Command("cmd",Operation.Activate,"p",1,acceptPartial=true)) as Outcome.Success
+            assertTrue(result.value.acceptedInBackground);assertEquals("w",result.value.watchId);assertEquals("cmd",journal.read("a"));assertEquals(2,server.requestCount)
+            server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!
+            assertEquals("POST",server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.method)
+        }
+    }
+    @Test fun `pending preparation can be cancelled after repository recreation without another activation`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val session=auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000)))
+            val journal=MemoryPending();journal.write("a","activation-id")
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),session,journal,IdGenerator { "unused" })
+            server.enqueue(response("""{"id":"activation-id","state":"pending","updatedAt":"2026-10-20T00:00:00Z","remoteState":"starting","watchId":"w"}""",202))
+            server.enqueue(response("""{"id":"cancel-id","state":"pending","updatedAt":"2026-10-20T00:00:00Z","remoteState":"stopping","watchId":"w"}""",202))
+            assertEquals(Outcome.Error(Failure.OperationPending),repository.execute(Command("cancel-id",Operation.Pause,"w",1)))
+            assertEquals("cancel-id",journal.read("a"))
+            assertEquals("GET",server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.method)
+            val posted=server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!
+            assertEquals("POST",posted.method);assertTrue(posted.body!!.utf8().contains("pause"))
         }
     }
 

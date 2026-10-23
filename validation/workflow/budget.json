@@ -1,0 +1,16 @@
+{
+  "cumulativeAuthorizedMaxEUR": 2,
+  "conservativeCumulativeUpperEUR": 0.99587625,
+  "cumulativeKnownModelCalls": 270,
+  "cumulativeKnownUsageUpperUSD": 0.184755,
+  "cloudModelCalls": 19,
+  "cloudUsageUpperUSD": 0.016375,
+  "cloudModelHeldMicroUSD": 0,
+  "freeProviderBalance": 907,
+  "creditUsedNotReset": 42,
+  "creditHeld": 0,
+  "creditLimitUnchanged": 51,
+  "wholeCloudReserveUSDAlreadyInsideSharedEnvelope": 0.1,
+  "subscriptionOrTopUp": false,
+  "invoiceReconciled": false
+}

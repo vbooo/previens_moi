@@ -116,7 +116,7 @@ class CreateViewModel @Inject constructor(
                 is Outcome.Success -> when (val result = outcome.value) {
                     is Evaluation.Ready -> {
                         saved["proposalId"] = result.proposal.id
-                        mutable.update { it.copy(proposal = result.proposal, step = CreationStep.Ready) }
+                        mutable.update { it.copy(proposal = result.proposal, step = CreationStep.Ready, partialAccepted = result.proposal.backgroundPreparation) }
                     }
                     is Evaluation.Questions -> mutable.update { it.copy(step = CreationStep.Clarifying, questions = result.items) }
                     Evaluation.Clarify -> mutable.update { it.copy(step = CreationStep.Clarifying) }
@@ -163,6 +163,7 @@ class CreateViewModel @Inject constructor(
             }
             when (val result = watches.execute(checkNotNull(pending))) {
                 is Outcome.Success -> {
+                    watches.refresh()
                     saveJob?.cancelAndJoin()
                     val storageFailed = drafts.clear() is Outcome.Error
                     pending = null; clearSavedProposal(); saved["editId"] = null; saved["editVersion"] = null

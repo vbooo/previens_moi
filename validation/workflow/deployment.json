@@ -1,0 +1,19 @@
+{
+  "migrations33And34Deployed": true,
+  "functionsUpdated": [
+    "public",
+    "worker",
+    "api"
+  ],
+  "existingWorkerSecretRequired403": true,
+  "authenticatedApiJwtPreserved": true,
+  "publicHealth": true,
+  "capacityEnabled": true,
+  "globalSlots": 1,
+  "reservedSlots": 0,
+  "ambiguousOrLeasedJobs": 0,
+  "unknownHeldCharges": 0,
+  "syntheticTrialCleaned": true,
+  "originalUserWatchRetainedSuspendedByCapacity": true,
+  "budgetCountersNotReset": true
+}

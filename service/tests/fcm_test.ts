@@ -9,3 +9,7 @@ Deno.test('FCM contains identifiers only and bounded TTL',()=>{const value=messa
 Deno.test('acceptance is recorded and does not claim delivery',async()=>{const f=fixture();let body='';const request=(async(url,init)=>{assert(String(url).startsWith('https://fcm.googleapis.com/'));body=String(init?.body);return new Response('{"name":"receipt"}');}) as typeof fetch;assert(await sendOne(f.outbox,identity,true,request)==='accepted');assert(f.states[0]==='accepted');assert(!body.includes('email'));});
 Deno.test('lost response is unknown without automatic duplicate POST',async()=>{const f=fixture();let calls=0;try{await sendOne(f.outbox,identity,true,(()=>{calls++;throw new Error('network');}) as typeof fetch);}catch{/* expected */}assert(calls===1&&f.states[0]==='unknown');});
 Deno.test('provider 503 is unknown; permanent 400 is failed',async()=>{for(const [code,state] of [[503,'unknown'],[400,'failed']] as const){const f=fixture();assert(await sendOne(f.outbox,identity,true,(async()=>new Response('',{status:code})) as typeof fetch)===state);}});
+Deno.test('preparation push is separate from findings and binds the watch version',()=>{
+ const data=message({...d,kind:'preparation',noticeId:'notice',watchVersion:'7'}).message.data;
+ assert(data.kind==='preparation'&&data.noticeId==='notice'&&data.watchVersion==='7'&&!('findingId' in data));
+});

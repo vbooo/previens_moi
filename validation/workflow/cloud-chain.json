@@ -1,0 +1,56 @@
+{
+  "scope": "One synthetic free-text understanding, real background preparation and readiness FCM; no semantic benchmark or long-duration claim.",
+  "budgetBefore": [
+    14462,
+    0,
+    39,
+    0,
+    100000,
+    51
+  ],
+  "budgetLimitsIncreased": false,
+  "githubPushed": false,
+  "firstResponseSeconds": 4.85,
+  "firstResponseStatus": "ready",
+  "budgetAfterUnderstanding": [
+    15372,
+    0,
+    39,
+    0,
+    100000,
+    51
+  ],
+  "understandingWithoutWebCredits": true,
+  "confirmationAcceptedAsPending": true,
+  "criteriaPreserved": true,
+  "silentBaselineThenActive": true,
+  "noticeStates": [
+    [
+      "ready",
+      "accepted"
+    ]
+  ],
+  "readinessFcmAccepted": true,
+  "budgetAfterPreparation": [
+    16375,
+    0,
+    42,
+    0,
+    100000,
+    51
+  ],
+  "actualAndroidReadinessNotificationDisplayed": true,
+  "actualSystemNotificationTapOpenedActiveWatch": true,
+  "appBackgroundProcessStoppedBeforePreparation": true,
+  "apiOldContract503CorrectedByApiRedeployment": true,
+  "readyWatchShowsActualSource": true,
+  "syntheticAccountDeviceWatchAndSourceCleaned": true,
+  "budgetFinal": [
+    16375,
+    0,
+    42,
+    0,
+    100000,
+    51
+  ]
+}

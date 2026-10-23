@@ -1,0 +1,19 @@
+{
+  "serviceTests": 90,
+  "androidUnitTests": {
+    "demo": 52,
+    "remote": 30,
+    "sharedTestsOverlap": true
+  },
+  "contractFixtures": 34,
+  "androidBuild": true,
+  "nativeUi": {
+    "frLight": true,
+    "enDarkFontScale1_3": true,
+    "fixtureOnly": true,
+    "screensVisuallyInspected": true,
+    "scope": "Two fixture flows; cloud notification and source detail verified separately"
+  },
+  "newPaidCallsInLocalTests": 0,
+  "benchmarkRun": false
+}

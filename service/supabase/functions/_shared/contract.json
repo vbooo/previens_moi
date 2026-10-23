@@ -1070,6 +1070,77 @@
           }
         ]
       }
+    },
+    "/public/v1/understandings": {
+      "post": {
+        "operationId": "understandRequest",
+        "summary": "Understand immediately without web discovery",
+        "security": [
+          {
+            "PreviewToken": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evaluation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluationRequest"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1439,6 +1510,22 @@
             "format": "date-time",
             "pattern": "Z$",
             "description": "Instant UTC RFC3339, suffixe Z."
+          },
+          "backgroundPreparation": {
+            "type": "boolean",
+            "description": "Confirmation authorizes source preparation, not active monitoring."
+          },
+          "preparationFailure": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "source_unusable",
+              "quota",
+              "technical",
+              null
+            ]
           }
         },
         "required": [

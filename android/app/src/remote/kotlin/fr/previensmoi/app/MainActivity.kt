@@ -16,12 +16,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.Lifecycle
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -43,14 +46,15 @@ import java.util.Locale
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var requestedFinding by mutableStateOf<String?>(null)
-    override fun onNewIntent(intent: Intent) { super.onNewIntent(intent); setIntent(intent); requestedFinding = intent.getStringExtra("findingId") }
+    private var requestedWatch by mutableStateOf<String?>(null)
+    override fun onNewIntent(intent: Intent) { super.onNewIntent(intent); setIntent(intent); requestedFinding = intent.getStringExtra("findingId"); requestedWatch = intent.getStringExtra("watchId") }
     private val watches: WatchesViewModel by viewModels()
     private val creation: CreateViewModel by viewModels()
     private val session: SessionViewModel by viewModels()
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedFinding = intent.getStringExtra("findingId")
+        requestedFinding = intent.getStringExtra("findingId"); requestedWatch = intent.getStringExtra("watchId")
         enableEdgeToEdge()
         setContent {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
@@ -62,6 +66,13 @@ class MainActivity : ComponentActivity() {
                 val stack = rememberNavBackStack(Home)
                 var returnToProposal by rememberSaveable { mutableStateOf(false) }
                 val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+                LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { if (account.session != null) watches.refresh() }
+                LaunchedEffect(requestedWatch, account.session) {
+                    requestedWatch?.let { id ->
+                        if (account.session == null) { if (stack.lastOrNull() != Account) stack.add(Account) }
+                        else { watches.refresh(); if (stack.lastOrNull() != Detail(id)) stack.add(Detail(id)); requestedWatch = null }
+                    }
+                }
                 LaunchedEffect(requestedFinding, account.session) {
                     val id = requestedFinding
                     if (id != null) {
@@ -78,11 +89,13 @@ class MainActivity : ComponentActivity() {
                 }
                 LaunchedEffect(account.session) {
                     if (account.session != null) watches.refresh()
-                    if (account.session != null) { creation.resumeAfterSignIn(); if (returnToProposal && stack.lastOrNull() == Account) stack.removeLastOrNull(); returnToProposal = false }
+                    if (account.session != null) { creation.resumeAfterSignIn(); if (returnToProposal && stack.lastOrNull() == Account) stack.removeLastOrNull(); returnToProposal = false
+                        if (stack.lastOrNull() == Account && requestedFinding == null && requestedWatch == null) stack.removeLastOrNull()
+                    }
                 }
                 LaunchedEffect(create.activatedId) {
                     create.activatedId?.let { id ->
-                        creation.consumeActivation()
+                        creation.consumeActivation(); watches.refresh()
                         if (stack.lastOrNull() == Create) { stack.clear(); stack.add(Home); stack.add(Detail(id)) }
                     }
                 }
@@ -90,9 +103,9 @@ class MainActivity : ComponentActivity() {
                     state.deletedId?.let { watches.consumeDeletion(); stack.clear(); stack.add(Home) }
                 }
                 Scaffold(topBar = {
-                    TopAppBar(title = { Text(stringResource(R.string.app_title)) },
+                    TopAppBar(title = { Text(stringResource(R.string.app_title), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                         navigationIcon = { if (stack.size > 1) TextButton(onClick = { stack.removeLastOrNull() }) { Text(stringResource(R.string.back)) } },
-                        actions = { TextButton(onClick = { stack.add(Account) }) { Text(stringResource(R.string.account_title)) } })
+                        actions = { TextButton(onClick = { stack.add(Account) }) { Text(stringResource(if (account.session == null) R.string.sign_in else R.string.connected_account)) } })
                 }) { insets ->
                     Column(Modifier.fillMaxSize().padding(insets).imePadding()) {
                         Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
@@ -102,7 +115,7 @@ class MainActivity : ComponentActivity() {
                             onBack = { if (stack.size > 1) stack.removeLastOrNull() }, entryProvider = entryProvider {
                                 entry<Home> { HomeScreen(state, create, creation, preview = {
                                     focus.clearFocus(); keyboard?.hide(); creation.startNew(); creation.evaluate(Locale.getDefault().language); stack.add(Create)
-                                }, refresh = watches::refresh, open = { watches.clearCommandError(); stack.add(Detail(it)) }, remote = true, signedIn = account.session != null, signIn = { stack.add(Account) }) }
+                                }, refresh = watches::refresh, open = { watches.clearCommandError(); stack.add(Detail(it)) }, remote = true, signedIn = account.session != null, signIn = { stack.add(Account) }, newRequest = { creation.startNew(); stack.add(Create) }) }
                                 entry<Account> {
                                     Column(Modifier.fillMaxSize()) {
                                         if (Build.VERSION.SDK_INT >= 33 && account.session != null) TextButton(onClick = { permission.launch(Manifest.permission.POST_NOTIFICATIONS) }) { Text(stringResource(R.string.notification_permission)) }

@@ -1,10 +1,12 @@
 # Plan de validation et conduite du projet
 
-Mis à jour le 21 octobre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
+Mis à jour le 23 octobre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
 
 ## Position actuelle
 
-**État courant : S0, S1 et S2 terminés localement ; S3 reste ouvert.** Supabase et Firebase dédiés sont déployés, vrai code e-mail, session Android et transport FCM éprouvés. Un pilote partiel de changements textuels sur une URL publique explicite passe désormais la chaîne réelle source → résultat → notification → arrêt/suppression fournisseur, avec planificateur cloud vérifié. Il ne remplace pas l’objectif initial de demande libre, d’événements et de sujets généraux : découverte, récence, pertinence et déduplication entre sources restent à qualifier. S4 non démarré. [Bilan courant et preuves](../validation/s3/bilan.md). Les résultats D0/F0/F1/F2/F3 ci-dessous restent leur historique.
+**État courant : S0 à S3 clos pour leur périmètre d’essai, S4 terminé pour le nouveau parcours.** La compréhension est séparée de la recherche : critères présentés sans Web, confirmation, préparation serveur puis notification. Interface Material sobre et états explicites. Voir [le bilan S4](../validation/workflow/bilan.md) et [le parcours et son architecture](12-comprendre-puis-preparer.md).
+
+La conception UI/UX approfondie et les contrôles de diffusion viennent ensuite. Le benchmark reste différé. Les résultats D0/F0/F1/F2/F3 et anciens états ouverts ci-dessous sont l’historique de qualification ; ils ne décrivent pas la livraison courante.
 
 D0 : format Exa Monitor non conforme ; recherche Search pertinente mais dates de publication parfois fausses/non étayées. F0 : Firecrawl retrouve une vraie annonce récente, confirmée par un complément d'audit, mais retient aussi un ancien guide en confondant publication et mise à jour. La découverte avec preuve de récence reste non validée.
 

@@ -44,6 +44,7 @@ private suspend fun <T> Task<T>.result(): T = suspendCancellableCoroutine { c ->
 object PushWork {
     fun register(context: Context, owner: String) { enqueue(context,owner,"register",null,null,null,null) }
     fun finding(context: Context, owner: String, finding: String, watch: String, version: String, expiresAt: Long) { enqueue(context,owner,"finding",finding,watch,version,expiresAt) }
+    fun preparation(context: Context, owner: String, notice: String, watch: String, version: String, expiresAt: Long) { enqueue(context,owner,"preparation",notice,watch,version,expiresAt) }
     private fun enqueue(context: Context, owner: String, kind: String, finding: String?, watch: String?, version: String?, expiresAt: Long?) {
         val data = workDataOf("owner" to owner,"kind" to kind,"finding" to finding,"watch" to watch,"version" to version,"expiresAt" to expiresAt)
         val request = OneTimeWorkRequestBuilder<PushWorker>().setInputData(data)
@@ -59,11 +60,18 @@ class PushService : FirebaseMessagingService() {
     override fun onNewToken(token: String) { session.currentUserId()?.let { PushWork.register(this,it) } }
     override fun onMessageReceived(message: RemoteMessage) {
         // Data-only messages. No notification payload can bypass authenticated reload.
-        if (message.notification != null || message.data.keys != setOf("findingId","watchId","planVersion")) return
-        val finding = message.data["findingId"] ?: return; val watch = message.data["watchId"] ?: return; val version = message.data["planVersion"] ?: return
-        if (runCatching { UUID.fromString(finding); UUID.fromString(watch); require(version.toLong()>0) }.isFailure) return
+        if (message.notification != null) return
+        val preparation = message.data.keys == setOf("kind","noticeId","watchId","watchVersion") && message.data["kind"] == "preparation"
+        if (!preparation && message.data.keys != setOf("findingId","watchId","planVersion")) return
+        val id = message.data[if (preparation) "noticeId" else "findingId"] ?: return
+        val watch = message.data["watchId"] ?: return
+        val version = message.data[if (preparation) "watchVersion" else "planVersion"] ?: return
+        if (runCatching { UUID.fromString(id); UUID.fromString(watch); require(version.toLong()>0) }.isFailure) return
         val expiresAt = pushExpiry(message.sentTime,message.ttl,System.currentTimeMillis()) ?: return
-        session.currentUserId()?.let { PushWork.finding(this,it,finding,watch,version,expiresAt) }
+        session.currentUserId()?.let {
+            if (preparation) PushWork.preparation(this,it,id,watch,version,expiresAt)
+            else PushWork.finding(this,it,id,watch,version,expiresAt)
+        }
     }
 }
 class PushWorker(context: Context, params: WorkerParameters,
@@ -85,6 +93,7 @@ class PushWorker(context: Context, params: WorkerParameters,
         }
         val expiresAt = inputData.getLong("expiresAt",0)
         if (System.currentTimeMillis() >= expiresAt) return Result.success()
+        if (inputData.getString("kind") == "preparation") return preparation(owner,expiresAt)
         val findingId = inputData.getString("finding") ?: return Result.failure()
         val value = repository.getFinding(findingId)
         if (value is Outcome.Error) return if (value.reason == Failure.TemporaryFailure) Result.retry() else Result.success()
@@ -111,6 +120,32 @@ class PushWorker(context: Context, params: WorkerParameters,
         }
         return Result.success()
     }
+    @Suppress("DEPRECATION")
+    private suspend fun preparation(owner: String, expiresAt: Long): Result {
+        val id = inputData.getString("finding") ?: return Result.failure()
+        val watchId = inputData.getString("watch") ?: return Result.failure()
+        val bearer = sessions.bearer() ?: return Result.success()
+        val response = apiCall { api.watch(bearer,watchId) }
+        if (response !is ApiResult.Value) return if (response is ApiResult.ConnectionFailure) Result.retry() else Result.success()
+        val watch = response.body
+        if (sessions.currentUserId() != owner || watch.version.toString() != inputData.getString("version") || !watch.plan.backgroundPreparation || watch.status !in setOf("active","paused")) return Result.success()
+        if (watch.status == "paused" && watch.health != "degraded") return Result.success()
+        if (Build.VERSION.SDK_INT >= 33 && applicationContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return Result.success()
+        val manager = applicationContext.getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return Result.success()
+        if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(NotificationChannel("preparation",applicationContext.getString(R.string.notification_channel),NotificationManager.IMPORTANCE_DEFAULT))
+        val intent = Intent(applicationContext,MainActivity::class.java).setAction("preparation:$id").putExtra("watchId",watchId)
+        val pending = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        val builder = if (Build.VERSION.SDK_INT >= 26) Notification.Builder(applicationContext,"preparation") else Notification.Builder(applicationContext)
+        val title = applicationContext.getString(if (watch.status == "active") R.string.notification_ready else R.string.notification_preparation_failed)
+        val notification = builder.setSmallIcon(R.drawable.ic_demo).setContentTitle(title).setContentText(applicationContext.getString(R.string.notification_preparation_body)).setContentIntent(pending).setAutoCancel(true).setOnlyAlertOnce(true).setVisibility(Notification.VISIBILITY_PRIVATE).build()
+        if (sessions.currentUserId() == owner && System.currentTimeMillis() < expiresAt) {
+            val first = try { claims.claim(owner,id) } catch (e: CancellationException) { throw e } catch (_: Exception) { return Result.retry() }
+            if (first && sessions.currentUserId() == owner) manager.notify(id,0,notification)
+        }
+        return Result.success()
+    }
+
 }
 class PushWorkerFactory @Inject constructor(private val repository: RemoteRepositories, private val sessions: RemoteSessionRepository,
     private val api: ApplicationApi, private val installation: DeviceInstallation, private val claims: NotificationClaims) : WorkerFactory() {

@@ -104,4 +104,24 @@
     <string name="analysis_pending">Analysis is still pending. Try again to check the same analysis; a second analysis will not be started.</string>
     <string name="sign_in_to_view_watches">Sign in to see your watches.</string>
     <string name="sign_in">Sign in</string>
+    <string name="understanding_title">Here’s what I understood</string>
+    <string name="understanding_loading">Understanding your request…</string>
+    <string name="confirm_prepare">Confirm and prepare watch</string>
+    <string name="prepare_explanation">After confirmation, we’ll look for suitable sources. You can leave the app: a notification will tell you whether your watch is ready.</string>
+    <string name="prepare_limits">Limited trial: public sources, daily checks and partial coverage. Preparation may fail; your criteria won’t be changed without your agreement.</string>
+    <string name="preparing_title">Preparing</string>
+    <string name="preparing_body">We’re finding sources to monitor. You can close the app; we’ll let you know when your watch is ready.</string>
+    <string name="preparation_failed_title">Your watch couldn’t start</string>
+    <string name="preparation_failed_body">Preparation encountered a technical problem. Monitoring is inactive. Try later or edit your request.</string>
+    <string name="cancel_preparation">Cancel preparation</string>
+    <string name="refresh_short">Refresh</string>
+    <string name="connected_account">My account · signed in</string>
+    <string name="notification_ready">Your watch is ready</string>
+    <string name="notification_preparation_failed">Your watch couldn’t start</string>
+    <string name="notification_preparation_body">Open your watch to see its status and sources.</string>
+    <string name="new_watch">New watch</string>
+    <string name="preparation_source_failed">The sources read cannot verify your request. Monitoring is inactive. You can edit your request.</string>
+    <string name="preparation_quota_failed">The trial limit has been reached. Monitoring has not started.</string>
+    <string name="prepared_sources">Sources read</string>
+    <string name="prepared_sources_body">Sources checked during preparation. Future checks may find other sources.</string>
 </resources>

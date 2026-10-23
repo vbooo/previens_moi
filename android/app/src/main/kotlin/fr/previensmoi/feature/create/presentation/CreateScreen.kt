@@ -63,7 +63,7 @@ fun CreateScreen(state: CreateUiState, vm: CreateViewModel, login: (() -> Unit)?
                     }
                 }
                 FailureText(state.error)
-                if (state.step == CreationStep.Evaluating) Busy()
+                if (state.step == CreationStep.Evaluating) { Busy(); Text(stringResource(R.string.understanding_loading)) }
                 else Button(onClick = { focus.clearFocus(); keyboard?.hide(); vm.evaluate(Locale.getDefault().language) }, enabled = state.loaded,
                     modifier = Modifier.testTag("evaluate")) { Text(stringResource(R.string.analyse)) }
                 TextButton(onClick = vm::discard) { Text(stringResource(R.string.discard)) }
@@ -81,9 +81,19 @@ fun CreateScreen(state: CreateUiState, vm: CreateViewModel, login: (() -> Unit)?
                 TextButton(onClick = vm::revise) { Text(stringResource(R.string.revise)) }
             }
             CreationStep.Ready, CreationStep.Confirming -> {
-                Text(stringResource(R.string.proposal_title), style = MaterialTheme.typography.headlineMedium)
+                Text(stringResource(if (remote && state.proposal?.backgroundPreparation == true) R.string.understanding_title else R.string.proposal_title), style = MaterialTheme.typography.headlineMedium)
                 val proposal = state.proposal
-                if (proposal != null) {
+                if (proposal != null && remote && proposal.backgroundPreparation) {
+                    proposal.criteria.forEach { Text(it, style = MaterialTheme.typography.bodyLarge) }
+                    Text(stringResource(R.string.prepare_explanation))
+                    Text(stringResource(R.string.prepare_limits), style = MaterialTheme.typography.bodySmall)
+                    FailureText(state.error)
+                    if (state.step == CreationStep.Confirming) Busy()
+                    else {
+                        Button(onClick = vm::confirm, modifier = Modifier.fillMaxWidth().testTag("confirm")) { Text(stringResource(R.string.confirm_prepare)) }
+                        TextButton(onClick = vm::revise) { Text(stringResource(R.string.revise)) }
+                    }
+                } else if (proposal != null) {
                     Text(stringResource(R.string.criteria_title), style = MaterialTheme.typography.titleMedium)
                     Text(proposal.draft.text)
                     if (proposal.draft.answer.isNotBlank()) Text(proposal.draft.answer)

@@ -1,0 +1,9 @@
+{
+  "paidRunRetried": false,
+  "providerPausedAndIdleBeforeStop": true,
+  "noRunIntentOrReservation": true,
+  "remoteDeletionConfirmed404": true,
+  "originalWatchPreservedSuspendedByCapacity": true,
+  "globalSlots": 1,
+  "budgetCountersReset": false
+}

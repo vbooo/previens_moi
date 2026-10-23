@@ -20,9 +20,11 @@ import java.util.Date
 
 @Composable
 fun Page(content: @Composable ColumnScope.() -> Unit) {
+    Surface(Modifier.fillMaxSize()) {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         Column(Modifier.widthIn(max = 720.dp).fillMaxWidth().verticalScroll(rememberScrollState()).padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp), content = content)
+    }
     }
 }
 @Composable fun FailureText(failure: Failure?) {

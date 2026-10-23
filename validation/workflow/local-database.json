@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "scope": "Disposable local database; injected model/source outcomes, not semantic quality or cloud transport",
+  "paidCalls": 0,
+  "activeDatabaseModified": false,
+  "understandingBeforeWebAndReplaySafe": true,
+  "coverageDoesNotActivatePrematurely": true,
+  "silentBaselineAndSeparateReadinessNotice": true,
+  "lateNoticeBlockedAfterPause": true,
+  "failedPreparationNotifiesWithoutActivation": true,
+  "noticeDataFollowsDeviceErasure": true,
+  "internalRpcNotExposedToUsers": true,
+  "exhaustedLiteralPilotRejectedBeforeProviderWork": true
+}

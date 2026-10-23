@@ -14,7 +14,7 @@ data class Proposal(
     val partial: Boolean = false, val sources: List<String> = emptyList(),
     val intervalHours: Int = 24, val limit: Int = 1,
     val title: String = "", val criteria: List<String> = emptyList(), val exclusions: List<String> = emptyList(),
-    val coverage: String = "", val limitations: List<String> = emptyList(), val method: String = "",
+    val coverage: String = "", val limitations: List<String> = emptyList(), val method: String = "", val backgroundPreparation: Boolean = false, val preparationFailure: String? = null,
 )
 data class Watch(
     val id: String, val plan: Proposal, val version: Long = 1,
@@ -51,7 +51,7 @@ data class Command(
     val id: String, val operation: Operation, val targetId: String,
     val expectedVersion: Long, val proposalId: String? = null, val proposalVersion: Long? = null, val acceptPartial: Boolean = false,
 )
-data class CommandReceipt(val commandId: String, val watchId: String, val version: Long?, val deleted: Boolean = false)
+data class CommandReceipt(val commandId: String, val watchId: String, val version: Long?, val deleted: Boolean = false, val acceptedInBackground: Boolean = false)
 data class Session(val id: String)
 sealed interface RefreshResult {
     data object Success : RefreshResult

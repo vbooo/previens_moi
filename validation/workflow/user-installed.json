@@ -1,0 +1,9 @@
+{
+  "avd": "medium_phone",
+  "apkUpdatedWithoutWipe": true,
+  "existingUserSessionRetained": true,
+  "signedInLabelVisible": true,
+  "newWatchActionVisible": true,
+  "userAccountAndResultsPreserved": true,
+  "qualificationEmulatorStopped": true
+}

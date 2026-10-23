@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface ApplicationApi {
     @GET("public/v1/health") suspend fun health(): Response<HealthDto>
     @POST("public/v1/preview-sessions") suspend fun previewSession(): Response<PreviewSessionDto>
-    @POST("public/v1/evaluations") suspend fun evaluate(@Header("X-Preview-Token") token: String, @Body request: EvaluationRequestDto): Response<EvaluationDto>
+    @POST("public/v1/understandings") suspend fun evaluate(@Header("X-Preview-Token") token: String, @Body request: EvaluationRequestDto): Response<EvaluationDto>
     @GET("public/v1/evaluations/{id}") suspend fun evaluation(@Header("X-Preview-Token") token: String, @Path("id") id: String): Response<EvaluationDto>
     @GET("public/v1/proposals/{id}") suspend fun proposal(@Header("X-Preview-Token") token: String, @Path("id") id: String): Response<ProposalDto>
     @POST("api/v1/commands") suspend fun command(@Header("Authorization") bearer: String, @Body request: CommandDto): Response<CommandReceiptDto>

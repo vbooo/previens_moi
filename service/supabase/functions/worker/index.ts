@@ -39,6 +39,7 @@ serve(async req=>{
    async allowed(d){return await rpc('s3_delivery_allowed',{delivery:d.id,lease:d.lease}) as boolean;},
    async finish(d,outcome){await rpc('s3_delivery_finish',{delivery:d.id,lease:d.lease,outcome});},
  },identity(serviceAccount),true);
- const general=provider==='empty'&&stop==='empty'&&state==='empty'?await runGeneral():'busy';
- return json({state,general,admission,provider,stop,remoteErasure,erasure},200);
+ const preparation=state==='empty'?await sendOne({async lease(){return await rpc('s4_preparation_delivery_lease',{}) as Delivery|null;},async allowed(d){return await rpc('s4_preparation_delivery_allowed',{delivery:d.id,lease_id:d.lease}) as boolean;},async finish(d,outcome){await rpc('s4_preparation_delivery_finish',{delivery:d.id,lease_id:d.lease,outcome});}},identity(serviceAccount),true):'busy';
+ const general=provider==='empty'&&stop==='empty'&&state==='empty'&&preparation==='empty'?await runGeneral():'busy';
+ return json({state,preparation,general,admission,provider,stop,remoteErasure,erasure},200);
 });

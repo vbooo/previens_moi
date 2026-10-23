@@ -1,3 +1,5 @@
+> Suite livrée le 23 octobre : [S4 — comprendre, confirmer, préparer en arrière-plan](../workflow/bilan.md). Le bilan S3 ci-dessous conserve son périmètre et ses preuves historiques.
+
 # Sprint 3 — clôture technique du 22 octobre 2026
 
 **S3-01 à S3-06 terminés pour le service d’essai borné décrit ci-dessous.** Le moteur général est raccordé et déployé : demande libre → analyse des critères → recherche Web → lecture effective → proposition → confirmation → état initial silencieux → vérifications récurrentes → fait nouveau sourcé → notification Firebase → résultat Android. Cela ne qualifie ni une couverture universelle du Web ni une V1 publiable.

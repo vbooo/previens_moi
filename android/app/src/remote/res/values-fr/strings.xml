@@ -9,4 +9,8 @@
     <string name="status_active">Actif</string>
     <string name="finding_title">Résultat du suivi</string>
     <string name="source_label">Source consultée</string>
+    <string name="analyse">Comprendre ma demande</string>
+<string name="connected_account">Connecté</string>
+<string name="next_check">Prochaine vérification : %1$s</string>
+<string name="delete_info">Le suivi et ses résultats seront supprimés après confirmation.</string>
 </resources>
