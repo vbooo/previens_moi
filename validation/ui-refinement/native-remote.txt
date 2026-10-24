@@ -1,0 +1,7 @@
+
+fr.previensmoi.app.V1UiTest:..
+fr.previensmoi.app.PreparationFlowTest:.
+
+Time: 6.207
+
+OK (3 tests)

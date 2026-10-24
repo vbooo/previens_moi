@@ -1,0 +1,27 @@
+{
+  "platform": "Android emulator",
+  "mode": "Operate",
+  "themeSha256": "7dc89544961a67dc34173b6c7fb6b4989cb75a7b2e0e43d8e10b3571175bb17e",
+  "screens": [
+    "v2-active-dark.png",
+    "v2-active-large.png",
+    "v2-active-sources.png",
+    "v2-active.png",
+    "v2-confirm-dark.png",
+    "v2-confirm-disclosure-large.png",
+    "v2-confirm-disclosure.png",
+    "v2-confirm-large.png",
+    "v2-confirm.png",
+    "v2-failed.png",
+    "v2-home.png",
+    "v2-limit-explanation.png",
+    "v2-limit-large.png",
+    "v2-limit.png",
+    "v2-paused.png",
+    "v2-preparing.png",
+    "v2-request.png",
+    "v2-result.png"
+  ],
+  "fixtureData": true,
+  "paidCalls": 0
+}

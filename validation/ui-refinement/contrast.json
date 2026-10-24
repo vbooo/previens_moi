@@ -1,0 +1,18 @@
+{
+  "light": {
+    "primary/onPrimary": 8.37,
+    "primaryContainer/onPrimaryContainer": 13.42,
+    "secondaryContainer/onSecondaryContainer": 12.84,
+    "surface/onSurface": 15.41,
+    "surfaceContainer/onSurfaceVariant": 7.23,
+    "surfaceContainerLowest/onSurfaceVariant": 8.71
+  },
+  "dark": {
+    "primary/onPrimary": 8.13,
+    "primaryContainer/onPrimaryContainer": 8.45,
+    "secondaryContainer/onSecondaryContainer": 7.36,
+    "surface/onSurface": 14.64,
+    "surfaceContainer/onSurfaceVariant": 9.57,
+    "surfaceContainerLowest/onSurfaceVariant": 11.68
+  }
+}

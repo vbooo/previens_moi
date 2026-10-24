@@ -1,0 +1,10 @@
+{
+  "disposition": "ship",
+  "scope": "Verdict on three listed UI material fixes against native captures; documentation checked separately.",
+  "resolved": [
+    "confirmation-mode-discoverability",
+    "source-density-alignment",
+    "native-scrolled-disclosure-evidence"
+  ],
+  "previousUserEvidence": true
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 2,
+  "scope": "Documentation du système visuel Android natif ; code et PRODUCT.md hors périmètre d’écriture.",
+  "createdAt": "2026-10-24T08:53:52.408581Z",
+  "operation": "Authorized merge/refresh after palette/detail/confirmation revision.",
+  "files": [
+    "DESIGN.md",
+    ".impeccable/design.json"
+  ],
+  "previousDocumentationHashes": {
+    "DESIGN.md": "0237892d86bbca7708d65aa9554d1c3417661925a8fc530f209e9a36f1fc27f9",
+    ".impeccable/design.json": "4c4e68a5f71ce2a58b381ff56265e69b6e1b7140d7d7b499a6078e7be28fba35"
+  },
+  "documentationHashes": {
+    "DESIGN.md": "814ab46daf88ed6264e757331c67af622b3fbf887dc2ec028ccdb63e952be0e5",
+    ".impeccable/design.json": "e1ec976ac75f61af4ac01442b3363a2a3fa6315e0a48850d076199d041873488"
+  },
+  "colorTokens": 64,
+  "nativeTypographyRoles": 9,
+  "localWeightVariants": 3,
+  "typographyRoles": 12,
+  "componentTokenVariants": 36,
+  "componentPreviews": 10,
+  "sourceEvidence": [
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/common/presentation/PreviensTheme.kt",
+      "sha256": "7dc89544961a67dc34173b6c7fb6b4989cb75a7b2e0e43d8e10b3571175bb17e"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/common/presentation/UiSupport.kt",
+      "sha256": "76d0a16a624aa594e51603ee3f15fa382430355a86aed6363cc2548903d72c06"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateScreen.kt",
+      "sha256": "bdfb6ff0d2ec2e143b952e056173b695b3a41edf78ff6172adc1245628cc1d1c"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchScreens.kt",
+      "sha256": "ef32e9fd632ffd328e1bed8c0d74c73f6c12ca144c01f27761f97068a16f0a1c"
+    },
+    {
+      "path": "android/app/src/main/kotlin/fr/previensmoi/feature/session/presentation/SessionScreen.kt",
+      "sha256": "530272b4f619b56659439733bbd872787def1e0cdc8f97fdfb68b765491d7e52"
+    },
+    {
+      "path": "android/app/src/remote/kotlin/fr/previensmoi/app/MainActivity.kt",
+      "sha256": "cd247da87b9478deffec3c52dff04703f5c705ec6c5072e98322512d2882f88e"
+    },
+    {
+      "path": "android/gradle/libs.versions.toml",
+      "sha256": "bc244d539b97d64f56a79acdf787772a204d9840c527e2668e4cd972c8a235b2"
+    },
+    {
+      "path": "android/app/src/main/res/raw/material_symbols_license.txt",
+      "sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020"
+    },
+    {
+      "path": "PRODUCT.md",
+      "sha256": "f7d2bcc375ba7bf2fd6729f9249495d2e509b0a8dc4e59f547d5324f873d712d"
+    }
+  ],
+  "nativeLibrary": {
+    "material3": "1.4.0",
+    "composeBom": "2026.09.00",
+    "evidence": "TypeScaleTokens and ShapeTokens inspected locally. Cached classes.jar SHA-256 matches classes.jar in Material3 1.4.0 AAR."
+  },
+  "visualEvidence": {
+    "directory": ".impeccable/review/v2",
+    "files": [
+      "v2-active-dark.png",
+      "v2-active-large.png",
+      "v2-active-sources.png",
+      "v2-active.png",
+      "v2-confirm-dark.png",
+      "v2-confirm-disclosure-large.png",
+      "v2-confirm-disclosure.png",
+      "v2-confirm-large.png",
+      "v2-confirm.png",
+      "v2-failed.png",
+      "v2-home.png",
+      "v2-limit-explanation.png",
+      "v2-limit-large.png",
+      "v2-limit.png",
+      "v2-paused.png",
+      "v2-preparing.png",
+      "v2-request.png",
+      "v2-result.png"
+    ],
+    "reviewed": [
+      "v2-confirm.png",
+      "v2-active.png",
+      "v2-limit.png"
+    ],
+    "fontScaleLarge": 1.3,
+    "evidenceType": "Existing native Android emulator fixtures; documentation inspected the listed captures and did not recapture, run, or qualify the app."
+  },
+  "knownDriftNotRepaired": [
+    {
+      "path": "PRODUCT.md",
+      "finding": "Initial-demo capabilities without network/account and historical evidence statements are stale relative to current remote implementation. Preserved per write boundary."
+    },
+    {
+      "path": ".impeccable/review",
+      "finding": "Older v1 and demonstration phone/tablet fixtures remain historical, not the authority for this revision."
+    }
+  ],
+  "previewLimits": [
+    "HTML/CSS previews are consultation translations, not APK rendering or APK/web parity evidence.",
+    "Android ripple, typography, font scale, accessibility and interaction remain native.",
+    "Synthetic OKLCH tonalRamp metadata is preview-only, not an approved Android tonal scale.",
+    "Frontmatter retains dp/sp; CSS sizes translate only for consultation.",
+    "Native status background derives from its color at 10% opacity.",
+    "Height entries for buttons/chips are minimum constraints, not fixed caps."
+  ],
+  "networkCalls": 0,
+  "paidCalls": 0,
+  "productionFilesChanged": false,
+  "validation": {
+    "yamlParse": "passed (Ruby YAML safe_load)",
+    "jsonParse": "passed",
+    "canonicalSectionOrder": "passed",
+    "frontmatterPropertyAllowlist": "passed",
+    "componentPropertyAllowlist": "passed",
+    "componentReferences": "passed",
+    "colorMetaCoverage": "64/64",
+    "typographyMetaCoverage": "12/12",
+    "tonalRampSize": "8 steps per color, preview-only",
+    "themeRoleValues": "64/64 exact source values",
+    "sourceFilesUnchangedDuringDocumentation": true,
+    "nativeLibraryUnchanged": true,
+    "officialIconLicenseUnchanged": true,
+    "htmlDetector": "not applicable; native Kotlin/Compose"
+  }
+}

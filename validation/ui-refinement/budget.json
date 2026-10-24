@@ -1,0 +1,26 @@
+{
+  "newPaidCallsByThisTask": 0,
+  "limitsIncreased": false,
+  "sharedAcrossAccounts": true,
+  "generalBudget": {
+    "modelMicroUsdUsed": 21052,
+    "modelMicroUsdHeld": 0,
+    "creditsUsed": 45,
+    "creditsHeld": 0,
+    "modelMicroUsdLimit": 100000,
+    "creditLimit": 51
+  },
+  "capacity": {
+    "globalActiveSlots": 1,
+    "occupiedSlots": 1,
+    "knownPageTrialLimit": 14,
+    "knownPageTrialUsed": 13,
+    "knownPageTrialHeld": 0
+  },
+  "activePerAccount": 1,
+  "watchStates": {
+    "active": 1,
+    "suspended_by_capacity": 1
+  },
+  "authorizedEuroCap": 2
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="v2_last_success">Last successful check</string>
+    <string name="v2_next_check">Next check</string>
+    <string name="v2_not_checked">Not checked yet</string>
+    <string name="v2_not_scheduled">Not scheduled</string>
+    <string name="v2_capacity_title">Why is this watch suspended?</string>
+    <string name="v2_capacity_body">This watch reached a service trial limit. It cannot be resumed here. Your results remain available. Trial credits are shared across accounts; refreshing does not reset them.</string>
+    <string name="v2_limit_summary">Trial limit reached. Your results remain available.</string>
+    <string name="v2_trial_note">Public sources · limited trial. Activation depends on available slots and credits.</string>
+</resources>

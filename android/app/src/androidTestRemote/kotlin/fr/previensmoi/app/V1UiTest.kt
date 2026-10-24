@@ -62,6 +62,7 @@ class V1UiTest {
         var draft = RequestDraft()
         var p: Proposal? = null
         var confirmations = 0
+        val submittedOperations = mutableListOf<Operation>()
 
         override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
             p =
@@ -72,7 +73,7 @@ class V1UiTest {
                     Long.MAX_VALUE,
                     partial = true,
                     intervalHours = 1,
-                    title = "Promotions PS5 en France",
+                    title = "Surveillance des promotions sur la PlayStation 5",
                     criteria =
                         listOf("Nouvelles promotions sur la PlayStation 5 disponibles en France."),
                     method = "web_search",
@@ -102,6 +103,7 @@ class V1UiTest {
         override suspend fun refresh() = RefreshResult.Success
 
         override suspend fun execute(c: Command): Outcome<CommandReceipt> {
+            submittedOperations += c.operation
             if (c.operation == Operation.Activate) {
                 confirmations++
                 list.value =
@@ -239,6 +241,8 @@ class V1UiTest {
         tap("evaluate")
         await("confirm")
         compose.onNodeWithTag("confirm").assertIsDisplayed()
+        compose.onNodeWithTag("continuous").assertIsDisplayed()
+        compose.onNodeWithTag("once").assertIsDisplayed()
         assertEquals(0, service.confirmations)
         tap("continuous")
         tap("confirm")
@@ -255,6 +259,77 @@ class V1UiTest {
         assertEquals(1, service.confirmations)
         assertEquals("France", service.p!!.draft.region)
         assertEquals(FollowMode.Continuous, service.p!!.draft.mode)
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Test
+    fun suspendedStatusExplainsTrialAndRefreshStaysInToolbar() {
+        val service = Service()
+        var refreshes = 0
+        val now = 1792767900000L
+        val watch =
+            Watch(
+                "suspended",
+                Proposal(
+                    "p",
+                    1,
+                    RequestDraft("Une demande"),
+                    Long.MAX_VALUE,
+                    title = "Changements du texte de la page",
+                ),
+                status = WatchStatus.SuspendedByCapacity,
+                health = Health.Degraded,
+                baselineAt = now,
+                lastSuccess = now,
+                remoteState = RemoteState.Stopped,
+            )
+        compose.runOnUiThread {
+            val watches = WatchesViewModel(service, service, IdGenerator { "c" })
+            compose.activity.setContent {
+                PreviensTheme {
+                    Scaffold(
+                        topBar = {
+                            TopAppBar(
+                                title = { Text("Détail du suivi") },
+                                actions = { RefreshWatchAction(false) { refreshes++ } },
+                            )
+                        },
+                    ) { insets ->
+                        Box(Modifier.padding(insets)) {
+                            DetailScreen(
+                                watch.id,
+                                WatchesUiState(watches = listOf(watch)),
+                                watches,
+                                {},
+                                {},
+                                remote = true,
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        compose.onNodeWithTag("resume").assertDoesNotExist()
+        tap("status_explanation")
+        compose.onNodeWithTag("capacity_dialog").assertIsDisplayed()
+        capture("limit-explanation")
+        compose.onNodeWithText(compose.activity.getString(R.string.v1_close)).performClick()
+        compose.onAllNodesWithTag("refresh_watches").assertCountEquals(1)
+        compose.onNodeWithTag("refresh_watches").performClick()
+        assertEquals(1, refreshes)
+        assertTrue(service.submittedOperations.isEmpty())
+        val last =
+            compose
+                .onNodeWithText(compose.activity.getString(R.string.v2_last_success))
+                .fetchSemanticsNode()
+                .boundsInRoot
+        val next =
+            compose
+                .onNodeWithText(compose.activity.getString(R.string.v2_next_check))
+                .fetchSemanticsNode()
+                .boundsInRoot
+        assertEquals(last.top, next.top, 1f)
+        assertTrue(last.right < next.left)
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -304,7 +379,7 @@ class V1UiTest {
                         "https://autre.exemple.fr/ps5",
                     ),
                 intervalHours = 1,
-                title = "Promotions PS5 en France",
+                title = "Surveillance des promotions sur la PlayStation 5",
                 criteria = listOf("Nouvelles offres sur la PlayStation 5, disponibles en France."),
                 method = "web_search",
                 backgroundPreparation = true,
@@ -378,10 +453,22 @@ class V1UiTest {
                                             AppIcon(R.drawable.symbol_refresh, "Actualiser")
                                         }
                                         TextButton({}) { Text("Connecté") }
-                                    } else if (name in listOf("active", "delete", "limit"))
+                                    } else if (
+                                        name in
+                                            listOf(
+                                                "active",
+                                                "delete",
+                                                "limit",
+                                                "paused",
+                                                "failed",
+                                                "preparing",
+                                            )
+                                    ) {
+                                        RefreshWatchAction(false, {})
                                         IconButton({}) {
                                             AppIcon(R.drawable.symbol_more_vert, "Actions du suivi")
                                         }
+                                    }
                                 },
                             )
                         },
@@ -561,6 +648,10 @@ class V1UiTest {
             compose.waitForIdle()
             if (args.getString("scroll") == "sources")
                 compose.onAllNodesWithTag("prepared_source").onLast().performScrollTo()
+            if (args.getString("scroll") == "disclosure")
+                compose
+                    .onNodeWithText(compose.activity.getString(R.string.v2_trial_note))
+                    .performScrollTo()
             if (args.getString("scroll") == "choices")
                 compose.onNodeWithTag("once").performScrollTo()
             capture(name + if (dark) "-dark" else args.getString("suffix", ""))

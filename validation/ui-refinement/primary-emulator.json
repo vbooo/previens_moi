@@ -1,0 +1,10 @@
+{
+  "installed": true,
+  "existingSessionRetained": true,
+  "existingWatchesRetained": true,
+  "primarySuspensionExplanation": true,
+  "detailToolbarRefresh": true,
+  "dataWiped": false,
+  "newPaidCalls": 0,
+  "scope": "Primary emulator UI smoke using the existing suspended watch; no watch command sent."
+}

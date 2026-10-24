@@ -7,10 +7,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fr.previensmoi.R
 import fr.previensmoi.domain.model.Failure
@@ -21,6 +25,7 @@ import java.util.Date
 @Composable
 fun Page(
     footer: (@Composable ColumnScope.() -> Unit)? = null,
+    spacing: Dp = 16.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(Modifier.fillMaxSize()) {
@@ -32,12 +37,15 @@ fun Page(
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 24.dp)
                         .padding(top = 12.dp, bottom = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(spacing),
                     content = content,
                 )
             }
             if (footer != null)
-                Surface(color = MaterialTheme.colorScheme.surface) {
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    tonalElevation = 2.dp,
+                ) {
                     Column(
                         Modifier.widthIn(max = 720.dp)
                             .fillMaxWidth()
@@ -106,5 +114,63 @@ fun Busy() {
             stringResource(R.string.processing),
             modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
         )
+    }
+}
+
+@Composable
+fun SectionCard(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            ),
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(
+                title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            content()
+        }
+    }
+}
+
+/** Native ListItems own their insets; the collection adds none around them. */
+@Composable
+fun CollectionCard(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            ),
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Column(Modifier.padding(bottom = 8.dp)) {
+            Text(
+                title,
+                Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            content()
+        }
+    }
+}
+
+@Composable
+fun RefreshWatchAction(refreshing: Boolean, refresh: () -> Unit) {
+    val description = stringResource(R.string.refresh_short)
+    IconButton(
+        onClick = refresh,
+        enabled = !refreshing,
+        modifier =
+            Modifier.testTag("refresh_watches").semantics { contentDescription = description },
+    ) {
+        if (refreshing) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp)
+        else AppIcon(R.drawable.symbol_refresh)
     }
 }

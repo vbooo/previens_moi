@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="v2_last_success">Dernière réussite</string>
+    <string name="v2_next_check">Prochain contrôle</string>
+    <string name="v2_not_checked">Pas encore vérifié</string>
+    <string name="v2_not_scheduled">Non planifié</string>
+    <string name="v2_capacity_title">Pourquoi ce suivi est suspendu ?</string>
+    <string name="v2_capacity_body">Ce suivi a atteint une limite d’essai du service. La reprise n’est pas disponible ici. Tes résultats restent accessibles. Les crédits de l’essai sont partagés entre les comptes ; actualiser ne les réinitialise pas.</string>
+    <string name="v2_limit_summary">Limite d’essai atteinte. Tes résultats restent accessibles.</string>
+    <string name="v2_trial_note">Sources publiques · essai limité. L’activation dépend des places et des crédits disponibles.</string>
+</resources>

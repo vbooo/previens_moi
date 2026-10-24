@@ -8,10 +8,13 @@ import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fr.previensmoi.R
@@ -156,7 +159,8 @@ fun WatchDeleteDialog(watch: Watch, onDismiss: () -> Unit, onConfirm: () -> Unit
 private fun SourceLink(url: String, label: String = sourceDomain(url)) {
     val uri = LocalUriHandler.current
     ListItem(
-        headlineContent = { Text(label) },
+        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        headlineContent = { Text(label, maxLines = 2, overflow = TextOverflow.Ellipsis) },
         supportingContent = { if (label != sourceDomain(url)) SecondaryText(sourceDomain(url)) },
         trailingContent = {
             AppIcon(R.drawable.symbol_open_in_new, tint = MaterialTheme.colorScheme.primary)
@@ -166,6 +170,42 @@ private fun SourceLink(url: String, label: String = sourceDomain(url)) {
                 .heightIn(min = 56.dp)
                 .testTag("prepared_source"),
     )
+}
+
+@Composable
+private fun CheckTiming(watch: Watch) {
+    Row(
+        Modifier.fillMaxWidth().testTag("check_timing"),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.Top,
+    ) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(
+                stringResource(R.string.v2_last_success),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                watch.lastSuccess?.let { dateText(it) } ?: stringResource(R.string.v2_not_checked),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+            )
+        }
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(
+                stringResource(R.string.v2_next_check),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                if (watch.status == WatchStatus.Active && watch.nextCheck != null)
+                    dateText(watch.nextCheck)
+                else stringResource(R.string.v2_not_scheduled),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+            )
+        }
+    }
 }
 
 @Composable
@@ -185,6 +225,7 @@ fun DetailScreen(
         return
     }
     var deleting by rememberSaveable(id) { mutableStateOf(false) }
+    var explainLimit by rememberSaveable(id) { mutableStateOf(false) }
     if (deleting)
         WatchDeleteDialog(
             watch,
@@ -194,157 +235,197 @@ fun DetailScreen(
                 vm.command(watch, Operation.Delete)
             },
         )
+    if (explainLimit)
+        AlertDialog(
+            onDismissRequest = { explainLimit = false },
+            title = { Text(stringResource(R.string.v2_capacity_title)) },
+            text = { Text(stringResource(R.string.v2_capacity_body)) },
+            confirmButton = {
+                TextButton({ explainLimit = false }) { Text(stringResource(R.string.v1_close)) }
+            },
+            modifier = Modifier.testTag("capacity_dialog"),
+        )
     val failed =
         watch.baselineAt == null &&
             watch.status == WatchStatus.Paused &&
             watch.health == Health.Degraded
-    Page {
-        Text(watchTitle(watch), style = MaterialTheme.typography.headlineSmall)
-        Column(Modifier.testTag("watch_status")) { WatchStatusLabel(watch) }
-        when {
-            watch.status == WatchStatus.Pending -> Text(stringResource(R.string.v1_preparing_body))
-            failed -> {
-                Text(
-                    stringResource(
-                        when (watch.plan.preparationFailure) {
-                            "source_unusable" -> R.string.v1_source_failed
-                            "quota" -> R.string.preparation_quota_failed
-                            else -> R.string.v1_technical_failed
-                        },
-                    ),
-                )
-                Button(onClick = { edit(watch) }, modifier = Modifier.testTag("edit")) {
-                    Text(stringResource(R.string.revise))
-                }
-            }
-            watch.status == WatchStatus.SuspendedByCapacity ->
-                Text(stringResource(R.string.v1_limit_body))
-            watch.status == WatchStatus.Paused ->
-                SecondaryText(stringResource(R.string.v1_paused_body))
-            watch.status == WatchStatus.Completed ->
-                SecondaryText(stringResource(R.string.v1_completed_body))
-        }
-        if (watch.status != WatchStatus.Pending) {
-            watch.lastSuccess?.let {
-                SecondaryText(stringResource(R.string.last_success, dateText(it)))
-            }
-            if (watch.health == Health.Degraded && !failed)
-                SecondaryText(
-                    if (
-                        watch.plan.checkedSources != null &&
-                            watch.plan.totalSources != null &&
-                            watch.plan.checkedSources < watch.plan.totalSources
-                    )
-                        stringResource(
-                            R.string.v1_partial_check,
-                            watch.plan.checkedSources,
-                            watch.plan.totalSources,
-                        )
-                    else stringResource(R.string.v1_last_failed),
-                )
-            if (watch.status == WatchStatus.Active && watch.nextCheck != null)
-                SecondaryText(stringResource(R.string.next_check, dateText(watch.nextCheck)))
-        }
-        if (watch.remoteState == RemoteState.Stopping)
-            SecondaryText(stringResource(R.string.v1_stopping_body))
-        if (watch.remoteState == RemoteState.Unknown)
-            SecondaryText(stringResource(R.string.remote_unknown))
-        if (!notificationsEnabled && watch.status in setOf(WatchStatus.Pending, WatchStatus.Active))
-            Surface(
-                color = MaterialTheme.colorScheme.surfaceContainerLow,
-                shape = MaterialTheme.shapes.medium,
-            ) {
-                Column(Modifier.padding(16.dp)) {
-                    SectionTitle(stringResource(R.string.v1_alerts_phone))
-                    TextButton(enableNotifications) {
-                        Text(stringResource(R.string.v1_enable_notifications))
-                    }
-                }
-            }
-        FailureText(state.commandError)
-        if (state.commandPending) Busy()
-        if (watch.status in setOf(WatchStatus.Active, WatchStatus.Pending))
-            OutlinedButton(
-                onClick = { vm.command(watch, Operation.Pause) },
-                enabled = !state.commandPending,
-                modifier = Modifier.testTag("pause"),
-            ) {
-                AppIcon(
-                    if (watch.status == WatchStatus.Pending) R.drawable.symbol_close
-                    else R.drawable.symbol_pause,
-                )
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    stringResource(
-                        if (watch.status == WatchStatus.Pending) R.string.cancel_preparation
-                        else R.string.pause,
-                    ),
-                )
-            }
-        if (watch.status == WatchStatus.Paused && !failed)
-            OutlinedButton(
-                onClick = { vm.command(watch, Operation.Resume) },
-                enabled = !state.commandPending,
-                modifier = Modifier.testTag("resume"),
-            ) {
-                Text(stringResource(R.string.resume))
-            }
-        if (watch.status == WatchStatus.Paused && !failed)
-            SecondaryText(stringResource(R.string.resume_info))
-        if (state.refreshFailed) SecondaryText(stringResource(R.string.stale_content))
-        TextButton(
-            vm::refresh,
-            enabled = !state.refreshing,
-            modifier = Modifier.testTag("refresh_watches"),
+    Page(spacing = 16.dp) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors =
+                CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                ),
+            shape = MaterialTheme.shapes.large,
         ) {
-            Text(stringResource(R.string.refresh_short))
+            Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Text(
+                    watchTitle(watch),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Medium,
+                )
+                Column(Modifier.testTag("watch_status")) {
+                    WatchStatusLabel(
+                        watch,
+                        contained = true,
+                        onClick =
+                            if (watch.status == WatchStatus.SuspendedByCapacity)
+                                ({ explainLimit = true })
+                            else null,
+                    )
+                }
+                when {
+                    watch.status == WatchStatus.Pending ->
+                        SecondaryText(stringResource(R.string.v1_preparing_body))
+                    failed -> {
+                        Text(
+                            stringResource(
+                                when (watch.plan.preparationFailure) {
+                                    "source_unusable" -> R.string.v1_source_failed
+                                    "quota" -> R.string.preparation_quota_failed
+                                    else -> R.string.v1_technical_failed
+                                },
+                            ),
+                        )
+                        Button(onClick = { edit(watch) }, modifier = Modifier.testTag("edit")) {
+                            Text(stringResource(R.string.revise))
+                        }
+                    }
+                    watch.status == WatchStatus.SuspendedByCapacity ->
+                        SecondaryText(stringResource(R.string.v2_limit_summary))
+                    watch.status == WatchStatus.Paused ->
+                        SecondaryText(stringResource(R.string.v1_paused_body))
+                    watch.status == WatchStatus.Completed ->
+                        SecondaryText(stringResource(R.string.v1_completed_body))
+                }
+                if (watch.status != WatchStatus.Pending && !failed) CheckTiming(watch)
+                if (
+                    watch.health == Health.Degraded &&
+                        !failed &&
+                        watch.status != WatchStatus.SuspendedByCapacity
+                )
+                    SecondaryText(
+                        if (
+                            watch.plan.checkedSources != null &&
+                                watch.plan.totalSources != null &&
+                                watch.plan.checkedSources < watch.plan.totalSources
+                        )
+                            stringResource(
+                                R.string.v1_partial_check,
+                                watch.plan.checkedSources,
+                                watch.plan.totalSources,
+                            )
+                        else stringResource(R.string.v1_last_failed),
+                    )
+                if (watch.remoteState == RemoteState.Stopping)
+                    SecondaryText(stringResource(R.string.v1_stopping_body))
+                if (watch.remoteState == RemoteState.Unknown)
+                    SecondaryText(stringResource(R.string.remote_unknown))
+                FailureText(state.commandError)
+                if (state.commandPending) Busy()
+                if (watch.status in setOf(WatchStatus.Active, WatchStatus.Pending))
+                    FilledTonalButton(
+                        onClick = { vm.command(watch, Operation.Pause) },
+                        enabled = !state.commandPending,
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("pause"),
+                        shape = MaterialTheme.shapes.medium,
+                    ) {
+                        AppIcon(
+                            if (watch.status == WatchStatus.Pending) R.drawable.symbol_close
+                            else R.drawable.symbol_pause,
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            stringResource(
+                                if (watch.status == WatchStatus.Pending) R.string.cancel_preparation
+                                else R.string.pause,
+                            ),
+                        )
+                    }
+                if (watch.status == WatchStatus.Paused && !failed) {
+                    Button(
+                        onClick = { vm.command(watch, Operation.Resume) },
+                        enabled = !state.commandPending,
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("resume"),
+                        shape = MaterialTheme.shapes.medium,
+                    ) {
+                        Text(stringResource(R.string.resume))
+                    }
+                    SecondaryText(stringResource(R.string.resume_info))
+                }
+            }
         }
+        if (state.refreshFailed) SecondaryText(stringResource(R.string.stale_content))
+        if (!remote)
+            TextButton(
+                vm::refresh,
+                enabled = !state.refreshing,
+                modifier = Modifier.testTag("refresh_watches"),
+            ) {
+                Text(stringResource(R.string.refresh_short))
+            }
+        if (!notificationsEnabled && watch.status in setOf(WatchStatus.Pending, WatchStatus.Active))
+            SectionCard(stringResource(R.string.v1_alerts_phone)) {
+                TextButton(enableNotifications) {
+                    Text(stringResource(R.string.v1_enable_notifications))
+                }
+            }
         if (watch.status == WatchStatus.Pending) return@Page
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-        SectionTitle(stringResource(R.string.v1_results))
         val findings =
             state.findings.filter { it.watchId == id }.sortedByDescending { it.observedAt }
-        if (findings.isEmpty()) SecondaryText(stringResource(R.string.no_results))
-        findings.forEach { finding ->
-            ListItem(
-                headlineContent = {
-                    Text(
-                        finding.title.ifBlank { stringResource(R.string.finding_title) },
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                supportingContent = {
-                    Column {
-                        if (finding.noveltyBasis == "initial")
-                            Text(stringResource(R.string.v1_initial))
-                        SecondaryText(
-                            stringResource(R.string.v1_verified, dateText(finding.observedAt)),
+        CollectionCard(stringResource(R.string.v1_results)) {
+            if (findings.isEmpty())
+                SecondaryText(
+                    stringResource(R.string.no_results),
+                    Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                )
+            findings.forEachIndexed { index, finding ->
+                if (index > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                ListItem(
+                    colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+                    headlineContent = {
+                        Text(
+                            finding.title.ifBlank { stringResource(R.string.finding_title) },
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
                         )
-                    }
-                },
-                trailingContent = { AppIcon(R.drawable.symbol_chevron_right) },
-                modifier = Modifier.clickable { openFinding(finding.id) }.testTag("finding"),
+                    },
+                    supportingContent = {
+                        Column {
+                            if (finding.noveltyBasis == "initial")
+                                Text(stringResource(R.string.v1_initial))
+                            SecondaryText(
+                                stringResource(R.string.v1_verified, dateText(finding.observedAt)),
+                            )
+                        }
+                    },
+                    trailingContent = { AppIcon(R.drawable.symbol_chevron_right) },
+                    modifier = Modifier.clickable { openFinding(finding.id) }.testTag("finding"),
+                )
+            }
+        }
+        SectionCard(stringResource(R.string.v1_criteria)) {
+            if (watch.plan.criteria.isEmpty()) Text(watch.plan.draft.text)
+            else
+                watch.plan.criteria.forEach {
+                    Text(it, style = MaterialTheme.typography.bodyMedium)
+                }
+            watch.plan.draft.region
+                .takeIf { it.isNotBlank() }
+                ?.let { MetaRow(stringResource(R.string.v1_region), it) }
+            SecondaryText(
+                stringResource(
+                    if (watch.plan.draft.mode == FollowMode.Once) R.string.v1_mode_once
+                    else R.string.v1_mode_continuous,
+                ),
             )
         }
-        Spacer(Modifier.height(8.dp))
-        SectionTitle(stringResource(R.string.v1_criteria))
-        if (watch.plan.criteria.isEmpty()) Text(watch.plan.draft.text)
-        else watch.plan.criteria.forEach { SecondaryText(it) }
-        watch.plan.draft.region
-            .takeIf { it.isNotBlank() }
-            ?.let { MetaRow(stringResource(R.string.v1_region), it) }
-        SecondaryText(
-            stringResource(
-                if (watch.plan.draft.mode == FollowMode.Once) R.string.v1_mode_once
-                else R.string.v1_mode_continuous,
-            ),
-        )
-        Spacer(Modifier.height(8.dp))
-        SectionTitle(stringResource(R.string.v1_sources_followed))
-        if (watch.plan.sources.isEmpty()) SecondaryText(stringResource(R.string.v1_no_sources))
-        watch.plan.sources.forEach { url ->
-            SourceLink(url, watch.plan.sourceLabels[url] ?: sourceDomain(url))
+        CollectionCard(stringResource(R.string.v1_sources_followed)) {
+            if (watch.plan.sources.isEmpty()) SecondaryText(stringResource(R.string.v1_no_sources))
+            watch.plan.sources.forEachIndexed { index, url ->
+                if (index > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                SourceLink(url, watch.plan.sourceLabels[url] ?: sourceDomain(url))
+            }
         }
         if (!remote) {
             TextButton(onClick = { edit(watch) }, modifier = Modifier.testTag("edit")) {

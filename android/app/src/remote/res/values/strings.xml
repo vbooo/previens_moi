@@ -19,7 +19,7 @@
     <string name="error_temporary">Unable to complete this action. Try again; no duplicate will be created.</string>
     <string name="error_session">Sign in to continue.</string>
     <string name="error_expired">This proposal expired. Return to your request to confirm it again.</string>
-    <string name="error_quota">The trial limit has been reached. No new watch was activated.</string>
+    <string name="error_quota">This watch cannot be activated: a trial slot or credits are unavailable. If another watch is active, pause it before trying again.</string>
     <string name="operation_pending">We are checking whether your watch was saved.</string>
     <string name="processing">One moment…</string>
     <string name="why">Why this result?</string>

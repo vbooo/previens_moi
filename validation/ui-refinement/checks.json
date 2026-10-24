@@ -1,0 +1,28 @@
+{
+  "unitTests": {
+    "Remote": {
+      "tests": 36,
+      "failures": 0,
+      "errors": 0
+    },
+    "Demo": {
+      "tests": 58,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "nativeRegressionTests": {
+    "remote": 3,
+    "demo": 5
+  },
+  "nativeFixtures": 18,
+  "darkTheme": true,
+  "fontScale": 1.3,
+  "material3Version": "1.4.0",
+  "newPaidCallsByThisTask": 0,
+  "limitsIncreased": false,
+  "architectureChanged": false,
+  "backendChanged": false,
+  "apkSha256": "cbc00bf54febaa13efbd4a765db41117f85f5388048f281bacb9d8ae8943aa18",
+  "scope": "Native emulator review, local repository/flow tests; no physical device, TalkBack or paid semantic qualification."
+}

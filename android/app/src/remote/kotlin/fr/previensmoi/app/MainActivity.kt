@@ -297,6 +297,8 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 if (route is Detail)
+                                    RefreshWatchAction(state.refreshing, watches::refresh)
+                                if (route is Detail)
                                     state.watches
                                         .find { it.id == route.id }
                                         ?.let { watch ->

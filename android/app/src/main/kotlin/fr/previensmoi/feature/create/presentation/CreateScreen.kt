@@ -1,5 +1,6 @@
 package fr.previensmoi.feature.create.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +14,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fr.previensmoi.R
@@ -69,27 +71,64 @@ private fun ModeChoice(
     onSelect: (FollowMode) -> Unit,
     enabled: Boolean,
 ) {
-    Row(
-        Modifier.fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .selectable(
-                selected == mode,
-                onClick = { onSelect(mode) },
-                enabled = enabled,
-                role = Role.RadioButton,
+    Surface(
+        color =
+            if (selected == mode) MaterialTheme.colorScheme.primaryContainer
+            else MaterialTheme.colorScheme.surfaceContainerLowest,
+        shape = MaterialTheme.shapes.medium,
+    ) {
+        Row(
+            Modifier.fillMaxWidth()
+                .heightIn(min = 52.dp)
+                .selectable(
+                    selected == mode,
+                    onClick = { onSelect(mode) },
+                    enabled = enabled,
+                    role = Role.RadioButton,
+                )
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+                .testTag(if (mode == FollowMode.Continuous) "continuous" else "once"),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            RadioButton(selected == mode, onClick = null, enabled = enabled)
+            Text(
+                stringResource(
+                    if (mode == FollowMode.Continuous) R.string.v1_mode_continuous
+                    else R.string.v1_mode_once,
+                ),
+                Modifier.weight(1f),
+                style = MaterialTheme.typography.bodyMedium,
+                color =
+                    if (selected == mode) MaterialTheme.colorScheme.onPrimaryContainer
+                    else MaterialTheme.colorScheme.onSurface,
             )
-            .testTag(if (mode == FollowMode.Continuous) "continuous" else "once"),
+        }
+    }
+}
+
+@Composable
+private fun ConfirmationSetting(label: String, value: String, onClick: (() -> Unit)? = null) {
+    val clickable = if (onClick == null) Modifier else Modifier.clickable(onClick = onClick)
+    Row(
+        Modifier.fillMaxWidth().then(clickable).heightIn(min = 56.dp).padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        RadioButton(selected == mode, onClick = null, enabled = enabled)
-        Text(
-            stringResource(
-                if (mode == FollowMode.Continuous) R.string.v1_mode_continuous
-                else R.string.v1_mode_once,
-            ),
-            Modifier.weight(1f),
-        )
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(value, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+        }
+        if (onClick != null)
+            AppIcon(
+                R.drawable.symbol_chevron_right,
+                stringResource(R.string.v1_change),
+                tint = MaterialTheme.colorScheme.primary,
+            )
     }
 }
 
@@ -116,7 +155,8 @@ fun CreateScreen(
                         state.step != CreationStep.Confirming &&
                             !state.optionsUpdating &&
                             (state.proposal?.partial != true || state.partialAccepted),
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("confirm"),
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("confirm"),
+                    shape = MaterialTheme.shapes.large,
                 ) {
                     Text(
                         stringResource(
@@ -225,7 +265,10 @@ fun CreateScreen(
             }
             CreationStep.Unsupported -> {
                 Text(
-                    stringResource(if(remote) R.string.remote_unavailable_title else R.string.unsupported_title),
+                    stringResource(
+                        if (remote) R.string.remote_unavailable_title
+                        else R.string.unsupported_title,
+                    ),
                     style = MaterialTheme.typography.headlineSmall,
                 )
                 Text(state.rejection ?: stringResource(R.string.unsupported_body))
@@ -249,48 +292,93 @@ fun CreateScreen(
             CreationStep.Ready,
             CreationStep.Confirming -> {
                 val p = state.proposal ?: return@Page
-                Text(
-                    p.title.ifBlank { p.draft.text },
-                    style = MaterialTheme.typography.headlineSmall,
-                )
-                p.criteria.forEach { SecondaryText(it) }
-                Spacer(Modifier.height(4.dp))
-                MetaRow(
-                    stringResource(R.string.v1_region),
-                    state.draft.region + " · " + stringResource(R.string.v1_change),
-                    if (state.step == CreationStep.Ready && !state.optionsUpdating) vm::revise
-                    else null,
-                )
-                MetaRow(
-                    stringResource(R.string.v1_site_preferred),
-                    state.draft.preferredSite.takeIf { it.isNotBlank() }?.let(::sourceDomain)
-                        ?: stringResource(R.string.v1_no_site),
-                )
-                MetaRow(
-                    stringResource(R.string.v1_frequency),
-                    if (p.intervalHours == 1) stringResource(R.string.v1_hourly)
-                    else stringResource(R.string.v1_interval, p.intervalHours),
-                )
-                MetaRow(
-                    stringResource(R.string.v1_sources),
-                    stringResource(
-                        if (p.backgroundPreparation) R.string.v1_sources_later
-                        else R.string.v1_sources_ready,
-                    ),
-                )
-                SectionTitle(stringResource(R.string.v1_after_result))
-                ModeChoice(
-                    FollowMode.Continuous,
-                    state.draft.mode,
-                    vm::chooseMode,
-                    state.step != CreationStep.Confirming,
-                )
-                ModeChoice(
-                    FollowMode.Once,
-                    state.draft.mode,
-                    vm::chooseMode,
-                    state.step != CreationStep.Confirming,
-                )
+                Card(
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        ),
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column(
+                        Modifier.padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Text(
+                            p.title.ifBlank { p.draft.text },
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Medium,
+                        )
+                        p.criteria
+                            .filterNot {
+                                it.equals("Région spécifiée : ${state.draft.region}", true) ||
+                                    it.equals("Specified region: ${state.draft.region}", true)
+                            }
+                            .forEach {
+                                Text(
+                                    it,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                )
+                            }
+                    }
+                }
+                SectionCard(stringResource(R.string.v1_after_result)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        ModeChoice(
+                            FollowMode.Continuous,
+                            state.draft.mode,
+                            vm::chooseMode,
+                            state.step != CreationStep.Confirming && !state.optionsUpdating,
+                        )
+                        ModeChoice(
+                            FollowMode.Once,
+                            state.draft.mode,
+                            vm::chooseMode,
+                            state.step != CreationStep.Confirming && !state.optionsUpdating,
+                        )
+                    }
+                }
+                Card(
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        ),
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
+                        ConfirmationSetting(
+                            stringResource(R.string.v1_region),
+                            state.draft.region,
+                            if (state.step == CreationStep.Ready && !state.optionsUpdating)
+                                vm::revise
+                            else null,
+                        )
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        ConfirmationSetting(
+                            stringResource(R.string.v1_site_preferred),
+                            state.draft.preferredSite
+                                .takeIf { it.isNotBlank() }
+                                ?.let(::sourceDomain) ?: stringResource(R.string.v1_no_site),
+                        )
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        ConfirmationSetting(
+                            stringResource(R.string.v1_frequency),
+                            if (p.intervalHours == 1) stringResource(R.string.v1_hourly)
+                            else stringResource(R.string.v1_interval, p.intervalHours),
+                        )
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        ConfirmationSetting(
+                            stringResource(R.string.v1_sources),
+                            stringResource(
+                                if (p.backgroundPreparation) R.string.v1_sources_later
+                                else R.string.v1_sources_ready,
+                            ),
+                        )
+                    }
+                }
                 if (!p.backgroundPreparation && p.partial) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
@@ -310,7 +398,11 @@ fun CreateScreen(
                         else R.string.baseline_info,
                     ),
                 )
-                SecondaryText(stringResource(R.string.v1_trial_limits))
+                Text(
+                    stringResource(R.string.v2_trial_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 FailureText(state.error)
             }
         }

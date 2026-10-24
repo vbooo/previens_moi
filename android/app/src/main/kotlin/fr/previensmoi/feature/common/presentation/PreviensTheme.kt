@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,30 +21,30 @@ import java.net.URI
 
 private val Light =
     lightColorScheme(
-        primary = Color(0xFF006A6A),
+        primary = Color(0xFF324C85),
         onPrimary = Color.White,
-        primaryContainer = Color(0xFF9CF1EF),
-        onPrimaryContainer = Color(0xFF002020),
-        secondary = Color(0xFF4A6363),
+        primaryContainer = Color(0xFFDCE4FF),
+        onPrimaryContainer = Color(0xFF0B1B3C),
+        secondary = Color(0xFF555F75),
         onSecondary = Color.White,
-        secondaryContainer = Color(0xFFCCE8E7),
-        onSecondaryContainer = Color(0xFF051F1F),
-        tertiary = Color(0xFF46617A),
+        secondaryContainer = Color(0xFFE0E5F1),
+        onSecondaryContainer = Color(0xFF182035),
+        tertiary = Color(0xFF665D50),
         onTertiary = Color.White,
-        tertiaryContainer = Color(0xFFCEE5FF),
-        onTertiaryContainer = Color(0xFF001D32),
-        background = Color(0xFFF8FAFA),
-        onBackground = Color(0xFF191C1D),
-        surface = Color(0xFFF8FAFA),
-        onSurface = Color(0xFF191C1D),
+        tertiaryContainer = Color(0xFFEFE1CE),
+        onTertiaryContainer = Color(0xFF241B10),
+        background = Color(0xFFF5F6FA),
+        onBackground = Color(0xFF1B1E27),
+        surface = Color(0xFFF5F6FA),
+        onSurface = Color(0xFF1B1E27),
         surfaceContainerLowest = Color.White,
-        surfaceContainerLow = Color(0xFFF0F4F4),
-        surfaceContainer = Color(0xFFEAEFEF),
-        surfaceContainerHigh = Color(0xFFE4E9E9),
-        surfaceContainerHighest = Color(0xFFDEE3E3),
-        onSurfaceVariant = Color(0xFF3F4949),
-        outline = Color(0xFF6F7979),
-        outlineVariant = Color(0xFFBEC9C8),
+        surfaceContainerLow = Color(0xFFEDF0F7),
+        surfaceContainer = Color(0xFFE6EAF3),
+        surfaceContainerHigh = Color(0xFFDFE4EF),
+        surfaceContainerHighest = Color(0xFFD9DFEC),
+        onSurfaceVariant = Color(0xFF464B59),
+        outline = Color(0xFF747986),
+        outlineVariant = Color(0xFFC5CAD6),
         error = Color(0xFFBA1A1A),
         onError = Color.White,
         errorContainer = Color(0xFFFFDAD6),
@@ -51,30 +52,30 @@ private val Light =
     )
 private val Dark =
     darkColorScheme(
-        primary = Color(0xFF80D5D3),
-        onPrimary = Color(0xFF003737),
-        primaryContainer = Color(0xFF005050),
-        onPrimaryContainer = Color(0xFF9CF1EF),
-        secondary = Color(0xFFB0CCCB),
-        onSecondary = Color(0xFF1C3534),
-        secondaryContainer = Color(0xFF334B4B),
-        onSecondaryContainer = Color(0xFFCCE8E7),
-        tertiary = Color(0xFFAECAE6),
-        onTertiary = Color(0xFF173349),
-        tertiaryContainer = Color(0xFF2E4A61),
-        onTertiaryContainer = Color(0xFFCEE5FF),
-        background = Color(0xFF101718),
-        onBackground = Color(0xFFDEE4E3),
-        surface = Color(0xFF101718),
-        onSurface = Color(0xFFDEE4E3),
-        surfaceContainerLowest = Color(0xFF0B1212),
-        surfaceContainerLow = Color(0xFF192020),
-        surfaceContainer = Color(0xFF1D2424),
-        surfaceContainerHigh = Color(0xFF272E2E),
-        surfaceContainerHighest = Color(0xFF323939),
-        onSurfaceVariant = Color(0xFFBEC9C8),
-        outline = Color(0xFF899392),
-        outlineVariant = Color(0xFF3F4949),
+        primary = Color(0xFFB2C5FF),
+        onPrimary = Color(0xFF002A64),
+        primaryContainer = Color(0xFF1D3D72),
+        onPrimaryContainer = Color(0xFFDCE4FF),
+        secondary = Color(0xFFBCC6DD),
+        onSecondary = Color(0xFF263047),
+        secondaryContainer = Color(0xFF3D475E),
+        onSecondaryContainer = Color(0xFFE0E5F1),
+        tertiary = Color(0xFFD2C5B4),
+        onTertiary = Color(0xFF382F22),
+        tertiaryContainer = Color(0xFF504636),
+        onTertiaryContainer = Color(0xFFEFE1CE),
+        background = Color(0xFF11141B),
+        onBackground = Color(0xFFE2E5EF),
+        surface = Color(0xFF11141B),
+        onSurface = Color(0xFFE2E5EF),
+        surfaceContainerLowest = Color(0xFF0C0F16),
+        surfaceContainerLow = Color(0xFF1A1E27),
+        surfaceContainer = Color(0xFF1F232D),
+        surfaceContainerHigh = Color(0xFF292E38),
+        surfaceContainerHighest = Color(0xFF343944),
+        onSurfaceVariant = Color(0xFFC5CAD6),
+        outline = Color(0xFF8E93A1),
+        outlineVariant = Color(0xFF444956),
         error = Color(0xFFFFB4AB),
         onError = Color(0xFF690005),
         errorContainer = Color(0xFF93000A),
@@ -175,7 +176,7 @@ fun MetaRow(label: String, value: String, onClick: (() -> Unit)? = null) {
 }
 
 @Composable
-fun WatchStatusLabel(watch: Watch) {
+fun WatchStatusLabel(watch: Watch, contained: Boolean = false, onClick: (() -> Unit)? = null) {
     val failed =
         watch.baselineAt == null &&
             watch.status == WatchStatus.Paused &&
@@ -223,11 +224,39 @@ fun WatchStatusLabel(watch: Watch) {
                     else -> R.drawable.symbol_pause
                 }
         }
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        AppIcon(icon, tint = tone)
-        Text(stringResource(label), style = MaterialTheme.typography.labelLarge, color = tone)
+    if (onClick != null) {
+        AssistChip(
+            onClick = onClick,
+            label = { Text(stringResource(label)) },
+            leadingIcon = { AppIcon(icon, tint = tone) },
+            trailingIcon = { AppIcon(R.drawable.symbol_chevron_right, tint = tone) },
+            colors =
+                AssistChipDefaults.assistChipColors(
+                    containerColor = tone.copy(alpha = 0.10f),
+                    labelColor = tone,
+                ),
+            border = null,
+            modifier = Modifier.heightIn(min = 48.dp).testTag("status_explanation"),
+        )
+    } else {
+        Surface(
+            color = if (contained) tone.copy(alpha = 0.10f) else Color.Transparent,
+            shape = MaterialTheme.shapes.small,
+        ) {
+            Row(
+                modifier =
+                    if (contained) Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                    else Modifier,
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                AppIcon(icon, tint = tone)
+                Text(
+                    stringResource(label),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = tone,
+                )
+            }
+        }
     }
 }
