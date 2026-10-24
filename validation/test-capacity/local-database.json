@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "scope": "Disposable local database; injected model/source outcomes, not semantic quality or cloud transport",
+  "paidCalls": 0,
+  "activeDatabaseModified": false,
+  "migrationKeepsBudgetCountersAndLimits": true,
+  "migrationPreservesRuntimeBudgetAndWatches": true,
+  "newProposalPublishesEffectivePolicy": true,
+  "threePerAccountAndIdempotentReplay": true,
+  "globalCapacityEnforcedAcrossAccounts": true,
+  "pauseFreesExactlyOneSlotAndResumeCannotBypassLimit": true,
+  "spentCountersAndPreflightCapsPreserved": true,
+  "internalRpcAndStructuralCeilingPreserved": true
+}

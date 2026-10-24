@@ -1,0 +1,30 @@
+{
+  "newPaidCalls": 0,
+  "scope": "Unit tests shared across Remote and Demo; controlled native fixtures, no real provider semantics or delivery qualification",
+  "nativeRemote": {
+    "tests": 4,
+    "failures": 0,
+    "cases": [
+      "pendingPauseDisablesRepeatedTapAndShowsConfirmedPauseWithoutRefresh",
+      "suspendedStatusExplainsTrialAndRefreshStaysInToolbar",
+      "requestConfirmSignInThenPreparationIsSingleActivation",
+      "PreparationFlowTest"
+    ]
+  },
+  "unitRemote": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "unitDemo": {
+    "tests": 61,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "nativeDemo": {
+    "tests": 5,
+    "failures": 0
+  }
+}

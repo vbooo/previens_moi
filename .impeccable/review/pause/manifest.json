@@ -1,0 +1,14 @@
+{
+  "platform": "Android emulator",
+  "type": "native production Compose, explicit offline fixtures",
+  "newPaidCalls": 0,
+  "captures": [
+    "pausing",
+    "paused-confirmed",
+    "behaviour-description",
+    "unconfirmed-light",
+    "pausing-dark",
+    "pausing-font130"
+  ],
+  "scope": "Pause feedback, resolved state and descriptive continuous mode text; not a whole-app or hardware qualification"
+}

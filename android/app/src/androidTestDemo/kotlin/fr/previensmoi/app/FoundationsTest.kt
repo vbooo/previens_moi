@@ -92,9 +92,10 @@ class FoundationsTest {
     @Test fun failedPauseThenResumeEditOldResultAndDelete() {
         activate(continuous = true); check()
         scenario("CommandFailure"); tap("pause")
-        status(R.string.status_active)
-        shown(R.string.error_temporary)
-        scenario("Normal"); tap("pause")
+        status(R.string.v3_pausing)
+        shown(R.string.v3_confirmation_unknown)
+        compose.onNodeWithTag("pause").assertIsNotEnabled()
+        scenario("Normal"); tap("retry_command")
         status(R.string.status_paused)
         tap("resume"); tap("edit"); awaitTag("request")
         compose.onNodeWithTag("request").performTextReplacement("Nouveaux criteres")

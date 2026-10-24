@@ -176,7 +176,12 @@ fun MetaRow(label: String, value: String, onClick: (() -> Unit)? = null) {
 }
 
 @Composable
-fun WatchStatusLabel(watch: Watch, contained: Boolean = false, onClick: (() -> Unit)? = null) {
+fun WatchStatusLabel(
+    watch: Watch,
+    contained: Boolean = false,
+    operation: Operation? = null,
+    onClick: (() -> Unit)? = null,
+) {
     val failed =
         watch.baselineAt == null &&
             watch.status == WatchStatus.Paused &&
@@ -187,6 +192,7 @@ fun WatchStatusLabel(watch: Watch, contained: Boolean = false, onClick: (() -> U
             (watch.nextCheck == null || watch.health != Health.Healthy)
     val tone =
         when {
+            operation != null -> LocalStatus.current.preparing
             failed -> MaterialTheme.colorScheme.error
             stopping || unverified -> LocalStatus.current.warning
             else ->
@@ -200,6 +206,9 @@ fun WatchStatusLabel(watch: Watch, contained: Boolean = false, onClick: (() -> U
         }
     val label =
         when {
+            operation == Operation.Pause -> R.string.v3_pausing
+            operation == Operation.Resume -> R.string.v3_resuming
+            operation == Operation.Delete -> R.string.v3_deleting
             failed -> R.string.preparation_failed_title
             stopping -> R.string.v1_stopping
             unverified -> R.string.v1_check_problem
@@ -214,6 +223,7 @@ fun WatchStatusLabel(watch: Watch, contained: Boolean = false, onClick: (() -> U
         }
     val icon =
         when {
+            operation != null -> R.drawable.symbol_schedule
             failed -> R.drawable.symbol_error
             stopping || unverified -> R.drawable.symbol_schedule
             else ->

@@ -115,7 +115,14 @@ fun HomeScreen(
                             },
                             supportingContent = {
                                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    WatchStatusLabel(watch)
+                                    WatchStatusLabel(
+                                        watch,
+                                        operation =
+                                            state.commandOperation.takeIf {
+                                                state.commandUnconfirmed &&
+                                                    state.commandWatchId == watch.id
+                                            },
+                                    )
                                     watch.lastSuccess?.let {
                                         SecondaryText(
                                             stringResource(R.string.last_success, dateText(it)),
@@ -173,7 +180,7 @@ private fun SourceLink(url: String, label: String = sourceDomain(url)) {
 }
 
 @Composable
-private fun CheckTiming(watch: Watch) {
+private fun CheckTiming(watch: Watch, pausing: Boolean = false) {
     Row(
         Modifier.fillMaxWidth().testTag("check_timing"),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -198,7 +205,8 @@ private fun CheckTiming(watch: Watch) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                if (watch.status == WatchStatus.Active && watch.nextCheck != null)
+                if (pausing) stringResource(R.string.v3_pausing)
+                else if (watch.status == WatchStatus.Active && watch.nextCheck != null)
                     dateText(watch.nextCheck)
                 else stringResource(R.string.v2_not_scheduled),
                 style = MaterialTheme.typography.bodyMedium,
@@ -245,6 +253,9 @@ fun DetailScreen(
             },
             modifier = Modifier.testTag("capacity_dialog"),
         )
+    val pendingOperation =
+        state.commandOperation.takeIf { state.commandWatchId == id && state.commandUnconfirmed }
+    val pausing = pendingOperation == Operation.Pause || watch.remoteState == RemoteState.Stopping
     val failed =
         watch.baselineAt == null &&
             watch.status == WatchStatus.Paused &&
@@ -268,6 +279,7 @@ fun DetailScreen(
                     WatchStatusLabel(
                         watch,
                         contained = true,
+                        operation = pendingOperation,
                         onClick =
                             if (watch.status == WatchStatus.SuspendedByCapacity)
                                 ({ explainLimit = true })
@@ -275,6 +287,7 @@ fun DetailScreen(
                     )
                 }
                 when {
+                    pendingOperation != null || pausing -> Unit
                     watch.status == WatchStatus.Pending ->
                         SecondaryText(stringResource(R.string.v1_preparing_body))
                     failed -> {
@@ -298,7 +311,7 @@ fun DetailScreen(
                     watch.status == WatchStatus.Completed ->
                         SecondaryText(stringResource(R.string.v1_completed_body))
                 }
-                if (watch.status != WatchStatus.Pending && !failed) CheckTiming(watch)
+                if (watch.status != WatchStatus.Pending && !failed) CheckTiming(watch, pausing)
                 if (
                     watch.health == Health.Degraded &&
                         !failed &&
@@ -321,31 +334,48 @@ fun DetailScreen(
                     SecondaryText(stringResource(R.string.v1_stopping_body))
                 if (watch.remoteState == RemoteState.Unknown)
                     SecondaryText(stringResource(R.string.remote_unknown))
-                FailureText(state.commandError)
-                if (state.commandPending) Busy()
+                if (pendingOperation != null) {
+                    Text(
+                        stringResource(
+                            if (state.commandPending) R.string.v3_wait_confirmation
+                            else R.string.v3_confirmation_unknown,
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    if (!state.commandPending)
+                        TextButton(vm::retryCommand, modifier = Modifier.testTag("retry_command")) {
+                            Text(stringResource(R.string.v3_verify_operation))
+                        }
+                } else FailureText(state.commandError)
+                if (state.commandPending && pendingOperation == null) Busy()
                 if (watch.status in setOf(WatchStatus.Active, WatchStatus.Pending))
                     FilledTonalButton(
                         onClick = { vm.command(watch, Operation.Pause) },
-                        enabled = !state.commandPending,
+                        enabled = !state.commandPending && !state.commandUnconfirmed && !pausing,
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("pause"),
                         shape = MaterialTheme.shapes.medium,
                     ) {
-                        AppIcon(
-                            if (watch.status == WatchStatus.Pending) R.drawable.symbol_close
-                            else R.drawable.symbol_pause,
-                        )
+                        if (pausing && state.commandPending)
+                            CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
+                        else
+                            AppIcon(
+                                if (watch.status == WatchStatus.Pending) R.drawable.symbol_close
+                                else R.drawable.symbol_pause,
+                            )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             stringResource(
-                                if (watch.status == WatchStatus.Pending) R.string.cancel_preparation
+                                if (pausing) R.string.v3_pausing
+                                else if (watch.status == WatchStatus.Pending)
+                                    R.string.cancel_preparation
                                 else R.string.pause,
                             ),
                         )
                     }
-                if (watch.status == WatchStatus.Paused && !failed) {
+                if (watch.status == WatchStatus.Paused && !failed && !pausing) {
                     Button(
                         onClick = { vm.command(watch, Operation.Resume) },
-                        enabled = !state.commandPending,
+                        enabled = !state.commandPending && !state.commandUnconfirmed,
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("resume"),
                         shape = MaterialTheme.shapes.medium,
                     ) {
@@ -413,12 +443,20 @@ fun DetailScreen(
             watch.plan.draft.region
                 .takeIf { it.isNotBlank() }
                 ?.let { MetaRow(stringResource(R.string.v1_region), it) }
-            SecondaryText(
-                stringResource(
-                    if (watch.plan.draft.mode == FollowMode.Once) R.string.v1_mode_once
-                    else R.string.v1_mode_continuous,
-                ),
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    stringResource(R.string.v3_behaviour),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    stringResource(
+                        if (watch.plan.draft.mode == FollowMode.Once) R.string.v3_once_description
+                        else R.string.v3_continuous_description,
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
         CollectionCard(stringResource(R.string.v1_sources_followed)) {
             if (watch.plan.sources.isEmpty()) SecondaryText(stringResource(R.string.v1_no_sources))

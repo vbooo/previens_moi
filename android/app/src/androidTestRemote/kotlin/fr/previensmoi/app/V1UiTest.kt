@@ -19,6 +19,7 @@ import fr.previensmoi.feature.common.presentation.*
 import fr.previensmoi.feature.create.presentation.*
 import fr.previensmoi.feature.session.presentation.*
 import fr.previensmoi.feature.watches.presentation.*
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.*
 import org.junit.Rule
@@ -63,6 +64,8 @@ class V1UiTest {
         var p: Proposal? = null
         var confirmations = 0
         val submittedOperations = mutableListOf<Operation>()
+        val submittedCommands = mutableListOf<Command>()
+        var pauseGate: CompletableDeferred<Unit>? = null
 
         override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
             p =
@@ -104,6 +107,22 @@ class V1UiTest {
 
         override suspend fun execute(c: Command): Outcome<CommandReceipt> {
             submittedOperations += c.operation
+            submittedCommands += c
+            if (c.operation == Operation.Pause && pauseGate != null) {
+                if (submittedOperations.count { it == Operation.Pause } == 1)
+                    return Outcome.Error(Failure.OperationPending)
+                pauseGate!!.await()
+                list.value =
+                    list.value.map {
+                        it.copy(
+                            status = WatchStatus.Paused,
+                            remoteState = RemoteState.Stopped,
+                            version = 2,
+                            nextCheck = null,
+                        )
+                    }
+                return Outcome.Success(CommandReceipt(c.id, c.targetId!!, 2))
+            }
             if (c.operation == Operation.Activate) {
                 confirmations++
                 list.value =
@@ -334,6 +353,76 @@ class V1UiTest {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Test
+    fun pendingPauseDisablesRepeatedTapAndShowsConfirmedPauseWithoutRefresh() {
+        val service = Service()
+        val gate = CompletableDeferred<Unit>()
+        service.pauseGate = gate
+        val now = 1792767900000L
+        val watch =
+            Watch(
+                "w",
+                Proposal(
+                    "p",
+                    1,
+                    RequestDraft("Promotions PS5", mode = FollowMode.Continuous),
+                    Long.MAX_VALUE,
+                    title = "Surveillance des promotions sur la PlayStation 5",
+                    criteria = listOf("Promotions sur la PlayStation 5"),
+                ),
+                health = Health.Healthy,
+                baselineAt = now,
+                lastSuccess = now,
+                nextCheck = now + 3600000,
+                remoteState = RemoteState.Running,
+            )
+        service.list.value = listOf(watch)
+        compose.runOnUiThread {
+            val vm = WatchesViewModel(service, service, IdGenerator { "one-pause" })
+            compose.activity.setContent {
+                PreviensTheme {
+                    val state by vm.state.collectAsState()
+                    Scaffold(
+                        topBar = {
+                            TopAppBar(
+                                title = { Text("Détail du suivi") },
+                                actions = { RefreshWatchAction(state.refreshing, vm::refresh) },
+                            )
+                        },
+                    ) { insets ->
+                        Box(Modifier.padding(insets)) {
+                            DetailScreen("w", state, vm, {}, {}, remote = true)
+                        }
+                    }
+                }
+            }
+        }
+        await("pause")
+        tap("pause")
+        compose.onNodeWithTag("pause").assertIsNotEnabled()
+        compose.onNodeWithTag("pause").performTouchInput { click() }
+        assertTrue(service.submittedCommands.map { it.id }.distinct().size <= 1)
+        capture("pausing")
+        compose.runOnUiThread { gate.complete(Unit) }
+        await("resume")
+        compose.onNodeWithTag("resume").assertIsEnabled()
+        compose.onNodeWithTag("pause").assertDoesNotExist()
+        compose
+            .onNodeWithText(compose.activity.getString(R.string.status_paused))
+            .assertIsDisplayed()
+        assertEquals(listOf("one-pause"), service.submittedCommands.map { it.id }.distinct())
+        capture("paused-confirmed")
+        compose
+            .onNodeWithText(compose.activity.getString(R.string.v3_continuous_description))
+            .performScrollTo()
+            .assertIsDisplayed()
+        compose
+            .onNodeWithText(compose.activity.getString(R.string.v1_mode_continuous))
+            .assertDoesNotExist()
+        capture("behaviour-description")
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Test
     fun renderProductionScreensWithExplicitFixtures() {
         val service = Service()
         val screen = mutableStateOf("home")
@@ -457,6 +546,8 @@ class V1UiTest {
                                         name in
                                             listOf(
                                                 "active",
+                                                "pausing",
+                                                "unconfirmed",
                                                 "delete",
                                                 "limit",
                                                 "paused",
@@ -624,6 +715,16 @@ class V1UiTest {
                                         "w",
                                         WatchesUiState(
                                             watches = listOf(w),
+                                            commandPending = name == "pausing",
+                                            commandUnconfirmed =
+                                                name in listOf("pausing", "unconfirmed"),
+                                            commandWatchId =
+                                                if (name in listOf("pausing", "unconfirmed")) "w"
+                                                else null,
+                                            commandOperation =
+                                                if (name in listOf("pausing", "unconfirmed"))
+                                                    Operation.Pause
+                                                else null,
                                             findings =
                                                 if (name in listOf("preparing", "failed"))
                                                     emptyList()

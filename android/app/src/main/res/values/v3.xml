@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="v3_pausing">Pausing…</string>
+    <string name="v3_resuming">Resuming…</string>
+    <string name="v3_deleting">Deleting…</string>
+    <string name="v3_wait_confirmation">Request sent. Waiting for the service to confirm it.</string>
+    <string name="v3_confirmation_unknown">Confirmation is not available yet. Check this request before taking another action.</string>
+    <string name="v3_verify_operation">Check request</string>
+    <string name="v3_behaviour">How this watch works</string>
+    <string name="v3_continuous_description">Checks continue after each result.</string>
+    <string name="v3_once_description">Checks stop after the first result.</string>
+</resources>

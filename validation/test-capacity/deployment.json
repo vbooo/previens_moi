@@ -1,0 +1,55 @@
+{
+  "authorizedMaxEUR": 2,
+  "newPaidCalls": 0,
+  "subscriptionOrTopup": false,
+  "migration": "202610240036_test_capacity.sql",
+  "providerCreditsBefore": 904,
+  "budgetBefore": {
+    "id": true,
+    "enabled": true,
+    "qualified": true,
+    "model_held": 0,
+    "model_used": 21052,
+    "credit_held": 0,
+    "credit_used": 45,
+    "model_limit": 100000,
+    "credit_limit": 51
+  },
+  "capacityBefore": {
+    "id": true,
+    "slots": 1,
+    "enabled": true,
+    "reserved": 0,
+    "used_units": 13,
+    "budget_units": 14,
+    "reserved_units": 0
+  },
+  "passed": true,
+  "budgetAfter": {
+    "id": true,
+    "enabled": true,
+    "qualified": true,
+    "model_held": 0,
+    "model_used": 21052,
+    "credit_held": 0,
+    "credit_used": 45,
+    "model_limit": 100000,
+    "credit_limit": 100
+  },
+  "capacityAfter": {
+    "id": true,
+    "slots": 3,
+    "enabled": true,
+    "reserved": 0,
+    "used_units": 13,
+    "budget_units": 14,
+    "reserved_units": 0,
+    "active_per_account": 3
+  },
+  "existingWatchesAndPlansUnchanged": true,
+  "existingWatchCount": 2,
+  "freeCreditsRemainingInTrial": 55,
+  "modelBudgetUnchanged": true,
+  "conservativeCumulativeUpperEUR": 0.99587625,
+  "boundBasis": "Existing shared experiment envelope unchanged; only free credits and concurrent slots extended"
+}

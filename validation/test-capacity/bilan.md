@@ -1,0 +1,11 @@
+# Pause compréhensible et extension de l’essai — 24 octobre 2026
+
+La pause du suivi PS5 était déjà confirmée côté serveur. Android conservait l’ancien état et rendait le bouton disponible après une réponse encore en attente. Le ViewModel garde désormais l’opération et son identifiant jusqu’à sa confirmation, relit le reçu toutes les deux secondes pendant au plus une minute, puis actualise les données. Un appui répété ne crée aucune commande. En cas de réseau incertain ou de lecture impossible après succès, la mutation reste bloquée et « Vérifier la demande » reprend le même identifiant. L’application ne prétend pas que le suivi est déjà arrêté.
+
+La liste et le détail montrent l’opération en cours ; une fois confirmée, le détail affiche « En pause » et « Reprendre le suivi ». Dans « Ce que tu suis », la rubrique statique « Fonctionnement » décrit la règle : « Les vérifications continuent après chaque résultat. » ou « Les vérifications s’arrêtent après le premier résultat. »
+
+L’extension autorisée porte uniquement sur trois places actives et les crédits Firecrawl déjà gratuits. Le plafond de dépenses modèle, les compteurs, les plans, les statuts et les sessions sont conservés. L’ancien pilote sur URL reste suspendu, sans réactivation automatique. Voir `deployment.json`.
+
+Tests : commandes concurrentes côté interface, réponse en attente, délai borné, reprise du même identifiant, succès avec lecture indisponible ; scénario natif pause → confirmation sans actualisation manuelle ; régressions création/connexion/préparation/capacité. La migration est testée sur une copie locale jetable : conservation des données/compteurs, limites par compte et globales, pause libérant une place, reprise limitée, rejets avant appels et métadonnées de proposition. Aucun nouvel appel modèle ou recherche fournisseur n’a été déclenché pour cette correction ; le contrôle de solde Firecrawl était une lecture gratuite.
+
+Les captures sous `.impeccable/review/pause/` utilisent des fixtures explicites et les composants Compose de production (téléphone, thèmes clair/sombre, police 130 %). Ce contrôle ne certifie ni l’ensemble de l’accessibilité, ni des appareils physiques, ni la pertinence sémantique de nouvelles recherches.

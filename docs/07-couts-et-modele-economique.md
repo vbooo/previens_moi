@@ -188,3 +188,9 @@ Le service général garde au maximum 0,10 USD de modèle, dont 0,014462 USD dé
 Usage modèle connu cumulé : 0,182842 USD estimés ; borne conservatrice incluant toutes les réserves encore autorisées, ancien poste d’autres coûts, change plafond 1,5 et taxes 1,25 : 0,99587625 EUR / plafond utilisateur inchangé 2 EUR. Solde fournisseur rapproché : 915 crédits gratuits. [Registre final](../validation/s3/general-budget-final.json). Pas de facture rapprochée prétendue.
 
 Une exploitation publique demande un scénario de volume, une identité d’envoi dédiée si nécessaire, une destination de sauvegarde indépendante et une nouvelle prévision incluant hébergement, e-mail, domaine, sauvegarde, sources/analyse et taxes. Aucun budget mensuel n’est autorisé ; cette décision appartient à la préparation S4, sans achat implicite pour terminer S3.
+
+## Extension de l’essai autorisée le 24 octobre 2026
+
+Fabien a demandé de relever modestement les limites pour poursuivre ses tests. Le service autorise maintenant **trois suivis actifs par compte et trois au total**, tous comptes réunis. L’enveloppe gratuite Firecrawl du moteur général passe de 51 à **100 crédits cumulés**, dont 45 déjà imputés et 55 encore disponibles au moment de l’extension. Le solde fournisseur contrôlé était de 904 crédits : aucun achat ni abonnement. Les crédits du pilote historique sur URL restent inchangés.
+
+Le plafond modèle du moteur général reste à **0,10 USD**, dans l’enveloppe commune déjà autorisée. Aucun compteur utilisé ou réservé n’est remis à zéro. Le plafond utilisateur reste **2 € cumulés pour le service**, pas 2 € par compte. La borne conservatrice historique reste 0,99587625 € ; ce n’est pas une facture rapprochée. Cette extension ne garantit pas un nombre de jours de surveillance. Les réservations avant chaque appel peuvent refuser un nouveau traitement avant épuisement exact du solde. [Preuve des limites avant/après](../validation/test-capacity/deployment.json).
