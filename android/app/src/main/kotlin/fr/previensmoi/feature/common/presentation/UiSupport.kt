@@ -65,6 +65,7 @@ fun FailureText(failure: Failure?) {
         when (failure) {
             Failure.AnalysisPending -> R.string.analysis_pending
             Failure.OperationPending -> R.string.operation_pending
+            Failure.OperationFailed -> R.string.operation_failed
             Failure.Offline -> R.string.error_offline
             Failure.TemporaryFailure -> R.string.error_temporary
             Failure.SessionRequired -> R.string.error_session

@@ -66,6 +66,7 @@ class V1UiTest {
         val submittedOperations = mutableListOf<Operation>()
         val submittedCommands = mutableListOf<Command>()
         var pauseGate: CompletableDeferred<Unit>? = null
+        var resumeGate: CompletableDeferred<Unit>? = null
 
         override suspend fun evaluate(draft: RequestDraft): Outcome<Evaluation> {
             p =
@@ -122,6 +123,17 @@ class V1UiTest {
                         )
                     }
                 return Outcome.Success(CommandReceipt(c.id, c.targetId!!, 2))
+            }
+            if (c.operation == Operation.Resume && resumeGate != null) {
+                if (submittedOperations.count { it == Operation.Resume } == 1) {
+                    list.value = list.value.map { it.copy(status = WatchStatus.Pending, remoteState = RemoteState.Starting) }
+                    return Outcome.Error(Failure.OperationPending)
+                }
+                resumeGate!!.await()
+                list.value = list.value.map { it.copy(status = WatchStatus.Paused, health = Health.Degraded,
+                    remoteState = RemoteState.Stopped, version = 2, nextCheck = null,
+                    plan = it.plan.copy(preparationFailure = "source_unusable")) }
+                return Outcome.Error(Failure.OperationFailed)
             }
             if (c.operation == Operation.Activate) {
                 confirmations++
@@ -349,6 +361,52 @@ class V1UiTest {
                 .boundsInRoot
         assertEquals(last.top, next.top, 1f)
         assertTrue(last.right < next.left)
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Test
+    fun failedResumeRefreshesDetailAndHomeWithoutOpeningANotification() {
+        val service = Service()
+        val gate = CompletableDeferred<Unit>()
+        service.resumeGate = gate
+        service.list.value = listOf(Watch("w", Proposal("p",1,
+            RequestDraft("Promotions PS5",mode=FollowMode.Continuous),Long.MAX_VALUE,
+            title="Promotions sur la PlayStation 5"), status=WatchStatus.Paused,
+            baselineAt=1792767900000L, lastSuccess=1792767900000L, health=Health.Healthy))
+        compose.runOnUiThread {
+            val vm=WatchesViewModel(service,service,IdGenerator { "one-resume" })
+            val create=CreateViewModel(service,service,service,service,IdGenerator { "create" },SavedStateHandle())
+            compose.activity.setContent {
+                PreviensTheme {
+                    val state by vm.state.collectAsState()
+                    var detail by remember { mutableStateOf(true) }
+                    Scaffold(topBar={ TopAppBar(title={Text(if(detail) "Détail du suivi" else "Mes suivis")},
+                        actions={
+                            RefreshWatchAction(state.refreshing,vm::refresh)
+                            TextButton({detail=!detail},Modifier.testTag("switch_view")) {Text(if(detail) "Mes suivis" else "Détail")}
+                        }) }) { insets -> Box(Modifier.padding(insets)) {
+                        if(detail) DetailScreen("w",state,vm,{},{},remote=true)
+                        else HomeScreen(state,CreateUiState(),create,{detail=true},vm::refresh,{},remote=true)
+                    } }
+                }
+            }
+        }
+        await("resume")
+        tap("resume")
+        compose.onNodeWithText(compose.activity.getString(R.string.v3_resuming)).assertIsDisplayed()
+        tap("refresh_watches")
+        compose.runOnUiThread { gate.complete(Unit) }
+        // No notification intent is delivered to the Activity.
+        compose.waitUntil(6000) { compose.onAllNodesWithText(compose.activity.getString(R.string.preparation_failed_title)).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText(compose.activity.getString(R.string.v3_resuming)).assertDoesNotExist()
+        compose.onNodeWithText(compose.activity.getString(R.string.v1_source_failed)).assertIsDisplayed()
+        capture("resume-failed-detail")
+        tap("switch_view")
+        compose.onNodeWithTag("watch_w").assertIsDisplayed()
+        compose.onNodeWithText(compose.activity.getString(R.string.preparation_failed_title)).assertIsDisplayed()
+        compose.onNodeWithText(compose.activity.getString(R.string.v3_resuming)).assertDoesNotExist()
+        assertEquals(listOf("one-resume"),service.submittedCommands.map { it.id }.distinct())
+        capture("resume-failed-home")
     }
 
     @OptIn(ExperimentalMaterial3Api::class)

@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-29",
+  "serverDeployed": true,
+  "apkSha256": "24ea2274a2d544f117e06b8040c4c6bff9dce367ca1ae6b94a8a6c4a40e6632f",
+  "causes": [
+    "Terminal failed receipt mapped to the same failure as an unknown transport outcome, retaining the pending operation overlay.",
+    "Manual list refresh did not reconcile the in-memory pending command after its polling window.",
+    "Generic national pages and clipped navigation prefixes hid relevant job entries.",
+    "The old PS5 plan used the provider US default and one body per cycle; large Markdown image/link destinations obscured useful content."
+  ],
+  "fixes": [
+    "Keep terminal receipt failures distinct from transport uncertainty; refresh confirmed state and reconcile the original command UUID on manual refresh.",
+    "Render preparation failure on an older resumed watch even when earlier results and baseline are retained.",
+    "Rank specific request terms and common PS5/promotion variants, use supported country/location preferences, and select one contiguous excerpt of visible body text.",
+    "Remove Markdown transport markup before the existing bounded model input; retain coverage checks, source count and cadence fences."
+  ],
+  "serviceTests": 101,
+  "androidUnitTests": {
+    "Remote": {
+      "tests": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Demo": {
+      "tests": 64,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "nativeTests": {
+    "finalLight": 2,
+    "darkFont130Percent": 1,
+    "scenarios": [
+      "resume pending, toolbar refresh, terminal failure, detail and home updated without a notification",
+      "pause pending prevents repeated mutation and shows confirmed pause"
+    ]
+  },
+  "liveQualification": {
+    "scope": "Disposable clones of exact confirmed drafts and cached understanding. Deployed real search, scraping, coverage and baseline; no automatic user-watch restart or criteria change.",
+    "cases": [
+      {
+        "case": "montpellier",
+        "status": "completed",
+        "initialResults": 1,
+        "sources": [
+          {
+            "url": "https://candidat.francetravail.fr/offres/emploi/developpeur-android/s29m12",
+            "label": "Offres d'emploi Développeur android - Internet - Ecommerce"
+          },
+          {
+            "url": "https://www.hellowork.com/fr-fr/emploi/metier_developpeur-android.html",
+            "label": "Emploi Développeur Android - Plus de 70 Offres"
+          }
+        ],
+        "fixtureDataRemoved": true
+      },
+      {
+        "case": "ps5",
+        "status": "active",
+        "initialResults": 0,
+        "sources": [
+          {
+            "url": "https://www.micromania.fr/c/consoles-ps5?srsltid=AYCX9vKDeTQJsDgcb09cusEeYzZiVweS8KSjibQlEUAylTnhYiiFtLmq",
+            "label": "PS5 - Console Playstation 5 : Achat & Retrait en Magasin\n\n"
+          }
+        ],
+        "fixtureDataRemoved": true
+      }
+    ],
+    "earlierPS5FailuresRetained": true,
+    "allFiveQualificationIdentitiesRemoved": true,
+    "recallOrLongDurationClaimed": false
+  },
+  "budget": {
+    "before": {
+      "model_held": 0,
+      "model_used": 23962,
+      "credit_held": 5,
+      "credit_used": 48,
+      "model_limit": 100000,
+      "credit_limit": 100
+    },
+    "after": {
+      "model_held": 0,
+      "model_used": 34803,
+      "credit_held": 15,
+      "credit_used": 57,
+      "model_limit": 100000,
+      "credit_limit": 100
+    },
+    "limitsChanged": false,
+    "subscriptionsOrTopUps": false,
+    "unknownReservationsPreserved": true,
+    "authorizedEuroLimit": 2,
+    "existingConservativeEuroEnvelopeUpperBound": 0.99587625,
+    "note": "Trials consume the existing OpenAI and free Firecrawl envelopes. No invoice reconciliation claim."
+  },
+  "lint": {
+    "remoteDebug": {
+      "errors": 59,
+      "existingLinesAtHEAD": 59,
+      "unmatched": [],
+      "kinds": {
+        "PluralsCandidate": 1,
+        "UnusedResources": 57,
+        "UseKtx": 1
+      }
+    },
+    "demoDebug": {
+      "errors": 0,
+      "existingLinesAtHEAD": 0,
+      "unmatched": [],
+      "kinds": {}
+    }
+  },
+  "phoneInstalled": false,
+  "phoneNote": "No physical device was visible to adb; the compiled remoteDebug APK is ready. Native qualification used emulator-5556.",
+  "githubPushed": false
+}

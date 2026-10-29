@@ -1,3 +1,9 @@
+import {
+  evidenceWindow,
+  rankSources,
+  searchLocale,
+  sourceText,
+} from "./source-content.ts";
 import { Firecrawl, ProviderFault } from "./firecrawl.ts";
 import {
   type Document,
@@ -49,6 +55,7 @@ export async function collectStableSources(
         : "");
     const result = await read("discovery", "/v2/search", {
       query,
+      ...searchLocale(draft),
       limit: 6,
       sources: ["web"],
       timeout: 10000,
@@ -58,41 +65,28 @@ export async function collectStableSources(
       answers.find((a) => a.questionId === "preferred_site")?.value,
       ...draft.text.match(/https:\/\/[^\s<>"\]]+/g) ?? [],
     ].filter((s): s is string => typeof s === "string" && publicUrl(s));
-    const words = intent.title.toLowerCase().match(/[\p{L}\p{N}]{3,}/gu) ?? [];
-    const scored = [
-      ...supplied.map((url) => ({
-        url,
-        title: "",
-        description: "",
-        preferred: true,
-      })),
-      ...result.web.map((v: any) => ({ ...v, preferred: false })),
-    ].filter((v: any) =>
-      typeof v.url === "string" && publicUrl(v.url) &&
-      !retained.some((s) => s.url === v.url)
-    ).map((v: any, index: number) => {
-      const content = (v.title + " " + v.description + " " + v.url)
-        .toLowerCase();
-      const country = region.toLowerCase() === "france"
-        ? (/\/en-us\/|\/en-gb\/|\/us\/|\busd\b|\bdollars?\b/.test(content)
-          ? -100
-          : /\.fr\b|\/fr-fr\/|\bfrance\b/.test(content)
-          ? 6
-          : 0)
-        : 0;
-      return {
-        url: v.url,
-        label: typeof v.title === "string" && v.title.trim()
-          ? v.title.slice(0, 300)
-          : new URL(v.url).hostname,
-        retained: false,
-        score: (v.preferred ? 150 : 0) + country +
-          words.filter((w) => content.includes(w)).length,
-        index,
-      };
-    }).filter((v: any) => v.score >= 0).sort((a: any, b: any) =>
-      b.score - a.score || a.index - b.index
-    );
+    const scored = rankSources(
+      [
+        ...supplied.map((url) => ({
+          url,
+          title: "",
+          description: "",
+          preferred: true,
+        })),
+        ...result.web.filter((v: any) =>
+          typeof v?.url === "string" && publicUrl(v.url)
+        ).map((v: any) => ({ ...v, preferred: false })),
+      ].filter((v) => !retained.some((s) => s.url === v.url)),
+      draft,
+      intent,
+    ).map((v) => ({
+      url: v.url,
+      label: typeof v.title === "string" && v.title.trim()
+        ? v.title.slice(0, 300)
+        : new URL(v.url).hostname,
+      retained: false,
+      score: 0,
+    }));
     candidates = [
       ...candidates,
       ...scored.filter((v: any, i: number, all: any[]) =>
@@ -114,9 +108,12 @@ export async function collectStableSources(
         timeout: 25000,
       }, 1);
       const metadata = value.metadata as any;
+      const visible = typeof value.markdown === "string"
+        ? sourceText(value.markdown)
+        : "";
       if (
         typeof value.markdown !== "string" ||
-        value.markdown.trim().length < 40 ||
+        visible.trim().length < 40 ||
         metadata?.statusCode && metadata.statusCode !== 200
       ) {
         failures.push(s.url);
@@ -140,8 +137,9 @@ export async function collectStableSources(
       documents.push({
         url: s.url,
         label: s.label,
-        text: value.markdown.slice(
-          0,
+        text: evidenceWindow(
+          visible,
+          intent,
           Math.floor(7800 / Math.max(3, candidates.length)),
         ),
         publication,

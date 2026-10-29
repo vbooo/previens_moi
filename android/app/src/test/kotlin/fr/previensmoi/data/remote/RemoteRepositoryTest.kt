@@ -246,4 +246,19 @@ class RemoteRepositoryTest {
         }
     }
 
+    @Test fun `failed receipt is terminal even when its error code is temporary failure`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val journal = MemoryPending()
+            val repository = RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000))),journal,IdGenerator { "unused" })
+            val command = Command("resume",Operation.Resume,"w",2)
+            server.enqueue(response("""{"id":"resume","state":"pending","updatedAt":"2026-10-29T20:00:00Z","remoteState":"starting","watchId":"w"}""",202))
+            assertEquals(Outcome.Error(Failure.OperationPending),repository.execute(command))
+            server.enqueue(response("""{"id":"resume","state":"failed","updatedAt":"2026-10-29T20:01:00Z","remoteState":"stopped","watchId":"w","error":{"code":"temporary_failure","requestId":"request","retryAfterSeconds":null,"scope":null}}"""))
+            assertEquals(Outcome.Error(Failure.OperationFailed),repository.execute(command))
+            assertNull(journal.read("a"))
+            assertEquals("POST",server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.method)
+            assertEquals("GET",server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.method)
+        }
+    }
+
 }

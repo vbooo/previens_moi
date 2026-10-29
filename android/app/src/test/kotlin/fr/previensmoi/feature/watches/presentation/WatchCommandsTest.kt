@@ -232,4 +232,56 @@ class WatchCommandsTest {
             Dispatchers.resetMain()
         }
     }
+    @Test
+    fun `refresh reconciles a failed resume after the bounded wait with the same command`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val server = Server()
+            server.items.value = listOf(server.initial.copy(status = WatchStatus.Paused))
+            server.reply.complete(Outcome.Error(Failure.OperationPending))
+            val vm = WatchesViewModel(server, server, IdGenerator { "same-resume" })
+            runCurrent()
+            vm.command(server.items.value.single(), Operation.Resume)
+            runCurrent()
+            advanceTimeBy(60_000)
+            runCurrent()
+            assertTrue(vm.state.value.commandUnconfirmed)
+            server.items.value = listOf(server.initial.copy(
+                status = WatchStatus.Paused, health = Health.Degraded, version = 2,
+                baselineAt = null, remoteState = RemoteState.Stopped,
+                plan = server.initial.plan.copy(preparationFailure = "source_unusable"),
+            ))
+            server.reply = CompletableDeferred(Outcome.Error(Failure.OperationFailed))
+            vm.refresh()
+            runCurrent()
+            assertFalse(vm.state.value.commandPending)
+            assertFalse(vm.state.value.commandUnconfirmed)
+            assertNull(vm.state.value.commandOperation)
+            assertEquals(Failure.OperationFailed, vm.state.value.commandError)
+            assertEquals("source_unusable", vm.state.value.watches.single().plan.preparationFailure)
+            assertEquals(32, server.calls.size)
+            assertTrue(server.calls.all { it.id == "same-resume" && it.operation == Operation.Resume })
+        } finally { Dispatchers.resetMain() }
+    }
+
+    @Test
+    fun `terminal failure settles during automatic polling without a notification`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val server = Server()
+            server.reply.complete(Outcome.Error(Failure.OperationPending))
+            val vm = WatchesViewModel(server, server, IdGenerator { "resume" })
+            runCurrent()
+            vm.command(server.initial.copy(status = WatchStatus.Paused), Operation.Resume)
+            runCurrent()
+            server.reply = CompletableDeferred(Outcome.Error(Failure.OperationFailed))
+            advanceTimeBy(2_000)
+            runCurrent()
+            assertEquals(2,server.calls.size)
+            assertEquals(Failure.OperationFailed,vm.state.value.commandError)
+            assertFalse(vm.state.value.commandUnconfirmed)
+            assertNull(vm.state.value.commandWatchId)
+        } finally { Dispatchers.resetMain() }
+    }
+
 }

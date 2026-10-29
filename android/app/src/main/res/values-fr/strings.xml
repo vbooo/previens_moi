@@ -124,4 +124,5 @@
     <string name="preparation_quota_failed">La limite de l’essai est atteinte. Le suivi n’a pas démarré.</string>
     <string name="prepared_sources">Sources consultées</string>
     <string name="prepared_sources_body">Sources vérifiées pendant la préparation. Les prochaines vérifications peuvent en trouver d’autres.</string>
+    <string name="operation_failed">Le service n’a pas pu terminer cette action.</string>
 </resources>

@@ -183,9 +183,7 @@ fun WatchStatusLabel(
     onClick: (() -> Unit)? = null,
 ) {
     val failed =
-        watch.baselineAt == null &&
-            watch.status == WatchStatus.Paused &&
-            watch.health == Health.Degraded
+        watch.preparationFailed
     val stopping = watch.remoteState == RemoteState.Stopping
     val unverified =
         watch.status == WatchStatus.Active &&

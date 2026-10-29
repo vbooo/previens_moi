@@ -257,9 +257,7 @@ fun DetailScreen(
         state.commandOperation.takeIf { state.commandWatchId == id && state.commandUnconfirmed }
     val pausing = pendingOperation == Operation.Pause || watch.remoteState == RemoteState.Stopping
     val failed =
-        watch.baselineAt == null &&
-            watch.status == WatchStatus.Paused &&
-            watch.health == Health.Degraded
+        watch.preparationFailed
     Page(spacing = 16.dp) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -346,7 +344,7 @@ fun DetailScreen(
                         TextButton(vm::retryCommand, modifier = Modifier.testTag("retry_command")) {
                             Text(stringResource(R.string.v3_verify_operation))
                         }
-                } else FailureText(state.commandError)
+                } else if (!(failed && state.commandError == Failure.OperationFailed)) FailureText(state.commandError)
                 if (state.commandPending && pendingOperation == null) Busy()
                 if (watch.status in setOf(WatchStatus.Active, WatchStatus.Pending))
                     FilledTonalButton(

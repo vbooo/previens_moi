@@ -1,3 +1,4 @@
+import {sourceText} from './source-content.ts';
 import {MODEL,modelRequest,responseValue,parseIntent,parseJudgment,type Draft,type Intent,type Document} from './semantic.ts';
 import {collectStableSources} from './stable-sources.ts';
 import {coverageRequest,parseCoverage} from './coverage.ts';
@@ -38,7 +39,7 @@ export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,en
    const budget={async reserve(_:string,cost:number){if(held+cost>upper)return false;held+=cost;return true;},async settle(){},async unknown(){unknown=true;}};
    const got=stable?await (async()=>{const r=await collectStableSources(client,c.draft,c.intent!,c.plan?.sources??[],c.rediscover===true,budget);return {sources:r.documents,state:r.documents.length?'retrieved':'no_source',failures:r.healthy?[]:['partial'],checkCoverage:{verified:r.verified,total:r.total}};})():await discoverSources(client,c.draft,intent,budget,true,{queries:1,pages:1,offset:n});
    credits=unknown?null:held;
-   const documents=got.sources.map(d=>{const old=c.priorDocuments?.find(o=>o.url===d.url);if(!old)return d;const lines=new Set(old.text.normalize('NFC').split(/\r?\n/).map(s=>s.trim()).filter(Boolean));return {...d,changedText:d.text.normalize('NFC').split(/\r?\n/).map(s=>s.trim()).filter(s=>s&&!lines.has(s)).join('\n')};});
+   const documents=got.sources.map(d=>{const old=c.priorDocuments?.find(o=>o.url===d.url);if(!old)return d;const lines=new Set(sourceText(old.text).normalize('NFC').split(/\r?\n/).map(s=>s.trim()).filter(Boolean));return {...d,changedText:d.text.normalize('NFC').split(/\r?\n/).map(s=>s.trim()).filter(s=>s&&!lines.has(s)).join('\n')};});
    result={documents,retrievalHealthy:got.state==='retrieved'&&got.failures.length===0,...('checkCoverage' in got?{checkCoverage:got.checkCoverage}:{})};
   } else {
    const intent=c.intent!,documents=(c.documents??[]).filter(d=>!stable||!c.prepared||c.plan?.sources.some((source:any)=>source.url===d.url));

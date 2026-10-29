@@ -32,7 +32,7 @@ data class Finding(
 )
 data class Proof(val url: String, val quote: String, val observedAt: Long, val publicationDate: String? = null)
 enum class Failure {
-    OperationPending, AnalysisPending,
+    OperationPending, OperationFailed, AnalysisPending,
     Offline, TemporaryFailure, SessionRequired, AccessDenied, NotFound, ProposalExpired,
     VersionConflict, CommandConflict, QuotaExceeded, Unsupported, InvalidInput, StorageFailure,
 }
@@ -62,3 +62,7 @@ sealed interface RefreshResult {
 }
 fun interface Clock { fun now(): Long }
 fun interface IdGenerator { fun next(): String }
+
+/** A resumed generation may fail while retaining results from an earlier run. */
+val Watch.preparationFailed: Boolean get() = status == WatchStatus.Paused &&
+    health == Health.Degraded && (baselineAt == null || plan.preparationFailure != null)

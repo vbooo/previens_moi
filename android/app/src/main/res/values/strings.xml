@@ -124,4 +124,5 @@
     <string name="preparation_quota_failed">The trial limit has been reached. Monitoring has not started.</string>
     <string name="prepared_sources">Sources read</string>
     <string name="prepared_sources_body">Sources checked during preparation. Future checks may find other sources.</string>
+    <string name="operation_failed">The service could not complete this action.</string>
 </resources>

@@ -67,6 +67,11 @@ constructor(
                         offline = result == RefreshResult.Offline,
                     )
                 }
+                // A list read alone cannot settle a mutation: reconcile the original
+                // receipt as well, including after the bounded automatic wait ended.
+                if (result == RefreshResult.Success && state.value.commandUnconfirmed && !state.value.commandPending) {
+                    retryCommand()
+                }
             } finally {
                 mutableState.update { it.copy(refreshing = false) }
             }
@@ -151,7 +156,7 @@ constructor(
                                 commandOperation = if (uncertain) command.operation else null,
                             )
                         }
-                        if (settled.reason == Failure.VersionConflict) refresh()
+                        if (!uncertain) refresh()
                     }
                 }
             } catch (cancelled: CancellationException) {
