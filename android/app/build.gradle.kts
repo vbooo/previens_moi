@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -5,6 +7,20 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 }
+
+// Only public mobile-client settings live here; server credentials never enter Gradle.
+// Explicit -P properties still take precedence for isolated local and CI builds.
+val clientProperties = Properties().apply {
+    val file = rootProject.file("client.properties")
+    if (file.isFile) file.inputStream().use { load(it) }
+}
+val localServiceBuild = providers.gradleProperty("localService").getOrElse("false") == "true"
+fun clientSetting(name: String, fallback: String = ""): String =
+    providers.gradleProperty(name).getOrElse(
+        if (localServiceBuild) fallback else clientProperties.getProperty(name, fallback),
+    )
+
+
 android {
     namespace = "fr.previensmoi"
     compileSdk = 37
@@ -20,13 +36,14 @@ android {
     productFlavors {
         create("demo") { dimension = "environment"; applicationIdSuffix = ".demo" }
         create("remote") {
+            isDefault = true
             dimension = "environment"; applicationIdSuffix = ".remote"
             for ((field, property) in listOf("FIREBASE_APP_ID" to "firebaseAppId", "FIREBASE_PROJECT_ID" to "firebaseProjectId", "FIREBASE_API_KEY" to "firebaseApiKey", "FIREBASE_SENDER_ID" to "firebaseSenderId")) {
-                buildConfigField("String", field, "\"${providers.gradleProperty(property).getOrElse("")}\"")
+                buildConfigField("String", field, "\"${clientSetting(property)}\"")
             }
-            buildConfigField("String", "SERVICE_URL", "\"${providers.gradleProperty("serviceUrl").getOrElse("https://service.previens-moi.invalid/functions/v1/")}\"")
-            buildConfigField("String", "AUTH_URL", "\"${providers.gradleProperty("authUrl").getOrElse("https://service.previens-moi.invalid/auth/v1/")}\"")
-            buildConfigField("String", "AUTH_PUBLIC_KEY", "\"${providers.gradleProperty("authPublicKey").getOrElse("")}\"")
+            buildConfigField("String", "SERVICE_URL", "\"${clientSetting("serviceUrl", "https://service.previens-moi.invalid/functions/v1/")}\"")
+            buildConfigField("String", "AUTH_URL", "\"${clientSetting("authUrl", "https://service.previens-moi.invalid/auth/v1/")}\"")
+            buildConfigField("String", "AUTH_PUBLIC_KEY", "\"${clientSetting("authPublicKey")}\"")
             buildConfigField("boolean", "LOCAL_SERVICE", providers.gradleProperty("localService").getOrElse("false"))
         }
     }

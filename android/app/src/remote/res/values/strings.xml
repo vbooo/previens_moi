@@ -3,7 +3,7 @@
     <string name="remote_banner">Trial · public-source monitoring</string>
     <string name="notification_channel">Verified findings</string>
     <string name="notification_permission">Enable notifications</string>
-    <string name="app_name">Préviens-moi · Test</string>
+    <string name="app_name">Préviens-moi</string>
     <string name="unqualified_body">Describe the public information to follow. Before activation, the proposal shows verified sources, frequency and coverage limits.</string>
     <string name="partial_text">This watch covers the sources and conditions listed below. Some results may be missed.</string>
     <string name="partial_accept">I understand this watch’s coverage limits</string>
@@ -23,4 +23,5 @@
     <string name="operation_pending">We are checking whether your watch was saved.</string>
     <string name="processing">One moment…</string>
     <string name="why">Why this result?</string>
+    <string name="missing">This content is no longer available. It may have been deleted.</string>
 </resources>

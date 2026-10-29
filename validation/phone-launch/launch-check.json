@@ -1,0 +1,20 @@
+{
+  "realVariant": "remoteDebug",
+  "simulationVariant": "demoDebug",
+  "providerCalls": 0,
+  "phoneConnected": false,
+  "installedOnPhone": false,
+  "navigationRedesigned": false,
+  "remotePackageAndLabelVerified": true,
+  "demoPackageAndLabelVerified": true,
+  "studioBuildUsesRealPublicClientConfiguration": true,
+  "unitTests": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "passed": true,
+  "localBuildExcludesCloudFallback": true,
+  "explicitBuildPropertiesTakePrecedence": true
+}

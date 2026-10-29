@@ -24,3 +24,6 @@ service/.runtime/
 
 # Supabase CLI metadata when launched from the repository root
 supabase/.temp/
+
+# Public mobile client configuration for this checkout; generated, never server keys
+android/client.properties

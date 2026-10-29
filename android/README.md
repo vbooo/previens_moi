@@ -84,7 +84,7 @@ Les routes Retrofit et DTO sont assemblés aux repositories dans `remoteDebug`. 
 
 ## Variante connectée S3 (locale, non publiable)
 
-`remoteDebug` est séparée de `demoDebug`. Sans propriétés explicites, son URL reste `.invalid`, aucun projet Firebase n'est initialisé. `python3 scripts/check-local-android.py` construit l'app et ses tests avec seulement le service Supabase local dédié (voir `service/README.md`). La démo retire toujours INTERNET et ne contient pas Firebase/WorkManager.
+`remoteDebug` est séparée de `demoDebug`. Sans propriétés explicites ni fichier local `client.properties`, son URL reste `.invalid` et aucun projet Firebase n'est initialisé. `python3 scripts/check-local-android.py` construit l'app et ses tests avec seulement le service Supabase local dédié (voir `service/README.md`). La démo retire toujours INTERNET et ne contient pas Firebase/WorkManager.
 
 Session : code e-mail réel local, jetons protégés par Android Keystore dans `noBackupFilesDir`, rotation coordonnée, effacement local même après échec de déconnexion. Les UUID de commandes incertaines sont conservés séparément et relus après recréation ; aucune commande complète avec secret n'est persistée. Une commande perdue avant envoi et absente du serveur après mort du processus reste explicitement incertaine ; son contenu n'est pas reconstruit pour créer une nouvelle activation.
 
@@ -101,3 +101,13 @@ Les notifications contrôlent aussi l'expiration FCM pendant leur attente WorkMa
 Validation actuelle : 49 tests unitaires demo, 27 remote (une partie commune), Lint sans erreur/avertissement ; trois parcours remote en FR et EN ; reprise réelle du processus pour commande **et** analyse. Pour les tester, construire avec `scripts/check-local-android.py`. La procédure d'instrumentation directe conserve les données nécessaires aux scripts `check-android-remote-restoration.py` et `check-android-evaluation-restoration.py`.
 
 Raccordement dédié : `scripts/check-cloud-config.py` contrôle `.local/cloud/supabase.env`, `google-services.json` et `firebase-service-account.json` sans réseau ni affichage des valeurs. L'identité serveur reste hors d'Android.
+
+## Lancer la version réelle depuis Android Studio
+
+Ouvrir ce dossier `android/`, puis choisir `remoteDebug` dans **View → Tool Windows → Build Variants** pour le module `app`. Cette variante est désormais le choix par défaut d’un nouveau projet importé ; Android Studio peut conserver un ancien choix explicite de `demoDebug`. Le bouton ▶ lance la variante sélectionnée.
+
+Sur le poste configuré pour ce projet, exécuter une fois depuis la racine du dépôt `python3 scripts/configure-android-client.py`, puis synchroniser Gradle. Le fichier ignoré `android/client.properties` contient uniquement les URL et identifiants publics du client mobile. Aucune clé serveur, mot de passe de base ni identité Firebase Admin n’y est copiée. Les propriétés explicites `-P` restent prioritaires ; `localService=true` désactive ce repli cloud afin d’isoler les tests locaux.
+
+`demoDebug` est un simulateur hors ligne destiné aux tests déterministes : « Scénarios », « Simuler une vérification » et les messages fictifs y sont intentionnels. Ce n’est pas la version à utiliser pour essayer les vraies recherches. Les deux identifiants d’application sont distincts ; une installation de `remoteDebug` ne transforme ni ne supprime les données de `demoDebug`.
+
+Le nom visible est **Préviens-moi** pour le service réel, et **Préviens-moi · Simulation** pour le simulateur. Cette distinction évite de rouvrir la mauvaise application sur le téléphone.

@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Préviens-moi · Simulation</string>
     <string name="demo_banner">Demo · fictional data · no alerts sent</string>
     <string name="demo_tools">Scenarios</string>
     <string name="demo_tools_title">Demonstration scenario</string>
