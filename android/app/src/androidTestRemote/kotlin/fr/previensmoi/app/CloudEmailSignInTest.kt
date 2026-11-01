@@ -9,7 +9,6 @@ import fr.previensmoi.feature.session.presentation.SessionViewModel
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import fr.previensmoi.BuildConfig
-import fr.previensmoi.R
 import fr.previensmoi.data.auth.KeystoreSessionVault
 import java.net.HttpURLConnection
 import java.net.URL
@@ -34,8 +33,16 @@ class CloudEmailSignInTest {
         compose.waitForIdle()
         compose.onNodeWithTag(tag).performScrollTo().performClick()
     }
-    private fun shown(id: Int) = compose.waitUntil(30000) {
-        compose.onAllNodesWithText(compose.activity.getString(id)).fetchSemanticsNodes().isNotEmpty()
+    private fun account() {
+        compose.waitUntil(30000) {
+            compose.onAllNodesWithTag("account").fetchSemanticsNodes().isNotEmpty() ||
+                compose.onAllNodesWithTag("sign_out").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (compose.onAllNodesWithTag("account").fetchSemanticsNodes().isNotEmpty())
+            compose.onNodeWithTag("account").performClick()
+    }
+    private fun shownTag(tag: String) = compose.waitUntil(30000) {
+        compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
     }
     private fun suppliedCode(): String {
         val descriptor = instrumentation.uiAutomation.executeShellCommand("cat /data/local/tmp/previens-moi-email-code.txt")
@@ -48,13 +55,13 @@ class CloudEmailSignInTest {
         check(!BuildConfig.LOCAL_SERVICE && URL(BuildConfig.AUTH_URL).host.endsWith(".supabase.co"))
         val email = checkNotNull(args.getString("testEmail"))
         check(email.contains('@'))
-        compose.onNodeWithText(compose.activity.getString(R.string.account_title)).performClick()
+        account()
         if (compose.onAllNodesWithTag("sign_out").fetchSemanticsNodes().isNotEmpty()) tap("sign_out")
         compose.onNodeWithTag("email").performTextReplacement(email)
         val vm = ViewModelProvider(compose.activity)[SessionViewModel::class.java]
         assertEquals("Complete test email entered", email, vm.state.value.email)
         tap("send_code")
-        try { shown(R.string.code_sent) } catch (failure: Throwable) {
+        try { shownTag("otp") } catch (failure: Throwable) {
             val state = vm.state.value
             println("Email request state: sent=${state.sent}, busy=${state.busy}, error=${state.error}, emailMatches=${state.email == email}")
             throw failure
@@ -70,7 +77,7 @@ class CloudEmailSignInTest {
         check(code.length == 6) { "Private email code was not supplied in time" }
         compose.onNodeWithTag("otp").performTextReplacement(code)
         tap("verify_code")
-        shown(R.string.account_connected)
+        account(); shownTag("sign_out")
         val vault = KeystoreSessionVault(compose.activity)
         val credentials = checkNotNull(vault.read())
         val connection = URL(BuildConfig.SERVICE_URL + "api/v1/account").openConnection() as HttpURLConnection
@@ -82,7 +89,7 @@ class CloudEmailSignInTest {
         assertFalse("Session stored encrypted", ciphertext.contains(credentials.accessToken))
         assertFalse("Refresh token stored encrypted", ciphertext.contains(credentials.refreshToken))
         compose.activityRule.scenario.recreate()
-        shown(R.string.account_connected)
+        account(); shownTag("sign_out")
         assertEquals(credentials.userId, checkNotNull(KeystoreSessionVault(compose.activity).read()).userId)
     }
     @Test fun verifyPreviouslyRequestedMailboxCodeAndRestoreSession() {
@@ -98,8 +105,7 @@ class CloudEmailSignInTest {
         val repository = (compose.activity.application as PreviensMoiApplication).sessions
         val result = kotlinx.coroutines.runBlocking { repository.verifyCode(email, code) }
         assertTrue("Real mailbox code accepted by app repository", result is fr.previensmoi.domain.model.Outcome.Success)
-        compose.onNodeWithText(compose.activity.getString(R.string.account_title)).performClick()
-        shown(R.string.account_connected)
+        account(); shownTag("sign_out")
         val credentials = checkNotNull(KeystoreSessionVault(compose.activity).read())
         val connection = URL(BuildConfig.SERVICE_URL + "api/v1/account").openConnection() as HttpURLConnection
         connection.connectTimeout = 15000; connection.readTimeout = 15000
@@ -110,7 +116,7 @@ class CloudEmailSignInTest {
         assertFalse("Access token stored encrypted", ciphertext.contains(credentials.accessToken))
         assertFalse("Refresh token stored encrypted", ciphertext.contains(credentials.refreshToken))
         compose.activityRule.scenario.recreate()
-        shown(R.string.account_connected)
+        account(); shownTag("sign_out")
         assertEquals(credentials.userId, checkNotNull(KeystoreSessionVault(compose.activity).read()).userId)
     }
 
@@ -120,8 +126,7 @@ class CloudEmailSignInTest {
         assumeTrue(args.getString("emailPhase") == "restore")
         check(!BuildConfig.LOCAL_SERVICE && URL(BuildConfig.AUTH_URL).host.endsWith(".supabase.co"))
         val before = checkNotNull(KeystoreSessionVault(compose.activity).read())
-        compose.onNodeWithText(compose.activity.getString(R.string.account_title)).performClick()
-        shown(R.string.account_connected)
+        account(); shownTag("sign_out")
         val repository = (compose.activity.application as PreviensMoiApplication).sessions
         assertEquals(before.userId, repository.currentUserId())
         tap("sign_out")

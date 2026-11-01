@@ -37,7 +37,6 @@
     <string name="v1_preparing_body">We are looking for suitable sources. Preparation continues even if you close the app.</string>
     <string name="v1_source_failed">The sources found cannot verify this request.</string>
     <string name="v1_technical_failed">Preparation could not be completed. You can try again by editing your request.</string>
-    <string name="v1_limit_body">Checks are suspended: the trial limit has been reached.</string>
     <string name="v1_paused_body">Paused. No checks are being performed.</string>
     <string name="v1_completed_body">A result matches your request. This watch is complete.</string>
     <string name="v1_last_failed">The last check failed. Previous results remain available.</string>
@@ -70,17 +69,11 @@
     <string name="v1_validate">Verify</string>
     <string name="v1_change_email">Change email address</string>
     <string name="v1_resend_wait">Resend a code in %1$d s</string>
-    <string name="v1_home">My watches</string>
-    <string name="v1_new">New watch</string>
-    <string name="v1_confirmation">Your watch</string>
-    <string name="v1_clarify">One detail</string>
-    <string name="v1_account">My account</string>
-    <string name="v1_connection">Sign in</string>
-    <string name="v1_result">Result</string>
-    <string name="v1_actions">Watch actions</string>
-    <string name="v1_modify_region">Change area</string>
     <string name="v1_enable_notifications">Enable notifications</string>
-    <string name="v1_partial_check">%1$d sources checked out of %2$d. A website is temporarily unavailable.</string>
+    <plurals name="v1_partial_check">
+        <item quantity="one">%1$d source checked out of %2$d. A website is temporarily unavailable.</item>
+        <item quantity="other">%1$d sources checked out of %2$d. A website is temporarily unavailable.</item>
+    </plurals>
     <string name="v1_hourly">Approximately every hour</string>
     <string name="v1_change">Change</string>
 </resources>

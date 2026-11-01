@@ -1,0 +1,10 @@
+<resources>
+    <string name="v1_home">Mes suivis</string>
+    <string name="v1_new">Nouveau suivi</string>
+    <string name="v1_confirmation">Ton suivi</string>
+    <string name="v1_clarify">Une précision</string>
+    <string name="v1_account">Mon compte</string>
+    <string name="v1_connection">Connexion</string>
+    <string name="v1_result">Résultat</string>
+    <string name="v1_actions">Actions du suivi</string>
+</resources>

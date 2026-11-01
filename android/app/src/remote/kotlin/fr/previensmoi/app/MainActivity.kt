@@ -2,7 +2,6 @@ package fr.previensmoi.app
 
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -23,6 +22,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
                         else
                             Intent(
                                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                Uri.parse("package:$packageName"),
+                                "package:$packageName".toUri(),
                             ),
                     )
                 }
@@ -287,7 +287,7 @@ class MainActivity : ComponentActivity() {
                                                 stringResource(R.string.refresh_short),
                                             )
                                         }
-                                    TextButton(onClick = { stack.add(Account) }) {
+                                    TextButton(onClick = { stack.add(Account) }, modifier = Modifier.testTag("account")) {
                                         Text(
                                             stringResource(
                                                 if (account.session == null) R.string.sign_in

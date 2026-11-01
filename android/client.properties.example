@@ -1,0 +1,9 @@
+# Public Android client configuration only. Copy to client.properties (ignored by Git).
+# Never add service-role keys, server provider keys, passwords or Firebase Admin JSON.
+serviceUrl=https://your-project.supabase.co/functions/v1/
+authUrl=https://your-project.supabase.co/auth/v1/
+authPublicKey=YOUR_SUPABASE_PUBLIC_ANON_KEY
+firebaseAppId=YOUR_FIREBASE_ANDROID_APP_ID
+firebaseProjectId=YOUR_FIREBASE_PROJECT_ID
+firebaseApiKey=YOUR_FIREBASE_CLIENT_API_KEY
+firebaseSenderId=YOUR_FIREBASE_SENDER_ID

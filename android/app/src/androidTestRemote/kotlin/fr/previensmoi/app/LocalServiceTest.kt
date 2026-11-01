@@ -51,7 +51,18 @@ class LocalServiceTest {
         if (Build.VERSION.SDK_INT >= 30) compose.waitUntil(5000) { compose.activity.window.decorView.rootWindowInsets?.isVisible(WindowInsets.Type.ime()) != true }
     }
     private fun tap(tag: String) { closeKeyboard(); compose.waitUntil(10000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().size == 1 }; compose.onNodeWithTag(tag).performScrollTo().performClick() }
-    private fun account() { compose.onNodeWithText(compose.activity.getString(R.string.account_title)).performClick() }
+    private fun account() {
+        compose.waitUntil(30000) {
+            compose.onAllNodesWithTag("account").fetchSemanticsNodes().isNotEmpty() ||
+                compose.onAllNodesWithTag("sign_out").fetchSemanticsNodes().isNotEmpty()
+        }
+        if (compose.onAllNodesWithTag("account").fetchSemanticsNodes().isNotEmpty())
+            compose.onNodeWithTag("account").performClick()
+    }
+    private fun shownTag(tag: String) = compose.waitUntil(30000) {
+        compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
+    }
+
     @Test fun signedOutHomeShowsSignInInsteadOfRefreshFailureOrPrivateRows() {
         var openedAccount = false
         val vm = ViewModelProvider(compose.activity)[CreateViewModel::class.java]
@@ -68,7 +79,7 @@ class LocalServiceTest {
         compose.onNodeWithTag("signed_out_watches").assertIsDisplayed()
         compose.onNodeWithText(compose.activity.getString(R.string.stale_content)).assertDoesNotExist()
         compose.onNodeWithTag("watch_private-watch").assertDoesNotExist()
-        compose.onNodeWithText(compose.activity.getString(R.string.refresh_list)).assertDoesNotExist()
+        compose.onNodeWithTag("refresh_watches").assertDoesNotExist()
         compose.onNodeWithTag("sign_in_watches").performScrollTo().performClick()
         assertTrue(openedAccount)
     }
@@ -79,7 +90,7 @@ class LocalServiceTest {
         if (compose.onAllNodesWithTag("sign_out").fetchSemanticsNodes().isNotEmpty()) tap("sign_out")
         compose.waitUntil(15000) { compose.onAllNodesWithTag("email").fetchSemanticsNodes().size == 1 }
         compose.onNodeWithTag("email").performTextReplacement(email)
-        tap("send_code"); shown(R.string.code_sent)
+        tap("send_code"); shownTag("otp")
         val json = Json { ignoreUnknownKeys = true }
         val list = json.parseToJsonElement(URL("http://10.0.2.2:56324/api/v1/messages").readText()).jsonObject["messages"]!!.jsonArray
         val item = list.first { row -> row.jsonObject["To"]!!.jsonArray.any { it.jsonObject["Address"]!!.jsonPrimitive.content == email } }.jsonObject
@@ -87,21 +98,22 @@ class LocalServiceTest {
         val code = Regex("\\b\\d{6}\\b").find(mail["Text"]!!.jsonPrimitive.content + mail["HTML"]!!.jsonPrimitive.content)!!.value
         compose.onNodeWithTag("otp").performTextReplacement(code)
         tap("verify_code")
-        try { shown(R.string.account_connected) }
+        try { account(); shownTag("sign_out") }
         catch (failure: Throwable) {
             val labels = listOf(R.string.error_session,R.string.storage_error,R.string.error_temporary,R.string.error_input)
             println("Auth failure categories: " + labels.map { compose.onAllNodesWithText(compose.activity.getString(it)).fetchSemanticsNodes().isNotEmpty() })
             capture("remote-auth-failure.png")
             throw failure
         }
-        compose.activityRule.scenario.recreate(); shown(R.string.account_connected); capture("remote-account.png")
+        compose.activityRule.scenario.recreate(); account(); shownTag("sign_out"); capture("remote-account.png")
         // The on-disk session is ciphertext; do not print either its plaintext or bytes.
         val ciphertext = java.io.File(compose.activity.noBackupFilesDir,"session.enc").readBytes()
         assertFalse(ciphertext.toString(Charsets.ISO_8859_1).contains(email))
         assertFalse(ciphertext.toString(Charsets.ISO_8859_1).contains("refresh_token"))
         compose.runOnUiThread { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        tap("new_request")
         compose.onNodeWithTag("request").performTextReplacement("Préviens-moi des annonces de ma salle")
-        tap("preview")
+        tap("evaluate")
         try { shown(R.string.remote_unavailable_title) }
         catch (failure: Throwable) {
             val state = ViewModelProvider(compose.activity)[CreateViewModel::class.java].state.value
@@ -152,10 +164,12 @@ class LocalServiceTest {
         compose.onNodeWithTag("request").performTextReplacement("Produit de test")
         tap("evaluate")
         compose.onNodeWithText("Zone de livraison").performScrollTo().assertIsDisplayed()
-        tap("evaluate")
-        compose.onNodeWithText(compose.activity.getString(R.string.error_input)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("evaluate").assertIsNotEnabled()
         assertEquals(1,calls)
         compose.onNodeWithText("France").performScrollTo().performClick()
+        tap("evaluate")
+        compose.onNodeWithTag("evaluate").assertIsEnabled()
+        assertEquals(1,calls)
         compose.onNodeWithTag("answer_budget").performScrollTo().performTextReplacement("150")
         tap("evaluate")
         compose.waitUntil(5000) { compose.onAllNodesWithText("Sources insuffisantes pour activer cette surveillance.").fetchSemanticsNodes().size==1 }

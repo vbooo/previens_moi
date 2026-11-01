@@ -37,7 +37,6 @@
     <string name="v1_preparing_body">Nous cherchons des sources adaptées. La préparation continue même si tu fermes l’application.</string>
     <string name="v1_source_failed">Les sources trouvées ne permettent pas de vérifier cette demande.</string>
     <string name="v1_technical_failed">La préparation n’a pas pu aboutir. Tu peux réessayer en modifiant ta demande.</string>
-    <string name="v1_limit_body">Les vérifications sont suspendues : la limite d’essai est atteinte.</string>
     <string name="v1_paused_body">En pause. Aucune vérification n’est effectuée.</string>
     <string name="v1_completed_body">Un résultat correspond à ta demande. Le suivi est terminé.</string>
     <string name="v1_last_failed">La dernière vérification a échoué. Les résultats précédents restent disponibles.</string>
@@ -70,17 +69,12 @@
     <string name="v1_validate">Valider</string>
     <string name="v1_change_email">Modifier l’adresse e-mail</string>
     <string name="v1_resend_wait">Renvoyer un code dans %1$d s</string>
-    <string name="v1_home">Mes suivis</string>
-    <string name="v1_new">Nouveau suivi</string>
-    <string name="v1_confirmation">Ton suivi</string>
-    <string name="v1_clarify">Une précision</string>
-    <string name="v1_account">Mon compte</string>
-    <string name="v1_connection">Connexion</string>
-    <string name="v1_result">Résultat</string>
-    <string name="v1_actions">Actions du suivi</string>
-    <string name="v1_modify_region">Modifier la zone</string>
     <string name="v1_enable_notifications">Activer les notifications</string>
-    <string name="v1_partial_check">%1$d sources vérifiées sur %2$d. Un site est temporairement indisponible.</string>
+    <plurals name="v1_partial_check">
+        <item quantity="one">%1$d source vérifiée sur %2$d. Un site est temporairement indisponible.</item>
+        <item quantity="many">%1$d sources vérifiées sur %2$d. Un site est temporairement indisponible.</item>
+        <item quantity="other">%1$d sources vérifiées sur %2$d. Un site est temporairement indisponible.</item>
+    </plurals>
     <string name="v1_hourly">Environ toutes les heures</string>
     <string name="v1_change">Modifier</string>
 </resources>

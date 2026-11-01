@@ -1,0 +1,10 @@
+<resources>
+    <string name="v1_home">My watches</string>
+    <string name="v1_new">New watch</string>
+    <string name="v1_confirmation">Your watch</string>
+    <string name="v1_clarify">One detail</string>
+    <string name="v1_account">My account</string>
+    <string name="v1_connection">Sign in</string>
+    <string name="v1_result">Result</string>
+    <string name="v1_actions">Watch actions</string>
+</resources>

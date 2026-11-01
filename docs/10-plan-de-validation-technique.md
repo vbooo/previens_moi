@@ -1,12 +1,22 @@
 # Plan de validation et conduite du projet
 
-Mis à jour le 23 octobre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
+Mis à jour le 1er novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
 
 ## Position actuelle
 
-**État courant : S0 à S3 clos pour leur périmètre d’essai, S4 terminé pour le nouveau parcours.** La compréhension est séparée de la recherche : critères présentés sans Web, confirmation, préparation serveur puis notification. Interface Material sobre et états explicites. Voir [le bilan S4](../validation/workflow/bilan.md) et [le parcours et son architecture](12-comprendre-puis-preparer.md).
+**État courant : S0 à S3 clos pour leur périmètre d’essai, S4 « comprendre puis préparer » livré, première passe UI Material 3 intégrée.** La variante `remoteDebug` utilise le service réel ; `demoDebug` reste un simulateur hors réseau. Les corrections du 29 octobre ont été vérifiées sur des copies des demandes Montpellier/PS5 et sur l’émulateur, sans observation longue ni publication revendiquée. Voir [les contrôles de préparation](../validation/preparation/checks.json).
 
-La conception UI/UX approfondie et les contrôles de diffusion viennent ensuite. Le benchmark reste différé. Les résultats D0/F0/F1/F2/F3 et anciens états ouverts ci-dessous sont l’historique de qualification ; ils ne décrivent pas la livraison courante.
+**Lot terminé — stabilisation V1, le 1er novembre 2026.** La version connectée **0.1.1** est prête pour l’essai OnePlus. Les 59 signalements Lint sont corrigés ; les deux variantes passent sans erreur ni avertissement. Les 42 + 64 tests unitaires Android, les 101 tests service, les contrats, les frontières et les parcours natifs passent dans le périmètre du [bilan de stabilisation](../validation/stabilization/bilan.md). Une précision facultative ne bloque plus « Continuer ». Le README, le guide Android et la CI locale sont actualisés. Architecture, design, données et plafonds conservés ; aucun nouvel appel fournisseur payant, coût supplémentaire nul. L’essai physique et les contrôles de publication restent à faire. GitHub attend la création du dépôt distant.
+
+La suite reste : test de cette version sur le OnePlus, finitions UI/UX à partir des retours, observation de sept jours à organiser dans le budget disponible, puis contrôles release/confidentialité/Play et publication. Aucun suivi de sept jours ni version publiable n’est actuellement revendiqué. Les bilans S3/S4 datés sont historiques ; leurs anciens quotas, décomptes de tests et indications « prochaine étape » ne remplacent pas cet état courant.
+
+## Historique des qualifications et décisions
+
+Les résultats ci-dessous sont datés et conservent les limites constatées à chaque étape.
+
+## Historique des qualifications et décisions
+
+Les résultats ci-dessous sont datés et conservent les limites constatées à chaque étape.
 
 D0 : format Exa Monitor non conforme ; recherche Search pertinente mais dates de publication parfois fausses/non étayées. F0 : Firecrawl retrouve une vraie annonce récente, confirmée par un complément d'audit, mais retient aussi un ancien guide en confondant publication et mise à jour. La découverte avec preuve de récence reste non validée.
 

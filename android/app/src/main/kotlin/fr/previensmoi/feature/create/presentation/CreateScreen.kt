@@ -256,7 +256,7 @@ fun CreateScreen(
                         if (questionIndex < state.questions.lastIndex) questionIndex++
                         else vm.continueClarification(Locale.getDefault().language)
                     },
-                    enabled = question == null || !state.draft.answers[question.id].isNullOrBlank(),
+                    enabled = question == null || !question.required || !state.draft.answers[question.id].isNullOrBlank(),
                     modifier = Modifier.fillMaxWidth().testTag("evaluate"),
                 ) {
                     Text(stringResource(R.string.v1_continue))

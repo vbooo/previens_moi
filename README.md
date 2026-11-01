@@ -1,45 +1,82 @@
 # Préviens-moi
 
-Projet Android de surveillance personnelle. Nom provisoire. Objectif prioritaire : remise à niveau Android native de Fabien et réalisation défendable en entretien, avec une dépense limitée.
+Application Android native pour demander à être prévenu d’une information publique : une offre d’emploi, une promotion ou une annonce, par exemple. L’objectif prioritaire est une réalisation propre que Fabien peut comprendre, démontrer et défendre en entretien Android.
 
-## État du projet — 21 octobre 2026
+## État au 1er novembre 2026
 
-S1 et S2 livrés localement. Supabase et Firebase dédiés raccordés, connexion par code e-mail OVH et restauration de session vérifiées. Le premier pilote de changements de texte d’une URL publique fonctionne de bout en bout : proposition explicite, état initial silencieux, changement réel sourcé, notification FCM Android et arrêt distant confirmé. Le faux message d’erreur à la déconnexion est corrigé en FR/EN.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. Le lot de stabilisation est terminé et la version connectée 0.1.1 est prête à tester ; [son bilan](validation/stabilization/bilan.md) distingue les vérifications locales, les essais réels précédents et le test restant sur OnePlus.
 
-**S3 reste ouvert : la surveillance générale prévue pour la V1 n’est pas qualifiée.** Le pilote accepte uniquement `Préviens-moi de tout changement sur https://…` ou `Notify me of any change on https://…`, avec une portée partielle annoncée. Un emplacement et jusqu’à 12 crédits gratuits supplémentaires, contrôles horaires et planificateur cloud actif. Le test de détection utilise une page fictive réellement modifiée ; son second contrôle a été avancé. Pas d’observation S4 de sept jours ni de publication Play. [Bilan et limites](validation/s3/bilan.md) · [Preuves](validation/s3/page-change-pilot.json).
+**La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 
-57 tests Deno, 31 intégrations locales, tests unitaires des deux variantes et déconnexion Android FR/EN passent. Aucun nouvel appel IA payant ; borne conservatrice cumulée **1,9414335 € / 2 €**, solde 981 crédits Firecrawl gratuits avant l’essai utilisateur. Aucun abonnement/recharge. Dépôt local, sans remote ni push.
+## Ce que fait l’application
 
-## Documents par sujet
+1. La personne décrit ce qu’elle souhaite suivre et peut proposer un site.
+2. OpenAI reformule les critères ou demande une précision. Aucune recherche Web ne précède la confirmation.
+3. Après confirmation, le serveur cherche des sources avec Firecrawl, lit les pages sélectionnées et vérifie qu’elles permettent le suivi.
+4. L’application présente la préparation, le suivi actif ou un échec explicite. La préparation et les vérifications continuent côté serveur quand l’app est fermée.
+5. Les résultats comportent une source et un passage justificatif. Les alertes utilisent Firebase Cloud Messaging et ouvrent le contenu concerné.
+6. La personne peut mettre en pause, reprendre, modifier ou supprimer son suivi et demander l’effacement de son compte.
 
-- [Produit et positionnement](docs/01-produit-et-positionnement.md)
-- [Concurrence et différenciation](docs/02-concurrence-et-differenciation.md)
-- [Périmètre du MVP](docs/03-perimetre-mvp.md)
-- [Parcours et écrans](docs/04-parcours-et-ecrans.md)
-- [Règles des alertes](docs/05-regles-des-alertes.md)
-- [Sources et stratégie de recherche](docs/06-sources-et-strategie-de-recherche.md)
-- [Coûts et modèle économique](docs/07-couts-et-modele-economique.md)
+Pour les nouveaux suivis généraux, la politique actuelle retient jusqu’à trois pages publiques, relues environ toutes les heures ; la recherche de nouvelles sources est renouvelée tous les 24 passages. Les anciens plans conservent leurs paramètres confirmés. La couverture reste partielle : pages protégées, sources non trouvées et informations non prouvables peuvent empêcher un suivi. Les informations déjà disponibles au démarrage sont distinguées des nouveautés ; un suivi ponctuel peut donc se terminer dès son premier résultat initial.
+
+## Architecture
+
+| Partie | Responsabilité |
+| --- | --- |
+| Android : Kotlin, Jetpack Compose et Material 3 | Écrans, navigation, permissions, état des parcours et accès aux résultats. |
+| MVVM et dépendances dirigées vers le domaine | Compose appelle les ViewModels ; ceux-ci utilisent les ports des repositories. Hilt choisit les implémentations. Un seul module Gradle reste volontaire. |
+| Supabase : Auth, PostgreSQL et fonctions serveur | Connexion par code e-mail, données privées, commandes identifiées/versionnées, préparation, planification, quotas et historique. |
+| OpenAI / Firecrawl | Compréhension et jugement avec références aux passages / recherche et lecture des pages publiques. |
+| Firebase Cloud Messaging | Transport des notifications Android ; les résultats sont relus auprès du service authentifié. |
+
+Une opération incertaine conserve son identifiant : réessayer vérifie la même commande et évite un deuxième effet. Le statut affiché vient du service ; un échec confirmé est distinct d’une réponse réseau encore inconnue. Les secrets serveur, la surveillance et les plafonds restent hors de l’APK.
+
+## Lancer l’application
+
+Ouvrir **`android/`** dans Android Studio et sélectionner **`remoteDebug`** pour essayer le service réel. Le nom visible est **Préviens-moi**. La variante **`demoDebug`**, nommée **Préviens-moi · Simulation**, est un simulateur hors réseau avec des scénarios déterministes ; elle sert aux tests.
+
+Les instructions de configuration, compilation et lecture du code sont dans [android/README.md](android/README.md). Les paramètres publics du client passent par `android/client.properties`, ignoré par Git ; voir son modèle `.example`. Les clés serveur et mots de passe ne doivent jamais y figurer.
+
+## Contrôles reproductibles
+
+Depuis `android/`, les vérifications de compilation, tests unitaires et Lint peuvent être exécutées sans configuration cloud :
+
+```sh
+./gradlew assembleDemoDebug assembleRemoteDebug \
+  testDemoDebugUnitTest testRemoteDebugUnitTest \
+  lintDemoDebug lintRemoteDebug -PlocalService=true
+```
+
+Depuis la racine :
+
+```sh
+python3 scripts/check-android-boundaries.py --merged
+cd service
+./node_modules/.bin/deno task check
+./node_modules/.bin/deno task test
+```
+
+`localService=true` isole le build des paramètres cloud locaux ; ce n’est pas l’APK à installer pour tester les vraies recherches. Les tests du service injectent leurs réponses et ne déclenchent aucun appel fournisseur payant. Les parcours natifs utilisent un émulateur de qualification et des fixtures identifiées. Les commandes détaillées sont dans [le guide Android](android/README.md).
+
+La CI Android est configurée pour vérifier les deux variantes. Le dépôt reste local, sans remote GitHub : aucune exécution de CI distante ni aucun push n’est revendiqué.
+
+## Suite du plan
+
+- Tester l’APK stabilisé sur le OnePlus et corriger les problèmes fonctionnels constatés.
+- Finaliser l’UI/UX à partir des écrans déjà validés et des retours d’usage.
+- Organiser les sept jours d’observation dans une enveloppe compatible avec le budget disponible.
+- Préparer les contrôles de diffusion, la confidentialité, la sauvegarde indépendante, la signature et le compte Play, puis la publication.
+- Créer le dépôt GitHub quand Fabien le décide ; le benchmark et la modularisation restent différés.
+
+Le plafond des essais reste **2 € cumulés**, sans abonnement ni recharge implicite. Il ne définit pas un budget d’exploitation publique. La compilation release reste désactivée jusqu’au lot de diffusion.
+
+## Documents utiles
+
+- [Plan actif et historique des étapes](docs/10-plan-de-validation-technique.md)
+- [Parcours comprendre / confirmer / préparer](docs/12-comprendre-puis-preparer.md)
+- [Périmètre du MVP](docs/03-perimetre-mvp.md) et [règles des alertes](docs/05-regles-des-alertes.md)
 - [Architecture et données](docs/08-architecture-et-donnees.md)
+- [Contrat réseau](contracts/application-v1.openapi.json) et [service](service/README.md)
 - [Qualité et publication](docs/09-qualite-et-publication.md)
-- [Plan de validation technique](docs/10-plan-de-validation-technique.md)
-- [Service et contrat S3](docs/11-service-et-contrat-s3.md)
-- [Alternatives au moteur Yutori — comparaison documentaire](validation/02-alternatives-au-moteur-yutori.md)
-- [Protocole comparatif Exa, Firecrawl et Yutori](validation/03-protocole-comparatif-des-moteurs.md)
-- [Matrice de faisabilité générale et de coûts](validation/04-matrice-de-faisabilite-et-couts.md)
-- [Jeu d'essai transversal v0](validation/05-jeu-essai-transversal-v0.md)
-- [Plan de construction du premier moteur](validation/06-plan-premier-moteur.md)
-- [Critères et cas d’acceptation du premier moteur](validation/07-acceptation-premier-moteur.md)
-- [Fiche d’exécution du moteur](validation/08-fiche-execution-moteur.md)
-- [Bilan intermédiaire du moteur](validation/09-bilan-premier-moteur.md)
-- [Laboratoire exécutable](engine-lab/README.md)
-- [Historique des décisions](docs/decisions/README.md)
-
-## Cadre conservé
-
-France prioritaire, saisie libre, événements précis et suivis généraux, refus honnête des demandes non surveillables. MVVM et Clean Architecture, un seul module Gradle initial, service central pour les secrets et la surveillance. Les capacités et quotas de la V1 publique gratuite doivent être démontrés et chiffrés. La publication exige notamment les contrôles du document 09 et sept jours d'observation. Le retour Google sur la régularisation du compte Play est attendu selon la dernière information de Fabien.
-
-## Livraison actuelle et prochaine étape
-
-La démo S2 reste disponible hors réseau. La variante Android remote utilise le compte e-mail et le pilote textuel explicite ; le service cloud poursuit ses vérifications sans l’application ouverte, dans son enveloppe limitée. Les changements de texte ne prouvent pas la compréhension d’un événement ni la couverture d’un sujet général.
-
-La prochaine étape produit reste la qualification de la surveillance générale du périmètre initial, puis l’observation S4 et la préparation de publication. Les [preuves S3](validation/s3/bilan.md) distinguent les tests locaux, les anciens résultats injectés et la nouvelle source de contrôle réelle. GitHub et la régularisation du compte Play restent à traiter avec Fabien.
+- [Bilan S3](validation/s3/bilan.md), [bilan du nouveau parcours](validation/workflow/bilan.md), [corrections de préparation](validation/preparation/checks.json)
+- [Décisions d’architecture et produit](docs/decisions/README.md)

@@ -762,6 +762,10 @@ class V1UiTest {
                                                             preparationFailure = "source_unusable",
                                                         ),
                                                 )
+                                            "partial" -> watch.copy(health = Health.Degraded,
+                                                plan = proposal.copy(checkedSources = 1, totalSources = 3))
+                                            "partial_two" -> watch.copy(health = Health.Degraded,
+                                                plan = proposal.copy(checkedSources = 2, totalSources = 3))
                                             "paused" ->
                                                 watch.copy(
                                                     status = WatchStatus.Paused,

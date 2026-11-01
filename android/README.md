@@ -1,113 +1,107 @@
 # Android — Préviens-moi
 
-Application native de démonstration des sprints 1 et 2. Parcours de création, clarification, proposition, identification fictive, gestion des suivis et consultation des résultats. **Aucun texte n’est interprété par une IA, aucun site surveillé, aucune notification envoyée.** Les scénarios sont choisis explicitement dans le menu « Scénarios ».
+Client natif Kotlin / Jetpack Compose / Material 3, avec MVVM et dépendances orientées vers un domaine indépendant d’Android. Un seul module Gradle. Les recherches et la surveillance durable tournent dans le service Supabase, pas dans le téléphone.
 
-## Ouvrir et compiler
+## Choisir la bonne variante
 
-Ouvrir le dossier `android/` dans Android Studio et choisir `demoDebug`. Installer la plateforme Android 37.0 et Build Tools 36.0.0 ; sélectionner un JDK 17 pour Gradle. `local.properties` porte le chemin SDK propre au poste, exclu de Git.
+| Variante | Nom sur le téléphone | Usage |
+| --- | --- | --- |
+| `remoteDebug` | Préviens-moi | Service réel, connexion par code e-mail, données du compte et notifications FCM. Choix par défaut après import. |
+| `demoDebug` | Préviens-moi · Simulation | Service en mémoire, scénarios et résultats fictifs, sans permission INTERNET. Tests hors réseau. |
+
+Ouvrir ce dossier **`android/`** dans Android Studio. Vérifier **View → Tool Windows → Build Variants → app → remoteDebug**, puis lancer ▶ sur le OnePlus ou un émulateur. Studio peut conserver un ancien choix explicite de variante. Les deux identifiants d’application sont différents et les données du simulateur ne sont pas celles du compte réel.
+
+## Paramètres et outils
+
+Le catalogue `gradle/libs.versions.toml` et le wrapper Gradle fixent les versions. Compilation/cible Android 37, minimum API 23 ; installer la plateforme SDK correspondante et Build Tools 36.0.0. Le projet conserve la compatibilité Java 17. La matrice complète API 23/37 reste à qualifier avant publication ; le lot de stabilisation utilise un émulateur API 36.
+
+Sur le poste de Fabien, JDK, SDK et cache Gradle sont sous `../.local/`. Hors IDE :
 
 ```sh
-./gradlew assembleDemoDebug testDemoDebugUnitTest lintDemoDebug
+export JAVA_HOME="$PWD/../.local/jdk/Contents/Home"
+export GRADLE_USER_HOME="$PWD/../.local/gradle-home"
+```
+
+Ces chemins sont propres au poste et ne sont pas nécessaires sur un autre environnement. `local.properties` et les préférences JVM générées par Studio doivent rester des configurations locales adaptées au poste.
+
+Les paramètres **publics** du client réel vivent dans `client.properties`, ignoré par Git. Le modèle `client.properties.example` liste les propriétés à renseigner. Sur le poste déjà raccordé, depuis la racine du dépôt :
+
+```sh
+python3 scripts/configure-android-client.py
+```
+
+Ce script copie seulement les URL, la clé publique Auth et les identifiants Firebase du client. Aucune identité Firebase Admin, clé OpenAI/Firecrawl, clé Supabase de service ou mot de passe ne doit entrer dans les propriétés Gradle ou l’APK. Après configuration, synchroniser Gradle. Les options `-P` explicites restent prioritaires.
+
+Sans configuration publique, la variante connectée compile avec des URL `.invalid`, mais ne peut pas se connecter. `-PlocalService=true` désactive le repli vers `client.properties` et Firebase : il sert aux builds et intégrations isolés, pas à l’essai cloud sur téléphone.
+
+## Compiler et vérifier
+
+Depuis ce dossier :
+
+```sh
+./gradlew assembleDemoDebug assembleRemoteDebug \
+  assembleDemoDebugAndroidTest assembleRemoteDebugAndroidTest \
+  testDemoDebugUnitTest testRemoteDebugUnitTest \
+  lintDemoDebug lintRemoteDebug -PlocalService=true
 python3 ../scripts/check-android-boundaries.py --merged
-# Avec un émulateur ou téléphone connecté :
-./gradlew connectedDemoDebugAndroidTest
 ```
 
-Sur le poste de Fabien : outils dans `../.local/`, JDK `jdk/Contents/Home`, SDK `sdk/`, cache Gradle `gradle-home/`. Définir `JAVA_HOME` et `GRADLE_USER_HOME` vers ces chemins hors IDE. Android Studio est dans `~/Applications/Android Studio.app`. Ces chemins ne sont pas une dépendance de la CI. Le lancement de l’IDE est acquis en S1, pas la vérification visuelle de sa synchronisation.
-
-## Essayer le parcours
-
-1. Saisir une demande ; éventuellement activer le suivi dans la durée. « Prévisualiser » affiche une proposition synthétique contenant le texte saisi.
-2. Confirmer, utiliser le compte fictif, puis confirmer à nouveau. L’identification ne déclenche aucune activation automatique.
-3. Dans le détail, mettre en pause, reprendre ou modifier les critères. Supprimer demande confirmation.
-4. Menu « Scénarios » → « Simuler une vérification » : fabriquer un résultat fictif. Le mode ponctuel se termine au premier résultat ; le mode continu reste actif.
-5. Tester « Précision nécessaire », « Portée réduite », « Aucun résultat », « Source en panne », « Capacité épuisée », « Réponse perdue après succès » et les autres erreurs. Changer de scénario puis réessayer l’action permet de tester la récupération.
-
-La capacité de 1 et l’intervalle de 24 h sont des paramètres de fixture. Aucun minuteur ne tourne ; ces chiffres ne fixent pas l’offre commerciale. Le brouillon est enregistré par DataStore. Les comptes, propositions, suivis et résultats vivent uniquement dans la mémoire du service demo : un arrêt du processus les efface. L’interface explique leur indisponibilité, sans prétendre qu’ils continuent à surveiller le Web.
-
-## Lire le code dans cet ordre
-
-| Rôle | Fichier depuis ce dossier |
-| --- | --- |
-| Modèles et erreurs métier, sans Android | `app/src/main/kotlin/fr/previensmoi/domain/model/Watch.kt` |
-| Ports du domaine | `app/src/main/kotlin/fr/previensmoi/domain/repository/WatchRepository.kt` |
-| Service simulé : commandes, versions, reçus, quota atomique | `app/src/demo/kotlin/fr/previensmoi/data/demo/DemoService.kt` |
-| Persistance locale du brouillon | `app/src/main/kotlin/fr/previensmoi/data/local/LocalDraftRepository.kt` |
-| État et actions de création | `app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateViewModel.kt` |
-| Saisie et proposition Compose | `app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateScreen.kt` |
-| Liste, détail et résultat | `app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchScreens.kt` |
-| Actions sur les suivis | `app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchesViewModel.kt` |
-| Hilt et assemblage demo | `app/src/demo/kotlin/fr/previensmoi/app/DemoModule.kt` |
-| Navigation typée et entrée d’application | `app/src/demo/kotlin/fr/previensmoi/app/MainActivity.kt` |
-
-**Changement de chemin en S2 :** `MainActivity` est maintenant dans `src/demo`, afin que l’assemblage et ses commandes de simulation restent isolés de la future variante réelle.
-
-## Expliquer l’architecture en entretien
-
-« J’utilise MVVM pour les écrans et des dépendances orientées vers le domaine. Une action Compose appelle le ViewModel, qui utilise un port de repository. Hilt fournit l’implémentation. Le repository possède l’état confirmé ; le ViewModel l’expose dans un `StateFlow` immuable, collecté par Compose avec le cycle de vie. La navigation repose sur des clés sérialisables Navigation 3. »
-
-Exemple concret : toucher « Mettre en pause » lance une commande identifiée et versionnée. L’écran montre son traitement, mais ne change pas arbitrairement le statut. Seul l’état confirmé par le service modifie la liste et le détail. En cas de réponse perdue, une nouvelle tentative réutilise la même commande : le reçu évite un deuxième effet. **Ces garanties sont éprouvées sur un double de service, et devront être imposées au serveur réel en S3.**
-
-Le domaine est du Kotlin indépendant d’Android et de Hilt. Présentation et data dépendent du domaine ; l’assemblage connaît les implémentations. Un seul module Gradle suffit à ce stade ; pas de couches ou de cas d’usage qui ne font que transmettre un appel. Le contrôle d’imports protège ces frontières.
-
-`StateFlow` ne survit pas seul à la mort du processus. DataStore conserve le brouillon sur disque ; `SavedStateHandle` conserve de petits identifiants pour restaurer le parcours. Le repository demo, en mémoire, ne survit pas : l’UI invalide alors l’ancienne proposition. Une réponse d’évaluation tardive est rejetée si la demande a changé ou si l’évaluation a été abandonnée.
-
-## Tests et preuves
-
-- Tests de contrat réutilisables via les ports : expiration exacte, idempotence, conflit de commande, dernière place concurrente, session, suppression, source en panne, reprise et version des résultats.
-- Tests de ViewModels : état confirmé conservé en erreur, double clic, réponse tardive, consentement explicite, identification sans activation, persistance défaillante et restauration.
-- Cinq tests Compose : création, clarification/portée partielle, navigation/recréation, mutations et suppression, résultat daté honnêtement, panne distincte d’absence de résultat.
-- Test réel de mort du processus : `../scripts/check-android-process-restoration.py`. Il **efface les données de l’application demo du périphérique ciblé** avant de préparer un brouillon, envoyer l’application en arrière-plan, tuer son processus et relancer la tâche. À réserver à un émulateur de test.
+Pour produire ensuite l’APK réel configuré, sans l’option d’isolation :
 
 ```sh
-python3 ../scripts/check-android-process-restoration.py \
-  --serial emulator-5554 --adb ../.local/sdk/platform-tools/adb \
-  --output ../validation/android-s2
+./gradlew assembleRemoteDebug
 ```
 
-Le bilan daté et la matrice d’exécution sont dans [validation/android-s2](../validation/android-s2/bilan.md). Les rapports complets Gradle sont dans `app/build/reports/`, générés localement. Les tests existants servent de non-régression ; ce terme désigne leur réexécution après changement, pas une bibliothèque supplémentaire. Les captures contrôlées ne sont pas des screenshot tests automatiques de comparaison pixel à pixel.
+APK : `app/build/outputs/apk/remote/debug/app-remote-debug.apk`. L’installation de mise à jour conserve les données si le package et la signature sont les mêmes ; ne pas désinstaller ni effacer les données pour mettre à jour. Les variantes release restent désactivées : le lot de diffusion/signature est distinct.
 
-## Versions et limites
+Lint garde les avertissements comme erreurs. Les suggestions de nouvelles versions restent informatives ; aucune baseline ni désactivation globale de règle ne masque les défauts. La CI configurée exécute les contrôles des deux variantes, mais aucun dépôt distant ni passage de CI GitHub n’est encore disponible.
 
-AGP 9.4.1, Gradle 9.6.0, Kotlin/Compose compiler/sérialisation 2.3.21, KSP 2.3.12, Hilt 2.60.1. Compose BOM 2026.09.00, Activity 1.13.0, Lifecycle 2.11.0, Navigation 3 **1.1.0**, coroutines 1.11.0, DataStore Preferences **1.2.1**. Catalogue : `gradle/libs.versions.toml`.
+## Parcours natifs sans fournisseur
 
-Navigation 3 1.2.0 exige API 24 ; la version stable 1.1.0 conserve notre minimum API 23. Compilation/cible 37. API 23 et 37 en exécution restent à tester avant publication. AGP fournit Kotlin intégré ; aucun plugin `org.jetbrains.kotlin.android` supplémentaire. Le wrapper contrôle le SHA-256 de Gradle. Aucun artefact release demo.
+Sur un émulateur **réservé aux tests**, installer les APK app et AndroidTest correspondants. Ne pas lancer toute la suite remote sans filtrage : certaines classes `Cloud*` sont des essais d’intégration externes qui demandent une configuration et une autorisation de coût distinctes.
 
-Lint traite les avertissements comme erreurs ; six suggestions de mises à jour restent informatives pour préserver la matrice compatible. Le manifeste fusionné et l’APK **demo** doivent rester sans permission INTERNET. Aucun secret dans Android. La CI GitHub Actions compile, teste le domaine/ViewModels et exécute Lint et le contrôle de frontières ; ses tests sur appareil restent locaux à ce stade. **Aucun dépôt distant ni exécution de CI distante n’est prétendu.**
+Les classes hors réseau utiles sont :
 
-S3-01 a démarré : choix et spécification du service réel, identité, API et coûts ; voir la mise à jour ci-dessous. Surveillance réelle, authentification, accès entre comptes, push, performance, revue complète TalkBack et publication ne sont pas validés par cette démo.
+- `fr.previensmoi.app.V1UiTest` : création, confirmation, connexion simulée, préparation, limite, pause, reprise échouée, résultat et captures des écrans de production.
+- `fr.previensmoi.app.PreparationFlowTest` : geste d’actualisation, conservation de la liste lors d’un échec, masquage des données après déconnexion.
+- `fr.previensmoi.app.FoundationsTest` dans demo : scénarios déterministes, modification/suppression, erreurs et recréation d’écran.
 
+Exemple pour l’émulateur de qualification `emulator-5556`, une fois les APK remote installés :
 
-## Contrat réseau S3
+```sh
+adb -s emulator-5556 shell am instrument -w -r \
+  -e class fr.previensmoi.app.V1UiTest,fr.previensmoi.app.PreparationFlowTest \
+  fr.previensmoi.prototype.remote.test/androidx.test.runner.AndroidJUnitRunner
+```
 
-Les routes Retrofit et DTO sont assemblés aux repositories dans `remoteDebug`. La démo conserve son service simulé. Les tests de transport contrôlé ne prouvent pas un backend hébergé ; l'intégration locale Supabase/PostgreSQL et ses limites sont documentées séparément.
+Les scripts de restauration de processus effacent les données de leur variante sur le périphérique ciblé ; ils sont réservés à un émulateur jetable et ne doivent pas être lancés sur le OnePlus de Fabien. Ces scripts ne sont pas requalifiés par le lot du 1er novembre. Le contrat local complet, avec Supabase local, est préparé par `scripts/check-local-android.py` ; voir [service/README.md](../service/README.md).
 
-## Variante connectée S3 (locale, non publiable)
+Les résultats datés du lot courant sont dans [validation/stabilization](../validation/stabilization/bilan.md). Les rapports Gradle sont générés sous `app/build/reports/`. Les captures de fixtures ne prouvent ni la qualité de toutes les recherches ni la livraison FCM sur un appareil physique.
 
-`remoteDebug` est séparée de `demoDebug`. Sans propriétés explicites ni fichier local `client.properties`, son URL reste `.invalid` et aucun projet Firebase n'est initialisé. `python3 scripts/check-local-android.py` construit l'app et ses tests avec seulement le service Supabase local dédié (voir `service/README.md`). La démo retire toujours INTERNET et ne contient pas Firebase/WorkManager.
+## Lire le code pour un entretien
 
-Session : code e-mail réel local, jetons protégés par Android Keystore dans `noBackupFilesDir`, rotation coordonnée, effacement local même après échec de déconnexion. Les UUID de commandes incertaines sont conservés séparément et relus après recréation ; aucune commande complète avec secret n'est persistée. Une commande perdue avant envoi et absente du serveur après mort du processus reste explicitement incertaine ; son contenu n'est pas reconstruit pour créer une nouvelle activation.
+| Rôle | Point d’entrée |
+| --- | --- |
+| Modèles et erreurs métier | `app/src/main/kotlin/fr/previensmoi/domain/model/Watch.kt` |
+| Ports des repositories | `app/src/main/kotlin/fr/previensmoi/domain/repository/WatchRepository.kt` |
+| Création et restauration du parcours | `app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateViewModel.kt` |
+| Actions, attente et actualisation des suivis | `app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchesViewModel.kt` |
+| Session et rotation des jetons | `app/src/main/kotlin/fr/previensmoi/data/auth/RemoteSessionRepository.kt` |
+| Adaptation API vers le domaine | `app/src/main/kotlin/fr/previensmoi/data/remote/RemoteRepositories.kt` |
+| Navigation et assemblage réel | `app/src/remote/kotlin/fr/previensmoi/app/MainActivity.kt`, `RemoteModule.kt` |
+| Notification et relecture authentifiée | `app/src/remote/kotlin/fr/previensmoi/data/push/PushWork.kt` |
+| Simulateur déterministe | `app/src/demo/kotlin/fr/previensmoi/data/demo/DemoService.kt` |
 
-FCM : SDK 25.1.3 et WorkManager 2.11.2 dans remote uniquement, données réduites aux identifiants, relecture authentifiée du résultat et du suivi, permission au choix de la personne, notification stable ouvrant le bon résultat. Projet Firebase absent : transport réel non prouvé. Les propriétés publiques `firebaseAppId`, `firebaseProjectId`, `firebaseApiKey`, `firebaseSenderId` initialisent Firebase uniquement lorsqu'elles sont toutes fournies. Aucune clé de compte de service dans l'APK.
+Compose déclenche une action du ViewModel. Celui-ci utilise les interfaces du domaine et expose un `StateFlow` immuable, collecté avec le cycle de vie. Hilt fournit les implémentations ; les écrans n’importent pas la couche data. Un contrôle d’imports vérifie ces frontières. Il n’y a pas de cas d’usage qui transmettent simplement un appel pour ajouter une couche.
 
-Les tests de parcours demo sont sous `src/androidTestDemo` ; le parcours Supabase local est sous `src/androidTestRemote`. Les tests dépendant du faux service restent sous `src/testDemo`. Le [bilan S3](../validation/s3/bilan.md) sépare contrat, tests réseau contrôlés, PostgreSQL/Auth réels locaux et preuves externes encore absentes.
+Exemple : « Mettre en pause » envoie une commande avec un identifiant et une version attendue. L’écran indique le traitement ; le repository ne remplace le statut que par un état confirmé. Une réponse perdue conserve le même identifiant pour la reprise ; un reçu d’échec confirmé libère l’opération et déclenche une actualisation. L’affichage de la liste et du détail partage la même source d’état.
 
-### Reprise et notifications après le complément S3
+`StateFlow` ne survit pas à la mort du processus. DataStore garde le brouillon ; `SavedStateHandle` garde de petits identifiants. Les jetons Auth et le journal d’évaluation contenant le secret de prévisualisation sont chiffrés par Android Keystore, hors sauvegarde. Les commandes incertaines conservent leur UUID ; après mort du processus, une commande complète perdue n’est pas inventée pour forcer une nouvelle activation.
 
-Les questions portent leur identifiant, leur caractère obligatoire et leurs choix. Les réponses sont conservées avec le brouillon. Une analyse en attente est consultée par polling borné ; identifiant, requête et secret de prévisualisation sont enregistrés dans `evaluation.enc`, chiffré par Keystore et exclu des sauvegardes, **avant** le POST. Après mort du processus, le même identifiant et le même corps sont repris. Secret expiré : information explicite, aucune nouvelle analyse automatique. Une erreur de stockage empêche le POST. Les explications de refus du service sont affichées.
+FCM transporte des identifiants. Le client relit le résultat avec la session et vérifie l’expiration avant affichage. Le journal de notifications limite les doublons ; une mort du processus entre réservation et affichage peut perdre le push, tandis que le résultat reste disponible dans l’app. La livraison « exactement une fois » n’est pas promise.
 
-Les notifications contrôlent aussi l'expiration FCM pendant leur attente WorkManager. Un journal d'identifiants hors sauvegarde empêche une seconde alerte après redémarrage. Il est pris avant affichage : une mort du processus à cette frontière peut perdre ce push, tandis que le résultat reste accessible dans l'application. Ne pas annoncer une livraison exactement une fois.
+Les vecteurs officiels Material Symbols sont accompagnés de leur licence inchangée dans `app/src/main/assets/licenses/material_symbols_license.txt`, incluse dans les APK.
 
-Validation actuelle : 49 tests unitaires demo, 27 remote (une partie commune), Lint sans erreur/avertissement ; trois parcours remote en FR et EN ; reprise réelle du processus pour commande **et** analyse. Pour les tester, construire avec `scripts/check-local-android.py`. La procédure d'instrumentation directe conserve les données nécessaires aux scripts `check-android-remote-restoration.py` et `check-android-evaluation-restoration.py`.
+## Limites avant publication
 
-Raccordement dédié : `scripts/check-cloud-config.py` contrôle `.local/cloud/supabase.env`, `google-services.json` et `firebase-service-account.json` sans réseau ni affichage des valeurs. L'identité serveur reste hors d'Android.
-
-## Lancer la version réelle depuis Android Studio
-
-Ouvrir ce dossier `android/`, puis choisir `remoteDebug` dans **View → Tool Windows → Build Variants** pour le module `app`. Cette variante est désormais le choix par défaut d’un nouveau projet importé ; Android Studio peut conserver un ancien choix explicite de `demoDebug`. Le bouton ▶ lance la variante sélectionnée.
-
-Sur le poste configuré pour ce projet, exécuter une fois depuis la racine du dépôt `python3 scripts/configure-android-client.py`, puis synchroniser Gradle. Le fichier ignoré `android/client.properties` contient uniquement les URL et identifiants publics du client mobile. Aucune clé serveur, mot de passe de base ni identité Firebase Admin n’y est copiée. Les propriétés explicites `-P` restent prioritaires ; `localService=true` désactive ce repli cloud afin d’isoler les tests locaux.
-
-`demoDebug` est un simulateur hors ligne destiné aux tests déterministes : « Scénarios », « Simuler une vérification » et les messages fictifs y sont intentionnels. Ce n’est pas la version à utiliser pour essayer les vraies recherches. Les deux identifiants d’application sont distincts ; une installation de `remoteDebug` ne transforme ni ne supprime les données de `demoDebug`.
-
-Le nom visible est **Préviens-moi** pour le service réel, et **Préviens-moi · Simulation** pour le simulateur. Cette distinction évite de rouvrir la mauvaise application sur le téléphone.
+Restent : essai de cette version sur le OnePlus, accessibilité complète dont TalkBack, matrice d’appareils/API, performance et build release, confidentialité/effacement externe, sauvegarde indépendante, observation de sept jours dans le budget disponible et situation Play Console. Le benchmark et la modularisation restent différés. Le [plan actif](../docs/10-plan-de-validation-technique.md) porte ces étapes.

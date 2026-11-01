@@ -1,9 +1,9 @@
-name: Android demo
+name: Android checks
 on:
   push:
-    paths: ["android/**", "scripts/**", ".github/workflows/android.yml"]
+    paths: ["android/**", "scripts/**", "contracts/**", ".github/workflows/android.yml"]
   pull_request:
-    paths: ["android/**", "scripts/**", ".github/workflows/android.yml"]
+    paths: ["android/**", "scripts/**", "contracts/**", ".github/workflows/android.yml"]
 permissions:
   contents: read
 jobs:
@@ -18,6 +18,6 @@ jobs:
           java-version: '17'
       - uses: android-actions/setup-android@v3
       - run: python3 scripts/check-android-boundaries.py
-      - run: ./gradlew --no-daemon assembleDemoDebug testDemoDebugUnitTest lintDemoDebug
+      - run: ./gradlew --no-daemon assembleDemoDebug assembleRemoteDebug testDemoDebugUnitTest testRemoteDebugUnitTest lintDemoDebug lintRemoteDebug -PlocalService=true
         working-directory: android
       - run: python3 scripts/check-android-boundaries.py --merged
