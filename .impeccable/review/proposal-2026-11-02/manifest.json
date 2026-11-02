@@ -1,0 +1,94 @@
+{
+  "status": "visual_proposal_awaiting_user_validation",
+  "production_ui_changed": false,
+  "source": "android/app/src/androidTestRemote/kotlin/fr/previensmoi/designproposal/NativeUiProposal.kt",
+  "render_test": "NativeUiProposalTest.captureProposalScreens",
+  "native_render": "passed",
+  "emulator": "dedicated emulator-5556 API 36",
+  "native_capture_pixels": [
+    1080,
+    1920
+  ],
+  "density_dpi": 440,
+  "native_viewport_dp_approx": [
+    393,
+    698
+  ],
+  "originals": 9,
+  "montages": "Original aspect ratio preserved; captions outside captures",
+  "provider_calls": 0,
+  "additional_provider_cost_eur": 0,
+  "finish_review": "ship at visual proposal scope; no material fixes",
+  "coverage": [
+    "home light",
+    "active light",
+    "paused light",
+    "preparing light",
+    "loading light",
+    "home dark",
+    "active dark",
+    "active font 130%",
+    "active font 130% scrolled sources"
+  ],
+  "not_qualified": [
+    "actual phone rendering",
+    "all device classes",
+    "all states in dark or enlarged text",
+    "connected interactions",
+    "new UI in delivery APK"
+  ],
+  "files": {
+    "active-dark.png": {
+      "sha256": "ac3275816bd8540f7fdacfc487075f0a9c0d26f429176541e933fe06ffd9b2b6",
+      "bytes": 146274
+    },
+    "active-large-sources.png": {
+      "sha256": "da2b57068c83e68ee5b1d0e3136f31b93d1ddfad9103463888f6b24b5dcd8330",
+      "bytes": 149329
+    },
+    "active-large.png": {
+      "sha256": "abec8d2442b8290f87aaa46892e46973540f12c148aec9562ccaa84d753ae257",
+      "bytes": 140034
+    },
+    "active.png": {
+      "sha256": "9b5f079fc12cf02b6a8575beb9e184a6f1f18d710bd31682cde846b1b24aad2d",
+      "bytes": 145165
+    },
+    "etats.png": {
+      "sha256": "d392c8e65f123387184bf0873200468e846771b9ab16ffc485ba3df7f1d4e2e6",
+      "bytes": 992520
+    },
+    "home-dark.png": {
+      "sha256": "feb915d51ff8de8ca68a9d2dea73226aefa18023beac9ce1a9db870607e18785",
+      "bytes": 88116
+    },
+    "home.png": {
+      "sha256": "2175627297b7c8af9daeb7914fc50a66d3c9aabebc2c8fffa64421f37baf1300",
+      "bytes": 91011
+    },
+    "loading.png": {
+      "sha256": "bb635115090ad9d2f94be2b973f8070373a4ad04a529a3b8913fc7282e51e865",
+      "bytes": 44378
+    },
+    "paused.png": {
+      "sha256": "a501eb5c7e0c3046f457b549edee377132617c646ce7ca01c91bd3c3fc165f41",
+      "bytes": 134540
+    },
+    "preparing.png": {
+      "sha256": "66e4873414d6390ff10696053198badb0c1e41d4db32688d22aa93c4a5113318",
+      "bytes": 123821
+    },
+    "presentation.png": {
+      "sha256": "33084e78e64f2448da3c4c9ff38d0fc29835ef5b44aa359031f5ed3cabbc9cea",
+      "bytes": 1105357
+    },
+    "qa-all.png": {
+      "sha256": "13b4b8ab3bb1a5cec40a3190b264410a29bb3a235d4bd8cfdd212329a0ce7de3",
+      "bytes": 3191563
+    }
+  },
+  "documentation": "design/proposals/2026-11-02/tokens.json",
+  "contrast_minimum_checked": 5.23,
+  "lint": "passed, no errors or warnings",
+  "normal_connected_build_restored": true
+}
