@@ -410,8 +410,6 @@ fun DetailScreen(
                     },
                     supportingContent = {
                         Column {
-                            if (finding.noveltyBasis == "initial")
-                                Text(stringResource(R.string.v1_initial))
                             SecondaryText(
                                 stringResource(R.string.v1_verified, dateText(finding.observedAt)),
                             )
@@ -466,7 +464,7 @@ fun DetailScreen(
 }
 
 @Composable
-fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false) {
+fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false, retry: (() -> Unit)? = null) {
     val finding = state.findings.find { it.id == id }
     val uri = LocalUriHandler.current
     val footer: (@Composable ColumnScope.() -> Unit)? =
@@ -484,8 +482,13 @@ fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false) {
         } else null
     Page(footer = footer) {
         if (finding == null) {
-            if (state.findingError != null) FailureText(state.findingError)
-            else Text(stringResource(R.string.missing))
+            if (remote && (state.findingRequestId != id || state.findingLoading)) {
+                Box(Modifier.testTag("finding_loading")) { Busy() }
+            } else if (state.findingError != null) {
+                FailureText(state.findingError)
+                if (retry != null && state.findingError in setOf(Failure.Offline, Failure.TemporaryFailure))
+                    TextButton(retry, Modifier.testTag("retry_finding")) { Text(stringResource(R.string.refresh_short)) }
+            } else Text(stringResource(R.string.missing))
             return@Page
         }
         Text(
@@ -493,7 +496,6 @@ fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false) {
             style = MaterialTheme.typography.headlineMedium,
         )
         if (!remote) SecondaryText(stringResource(R.string.finding_info))
-        if (finding.noveltyBasis == "initial") SecondaryText(stringResource(R.string.v1_initial))
         Text(finding.fact.ifBlank { finding.criterion }, style = MaterialTheme.typography.bodyLarge)
         Spacer(Modifier.height(8.dp))
         SectionTitle(stringResource(R.string.v1_why))

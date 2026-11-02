@@ -63,6 +63,7 @@ Sur un émulateur **réservé aux tests**, installer les APK app et AndroidTest 
 Les classes hors réseau utiles sont :
 
 - `fr.previensmoi.app.V1UiTest` : création, confirmation, connexion simulée, préparation, limite, pause, reprise échouée, résultat et captures des écrans de production.
+- `fr.previensmoi.app.NotificationOpeningTest` : ouverture directe du résultat, chargement lent, connexion, erreurs, notification répétée et retour sans navigation tardive.
 - `fr.previensmoi.app.PauseResumeUiTest` : transitions sans phrases redondantes, annulation d’une reprise acceptée et récupération réservée aux véritables erreurs.
 - `fr.previensmoi.app.ForegroundSynchronizationTest` : préparation et résultat visibles sans actualisation/push, annulation en arrière-plan et à la déconnexion, reprise immédiate.
 - `fr.previensmoi.app.PreparationFlowTest` : geste d’actualisation, conservation de la liste lors d’un échec, masquage des données après déconnexion.
@@ -78,7 +79,7 @@ adb -s emulator-5556 shell am instrument -w -r \
 
 Les scripts de restauration de processus effacent les données de leur variante sur le périphérique ciblé ; ils sont réservés à un émulateur jetable et ne doivent pas être lancés sur le OnePlus de Fabien. Ces scripts ne sont pas requalifiés par le lot du 1er novembre. Le contrat local complet, avec Supabase local, est préparé par `scripts/check-local-android.py` ; voir [service/README.md](../service/README.md).
 
-Le correctif courant pause/reprise (0.1.3) est décrit dans [validation/pause-resume](../validation/pause-resume/bilan.md). La synchronisation de 0.1.2 est décrite dans [validation/foreground-sync](../validation/foreground-sync/bilan.md). Le [bilan de stabilisation](../validation/stabilization/bilan.md) conserve les contrôles du 1er novembre. Les rapports Gradle sont générés sous `app/build/reports/`. Les captures de fixtures ne prouvent ni la qualité de toutes les recherches ni la livraison FCM sur un appareil physique.
+Le correctif courant d’ouverture des notifications (0.1.4) est décrit dans [validation/notification-opening](../validation/notification-opening/bilan.md). Le précédent correctif pause/reprise (0.1.3) est dans [validation/pause-resume](../validation/pause-resume/bilan.md). La synchronisation de 0.1.2 est décrite dans [validation/foreground-sync](../validation/foreground-sync/bilan.md). Le [bilan de stabilisation](../validation/stabilization/bilan.md) conserve les contrôles du 1er novembre. Les rapports Gradle sont générés sous `app/build/reports/`. Les captures de fixtures ne prouvent ni la qualité de toutes les recherches ni la livraison FCM sur un appareil physique.
 
 ## Lire le code pour un entretien
 

@@ -40,7 +40,6 @@
     <string name="v1_last_failed">The last check failed. Previous results remain available.</string>
     <string name="v1_alerts_phone">Receive alerts on this phone</string>
     <string name="v1_results">What we found</string>
-    <string name="v1_initial">Found on the first search</string>
     <string name="v1_verified">Verified on %1$s</string>
     <string name="v1_criteria">What you are following</string>
     <string name="v1_sources_followed">Sources being followed</string>

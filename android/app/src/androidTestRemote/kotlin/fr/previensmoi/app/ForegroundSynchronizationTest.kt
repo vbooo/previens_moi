@@ -105,7 +105,7 @@ class ForegroundSynchronizationTest {
         compose.onNodeWithText(completed).assertIsDisplayed()
         compose.runOnUiThread { route.value = "detail" }
         compose.onNodeWithTag("finding").performScrollTo().performClick()
-        compose.onNodeWithText(compose.activity.getString(R.string.v1_initial)).assertIsDisplayed()
+        compose.onNodeWithText("Trouvé dès la première recherche").assertDoesNotExist()
         compose.onNodeWithText(service.finding.fact).assertIsDisplayed()
         compose.onNodeWithText("Vérifié à cette date. Consulte le site pour connaître les conditions actuelles.").assertDoesNotExist()
         compose.onNodeWithTag("open_source").assertIsDisplayed()

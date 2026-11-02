@@ -4,7 +4,7 @@ Application Android native pour demander à être prévenu d’une information p
 
 ## État au 2 novembre 2026
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. La stabilisation est terminée. La version connectée **0.1.3** conserve la synchronisation automatique et les notifications de résultat de 0.1.2 ; elle allège les transitions et rend une reprise acceptée annulable. [Le bilan courant](validation/pause-resume/bilan.md) distingue les vérifications locales, les délais serveur et le test restant sur OnePlus.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. La stabilisation est terminée. La version connectée **0.1.4** conserve la synchronisation et les reprises annulables ; elle ouvre directement le résultat depuis une notification, avec chargement sur place, et retire la mention de première recherche. [Le bilan courant](validation/notification-opening/bilan.md) distingue les vérifications locales et le test restant sur OnePlus.
 
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 

@@ -38,28 +38,30 @@ import fr.previensmoi.feature.create.presentation.*
 import fr.previensmoi.feature.session.presentation.*
 import fr.previensmoi.feature.watches.presentation.*
 import java.util.Locale
-import kotlinx.serialization.Serializable
-
-@Serializable private data object Home : NavKey
-
-@Serializable private data object Account : NavKey
-
-@Serializable private data object Create : NavKey
-
-@Serializable private data class Detail(val id: String) : NavKey
-
-@Serializable private data class Result(val id: String) : NavKey
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var requestedFinding by mutableStateOf<String?>(null)
     private var requestedWatch by mutableStateOf<String?>(null)
+    private var notificationRequestKey by mutableIntStateOf(0)
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         requestedFinding = intent.getStringExtra("findingId")
         requestedWatch = intent.getStringExtra("watchId")
+        notificationRequestKey++
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("pendingFinding", requestedFinding)
+        outState.putString("pendingWatch", requestedWatch)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun consumeFinding() {
+        requestedFinding = null
+        intent.removeExtra("findingId")
     }
 
     private val watches: WatchesViewModel by viewModels()
@@ -69,8 +71,8 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedFinding = intent.getStringExtra("findingId")
-        requestedWatch = intent.getStringExtra("watchId")
+        requestedFinding = if (savedInstanceState != null) savedInstanceState.getString("pendingFinding") else intent.getStringExtra("findingId")
+        requestedWatch = if (savedInstanceState != null) savedInstanceState.getString("pendingWatch") else intent.getStringExtra("watchId")
         enableEdgeToEdge()
         setContent {
             PreviensTheme() {
@@ -80,7 +82,7 @@ class MainActivity : ComponentActivity() {
                 WatchSynchronizationEffect(watches, account.session?.id)
                 val focus = LocalFocusManager.current
                 val keyboard = LocalSoftwareKeyboardController.current
-                val stack = rememberNavBackStack(Home)
+                val stack = rememberNavBackStack(*notificationInitialRoutes(requestedFinding, requestedWatch).toTypedArray())
                 var returnToProposal by rememberSaveable { mutableStateOf(false) }
                 var notificationsEnabled by remember {
                     mutableStateOf(NotificationManagerCompat.from(this).areNotificationsEnabled())
@@ -117,7 +119,8 @@ class MainActivity : ComponentActivity() {
                 var deleting by remember { mutableStateOf<Watch?>(null) }
                 val route = stack.lastOrNull()
                 val back: () -> Unit = {
-                    if (route == Account && returnToProposal) {
+                    if (dismissFindingNotification(stack, requestedFinding, ::consumeFinding)) Unit
+                    else if (route == Account && returnToProposal) {
                         returnToProposal = false
                         creation.revise()
                         stack.removeLastOrNull()
@@ -148,7 +151,8 @@ class MainActivity : ComponentActivity() {
                     notificationsEnabled =
                         NotificationManagerCompat.from(this).areNotificationsEnabled()
                 }
-                LaunchedEffect(requestedWatch, account.session) {
+                LaunchedEffect(requestedWatch, account.session, account.loaded) {
+                    if (!account.loaded) return@LaunchedEffect
                     requestedWatch?.let { id ->
                         if (account.session == null) {
                             if (stack.lastOrNull() != Account) stack.add(Account)
@@ -159,46 +163,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-                LaunchedEffect(requestedFinding, account.session) {
-                    val id = requestedFinding
-                    if (id != null) {
-                        if (account.session == null) {
-                            if (stack.lastOrNull() != Account) stack.add(Account)
-                        } else {
-                            watches.loadFinding(id)
-                        }
-                    }
-                }
-                LaunchedEffect(
-                    requestedFinding,
-                    state.findingRequestId,
-                    state.findingError,
-                    state.findings,
-                ) {
-                    val id = requestedFinding
-                    if (id != null && state.findingRequestId == id) {
-                        val finding = state.findings.find { it.id == id }
-                        if (finding != null) {
-                            stack.clear()
-                            stack.add(Home)
-                            stack.add(Detail(finding.watchId))
-                            stack.add(Result(id))
-                            requestedFinding = null
-                        } else if (
-                            state.findingError in setOf(Failure.NotFound, Failure.AccessDenied)
-                        ) {
-                            stack.clear()
-                            stack.add(Home)
-                            stack.add(Result(id))
-                            requestedFinding = null
-                        } else if (
-                            state.findingError ==
-                                fr.previensmoi.domain.model.Failure.SessionRequired &&
-                                stack.lastOrNull() != Account
-                        )
-                            stack.add(Account)
-                    }
-                }
+                FindingNotificationNavigation(
+                    requestedFinding, account, state, stack, watches::requestFinding, ::consumeFinding, notificationRequestKey,
+                )
                 LaunchedEffect(account.session) {
                     if (account.session != null) {
                         creation.resumeAfterSignIn()
@@ -430,7 +397,10 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
                                     entry<Result> { key ->
-                                        FindingScreen(key.id, state, remote = true)
+                                        LaunchedEffect(key.id, account.session?.id) {
+                                            if (account.session != null && requestedFinding != key.id) watches.loadFinding(key.id)
+                                        }
+                                        FindingScreen(key.id, state, remote = true, retry = { watches.loadFinding(key.id) })
                                     }
                                 },
                         )

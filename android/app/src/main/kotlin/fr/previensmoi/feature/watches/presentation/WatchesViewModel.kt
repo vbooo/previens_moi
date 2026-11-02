@@ -32,6 +32,8 @@ data class WatchesUiState(
     val deletedId: String? = null,
     val findingError: Failure? = null,
     val findingRequestId: String? = null,
+    val findingLoading: Boolean = false,
+    val findingRequestEpoch: Long = 0,
 )
 
 @HiltViewModel
@@ -205,28 +207,39 @@ constructor(
         }
     }
 
-    fun loadFinding(id: String) {
+    fun loadFinding(id: String) { requestFinding(id) }
+
+    fun requestFinding(id: String): Long {
         val epoch = ++findingEpoch
-        mutableState.update { it.copy(findingError = null, findingRequestId = id) }
+        mutableState.update { it.copy(findingError = null, findingRequestId = id, findingLoading = true, findingRequestEpoch = epoch) }
         viewModelScope.launch {
-            val result = findings.getFinding(id)
+            val result = try {
+                findings.getFinding(id)
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                Outcome.Error(Failure.TemporaryFailure)
+            }
             if (epoch != findingEpoch) return@launch
             when (result) {
                 is Outcome.Success ->
                     mutableState.update {
                         it.copy(
                             findings = it.findings.filterNot { old -> old.id == id } + result.value,
+                            findingLoading = false,
                         )
                     }
                 is Outcome.Error ->
                     mutableState.update {
                         it.copy(
                             findingError = result.reason,
+                            findingLoading = false,
                             findings = it.findings.filterNot { old -> old.id == id },
                         )
                     }
             }
         }
+        return epoch
     }
 
     fun consumeDeletion() {

@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-02",
+  "base_commit": "ec7cfae",
+  "version": "0.1.4 (5)",
+  "scope": "Android result notification routing and removal of initial-result badge",
+  "changes": [
+    "Cold notification launch seeds the result route instead of Home",
+    "Warm notification routes before awaiting the authenticated result",
+    "Session initialized state prevents temporary sign-in flash while restoring credentials",
+    "Explicit loading and current-read epoch distinguish pending, missing, retry and old responses for the same result",
+    "Back cancels pending navigation; loaded result adds its parent watch without displaying Home",
+    "Repeated notification intents carry a distinct event key",
+    "Pending destinations saved on activity state; consumed finding extra removed",
+    "Initial-result phrase removed from result detail and list, in French and English"
+  ],
+  "unit_tests": {
+    "remote": {
+      "tests": 55,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 72,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native_tests": {
+    "passed": 12,
+    "classes": {
+      "NotificationOpeningTest": 5,
+      "ForegroundSynchronizationTest": 2,
+      "V1UiTest": 5
+    },
+    "environment": "Dedicated API 36 emulator; injected session/repository; production notification routing and native screens",
+    "cases": [
+      "Cold loading before session/data without composing Home or transient login",
+      "Warm opening before delayed response; Back not hijacked by late data",
+      "Network failure and retry remain on result",
+      "Missing result and confirmed sign-out require correct error/login; canceling login returns home",
+      "Repeated same finding ignores its earlier terminal read",
+      "Existing synchronization and UI command regressions"
+    ]
+  },
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "8295f3a14e74449b8993b1fee0e67abaf74102bd6ad31c98b26b5180dc9f60ca",
+        "bytes": 15542301,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='5' versionName='0.1.4' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "ca6dcbf26fb41f2056fb20d24905e50b08719aaee5afac45234cf88abebaccad",
+        "bytes": 14202735,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='5' versionName='0.1.4' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/notification-opening-2026-11-02/Previens-moi-0.1.4-test.apk"
+  },
+  "visual_review": {
+    ".local/review-notification-opening/loading.png": "32beb602799d43ba2431d20a40b26f3a958289fa20e4e8a5374e22e457d0a137",
+    ".local/review-notification-opening/result.png": "c73be4a82d7673ee10a16eb92f56994d9a5fa634b5c30996253f3f512d7b1567"
+  },
+  "provider_paid_calls": 0,
+  "additional_cost_eur": 0,
+  "cap_eur": 2,
+  "cap_changed": false,
+  "backend_changed": false,
+  "phone_installed": false,
+  "github_push": false,
+  "limitations": [
+    "No new real FCM delivery/timing campaign on OnePlus",
+    "No new process-death qualification campaign; restoration handling was updated in code",
+    "Fixtures do not qualify provider search quality"
+  ],
+  "local_logs": {
+    ".local/cloud/notification-opening-final-build.log": "d22e392c7c87fe4b90cbff629efe0762dfad5dccfa5d5c73506b81763e132575",
+    ".local/cloud/notification-opening-final-native.log": "543901e42367621e4a497074bec839c0d34a8c316e49aef9b27948ba58f87881",
+    ".local/cloud/notification-opening-boundaries.log": "f41d0f8c8a3c2fab80a10f9651a5a625efd8d9b8d599b3d86a65ec0b2b44d448"
+  }
+}

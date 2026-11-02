@@ -21,6 +21,7 @@ data class SessionUiState(
     val error: Failure? = null,
     val deletionAccepted: Boolean = false,
     val resendSeconds: Int = 0,
+    val loaded: Boolean = false,
 )
 
 @HiltViewModel
@@ -31,7 +32,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
     init {
         viewModelScope.launch {
-            repository.observeSession().collect { s -> mutable.update { it.copy(session = s) } }
+            repository.observeSession().collect { s -> mutable.update { it.copy(session = s, loaded = true) } }
         }
     }
 

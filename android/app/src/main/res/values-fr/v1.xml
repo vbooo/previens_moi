@@ -40,7 +40,6 @@
     <string name="v1_last_failed">La dernière vérification a échoué. Les résultats précédents restent disponibles.</string>
     <string name="v1_alerts_phone">Recevoir les alertes sur ce téléphone</string>
     <string name="v1_results">Informations trouvées</string>
-    <string name="v1_initial">Trouvé dès la première recherche</string>
     <string name="v1_verified">Vérifié le %1$s</string>
     <string name="v1_criteria">Ce que tu suis</string>
     <string name="v1_sources_followed">Sources suivies</string>
