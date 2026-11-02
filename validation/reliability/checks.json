@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-02",
+  "base_commit": "0f0a350",
+  "version": "0.1.5 (6)",
+  "scope": "Complete Android flows, initial loading, fresh requests, session fencing and sanitized diagnostics",
+  "unit_tests": {
+    "remote": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 80,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native_tests": {
+    "unique_passed": 18,
+    "actual_root_http_journeys": 6,
+    "component_regressions": 12,
+    "final_root_rerun_passed": 6,
+    "environment": "Dedicated API 36 emulator; actual MainActivity/Hilt/ViewModels/DataStore/Keystore/HTTP repositories; controlled loopback HTTP service; no live account, SMTP, model or FCM delivery",
+    "cases": [
+      "Slow cold list never claims empty account",
+      "Explicit draft resume; fresh New; activity recreation restores typed draft",
+      "Initial 503 and retained data after later failure",
+      "Actual sign-out and expired refresh credential hide private data without stuck loading",
+      "Actual HTTP pause/resume and existing-watch edit",
+      "Email OTP UI, understanding, restored confirmation after activity recreation, activation and detail through actual clients",
+      "Cold notification intent loads result in place through actual HTTP",
+      "Existing lifecycle synchronization, pending command and notification navigation regressions"
+    ]
+  },
+  "service_tests": {
+    "passed": 105,
+    "failed": 0,
+    "diagnostic_tests": 3,
+    "typecheck": "passed"
+  },
+  "server_deployment": {
+    "functions": {
+      "public": "deployed",
+      "api": "deployed",
+      "webhook": "deployed",
+      "worker": "deployed"
+    },
+    "database_changed": false,
+    "quota_changed": false,
+    "manual_worker_invocation": false
+  },
+  "live_readonly_checks": {
+    "public/v1/health": {
+      "status": 200,
+      "request_id_present": true,
+      "error_id_correlated": false
+    },
+    "api/v1/watches": {
+      "status": 401,
+      "request_id_present": true,
+      "error_id_correlated": true
+    }
+  },
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "32e494f8b9611426d52052e1932eb06aac321962f3882f2f16132c9439872df8",
+        "bytes": 15747332,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='6' versionName='0.1.5' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "2cdea155c86aa2fa8d8f04c5a00db45477f1b0e10c30f370ece9157e0f79f0b8",
+        "bytes": 14276366,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='6' versionName='0.1.5' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/reliability-2026-11-02/Previens-moi-0.1.5-test.apk"
+  },
+  "visual_check": {
+    "states": [
+      "initial loading",
+      "home with explicit draft resume",
+      "new empty form"
+    ],
+    "result": "No clipping/overlap observed; existing approved design retained",
+    "language": "English system locale; French resources supplied; no new design pass"
+  },
+  "provider_work": {
+    "manual_openai_calls": 0,
+    "manual_firecrawl_calls": 0,
+    "additional_test_cost_eur": 0,
+    "budget_cap_changed": false
+  },
+  "limits": [
+    "No physical OnePlus rerun of this APK",
+    "Controlled HTTP journeys are not live provider/SMTP/FCM evidence",
+    "No seven-day observation, release or Play publication",
+    "Diagnostics are debug Logcat plus server request metadata; no crash collection service, per-phase engine traces or full distributed tracing"
+  ],
+  "android_log_runtime_check": {
+    "events_observed": 215,
+    "fixture_private_values_found": false,
+    "scope": "Known fixture email, tokens and request strings checked in new PreviensMoi messages only"
+  }
+}

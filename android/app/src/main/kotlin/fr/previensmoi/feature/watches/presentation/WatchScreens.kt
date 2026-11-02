@@ -36,6 +36,8 @@ fun HomeScreen(
     signedIn: Boolean = true,
     signIn: () -> Unit = {},
     newRequest: (() -> Unit)? = null,
+    resumeDraft: (() -> Unit)? = null,
+    sessionReady: Boolean = true,
 ) {
     PullToRefreshBox(
         state.refreshing && signedIn,
@@ -62,7 +64,16 @@ fun HomeScreen(
                         HorizontalDivider()
                     }
                 }
-            if (remote && !signedIn)
+            if (resumeDraft != null && sessionReady && creation.loaded && creation.draft.text.isNotBlank())
+                item {
+                    TextButton(resumeDraft, modifier = Modifier.testTag("resume_draft")) {
+                        Text(stringResource(R.string.v4_resume_draft))
+                    }
+                }
+            val firstLoad = remote && signedIn && !state.hasLoaded && state.watches.isEmpty() && !state.refreshFailed
+            if (remote && (!sessionReady || firstLoad))
+                item { Box(Modifier.padding(top = 32.dp).testTag("home_loading")) { Busy() } }
+            else if (remote && !signedIn)
                 item {
                     Column(
                         Modifier.padding(top = 64.dp),
@@ -86,11 +97,11 @@ fun HomeScreen(
                 if (state.refreshFailed)
                     item {
                         Column {
-                            SecondaryText(stringResource(R.string.stale_content))
+                            SecondaryText(stringResource(if (state.hasLoaded || state.watches.isNotEmpty()) R.string.stale_content else R.string.v4_list_failed))
                             TextButton(refresh) { Text(stringResource(R.string.v1_retry)) }
                         }
                     }
-                if (state.watches.isEmpty() && !state.refreshing)
+                if (state.watches.isEmpty() && !state.refreshing && !state.refreshFailed && (!remote || state.hasLoaded))
                     item {
                         Column(
                             Modifier.padding(top = 72.dp),

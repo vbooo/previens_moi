@@ -71,4 +71,37 @@ class WatchesViewModelTest {
             assertFalse(vm.state.value.refreshFailed)
         } finally { Dispatchers.resetMain() }
     }
+    @Test fun `initial failure stays unknown and does not claim an empty account`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val repository = ControlledRepository().also { it.items.value = emptyList() }
+            val vm = WatchesViewModel(repository, object : FindingRepository {
+                override fun observeFindings() = flowOf(emptyList<Finding>())
+                override suspend fun getFinding(id: String): Outcome<Finding> = Outcome.Error(Failure.NotFound)
+            }, IdGenerator { "command" })
+            vm.setOwner("owner"); vm.refresh(); runCurrent()
+            assertFalse(vm.state.value.hasLoaded)
+            repository.response.complete(RefreshResult.Offline); runCurrent()
+            assertFalse(vm.state.value.hasLoaded)
+            assertTrue(vm.state.value.offline)
+            assertTrue(vm.state.value.refreshFailed)
+        } finally { Dispatchers.resetMain() }
+    }
+
+    @Test fun `owner change discards late read outcome`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val repository = ControlledRepository()
+            val vm = WatchesViewModel(repository, object : FindingRepository {
+                override fun observeFindings() = flowOf(emptyList<Finding>())
+                override suspend fun getFinding(id: String): Outcome<Finding> = Outcome.Error(Failure.NotFound)
+            }, IdGenerator { "command" })
+            runCurrent(); vm.setOwner("old"); vm.refresh(); runCurrent()
+            vm.setOwner(null)
+            repository.response.complete(RefreshResult.Success); runCurrent()
+            assertFalse(vm.state.value.hasLoaded)
+            assertTrue(vm.state.value.watches.isEmpty())
+        } finally { Dispatchers.resetMain() }
+    }
+
 }

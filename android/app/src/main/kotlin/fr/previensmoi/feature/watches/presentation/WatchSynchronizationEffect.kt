@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 fun WatchSynchronizationEffect(viewModel: WatchesViewModel, ownerId: String?) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     LaunchedEffect(viewModel, lifecycle, ownerId) {
+        viewModel.setOwner(ownerId)
         if (ownerId != null) lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.synchronizeWhileVisible()
         }

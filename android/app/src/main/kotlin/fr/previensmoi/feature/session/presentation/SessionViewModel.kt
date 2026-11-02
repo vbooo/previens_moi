@@ -98,7 +98,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         mutable.update { it.copy(busy = true, error = null) }
         viewModelScope.launch {
             when (val result = repository.requestDeletion()) {
-                is Outcome.Success -> mutable.update { SessionUiState(deletionAccepted = true) }
+                is Outcome.Success -> mutable.update { SessionUiState(deletionAccepted = true, loaded = true) }
                 is Outcome.Error -> mutable.update { it.copy(busy = false, error = result.reason) }
             }
         }
@@ -109,7 +109,7 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         mutable.update { it.copy(busy = true) }
         viewModelScope.launch {
             repository.signOut()
-            mutable.update { SessionUiState() }
+            mutable.update { SessionUiState(loaded = true) }
         }
     }
 }

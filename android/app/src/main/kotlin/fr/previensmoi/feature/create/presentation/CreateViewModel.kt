@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.previensmoi.domain.model.*
 import fr.previensmoi.domain.repository.*
 import javax.inject.Inject
+import fr.previensmoi.diagnostics.Diagnostics
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,45 +62,50 @@ constructor(
     private var saveJob: Job? = null
     private var expectedWatchVersion: Long = saved["editVersion"] ?: 0
     private var pending: Command? = null
+    private var sessionEpoch = 0L
 
     init {
         viewModelScope.launch {
             sessions.observeSession().collect { session ->
+                val previous = state.value.session
+                if (previous?.id != session?.id) {
+                    sessionEpoch++
+                    if (previous != null) {
+                        resetEditing(state.value.draft)
+                    }
+                }
                 mutable.update { it.copy(session = session) }
             }
         }
+        val restoringEpoch = evaluationEpoch
         viewModelScope.launch {
-            when (val loaded = drafts.load()) {
-                is Outcome.Success -> mutable.update { it.copy(draft = loaded.value) }
-                is Outcome.Error -> mutable.update { it.copy(storageFailed = true) }
-            }
-            val editId = saved.get<String>("editId")
-            mutable.update { it.copy(editingId = editId) }
-            val id = saved.get<String>("proposalId")
-            if (id != null) {
-                when (val result = proposals.get(id)) {
-                    is Outcome.Success ->
-                        mutable.update {
-                            it.copy(proposal = result.value, step = CreationStep.Ready)
+            try {
+                val loaded = drafts.load()
+                if (evaluationEpoch != restoringEpoch) return@launch
+                when (loaded) {
+                    is Outcome.Success -> mutable.update { it.copy(draft = loaded.value) }
+                    is Outcome.Error -> mutable.update { it.copy(storageFailed = true) }
+                }
+                val editId = saved.get<String>("editId")
+                mutable.update { it.copy(editingId = editId) }
+                val id = saved.get<String>("proposalId")
+                if (id != null) {
+                    val result = proposals.get(id)
+                    if (evaluationEpoch != restoringEpoch) return@launch
+                    when (result) {
+                        is Outcome.Success -> mutable.update { it.copy(proposal = result.value, step = CreationStep.Ready, partialAccepted = result.value.backgroundPreparation) }
+                        is Outcome.Error -> {
+                            mutable.update { it.copy(resetNotice = result.reason == Failure.NotFound,
+                                error = if (result.reason == Failure.NotFound) null else result.reason, editingId = null) }
+                            clearSavedProposal(); saved["editId"] = null; saved["editVersion"] = null
                         }
-                    is Outcome.Error -> {
-                        mutable.update {
-                            it.copy(
-                                resetNotice = result.reason == Failure.NotFound,
-                                error =
-                                    if (result.reason == Failure.NotFound) null else result.reason,
-                                editingId = null,
-                            )
-                        }
-                        clearSavedProposal()
-                        saved["editId"] = null
                     }
                 }
-            } else if (editId != null && watches.observeList().first().none { it.id == editId }) {
-                mutable.update { it.copy(resetNotice = true, editingId = null) }
-                saved["editId"] = null
+                // An empty local watch cache is not proof that a saved edit target was deleted.
+                // The authenticated, versioned command validates that target when confirmed.
+            } finally {
+                mutable.update { it.copy(loaded = true) }
             }
-            mutable.update { it.copy(loaded = true) }
         }
     }
 
@@ -219,47 +225,34 @@ constructor(
         }
     }
 
-    fun startNew() {
-        if (state.value.step == CreationStep.Confirming) return
-        saved["editId"] = null
-        saved["editVersion"] = null
-        val draft =
-            state.value.draft.let {
-                if (it.region.isBlank()) it.copy(answers = it.answers + ("region" to "France"))
-                else it
-            }
-        mutable.update { it.copy(editingId = null, activatedId = null, draft = draft) }
-        persist(draft)
-    }
-
-    fun edit(watch: Watch) {
-        if (state.value.step == CreationStep.Confirming) return
+    private fun resetEditing(draft: RequestDraft, editingId: String? = null, version: Long = 0) {
+        Diagnostics.record(Diagnostics.Event.DraftReset, Diagnostics.Result.Started)
         evaluationEpoch++
         evaluationJob?.cancel()
         pending = null
         clearSavedProposal()
-        saved["editId"] = watch.id
-        saved["editVersion"] = watch.version
-        expectedWatchVersion = watch.version
-        val draft =
-            watch.plan.draft.copy(
-                revision = maxOf(state.value.draft.revision, watch.plan.draft.revision) + 1,
-                answers =
-                    if (watch.plan.draft.region.isBlank())
-                        watch.plan.draft.answers + ("region" to "France")
-                    else watch.plan.draft.answers,
-            )
-        mutable.update {
-            it.copy(
-                draft = draft,
-                editingId = watch.id,
-                proposal = null,
-                step = CreationStep.Editing,
-                partialAccepted = false,
-                error = null,
-                activatedId = null,
-            )
-        }
+        saved["editId"] = editingId
+        saved["editVersion"] = if (editingId == null) null else version
+        expectedWatchVersion = version
+        mutable.update { it.copy(draft = draft, editingId = editingId, activatedId = null,
+            proposal = null, step = CreationStep.Editing, partialAccepted = false, error = null,
+            questions = emptyList(), rejection = null, invalidSite = false, optionsUpdating = false, resetNotice = false) }
+    }
+
+    fun startNew() {
+        if (state.value.step == CreationStep.Confirming || pending != null) return
+        val draft = RequestDraft(revision = state.value.draft.revision + 1, answers = mapOf("region" to "France"))
+        resetEditing(draft)
+        persist(draft)
+    }
+
+    fun edit(watch: Watch) {
+        if (state.value.step == CreationStep.Confirming || pending != null) return
+        val draft = watch.plan.draft.copy(
+            revision = maxOf(state.value.draft.revision, watch.plan.draft.revision) + 1,
+            answers = if (watch.plan.draft.region.isBlank()) watch.plan.draft.answers + ("region" to "France") else watch.plan.draft.answers,
+        )
+        resetEditing(draft, watch.id, watch.version)
         persist(draft)
     }
 
@@ -384,11 +377,14 @@ constructor(
             mutable.update { it.copy(step = CreationStep.Login, error = null) }
             return
         }
+        val ownerEpoch = sessionEpoch
         mutable.update { it.copy(step = CreationStep.Confirming, error = null) }
         viewModelScope.launch {
             // A retry of an uncertain command must reach the receipt lookup, even after expiry.
             if (pending == null) {
-                when (val current = proposals.get(proposal.id)) {
+                val current = proposals.get(proposal.id)
+                if (ownerEpoch != sessionEpoch) return@launch
+                when (current) {
                     is Outcome.Error -> {
                         mutable.update {
                             it.copy(step = CreationStep.Ready, error = current.reason)
@@ -429,9 +425,12 @@ constructor(
                             state.value.partialAccepted,
                         )
             }
-            when (val result = watches.execute(checkNotNull(pending))) {
+            val result = watches.execute(checkNotNull(pending))
+            if (ownerEpoch != sessionEpoch) return@launch
+            when (result) {
                 is Outcome.Success -> {
                     watches.refresh()
+                    if (ownerEpoch != sessionEpoch) return@launch
                     saveJob?.cancelAndJoin()
                     val storageFailed = drafts.clear() is Outcome.Error
                     pending = null
@@ -485,23 +484,8 @@ constructor(
     }
 
     fun discard() {
-        if (state.value.step == CreationStep.Confirming) return
-        evaluationEpoch++
-        evaluationJob?.cancel()
-        pending = null
-        clearSavedProposal()
-        saved["editId"] = null
-        saved["editVersion"] = null
-        mutable.update {
-            it.copy(
-                draft = RequestDraft(),
-                step = CreationStep.Editing,
-                proposal = null,
-                editingId = null,
-                error = null,
-                partialAccepted = false,
-            )
-        }
+        if (state.value.step == CreationStep.Confirming || pending != null) return
+        resetEditing(RequestDraft())
         val previousSave = saveJob
         previousSave?.cancel()
         saveJob = viewModelScope.launch {

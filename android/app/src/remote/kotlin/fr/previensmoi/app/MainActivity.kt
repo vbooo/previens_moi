@@ -16,8 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -80,8 +78,6 @@ class MainActivity : ComponentActivity() {
                 val create by creation.state.collectAsStateWithLifecycle()
                 val account by session.state.collectAsStateWithLifecycle()
                 WatchSynchronizationEffect(watches, account.session?.id)
-                val focus = LocalFocusManager.current
-                val keyboard = LocalSoftwareKeyboardController.current
                 val stack = rememberNavBackStack(*notificationInitialRoutes(requestedFinding, requestedWatch).toTypedArray())
                 var returnToProposal by rememberSaveable { mutableStateOf(false) }
                 var notificationsEnabled by remember {
@@ -166,6 +162,13 @@ class MainActivity : ComponentActivity() {
                 FindingNotificationNavigation(
                     requestedFinding, account, state, stack, watches::requestFinding, ::consumeFinding, notificationRequestKey,
                 )
+                LaunchedEffect(route, account.loaded, account.session?.id) {
+                    if (account.loaded && account.session == null && (route is Detail || route is Result)) {
+                        if (requestedFinding != null || requestedWatch != null) {
+                            if (stack.lastOrNull() != Account) stack.add(Account)
+                        } else { stack.clear(); stack.add(Home) }
+                    }
+                }
                 LaunchedEffect(account.session) {
                     if (account.session != null) {
                         creation.resumeAfterSignIn()
@@ -316,7 +319,7 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     floatingActionButton = {
-                        if (route == Home)
+                        if (route == Home && account.loaded && create.loaded)
                             ExtendedFloatingActionButton(
                                 onClick = {
                                     creation.startNew()
@@ -340,13 +343,7 @@ class MainActivity : ComponentActivity() {
                                             state,
                                             create,
                                             creation,
-                                            preview = {
-                                                focus.clearFocus()
-                                                keyboard?.hide()
-                                                creation.startNew()
-                                                creation.evaluate(Locale.getDefault().language)
-                                                stack.add(Create)
-                                            },
+                                            preview = {},
                                             refresh = watches::refresh,
                                             open = {
                                                 watches.clearCommandError()
@@ -354,6 +351,8 @@ class MainActivity : ComponentActivity() {
                                             },
                                             remote = true,
                                             signedIn = account.session != null,
+                                            sessionReady = account.loaded && (account.session == null || state.ownerId == account.session?.id),
+                                            resumeDraft = { stack.add(Create) },
                                             signIn = { stack.add(Account) },
                                             newRequest = {
                                                 creation.startNew()
@@ -382,7 +381,9 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
                                     entry<Detail> { key ->
-                                        DetailScreen(
+                                        if (!account.loaded || account.session == null || state.ownerId != account.session?.id)
+                                            Page { Busy() }
+                                        else DetailScreen(
                                             key.id,
                                             state,
                                             watches,
@@ -400,7 +401,9 @@ class MainActivity : ComponentActivity() {
                                         LaunchedEffect(key.id, account.session?.id) {
                                             if (account.session != null && requestedFinding != key.id) watches.loadFinding(key.id)
                                         }
-                                        FindingScreen(key.id, state, remote = true, retry = { watches.loadFinding(key.id) })
+                                        if (!account.loaded || account.session == null || state.ownerId != account.session?.id)
+                                            Page { Busy() }
+                                        else FindingScreen(key.id, state, remote = true, retry = { watches.loadFinding(key.id) })
                                     }
                                 },
                         )

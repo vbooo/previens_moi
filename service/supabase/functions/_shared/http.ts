@@ -48,11 +48,28 @@ export async function authenticated(req: Request) {
   if(!r.ok)throw new Fault(r.status>=500?'temporary_failure':'session_required',r.status>=500?503:401);
   return bearer;
 }
-export function serve(handler:(req: Request)=>Promise<Response>) {Deno.serve(async req=>{
-  try{return await handler(req);}catch(e){
+// Fixed route categories: never log user paths, query strings, headers or bodies.
+function routeCategory(req: Request): string {
+  const path = new URL(req.url).pathname;
+  for (const category of ['watches','findings','commands','account','devices','understandings','evaluations','proposals','preview-sessions','health']) {
+    if (path.split('/').includes(category)) return category;
+  }
+  return 'other';
+}
+export type RequestTrace = {event: 'http_request'; requestId: string; method: string; route: string; status: number; durationMs: number};
+export async function handleRequest(handler:(req: Request)=>Promise<Response>, req: Request,
+  trace:(entry: RequestTrace)=>void = entry=>console.info(JSON.stringify(entry))): Promise<Response> {
+  const started=performance.now(), requestId=crypto.randomUUID();
+  let response: Response;
+  try { response=await handler(req); }
+  catch(e) {
     const f=e instanceof Fault?e:new Fault('temporary_failure',503);
     const code=({preview_required:'session_required',rate_limited:'quota_exceeded',unsupported:'unsupported_client',reauthentication_required:'session_required'} as Record<string,string>)[f.code]??f.code;
-    // Never return SQL, token, request text or provider diagnostics to callers/logs.
-    return json({code,requestId:crypto.randomUUID(),retryAfterSeconds:f.status===429?60:null,scope:f.code==='rate_limited'?'preview':null},f.status,'Error');
+    response=json({code,requestId,retryAfterSeconds:f.status===429?60:null,scope:f.code==='rate_limited'?'preview':null},f.status,'Error');
   }
-});}
+  const headers=new Headers(response.headers); headers.set('X-Request-Id',requestId);
+  // Diagnostics must never change the response, even when the log sink fails.
+  try { trace({event:'http_request',requestId,method:['GET','POST','PUT','DELETE','OPTIONS'].includes(req.method)?req.method:'OTHER',route:routeCategory(req),status:response.status,durationMs:Math.max(0,Math.round(performance.now()-started))}); } catch { /* best effort */ }
+  return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
+}
+export function serve(handler:(req: Request)=>Promise<Response>) { Deno.serve(req=>handleRequest(handler,req)); }

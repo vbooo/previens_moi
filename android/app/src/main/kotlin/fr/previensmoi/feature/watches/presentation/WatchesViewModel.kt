@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.previensmoi.domain.model.*
 import fr.previensmoi.domain.repository.*
 import javax.inject.Inject
+import fr.previensmoi.diagnostics.Diagnostics
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
@@ -34,6 +35,8 @@ data class WatchesUiState(
     val findingRequestId: String? = null,
     val findingLoading: Boolean = false,
     val findingRequestEpoch: Long = 0,
+    val hasLoaded: Boolean = false,
+    val ownerId: String? = null,
 )
 
 @HiltViewModel
@@ -49,6 +52,7 @@ constructor(
     private var pending: Command? = null
     private var findingEpoch = 0L
     private val refreshMutex = Mutex()
+    private var ownerEpoch = 0L
 
     init {
         viewModelScope.launch {
@@ -61,6 +65,14 @@ constructor(
                 mutableState.update { it.copy(findings = results) }
             }
         }
+    }
+
+    fun setOwner(ownerId: String?) {
+        if (state.value.ownerId == ownerId) return
+        ownerEpoch++
+        findingEpoch++
+        pending = null
+        mutableState.value = WatchesUiState(ownerId = ownerId)
     }
 
     fun refresh() {
@@ -89,6 +101,7 @@ constructor(
     private suspend fun refreshFromService(showLoading: Boolean): RefreshResult? {
         // Manual and lifecycle refreshes share one reader; keep existing content visible.
         if (!refreshMutex.tryLock()) return null
+        val epoch = ownerEpoch
         if (showLoading) mutableState.update { it.copy(refreshing = true) }
         return try {
             val result = try {
@@ -98,8 +111,14 @@ constructor(
             } catch (_: Exception) {
                 RefreshResult.TemporaryFailure
             }
+            Diagnostics.record(Diagnostics.Event.WatchRefresh, if (result == RefreshResult.Success) Diagnostics.Result.Success else Diagnostics.Result.Rejected)
+            if (epoch != ownerEpoch) return RefreshResult.TemporaryFailure
+            val confirmedWatches = if (result == RefreshResult.Success) repository.observeList().first() else null
+            if (epoch != ownerEpoch) return RefreshResult.TemporaryFailure
             mutableState.update {
                 it.copy(
+                    hasLoaded = it.hasLoaded || result == RefreshResult.Success,
+                    watches = confirmedWatches ?: it.watches,
                     refreshFailed = result != RefreshResult.Success,
                     offline = result == RefreshResult.Offline,
                 )
@@ -109,7 +128,7 @@ constructor(
             }
             result
         } finally {
-            mutableState.update { it.copy(refreshing = false) }
+            if (epoch == ownerEpoch) mutableState.update { it.copy(refreshing = false) }
             refreshMutex.unlock()
         }
     }
@@ -134,6 +153,7 @@ constructor(
     }
 
     private fun submit(command: Command) {
+        Diagnostics.record(Diagnostics.Event.Command, Diagnostics.Result.Started)
         mutableState.update {
             it.copy(
                 commandPending = true,
@@ -143,9 +163,11 @@ constructor(
                 commandUnconfirmed = true,
             )
         }
+        val epoch = ownerEpoch
         viewModelScope.launch {
             try {
                 var result = repository.execute(command)
+                if (epoch != ownerEpoch) return@launch
                 var polls = 0
                 // A server-accepted operation can finish asynchronously. Poll only that receipt,
                 // with a bounded wait; uncertain network failures require explicit verification.
@@ -153,10 +175,12 @@ constructor(
                     delay(2_000)
                     polls++
                     result = repository.execute(command)
+                    if (epoch != ownerEpoch) return@launch
                 }
                 when (val settled = result) {
                     is Outcome.Success -> {
                         val refreshed = repository.refresh()
+                        if (epoch != ownerEpoch) return@launch
                         val confirmed = refreshed == RefreshResult.Success
                         if (confirmed) pending = null
                         mutableState.update {
@@ -198,11 +222,12 @@ constructor(
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {
+                if (epoch != ownerEpoch) return@launch
                 mutableState.update {
                     it.copy(commandError = Failure.TemporaryFailure, commandUnconfirmed = true)
                 }
             } finally {
-                mutableState.update { it.copy(commandPending = false) }
+                if (epoch == ownerEpoch) mutableState.update { it.copy(commandPending = false) }
             }
         }
     }
@@ -210,6 +235,7 @@ constructor(
     fun loadFinding(id: String) { requestFinding(id) }
 
     fun requestFinding(id: String): Long {
+        Diagnostics.record(Diagnostics.Event.Finding, Diagnostics.Result.Started)
         val epoch = ++findingEpoch
         mutableState.update { it.copy(findingError = null, findingRequestId = id, findingLoading = true, findingRequestEpoch = epoch) }
         viewModelScope.launch {

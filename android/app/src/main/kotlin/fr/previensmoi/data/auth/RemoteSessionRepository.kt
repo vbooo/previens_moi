@@ -3,6 +3,7 @@ package fr.previensmoi.data.auth
 import fr.previensmoi.domain.model.*
 import fr.previensmoi.domain.repository.SessionRepository
 import java.io.IOException
+import fr.previensmoi.diagnostics.Diagnostics
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -64,9 +65,14 @@ class RemoteSessionRepository(private val api: AuthApi, private val vault: Sessi
         finally { withContext(NonCancellable) { clear() } }
         Outcome.Success(Unit)
     }
-    private suspend fun <T> safe(block: suspend () -> Outcome<T>): Outcome<T> = try { block() }
+    private suspend fun <T> safe(block: suspend () -> Outcome<T>): Outcome<T> {
+        val started = System.nanoTime()
+        val result = try { block() }
         catch (cancelled: CancellationException) { throw cancelled }
         catch (_: IOException) { Outcome.Error(Failure.TemporaryFailure) }
         catch (_: kotlinx.serialization.SerializationException) { Outcome.Error(Failure.TemporaryFailure) }
         catch (_: java.security.GeneralSecurityException) { Outcome.Error(Failure.StorageFailure) }
+        Diagnostics.record(Diagnostics.Event.Session, if (result is Outcome.Success) Diagnostics.Result.Success else Diagnostics.Result.Rejected, (System.nanoTime()-started)/1_000_000)
+        return result
+    }
 }

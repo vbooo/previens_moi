@@ -1,6 +1,9 @@
 package fr.previensmoi.data.remote
 
 import java.io.IOException
+import fr.previensmoi.diagnostics.Diagnostics
+import fr.previensmoi.diagnostics.Diagnostics.Event
+import fr.previensmoi.diagnostics.Diagnostics.Result
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
@@ -40,32 +43,49 @@ sealed interface ApiResult<out T> {
     data object InvalidResponse: ApiResult<Nothing>
 }
 
-suspend fun <T> apiCall(call: suspend () -> Response<T>): ApiResult<T> = try {
-    val response = call()
-    if (response.isSuccessful) {
-        val body = response.body()
-        if (response.code() == 204) ApiResult.Empty
-        else if (body == null) ApiResult.InvalidResponse
-        else ApiResult.Value(body, response.code())
-    } else {
-        val error = response.errorBody()?.use { body ->
-            // Bound the diagnostic read; never log provider bodies or authorization values.
-            val source = body.source()
-            source.request(16_385)
-            if (source.buffer.size > 16_384) null
-            else try { ApiClient.json.decodeFromString<ErrorDto>(source.readUtf8()) }
-            catch (_: SerializationException) { null }
-            catch (_: IllegalArgumentException) { null }
+suspend fun <T> apiCall(call: suspend () -> Response<T>): ApiResult<T> {
+    val started = System.nanoTime()
+    var requestId: String? = null
+    var status: Int? = null
+    val result = try {
+        val response = call()
+        status = response.code()
+        requestId = response.headers()["X-Request-Id"]
+        if (response.isSuccessful) {
+            val body = response.body()
+            if (response.code() == 204) ApiResult.Empty
+            else if (body == null) ApiResult.InvalidResponse
+            else ApiResult.Value(body, response.code())
+        } else {
+            val error = response.errorBody()?.use { body ->
+                // Bound the diagnostic read; never log provider bodies or authorization values.
+                val source = body.source()
+                source.request(16_385)
+                if (source.buffer.size > 16_384) null
+                else try { ApiClient.json.decodeFromString<ErrorDto>(source.readUtf8()) }
+                catch (_: SerializationException) { null }
+                catch (_: IllegalArgumentException) { null }
+            }
+            requestId = error?.requestId ?: requestId
+            ApiResult.Rejected(response.code(), error)
         }
-        ApiResult.Rejected(response.code(), error)
+    } catch (cancelled: CancellationException) {
+        Diagnostics.record(Event.Http, Result.Cancelled, (System.nanoTime() - started) / 1_000_000)
+        throw cancelled
+    } catch (_: SerializationException) {
+        ApiResult.InvalidResponse
+    } catch (_: IllegalArgumentException) {
+        ApiResult.InvalidResponse
+    } catch (_: IOException) {
+        // A transport failure cannot distinguish airplane mode from an unreachable server.
+        ApiResult.ConnectionFailure
     }
-} catch (cancelled: CancellationException) {
-    throw cancelled
-} catch (_: SerializationException) {
-    ApiResult.InvalidResponse
-} catch (_: IllegalArgumentException) {
-    ApiResult.InvalidResponse
-} catch (_: IOException) {
-    // A transport failure cannot distinguish airplane mode from an unreachable server.
-    ApiResult.ConnectionFailure
+
+    Diagnostics.record(Event.Http, when (result) {
+        is ApiResult.Value, ApiResult.Empty -> Result.Success
+        is ApiResult.Rejected -> Result.Rejected
+        ApiResult.ConnectionFailure -> Result.NetworkFailure
+        ApiResult.InvalidResponse -> Result.InvalidResponse
+    }, (System.nanoTime() - started) / 1_000_000, status, requestId)
+    return result
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="v4_resume_draft">Reprendre mon brouillon</string>
+    <string name="v4_list_failed">Impossible de charger tes suivis.</string>
+</resources>

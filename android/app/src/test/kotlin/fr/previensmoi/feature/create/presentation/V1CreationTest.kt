@@ -16,6 +16,8 @@ class V1CreationTest {
         val session = MutableStateFlow<Session?>(null)
         val list = MutableStateFlow<List<Watch>>(emptyList())
         var draft = RequestDraft()
+        var delayedLoad: CompletableDeferred<Outcome<RequestDraft>>? = null
+        var delayedCommand: CompletableDeferred<Outcome<CommandReceipt>>? = null
         var proposal: Proposal? = null
         var evaluations = 0
         val commands = mutableListOf<Command>()
@@ -55,6 +57,7 @@ class V1CreationTest {
 
         override suspend fun execute(command: Command): Outcome<CommandReceipt> {
             commands += command
+            delayedCommand?.let { return it.await() }
             return Outcome.Success(CommandReceipt(command.id, "w", 1))
         }
 
@@ -63,7 +66,7 @@ class V1CreationTest {
         override suspend fun signIn(): Outcome<Session> =
             Outcome.Success(Session("owner").also { session.value = it })
 
-        override suspend fun load(): Outcome<RequestDraft> = Outcome.Success(draft)
+        override suspend fun load(): Outcome<RequestDraft> = delayedLoad?.await() ?: Outcome.Success(draft)
 
         override suspend fun save(draft: RequestDraft): Outcome<Unit> {
             this.draft = draft
@@ -179,4 +182,58 @@ class V1CreationTest {
             assertTrue(vm.state.value.invalidSite)
             assertEquals(0, f.evaluations)
         }
+    @Test fun `new resets restored text site clarification and edit context`() = test { f ->
+        f.draft = RequestDraft("Old webhook request", answers = mapOf("preferred_site" to "https://old.example", "question" to "old"))
+        val vm = f.vm(); runCurrent()
+        vm.evaluate("fr"); runCurrent()
+        vm.startNew(); runCurrent()
+        assertEquals("", vm.state.value.draft.text)
+        assertEquals(mapOf("region" to "France"), vm.state.value.draft.answers)
+        assertEquals(CreationStep.Editing, vm.state.value.step)
+        assertNull(vm.state.value.proposal)
+        val watch = Watch("existing", Proposal("plan", 1, RequestDraft("Existing watch"), Long.MAX_VALUE), baselineAt = 0, version = 4)
+        vm.edit(watch); runCurrent()
+        assertEquals("Existing watch", vm.state.value.draft.text)
+        assertEquals("existing", vm.state.value.editingId)
+        vm.startNew(); runCurrent()
+        assertEquals("", vm.state.value.draft.text)
+        assertNull(vm.state.value.editingId)
+    }
+
+    @Test fun `late draft restoration cannot overwrite a new request`() = test { f ->
+        f.delayedLoad = CompletableDeferred()
+        val vm = f.vm(); runCurrent()
+        vm.startNew(); runCurrent()
+        f.delayedLoad!!.complete(Outcome.Success(RequestDraft("Old restored text"))); runCurrent()
+        assertTrue(vm.state.value.loaded)
+        assertEquals("", vm.state.value.draft.text)
+    }
+
+    @Test fun `a command response after sign out cannot navigate or activate in the new session`() = test { f ->
+        f.signIn()
+        val vm = f.vm(); runCurrent()
+        vm.updateText("Concert Mira"); vm.evaluate("fr"); runCurrent()
+        f.delayedCommand = CompletableDeferred()
+        vm.confirm(); runCurrent()
+        assertEquals(1, f.commands.size)
+        f.session.value = null; runCurrent()
+        f.delayedCommand!!.complete(Outcome.Success(CommandReceipt("command", "old-owner-watch", 1))); runCurrent()
+        assertNull(vm.state.value.activatedId)
+        assertNull(vm.state.value.proposal)
+        assertEquals(CreationStep.Editing, vm.state.value.step)
+    }
+
+    @Test fun `restored background proposal remains confirmable after process recreation`() = test { f ->
+        f.draft = RequestDraft("Concert Mira")
+        f.proposal = Proposal("saved", 1, f.draft, Long.MAX_VALUE, partial = true, backgroundPreparation = true)
+        val vm = CreateViewModel(f, f, f, f, IdGenerator { "command" }, SavedStateHandle(mapOf("proposalId" to "saved", "editId" to "existing", "editVersion" to 4L)))
+        runCurrent()
+        assertEquals(CreationStep.Ready, vm.state.value.step)
+        assertTrue(vm.state.value.partialAccepted)
+        assertEquals("existing", vm.state.value.editingId)
+        f.signIn(); runCurrent(); vm.confirm(); runCurrent()
+        assertEquals(Operation.Replace, f.commands.single().operation)
+        assertEquals(4L, f.commands.single().expectedVersion)
+    }
+
 }

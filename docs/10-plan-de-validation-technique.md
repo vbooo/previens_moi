@@ -4,6 +4,8 @@ Mis à jour le 2 novembre 2026. **Document de référence pour l'ordre du travai
 
 ## Position actuelle
 
+**Lot parcours et diagnostics livré — version connectée 0.1.5, 2 novembre.** Chargement initial distinct d'un compte vide, Nouveau vierge et reprise de brouillon explicite, restauration/édition protégées des réponses anciennes et transitions de session fiabilisées. 63 tests unitaires remote, 80 demo, 18 parcours natifs uniques dont six avec la vraie activité et les repositories HTTP ; 105 tests service, Lint/frontières réussis. Traces anonymisées déployées ; en-têtes de corrélation vérifiés sur deux points d'accès sans compte. Aucun appel fournisseur manuel ni coût d'essai supplémentaire. Voir [le bilan courant](../validation/reliability/bilan.md) et [le guide de diagnostic](diagnostics.md). La suite est l'essai OnePlus de cette version, puis la passe UI dédiée ; les contrôles de publication restent ouverts.
+
 **Correctif notification livré — version connectée 0.1.4, 2 novembre.** Destination résultat ouverte avant la réponse serveur, chargement sur place, restauration de session sans détour par l’accueil, erreurs/reprise et retour protégés contre les réponses anciennes. Mention de première recherche retirée des deux vues. 55 tests unitaires remote, 72 demo et 12 parcours natifs passent ; Lint/frontières passent. Aucun changement serveur ni coût supplémentaire ; essai OnePlus à faire après mise à jour. Voir [le bilan courant](../validation/notification-opening/bilan.md).
 
 **Correctif pause/reprise livré — version connectée 0.1.3, 2 novembre.** Statuts seuls pendant les transitions normales, reprise acceptée en arrière-plan puis annulable, récupération réservée aux véritables erreurs. Les sources fixes sont déjà réutilisées à la reprise, mais leur lecture/analyse reste potentiellement payante ; aucun changement du moteur ou de sa cadence minute n’a été effectué. 53 tests unitaires remote, 70 demo, 9 parcours natifs remote, 5 demo et 6 tests de sources passent ; Lint/frontières passent. Coût supplémentaire nul, plafond inchangé. Voir [le bilan courant](../validation/pause-resume/bilan.md).
@@ -15,10 +17,6 @@ Mis à jour le 2 novembre 2026. **Document de référence pour l'ordre du travai
 **Lot terminé — stabilisation V1, le 1er novembre 2026.** La version connectée **0.1.1** est prête pour l’essai OnePlus. Les 59 signalements Lint sont corrigés ; les deux variantes passent sans erreur ni avertissement. Les 42 + 64 tests unitaires Android, les 101 tests service, les contrats, les frontières et les parcours natifs passent dans le périmètre du [bilan de stabilisation](../validation/stabilization/bilan.md). Une précision facultative ne bloque plus « Continuer ». Le README, le guide Android et la CI locale sont actualisés. Architecture, design, données et plafonds conservés ; aucun nouvel appel fournisseur payant, coût supplémentaire nul. L’essai physique et les contrôles de publication restent à faire. GitHub attend la création du dépôt distant.
 
 La suite reste : test de cette version sur le OnePlus, finitions UI/UX à partir des retours, observation de sept jours à organiser dans le budget disponible, puis contrôles release/confidentialité/Play et publication. Aucun suivi de sept jours ni version publiable n’est actuellement revendiqué. Les bilans S3/S4 datés sont historiques ; leurs anciens quotas, décomptes de tests et indications « prochaine étape » ne remplacent pas cet état courant.
-
-## Historique des qualifications et décisions
-
-Les résultats ci-dessous sont datés et conservent les limites constatées à chaque étape.
 
 ## Historique des qualifications et décisions
 

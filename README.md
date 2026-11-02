@@ -4,7 +4,7 @@ Application Android native pour demander à être prévenu d’une information p
 
 ## État au 2 novembre 2026
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. La stabilisation est terminée. La version connectée **0.1.4** conserve la synchronisation et les reprises annulables ; elle ouvre directement le résultat depuis une notification, avec chargement sur place, et retire la mention de première recherche. [Le bilan courant](validation/notification-opening/bilan.md) distingue les vérifications locales et le test restant sur OnePlus.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. La version connectée **0.1.5** fiabilise le premier chargement, distingue un nouveau suivi d'un brouillon et protège les transitions de session. Les diagnostics Android et serveur sont disponibles. [Le bilan courant](validation/reliability/bilan.md) précise les six parcours complets avec HTTP local et l'essai restant sur OnePlus. La passe visuelle dédiée vient ensuite.
 
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 
@@ -80,3 +80,5 @@ Le plafond des essais reste **2 € cumulés**, sans abonnement ni recharge impl
 - [Qualité et publication](docs/09-qualite-et-publication.md)
 - [Bilan S3](validation/s3/bilan.md), [bilan du nouveau parcours](validation/workflow/bilan.md), [corrections de préparation](validation/preparation/checks.json)
 - [Décisions d’architecture et produit](docs/decisions/README.md)
+
+Le [guide de diagnostic](docs/diagnostics.md) explique les filtres Logcat et la recherche du même identifiant dans les logs Supabase.
