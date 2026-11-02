@@ -3,9 +3,7 @@
     <string name="v3_pausing">Mise en pause…</string>
     <string name="v3_resuming">Reprise en cours…</string>
     <string name="v3_deleting">Suppression en cours…</string>
-    <string name="v3_wait_confirmation">Demande envoyée. Nous attendons la confirmation du service.</string>
-    <string name="v3_confirmation_unknown">La confirmation n’est pas encore disponible. Vérifie l’état de cette demande avant une autre action.</string>
-    <string name="v3_verify_operation">Vérifier la demande</string>
+    <string name="v3_confirmation_unknown">Impossible de vérifier l’état pour le moment.</string>
     <string name="v3_behaviour">Fonctionnement</string>
     <string name="v3_continuous_description">Les vérifications continuent après chaque résultat.</string>
     <string name="v3_once_description">Les vérifications s’arrêtent après le premier résultat.</string>

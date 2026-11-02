@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-02",
+  "base_commit": "be821d1",
+  "app_version": "0.1.3 (code 4)",
+  "scope": "Android operation presentation and early acceptance of resume; regression test of existing stable source reuse",
+  "changes": [
+    "Remove redundant pending/stopping confirmation paragraphs and disabled action placeholders",
+    "Normal OperationPending beyond short receipt wait no longer shows recovery action; actual outcome-read failures still offer refresh",
+    "A pending resume receipt with an identified starting watch is accepted in background; keep its journal and allow a new fenced pause to cancel the preparation",
+    "No backend implementation or schedule changes"
+  ],
+  "credits": {
+    "pause": "No discovery/model request issued by pause itself; in-flight work may already have incurred costs",
+    "stable_resume": "Retained URLs are reused at cycle zero with rediscover=false; reading those URLs still uses Firecrawl credits, and later coverage/baseline phases may use the model",
+    "source_reuse_test": "generalOne start/collect on retained source issues scrape only, no search or model request; one synthetic reserved credit",
+    "new_paid_calls": 0,
+    "cap_eur": 2,
+    "cap_changed": false
+  },
+  "latency": {
+    "confirmed_in_code": "Worker cron is * * * * *; one phase per general wakeup. Stop and new preparation may therefore wait for scheduling and existing work",
+    "not_claimed": "No server-side latency reduction or new physical timing measurement"
+  },
+  "unit_tests": {
+    "remote": {
+      "tests": 53,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 70,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native": [
+    {
+      "remote_passed": 9,
+      "classes": [
+        "PauseResumeUiTest (2)",
+        "V1UiTest (5)",
+        "ForegroundSynchronizationTest (2)"
+      ]
+    },
+    {
+      "demo_passed": 5,
+      "classes": [
+        "FoundationsTest"
+      ]
+    }
+  ],
+  "service_tests": {
+    "file": "service/tests/v1_sources_test.ts",
+    "passed": 6,
+    "network": "Injected only"
+  },
+  "android_boundaries": "passed",
+  "visual_review": {
+    "captures": {
+      ".local/review-operations/resuming.png": "193ecbe34913b9fc3884fdae6d71811ab6c35ff465a2c933eeda83461ad4c5f8",
+      ".local/review-operations/pausing.png": "49042cfb4a0e3dc563e84dc6beb3d8f0c0d10789b8be8c4bdbe0f859f3f3d4a7",
+      ".local/review-operations/paused.png": "e462f9ab43eff32e38b23cba2320d7e07ea822d65ac2455a92320b70591db0d2"
+    },
+    "result": "Native fixtures inspected; status-only pending pause, enabled preparation cancellation, confirmed paused action; no clipped controls"
+  },
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "8a7f3b609f1df17987b1dc1fdaba81d87c8b553488d79590d054294c8a471fdf",
+        "bytes": 15437824,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='4' versionName='0.1.3' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "fc0ba00c2727ff093b216ab6953651e0bab5a49653626f86bb5712019cc4e791",
+        "bytes": 14114422,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='4' versionName='0.1.3' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/operations-2026-11-02/Previens-moi-0.1.3-test.apk"
+  },
+  "user_data_changed": false,
+  "server_deployment": false,
+  "phone_installed": false,
+  "github_push": false,
+  "local_logs": {
+    ".local/cloud/operations-build.log": "cb0d27b7a10519557b6912ca05b7cba562f44c33ba67f9899cb59049d027205e",
+    ".local/cloud/operations-native-build.log": "fb89330625536c5124cd6e032867b41d155a48bca902a3abe66f6431a7354e0e",
+    ".local/cloud/operations-native.log": "c47cff6755653c60e97d72042ece74b4399fa5537fa43512dfa08c28970a4d4c",
+    ".local/cloud/operations-demo-native.log": "4180860c3fc361f5fa892b3e02c4de408ef113b7ed369dd697c9db896271cd87",
+    ".local/cloud/operations-source-policy.log": "80514b9a40940273d1c02c9816eb62aaa4336fec43e3a139f3d12ae2369f4628",
+    ".local/cloud/operations-lint-final.log": "e3e98d316ad776e883361a55b550a563e213f64ee0ebe4ce7d7a6bf778c355cd",
+    ".local/cloud/operations-boundaries.log": "f41d0f8c8a3c2fab80a10f9651a5a625efd8d9b8d599b3d86a65ec0b2b44d448"
+  }
+}

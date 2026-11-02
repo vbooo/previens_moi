@@ -24,7 +24,6 @@
     <string name="no_results">No results yet.</string>
     <string name="pause">Pause watch</string>
     <string name="resume">Resume watch</string>
-    <string name="resume_info">Resuming sets a new baseline without sending missed alerts from the pause.</string>
     <string name="edit">Edit criteria</string>
     <string name="delete">Delete watch</string>
     <string name="delete_title">Delete this watch?</string>

@@ -287,8 +287,6 @@ fun DetailScreen(
                 }
                 when {
                     pendingOperation != null || pausing -> Unit
-                    watch.status == WatchStatus.Pending ->
-                        SecondaryText(stringResource(R.string.v1_preparing_body))
                     failed -> {
                         Text(
                             stringResource(
@@ -305,12 +303,10 @@ fun DetailScreen(
                     }
                     watch.status == WatchStatus.SuspendedByCapacity ->
                         SecondaryText(stringResource(R.string.v2_limit_summary))
-                    watch.status == WatchStatus.Paused ->
-                        SecondaryText(stringResource(R.string.v1_paused_body))
                     watch.status == WatchStatus.Completed ->
                         SecondaryText(stringResource(R.string.v1_completed_body))
                 }
-                if (watch.status != WatchStatus.Pending && !failed) CheckTiming(watch, pausing)
+                if (watch.status != WatchStatus.Pending && !failed && pendingOperation == null && !pausing) CheckTiming(watch)
                 if (
                     watch.health == Health.Degraded &&
                         !failed &&
@@ -330,49 +326,42 @@ fun DetailScreen(
                             )
                         else stringResource(R.string.v1_last_failed),
                     )
-                if (watch.remoteState == RemoteState.Stopping)
-                    SecondaryText(stringResource(R.string.v1_stopping_body))
                 if (watch.remoteState == RemoteState.Unknown)
                     SecondaryText(stringResource(R.string.remote_unknown))
                 if (pendingOperation != null) {
-                    Text(
-                        stringResource(
-                            if (state.commandPending) R.string.v3_wait_confirmation
-                            else R.string.v3_confirmation_unknown,
-                        ),
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                    if (!state.commandPending)
+                    // Accepted/pending is normal progress, including beyond the short receipt wait.
+                    // Offer recovery only when reading the outcome actually failed.
+                    if (!state.commandPending && state.commandError != Failure.OperationPending) {
+                        Text(stringResource(R.string.v3_confirmation_unknown))
                         TextButton(vm::retryCommand, modifier = Modifier.testTag("retry_command")) {
-                            Text(stringResource(R.string.v3_verify_operation))
+                            Text(stringResource(R.string.refresh_short))
                         }
+                    }
                 } else if (!(failed && state.commandError == Failure.OperationFailed)) FailureText(state.commandError)
                 if (state.commandPending && pendingOperation == null) Busy()
-                if (watch.status in setOf(WatchStatus.Active, WatchStatus.Pending))
+                if (watch.status in setOf(WatchStatus.Active, WatchStatus.Pending) &&
+                    pendingOperation == null && !pausing && !state.commandPending && !state.commandUnconfirmed)
                     FilledTonalButton(
                         onClick = { vm.command(watch, Operation.Pause) },
                         enabled = !state.commandPending && !state.commandUnconfirmed && !pausing,
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("pause"),
                         shape = MaterialTheme.shapes.medium,
                     ) {
-                        if (pausing && state.commandPending)
-                            CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
-                        else
-                            AppIcon(
-                                if (watch.status == WatchStatus.Pending) R.drawable.symbol_close
-                                else R.drawable.symbol_pause,
-                            )
+                        AppIcon(
+                            if (watch.status == WatchStatus.Pending) R.drawable.symbol_close
+                            else R.drawable.symbol_pause,
+                        )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             stringResource(
-                                if (pausing) R.string.v3_pausing
-                                else if (watch.status == WatchStatus.Pending)
+                                if (watch.status == WatchStatus.Pending)
                                     R.string.cancel_preparation
                                 else R.string.pause,
                             ),
                         )
                     }
-                if (watch.status == WatchStatus.Paused && !failed && !pausing) {
+                if (watch.status == WatchStatus.Paused && !failed && !pausing &&
+                    !state.commandPending && !state.commandUnconfirmed) {
                     Button(
                         onClick = { vm.command(watch, Operation.Resume) },
                         enabled = !state.commandPending && !state.commandUnconfirmed,
@@ -381,7 +370,6 @@ fun DetailScreen(
                     ) {
                         Text(stringResource(R.string.resume))
                     }
-                    SecondaryText(stringResource(R.string.resume_info))
                 }
             }
         }

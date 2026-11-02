@@ -252,12 +252,33 @@ class RemoteRepositoryTest {
             val repository = RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000))),journal,IdGenerator { "unused" })
             val command = Command("resume",Operation.Resume,"w",2)
             server.enqueue(response("""{"id":"resume","state":"pending","updatedAt":"2026-10-29T20:00:00Z","remoteState":"starting","watchId":"w"}""",202))
-            assertEquals(Outcome.Error(Failure.OperationPending),repository.execute(command))
+            assertTrue((repository.execute(command) as Outcome.Success).value.acceptedInBackground)
             server.enqueue(response("""{"id":"resume","state":"failed","updatedAt":"2026-10-29T20:01:00Z","remoteState":"stopped","watchId":"w","error":{"code":"temporary_failure","requestId":"request","retryAfterSeconds":null,"scope":null}}"""))
             assertEquals(Outcome.Error(Failure.OperationFailed),repository.execute(command))
             assertNull(journal.read("a"))
             assertEquals("POST",server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.method)
             assertEquals("GET",server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!!.method)
+        }
+    }
+
+    @Test fun `accepted resume can be cancelled with the current watch version before preparation ends`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val journal = MemoryPending()
+            val repository = RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000))),journal,IdGenerator { "unused" })
+            val pending = """{"id":"resume","state":"pending","updatedAt":"2026-11-02T10:00:00Z","remoteState":"starting","watchId":"w"}"""
+            server.enqueue(response(pending,202))
+            val accepted = repository.execute(Command("resume",Operation.Resume,"w",2)) as Outcome.Success
+            assertTrue(accepted.value.acceptedInBackground)
+            assertEquals("resume",journal.read("a"))
+            server.enqueue(response(pending,202))
+            server.enqueue(response("""{"id":"cancel","state":"pending","updatedAt":"2026-11-02T10:00:01Z","remoteState":"stopping","watchId":"w"}""",202))
+            assertEquals(Outcome.Error(Failure.OperationPending),repository.execute(Command("cancel",Operation.Pause,"w",3)))
+            assertEquals("cancel",journal.read("a"))
+            val requests = (1..3).map { server.takeRequest(5,java.util.concurrent.TimeUnit.SECONDS)!! }
+            assertEquals(listOf("POST","GET","POST"),requests.map { it.method })
+            val body = requests.last().body!!.utf8()
+            assertTrue(body.contains("pause") && body.contains("cancel") && body.contains("3"))
+            assertFalse(body.contains("resume"))
         }
     }
 

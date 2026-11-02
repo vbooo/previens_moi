@@ -94,7 +94,7 @@ class FoundationsTest {
         scenario("CommandFailure"); tap("pause")
         status(R.string.v3_pausing)
         shown(R.string.v3_confirmation_unknown)
-        compose.onNodeWithTag("pause").assertIsNotEnabled()
+        compose.onNodeWithTag("pause").assertDoesNotExist()
         scenario("Normal"); tap("retry_command")
         status(R.string.status_paused)
         tap("resume"); tap("edit"); awaitTag("request")

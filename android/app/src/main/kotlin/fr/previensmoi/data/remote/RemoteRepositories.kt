@@ -239,8 +239,12 @@ class RemoteRepositories(
     }
     private fun finish(user: String, id: String, result: ApiResult<CommandReceiptDto>): Outcome<CommandReceipt> = when (result) {
         is ApiResult.Value -> if (result.body.id != id) Outcome.Error(Failure.TemporaryFailure) else when (val r = result.body) {
-            is CommandReceiptDto.Pending -> if ((commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace) && r.watchId != null)
-                Outcome.Success(CommandReceipt(id,checkNotNull(r.watchId),null,acceptedInBackground = true)).also { retireCreationPreview(id) }
+            is CommandReceiptDto.Pending -> if (r.watchId != null &&
+                (commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace ||
+                    commandInMemory is CommandDto.Resume && r.remoteState == "starting"))
+                Outcome.Success(CommandReceipt(id,checkNotNull(r.watchId),null,acceptedInBackground = true)).also {
+                    if (commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace) retireCreationPreview(id)
+                }
                 else Outcome.Error(Failure.OperationPending)
             is CommandReceiptDto.Failed -> { journal.clear(user); commandInMemory = null; Outcome.Error(errorFailure(r.error.code).let { if (it == Failure.TemporaryFailure) Failure.OperationFailed else it }) }
             is CommandReceiptDto.Succeeded -> { if(commandInMemory is CommandDto.Activate || commandInMemory is CommandDto.Replace) retireCreationPreview(id); journal.clear(user); commandInMemory = null; Outcome.Success(CommandReceipt(id, r.watchId, r.watchVersion, r.deleted)) }

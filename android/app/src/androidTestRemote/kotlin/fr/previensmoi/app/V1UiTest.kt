@@ -456,8 +456,8 @@ class V1UiTest {
         }
         await("pause")
         tap("pause")
-        compose.onNodeWithTag("pause").assertIsNotEnabled()
-        compose.onNodeWithTag("pause").performTouchInput { click() }
+        compose.onNodeWithTag("pause").assertDoesNotExist()
+        compose.onNodeWithTag("watch_status").performTouchInput { click() }
         assertTrue(service.submittedCommands.map { it.id }.distinct().size <= 1)
         capture("pausing")
         compose.runOnUiThread { gate.complete(Unit) }

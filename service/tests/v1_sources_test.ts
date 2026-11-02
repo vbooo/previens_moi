@@ -301,3 +301,20 @@ Deno.test("coverage retains only pages actually supporting the criteria rather t
       result.preparedPlan.intervalHours === 1 && result.documents.length === 1,
   );
 });
+
+Deno.test("resuming stable monitoring reuses retained links without a discovery or interpretation call", async () => {
+  const urls: string[] = [];
+  const client = new Firecrawl("test", true, (async (url, init) => {
+    assert(String(url).endsWith("/scrape"));
+    urls.push(JSON.parse(String(init?.body)).url);
+    return new Response(JSON.stringify({success:true,data:{markdown:body,metadata:{statusCode:200}}}));
+  }) as typeof fetch);
+  let settled: any;
+  const work: GeneralWork = {
+    id:"resume-work",lease:"lease",kind:"start",phase:"collect",generation:2,watchId:"watch",
+    context:{draft,intent,cycle:0,rediscover:false,plan:{id:"retained-plan",version:1,sourcePolicy:"stable_v1",sources:[{url:u(0),label:"Retained source"}]}}
+  };
+  const state = await generalOne({async lease(){return work;},async finish(_work,result,_actual,credits){settled={result,credits};}},"test-key",client,true,(()=>{throw new Error("No model call during source collection");}) as typeof fetch);
+  assert(state==="start:collect" && urls.join()===u(0) && settled.credits===1);
+  assert(settled.result.documents[0].url===u(0));
+});

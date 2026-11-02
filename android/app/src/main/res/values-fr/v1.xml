@@ -34,13 +34,10 @@
     <string name="v1_retry">Réessayer</string>
     <string name="v1_delete_body">Ce suivi et ses résultats seront supprimés.</string>
     <string name="v1_delete">Supprimer</string>
-    <string name="v1_preparing_body">Nous cherchons des sources adaptées. La préparation continue même si tu fermes l’application.</string>
     <string name="v1_source_failed">Les sources trouvées ne permettent pas de vérifier cette demande.</string>
     <string name="v1_technical_failed">La préparation n’a pas pu aboutir. Tu peux réessayer en modifiant ta demande.</string>
-    <string name="v1_paused_body">En pause. Aucune vérification n’est effectuée.</string>
     <string name="v1_completed_body">Un résultat correspond à ta demande. Le suivi est terminé.</string>
     <string name="v1_last_failed">La dernière vérification a échoué. Les résultats précédents restent disponibles.</string>
-    <string name="v1_stopping_body">L’arrêt du suivi est en cours de confirmation.</string>
     <string name="v1_alerts_phone">Recevoir les alertes sur ce téléphone</string>
     <string name="v1_results">Informations trouvées</string>
     <string name="v1_initial">Trouvé dès la première recherche</string>

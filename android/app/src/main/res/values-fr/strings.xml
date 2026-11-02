@@ -24,7 +24,6 @@
     <string name="no_results">Aucun résultat pour le moment.</string>
     <string name="pause">Mettre en pause</string>
     <string name="resume">Reprendre le suivi</string>
-    <string name="resume_info">La reprise établit un nouvel état initial, sans rattraper les alertes de la pause.</string>
     <string name="edit">Modifier les critères</string>
     <string name="delete">Supprimer le suivi</string>
     <string name="delete_title">Supprimer ce suivi ?</string>

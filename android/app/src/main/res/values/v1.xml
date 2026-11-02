@@ -34,13 +34,10 @@
     <string name="v1_retry">Try again</string>
     <string name="v1_delete_body">This watch and its results will be deleted.</string>
     <string name="v1_delete">Delete</string>
-    <string name="v1_preparing_body">We are looking for suitable sources. Preparation continues even if you close the app.</string>
     <string name="v1_source_failed">The sources found cannot verify this request.</string>
     <string name="v1_technical_failed">Preparation could not be completed. You can try again by editing your request.</string>
-    <string name="v1_paused_body">Paused. No checks are being performed.</string>
     <string name="v1_completed_body">A result matches your request. This watch is complete.</string>
     <string name="v1_last_failed">The last check failed. Previous results remain available.</string>
-    <string name="v1_stopping_body">The service is confirming that this watch has stopped.</string>
     <string name="v1_alerts_phone">Receive alerts on this phone</string>
     <string name="v1_results">What we found</string>
     <string name="v1_initial">Found on the first search</string>
