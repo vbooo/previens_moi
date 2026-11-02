@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="v5_verified_at">Checked %1$s</string>
+    <string name="v5_on_resume">When resumed</string>
+    <string name="v5_notifications">Notifications</string>
+    <string name="v5_notify_once">On the first result</string>
+    <string name="v5_notify_continuous">On each new result</string>
+    <string name="v5_sources_preparing">Finding sources.</string>
+    <string name="v5_loading">Loading watches</string>
+    <plurals name="v5_watch_count"><item quantity="one">%d watch</item><item quantity="other">%d watches</item></plurals>
+    <string name="v5_notifications_disabled">Notifications off</string>
+    <string name="v5_enable">Enable</string>
+</resources>

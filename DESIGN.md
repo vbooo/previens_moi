@@ -1,71 +1,79 @@
 ---
-name: "Préviens-moi — Android V1"
-description: "Système visuel Android natif Material 3, palette encre et cobalt et hiérarchie par surfaces tonales."
+name: "Préviens-moi — Android 0.1.6"
+description: "Android natif Material 3, graphite et ambre, surfaces neutres chaudes et états sémantiques explicites."
 colors:
-  light-primary: "#324C85"
+  light-primary: "#303D34"
   light-on-primary: "#FFFFFF"
-  light-primary-container: "#DCE4FF"
-  light-on-primary-container: "#0B1B3C"
-  light-secondary: "#555F75"
+  light-primary-container: "#E0E8DD"
+  light-on-primary-container: "#26352A"
+  light-secondary: "#586456"
   light-on-secondary: "#FFFFFF"
-  light-secondary-container: "#E0E5F1"
-  light-on-secondary-container: "#182035"
-  light-tertiary: "#665D50"
+  light-secondary-container: "#E7EBE2"
+  light-on-secondary-container: "#303D34"
+  light-tertiary: "#765B14"
   light-on-tertiary: "#FFFFFF"
-  light-tertiary-container: "#EFE1CE"
-  light-on-tertiary-container: "#241B10"
-  light-background: "#F5F6FA"
-  light-on-background: "#1B1E27"
-  light-surface: "#F5F6FA"
-  light-on-surface: "#1B1E27"
+  light-tertiary-container: "#F4D38B"
+  light-on-tertiary-container: "#302406"
+  light-background: "#F6F6F0"
+  light-on-background: "#222820"
+  light-surface: "#F6F6F0"
+  light-on-surface: "#222820"
   light-surface-container-lowest: "#FFFFFF"
-  light-surface-container-low: "#EDF0F7"
-  light-surface-container: "#E6EAF3"
-  light-surface-container-high: "#DFE4EF"
-  light-surface-container-highest: "#D9DFEC"
-  light-on-surface-variant: "#464B59"
-  light-outline: "#747986"
-  light-outline-variant: "#C5CAD6"
+  light-surface-container-low: "#F0F1E9"
+  light-surface-container: "#ECEEE4"
+  light-surface-container-high: "#E5E8DD"
+  light-surface-container-highest: "#DFE3D7"
+  light-on-surface-variant: "#5C645A"
+  light-outline: "#767E71"
+  light-outline-variant: "#D8DED1"
   light-error: "#BA1A1A"
   light-on-error: "#FFFFFF"
   light-error-container: "#FFDAD6"
   light-on-error-container: "#410002"
-  dark-primary: "#B2C5FF"
-  dark-on-primary: "#002A64"
-  dark-primary-container: "#1D3D72"
-  dark-on-primary-container: "#DCE4FF"
-  dark-secondary: "#BCC6DD"
-  dark-on-secondary: "#263047"
-  dark-secondary-container: "#3D475E"
-  dark-on-secondary-container: "#E0E5F1"
-  dark-tertiary: "#D2C5B4"
-  dark-on-tertiary: "#382F22"
-  dark-tertiary-container: "#504636"
-  dark-on-tertiary-container: "#EFE1CE"
-  dark-background: "#11141B"
-  dark-on-background: "#E2E5EF"
-  dark-surface: "#11141B"
-  dark-on-surface: "#E2E5EF"
-  dark-surface-container-lowest: "#0C0F16"
-  dark-surface-container-low: "#1A1E27"
-  dark-surface-container: "#1F232D"
-  dark-surface-container-high: "#292E38"
-  dark-surface-container-highest: "#343944"
-  dark-on-surface-variant: "#C5CAD6"
-  dark-outline: "#8E93A1"
-  dark-outline-variant: "#444956"
+  light-status-active: "#186544"
+  light-status-preparing: "#805600"
+  light-status-paused: "#555F52"
+  light-status-warning: "#805600"
+  light-status-active-container: "#E1F2E7"
+  light-status-preparing-container: "#FFF0C9"
+  light-status-paused-container: "#E8EDE3"
+  light-status-warning-container: "#FFF0C9"
+  dark-primary: "#DCE6D8"
+  dark-on-primary: "#243022"
+  dark-primary-container: "#354132"
+  dark-on-primary-container: "#DAE5D6"
+  dark-secondary: "#C0CBBA"
+  dark-on-secondary: "#2B3627"
+  dark-secondary-container: "#364332"
+  dark-on-secondary-container: "#DFE9D8"
+  dark-tertiary: "#E5C56F"
+  dark-on-tertiary: "#3C2E04"
+  dark-tertiary-container: "#544319"
+  dark-on-tertiary-container: "#FFE4A3"
+  dark-background: "#171C17"
+  dark-on-background: "#E0E6DB"
+  dark-surface: "#171C17"
+  dark-on-surface: "#E0E6DB"
+  dark-surface-container-lowest: "#111611"
+  dark-surface-container-low: "#202620"
+  dark-surface-container: "#252C24"
+  dark-surface-container-high: "#2C342B"
+  dark-surface-container-highest: "#374035"
+  dark-on-surface-variant: "#BFC9B9"
+  dark-outline: "#899582"
+  dark-outline-variant: "#414B3D"
   dark-error: "#FFB4AB"
   dark-on-error: "#690005"
   dark-error-container: "#93000A"
   dark-on-error-container: "#FFDAD6"
-  light-status-active: "#146C43"
-  light-status-preparing: "#245E9C"
-  light-status-paused: "#536168"
-  light-status-warning: "#805600"
-  dark-status-active: "#8FD5AD"
-  dark-status-preparing: "#A8CCFF"
-  dark-status-paused: "#BCC8CD"
-  dark-status-warning: "#F4CC7A"
+  dark-status-active: "#98DBB7"
+  dark-status-preparing: "#ECCC83"
+  dark-status-paused: "#C3CEC0"
+  dark-status-warning: "#ECCC83"
+  dark-status-active-container: "#223F2E"
+  dark-status-preparing-container: "#43371C"
+  dark-status-paused-container: "#343E31"
+  dark-status-warning-container: "#43371C"
 typography:
   headline-medium:
     fontFamily: "sans-serif"
@@ -139,20 +147,30 @@ typography:
     fontWeight: 500
     lineHeight: "20sp"
     letterSpacing: "0.2sp"
+  headline-small-semibold:
+    fontFamily: "sans-serif"
+    fontSize: "24sp"
+    fontWeight: 600
+    lineHeight: "32sp"
+    letterSpacing: "0sp"
 rounded:
   extra-small: "4dp"
   small: "8dp"
   medium: "12dp"
   large: "16dp"
+  grouped: "20dp"
   extra-large: "28dp"
   full: "50%"
 spacing:
   inline-tight: "4dp"
+  metadata: "6dp"
   inline: "8dp"
+  status-horizontal: "10dp"
   compact: "12dp"
   section: "16dp"
-  page: "24dp"
-  summary: "20dp"
+  home-top: "18dp"
+  page: "20dp"
+  page-bottom: "24dp"
 components:
   button-primary-light:
     backgroundColor: "{colors.light-primary}"
@@ -160,16 +178,23 @@ components:
     typography: "{typography.label-large}"
     rounded: "{rounded.full}"
     padding: "8dp 24dp"
+  button-page-light:
+    backgroundColor: "{colors.light-primary}"
+    textColor: "{colors.light-on-primary}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.medium}"
+    width: "100%"
+    height: "48dp"
   button-confirm-light:
     backgroundColor: "{colors.light-primary}"
     textColor: "{colors.light-on-primary}"
     typography: "{typography.label-large}"
-    rounded: "{rounded.large}"
+    rounded: "{rounded.medium}"
     width: "100%"
     height: "52dp"
   button-tonal-light:
-    backgroundColor: "{colors.light-secondary-container}"
-    textColor: "{colors.light-on-secondary-container}"
+    backgroundColor: "{colors.light-primary-container}"
+    textColor: "{colors.light-on-primary-container}"
     typography: "{typography.label-large}"
     rounded: "{rounded.medium}"
     width: "100%"
@@ -180,42 +205,46 @@ components:
     rounded: "{rounded.full}"
     padding: "8dp 12dp"
   fab-extended-light:
-    backgroundColor: "{colors.light-primary-container}"
-    textColor: "{colors.light-on-primary-container}"
+    backgroundColor: "{colors.light-tertiary-container}"
+    textColor: "{colors.light-on-tertiary-container}"
     typography: "{typography.label-large}"
     rounded: "{rounded.large}"
     height: "56dp"
   field-outlined-light:
+    backgroundColor: "{colors.light-surface-container-lowest}"
     textColor: "{colors.light-on-surface}"
     typography: "{typography.body-large}"
-    rounded: "{rounded.extra-small}"
+    rounded: "{rounded.medium}"
     width: "100%"
   watch-summary-light:
     backgroundColor: "{colors.light-surface-container}"
     textColor: "{colors.light-on-surface}"
-    typography: "{typography.headline-small-medium}"
-    rounded: "{rounded.large}"
-    padding: "{spacing.summary}"
+    rounded: "{rounded.grouped}"
+    padding: "{spacing.section}"
     width: "100%"
   proposal-card-light:
     backgroundColor: "{colors.light-primary-container}"
     textColor: "{colors.light-on-primary-container}"
     typography: "{typography.headline-small-medium}"
     rounded: "{rounded.large}"
-    padding: "{spacing.summary}"
+    padding: "{spacing.page}"
     width: "100%"
   section-card-light:
     backgroundColor: "{colors.light-surface-container-lowest}"
     textColor: "{colors.light-on-surface}"
-    typography: "{typography.title-medium-semibold}"
     rounded: "{rounded.large}"
     padding: "{spacing.section}"
     width: "100%"
   collection-card-light:
     backgroundColor: "{colors.light-surface-container-lowest}"
     textColor: "{colors.light-on-surface}"
-    typography: "{typography.title-medium-semibold}"
     rounded: "{rounded.large}"
+    width: "100%"
+  grouped-watch-list-light:
+    backgroundColor: "{colors.light-surface-container-lowest}"
+    textColor: "{colors.light-on-surface}"
+    typography: "{typography.title-medium-semibold}"
+    rounded: "{rounded.grouped}"
     width: "100%"
   mode-choice-selected-light:
     backgroundColor: "{colors.light-primary-container}"
@@ -226,27 +255,48 @@ components:
     width: "100%"
     height: "52dp"
   watch-status-active-light:
-    textColor: "{colors.light-status-active}"
-    typography: "{typography.label-large}"
-  watch-status-preparing-light:
-    textColor: "{colors.light-status-preparing}"
-    typography: "{typography.label-large}"
-  watch-status-contained-light:
+    backgroundColor: "{colors.light-status-active-container}"
     textColor: "{colors.light-status-active}"
     typography: "{typography.label-large}"
     rounded: "{rounded.small}"
-    padding: "8dp 12dp"
+    padding: "7dp 10dp"
+  watch-status-preparing-light:
+    backgroundColor: "{colors.light-status-preparing-container}"
+    textColor: "{colors.light-status-preparing}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.small}"
+    padding: "7dp 10dp"
+  watch-status-paused-light:
+    backgroundColor: "{colors.light-status-paused-container}"
+    textColor: "{colors.light-status-paused}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.small}"
+    padding: "7dp 10dp"
+  watch-status-warning-light:
+    backgroundColor: "{colors.light-status-warning-container}"
+    textColor: "{colors.light-status-warning}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.small}"
+    padding: "7dp 10dp"
+  watch-status-compact-light:
+    typography: "{typography.label-medium}"
+    rounded: "{rounded.small}"
+    padding: "5dp 10dp"
   capacity-chip-light:
+    backgroundColor: "{colors.light-status-warning-container}"
     textColor: "{colors.light-status-warning}"
     typography: "{typography.label-large}"
     rounded: "{rounded.small}"
     height: "48dp"
+  top-app-bar-home-light:
+    backgroundColor: "{colors.light-background}"
+    textColor: "{colors.light-on-surface}"
+    typography: "{typography.headline-small-semibold}"
   top-app-bar-light:
     backgroundColor: "{colors.light-background}"
     textColor: "{colors.light-on-surface}"
     typography: "{typography.title-large}"
   list-item-light:
-    backgroundColor: "{colors.light-surface}"
     textColor: "{colors.light-on-surface}"
     typography: "{typography.title-medium}"
     width: "100%"
@@ -261,16 +311,23 @@ components:
     typography: "{typography.label-large}"
     rounded: "{rounded.full}"
     padding: "8dp 24dp"
+  button-page-dark:
+    backgroundColor: "{colors.dark-primary}"
+    textColor: "{colors.dark-on-primary}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.medium}"
+    width: "100%"
+    height: "48dp"
   button-confirm-dark:
     backgroundColor: "{colors.dark-primary}"
     textColor: "{colors.dark-on-primary}"
     typography: "{typography.label-large}"
-    rounded: "{rounded.large}"
+    rounded: "{rounded.medium}"
     width: "100%"
     height: "52dp"
   button-tonal-dark:
-    backgroundColor: "{colors.dark-secondary-container}"
-    textColor: "{colors.dark-on-secondary-container}"
+    backgroundColor: "{colors.dark-primary-container}"
+    textColor: "{colors.dark-on-primary-container}"
     typography: "{typography.label-large}"
     rounded: "{rounded.medium}"
     width: "100%"
@@ -281,42 +338,46 @@ components:
     rounded: "{rounded.full}"
     padding: "8dp 12dp"
   fab-extended-dark:
-    backgroundColor: "{colors.dark-primary-container}"
-    textColor: "{colors.dark-on-primary-container}"
+    backgroundColor: "{colors.dark-tertiary-container}"
+    textColor: "{colors.dark-on-tertiary-container}"
     typography: "{typography.label-large}"
     rounded: "{rounded.large}"
     height: "56dp"
   field-outlined-dark:
+    backgroundColor: "{colors.dark-surface-container-lowest}"
     textColor: "{colors.dark-on-surface}"
     typography: "{typography.body-large}"
-    rounded: "{rounded.extra-small}"
+    rounded: "{rounded.medium}"
     width: "100%"
   watch-summary-dark:
     backgroundColor: "{colors.dark-surface-container}"
     textColor: "{colors.dark-on-surface}"
-    typography: "{typography.headline-small-medium}"
-    rounded: "{rounded.large}"
-    padding: "{spacing.summary}"
+    rounded: "{rounded.grouped}"
+    padding: "{spacing.section}"
     width: "100%"
   proposal-card-dark:
     backgroundColor: "{colors.dark-primary-container}"
     textColor: "{colors.dark-on-primary-container}"
     typography: "{typography.headline-small-medium}"
     rounded: "{rounded.large}"
-    padding: "{spacing.summary}"
+    padding: "{spacing.page}"
     width: "100%"
   section-card-dark:
     backgroundColor: "{colors.dark-surface-container-lowest}"
     textColor: "{colors.dark-on-surface}"
-    typography: "{typography.title-medium-semibold}"
     rounded: "{rounded.large}"
     padding: "{spacing.section}"
     width: "100%"
   collection-card-dark:
     backgroundColor: "{colors.dark-surface-container-lowest}"
     textColor: "{colors.dark-on-surface}"
-    typography: "{typography.title-medium-semibold}"
     rounded: "{rounded.large}"
+    width: "100%"
+  grouped-watch-list-dark:
+    backgroundColor: "{colors.dark-surface-container-lowest}"
+    textColor: "{colors.dark-on-surface}"
+    typography: "{typography.title-medium-semibold}"
+    rounded: "{rounded.grouped}"
     width: "100%"
   mode-choice-selected-dark:
     backgroundColor: "{colors.dark-primary-container}"
@@ -327,27 +388,48 @@ components:
     width: "100%"
     height: "52dp"
   watch-status-active-dark:
-    textColor: "{colors.dark-status-active}"
-    typography: "{typography.label-large}"
-  watch-status-preparing-dark:
-    textColor: "{colors.dark-status-preparing}"
-    typography: "{typography.label-large}"
-  watch-status-contained-dark:
+    backgroundColor: "{colors.dark-status-active-container}"
     textColor: "{colors.dark-status-active}"
     typography: "{typography.label-large}"
     rounded: "{rounded.small}"
-    padding: "8dp 12dp"
+    padding: "7dp 10dp"
+  watch-status-preparing-dark:
+    backgroundColor: "{colors.dark-status-preparing-container}"
+    textColor: "{colors.dark-status-preparing}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.small}"
+    padding: "7dp 10dp"
+  watch-status-paused-dark:
+    backgroundColor: "{colors.dark-status-paused-container}"
+    textColor: "{colors.dark-status-paused}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.small}"
+    padding: "7dp 10dp"
+  watch-status-warning-dark:
+    backgroundColor: "{colors.dark-status-warning-container}"
+    textColor: "{colors.dark-status-warning}"
+    typography: "{typography.label-large}"
+    rounded: "{rounded.small}"
+    padding: "7dp 10dp"
+  watch-status-compact-dark:
+    typography: "{typography.label-medium}"
+    rounded: "{rounded.small}"
+    padding: "5dp 10dp"
   capacity-chip-dark:
+    backgroundColor: "{colors.dark-status-warning-container}"
     textColor: "{colors.dark-status-warning}"
     typography: "{typography.label-large}"
     rounded: "{rounded.small}"
     height: "48dp"
+  top-app-bar-home-dark:
+    backgroundColor: "{colors.dark-background}"
+    textColor: "{colors.dark-on-surface}"
+    typography: "{typography.headline-small-semibold}"
   top-app-bar-dark:
     backgroundColor: "{colors.dark-background}"
     textColor: "{colors.dark-on-surface}"
     typography: "{typography.title-large}"
   list-item-dark:
-    backgroundColor: "{colors.dark-surface}"
     textColor: "{colors.dark-on-surface}"
     typography: "{typography.title-medium}"
     width: "100%"
@@ -362,166 +444,147 @@ components:
 
 ## Overview
 
-**Creative North Star: "Material 3 natif, encre et cobalt"**
+**Creative North Star: "Material 3 natif, graphite et ambre"**
 
-Préviens-moi adopte les composants natifs Jetpack Compose Material 3, la typographie système Android et une palette sobre choisie pour remplacer le violet par défaut. La palette encre et cobalt et les surfaces tonales structurent la lecture : demande, état et prochaine action forment un résumé identifiable, suivi de sections lisibles. Les comportements restent ceux des composants natifs.
+Préviens-moi adopte les composants conventionnels Jetpack Compose Material 3, la police système Android et une palette graphite légèrement végétale, sur des surfaces neutres chaudes. Le FAB ambre distingue la création ; les états restent séparés des actions. La sobriété et les composants officiels choisis par Fabien gouvernent cette première version.
 
-Cette documentation décrit la révision téléphone actuellement implémentée, après autorisation de réviser la palette et les écrans de détail et de confirmation. Les valeurs du frontmatter sont normatives pour cette extraction : les couleurs proviennent de PreviensTheme.kt ; les rôles typographiques et les formes sont hérités de Material 3 (version résolue 1.4.0, BOM 2026.09.00), sans surcharge du thème ; les emphases de graisse locales sont décrites ci-dessous. Les unités Android restent en dp et sp : ne pas copier ces valeurs comme des pixels fixes dans Compose. Les aperçus HTML du sidecar sont des traductions de consultation et ne remplacent ni les composants natifs ni leurs comportements.
+Cette extraction documente le système intégré dans la production Android 0.1.6, après approbation des maquettes le 2 novembre 2026. Les couleurs viennent de PreviensTheme.kt, les compositions des composants Kotlin main et remote. La typographie et les formes héritées ont été vérifiées dans les sources de Material 3 résolu (1.4.0) ; aucune nouvelle police, durée ou élévation applicative n’est introduite. Les unités restent en dp et sp ; les aperçus HTML du sidecar sont consultatifs et ne remplacent pas Android natif.
 
 **Key Characteristics:**
 
-- Composants Material 3 et typographie système.
-- Actions en encre et cobalt, états sémantiques séparés.
-- Résumés tonals, sections claires et profondeur native mesurée.
-- Pages lisibles, défilantes, compatibles avec le texte agrandi.
+- Composants officiels Material 3 et typographie système.
+- Actions graphite, création ambre et statuts sémantiques indépendants.
+- Liste groupée, titre de détail hors du résumé et surfaces calmes.
+- Dates adaptatives, défilement et actions fixes lisibles avec le texte agrandi.
 
-La source visuelle courante est `.impeccable/review/v2/` : 16 captures de fixtures Android, dont les variantes sombres et le texte agrandi. Les sources Kotlin gouvernent cette extraction. Les fixtures ne qualifient ni réseau ni service ; les aperçus HTML ne démontrent aucune parité APK/web. Les écrans de production sont ceux de la variante `remote`. `PRODUCT.md` conserve un contexte historique de démonstration et n’a pas été réécrit pendant cette extraction ; il ne définit pas les couleurs de cette V1. Cette documentation ne modifie aucune promesse produit.
+La référence visuelle courante est `.impeccable/review/approved-ui-2026-11-02/` : 28 captures Android natives téléphone API 36 (clair, sombre et texte à 130 %), comparées aux neuf références individuelles de `.impeccable/review/proposal-2026-11-02/`. La revue finale a conclu SHIP sans correction matérielle. Cette couverture ne vaut pas exercice TalkBack, mesure de performance matérielle ni qualification tablette, réseau ou moteur externe. Les sources Kotlin restent l’autorité des tokens. `PRODUCT.md` conserve un contexte historique de démonstration ; ses contraintes fonctionnelles et celles de la documentation produit ne sont pas modifiées ici.
 
 ## Colors
 
-La palette associe une encre cobalt aux actions, des neutres légèrement froids aux surfaces et des couleurs distinctes aux états. Les préfixes `light-` et `dark-` identifient les deux schémas statiques du frontmatter. `PreviensTheme` suit le thème système ; Dynamic Color n’est pas activé.
+Les préfixes `light-` et `dark-` du frontmatter décrivent les deux schémas statiques. Le thème suit Android ; Dynamic Color n’est pas activé. Les valeurs absentes de PreviensTheme restent héritées de Material et ne sont pas inventées ici.
 
 ### Primary
 
-L’**encre cobalt** porte les boutons remplis, liens et actions textuelles. Les couples `primary` / `on-primary` et `primary-container` / `on-primary-container` gouvernent respectivement les actions remplies et le FAB étendu, le résumé de proposition et le choix de mode sélectionné. Le résumé du détail utilise une surface neutre tonale. Ne pas substituer les couleurs de statut à ces rôles.
+Le **graphite végétal** porte les boutons remplis et actions textuelles. `primary-container` et `on-primary-container` portent la pause ou l’annulation de préparation, le choix radio sélectionné et le résumé de proposition. Ces rôles expriment l’action, sans reprendre la couleur d’un statut.
 
 ### Secondary
 
-L’**ardoise bleutée** est le jeu secondaire Material. FilledTonalButton utilise secondaryContainer / onSecondaryContainer pour la pause ou l’annulation de préparation, comme action subordonnée au résumé.
+Les **neutres feuillus** secondaires servent notamment au bouton tonal du compte. La pause possède une surcharge explicite en `primary-container` ; elle n’utilise pas le conteneur secondaire par défaut.
 
 ### Tertiary
 
-Le **grège chaud** est le jeu tertiaire déclaré ; il ne crée pas une famille d’actions personnalisées. Les statuts de préparation possèdent leurs propres tokens `status-preparing` : ne pas les déduire d’un rôle tertiaire ni en changer selon l’écran.
+L’**ambre doux** du conteneur tertiaire porte le seul FAB étendu « Nouveau suivi ». La préparation et l’attention ont leurs propres tokens sémantiques : ne pas les déduire du FAB.
 
 ### Neutral
 
-Les rôles `background` et `surface` sont identiques dans chaque thème. `on-surface` porte le texte principal ; `on-surface-variant` porte les métadonnées et explications secondaires. Les niveaux `surface-container-lowest` à `surface-container-highest` constituent la gamme de surfaces. Le résumé du détail emploie `surface-container`, les sections et le pied fixe `surface-container-lowest`. Les séparateurs explicites utilisent `outline-variant` ; les champs utilisent le contour natif `outline`.
+Le **papier chaud** clair et le **graphite sombre** structurent les fonds. `background` et `surface` coïncident dans chaque schéma. Le résumé de détail utilise `surface-container` ; sections, collections, champs et pied fixe utilisent `surface-container-lowest` (blanc en clair). `on-surface` porte le texte principal ; `on-surface-variant` les métadonnées. Séparateurs et contours utilisent respectivement `outline-variant` et le rôle natif du composant.
 
 ### Status and error
 
-| Rôle | Usage réel |
+| Tokens | Usage réel |
 | --- | --- |
-| `status-active` — vert | Actif et Terminé, avec coche cerclée. |
-| `status-preparing` — bleu | En préparation, avec horloge. |
-| `status-paused` — gris ardoise | En pause, avec symbole pause. |
-| `status-warning` — ambre | Limite de capacité, arrêt en cours, ou suivi actif dont la prochaine vérification ou la santé ne sont pas confirmées. |
-| `error` — rouge | Échec de préparation, erreurs et actions de suppression. |
+| `status-active` / `status-active-container` | Vert : Actif confirmé et Terminé, avec coche. |
+| `status-preparing` / `status-preparing-container` | Ambre : préparation et opérations en attente, avec horloge. |
+| `status-paused` / `status-paused-container` | Neutre : pause, avec symbole pause. |
+| `status-warning` / `status-warning-container` | Ambre : capacité, arrêt en cours ou actif non confirmé. |
+| `error` / `error-container` et leurs `on-` | Rouge : préparation échouée, erreurs et suppression. |
 
-`WatchStatusLabel` donne la priorité à l’échec de préparation, puis à l’arrêt en cours ou à un état actif non vérifié, avant le statut nominal. Une préparation échouée n’est donc pas affichée comme une simple pause. `FailureText` garde les opérations en attente en texte secondaire ; ses autres erreurs utilisent `error`. Dans le résumé, le fond de statut est dérivé de sa couleur à 10 % d’opacité, sans nouveau rôle de palette. La suspension par capacité devient un AssistChip ouvrant une explication.
+Les fonds de statut sont des couleurs explicites du thème, pas une opacité calculée depuis le texte. WatchStatusLabel donne priorité à une opération en attente, puis à l’échec, puis à l’arrêt ou à l’actif non vérifié (prochaine vérification absente ou santé non saine), avant le statut nominal. La capacité donne accès à une explication via AssistChip. FailureText garde les attentes normales en texte secondaire et les erreurs en rouge, avec annonce polie.
 
-**The Semantic Color Rule.** Employer MaterialTheme.colorScheme et les couleurs de statut du thème ; choisir la variante claire ou sombre par le thème, jamais par un hexadécimal ajouté dans un écran.
-
-**The Redundant Status Rule.** Conserver le libellé et l’icône de WatchStatusLabel avec sa couleur. Le vert est réservé à Actif ou Terminé ; la préparation utilise le bleu.
-
-Les rôles non surchargés dans `PreviensTheme.kt` restent ceux de la bibliothèque. Ne pas inventer de valeurs locales pour eux ; extraire et vérifier le composant concerné avant d’étendre cette documentation.
+**The Semantic Color Rule.** Employer MaterialTheme.colorScheme et LocalStatus ; conserver libellé et icône avec la couleur. Le vert indique Actif ou Terminé, l’ambre la préparation ou l’attention, le neutre la pause et le rouge l’échec.
 
 ## Typography
 
-**Display Font:** sans-serif système Android, via Material 3. Aucun rôle Display n’est utilisé dans les écrans V1 inspectés.
+**Display Font:** police sans-serif système Android via Material 3 ; aucun rôle Display n’est utilisé dans les écrans inspectés.
 
-**Body Font:** la même famille système. Aucune police embarquée, police décorative ni famille mono dédiée.
+**Body Font:** la même famille système, sans police embarquée ou décorative ni famille mono dédiée.
 
-**Character:** hiérarchie native, claire et stable. Les titres donnent le contexte, le corps explique, les labels identifient les actions et les états. Le frontmatter contient neuf rôles natifs utilisés et trois variantes de graisse locales observées : headlineSmall Medium, titleMedium SemiBold et bodyMedium Medium. Ces emphases ne modifient pas le thème typographique.
+**Character:** hiérarchie native et mesurée. Le frontmatter extrait les rôles utilisés de la bibliothèque résolue et les variantes de graisse réellement observées ; il ne définit pas un thème typographique personnalisé. Conserver les unités sp et le retour à la ligne.
 
-### Hierarchy
-
-| Rôle Material | Usage observé |
+| Rôle | Usage observé |
 | --- | --- |
-| `headlineMedium` | Question de création, état vide, connexion et titre du résultat. |
-| `headlineSmall` | Titre du suivi, proposition et question de clarification. |
-| `titleLarge` | Titre de compte ; rôle natif de la barre supérieure. |
-| `titleMedium` | Titres de section et titres de la liste de suivis. |
-| `bodyLarge` | Texte courant natif et fait principal d’un résultat. |
-| `bodyMedium` | SecondaryText et métadonnées. |
-| `labelLarge` | WatchStatusLabel et actions natives. |
-| `labelMedium` | Libellés des dates du résumé et réglages de confirmation. |
-| `bodySmall` | Note d’essai de la confirmation. |
+| `headlineMedium` | Certains états de connexion. |
+| `headlineSmall` | Question de création, détail, résultat, clarification et proposition ; SemiBold pour les titres principaux et le titre de barre d’accueil, Medium pour la proposition. |
+| `titleLarge` | Compte et petites barres de contexte. |
+| `titleMedium` | Titres de section et suivis d’accueil, avec emphase SemiBold. |
+| `bodyLarge` | Champs et fait principal d’un résultat. |
+| `bodyMedium` | Métadonnées et explications ; Medium pour certaines valeurs de réglage. |
+| `bodySmall` | Labels de dates du résumé et note d’essai. |
+| `labelLarge` | Actions, statuts normaux, compteur et initiales du compte. |
+| `labelMedium` | Statuts compacts et labels de réglage. |
 
-Les rôles supplémentaires employés à l’intérieur d’un champ ou d’un dialogue restent gérés par Material 3. Les valeurs chiffrées du frontmatter ont été vérifiées dans les tokens de la bibliothèque résolue ; aucun ratio typographique personnalisé n’est imposé.
+Les titres longs de détail et résultat utilisent `LineBreak.Heading`. Les titres de suivis dans la liste acceptent deux lignes puis une ellipse ; les titres de barre gardent une ligne avec ellipse. Aucun ratio typographique supplémentaire n’est imposé.
 
-**The Material Type Roles Rule.** Utiliser les rôles MaterialTheme.typography existants et laisser Android appliquer l’échelle système. Les chiffres extraits ne sont pas une invitation à créer des tailles par écran.
+**The Material Type Roles Rule.** Réutiliser MaterialTheme.typography et les emphases observées ; laisser Android appliquer son échelle de texte sans taille fixe par écran.
 
 ## Layout
 
-`Page` organise une colonne défilante avec un espacement de section, des marges horizontales de page, un retrait supérieur compact et un retrait inférieur de page. Le contenu et son pied fixe sont centrés dans une largeur maximale (720 dp). Ce plafond réel ne qualifie pas une interface tablette.
+Page centre une colonne défilante de largeur maximale (720 dp), avec marges horizontales (20 dp), retrait supérieur (12 dp), retrait inférieur (24 dp) et espacement de section (16 dp). Son pied reste hors du défilement avec marges horizontales (20 dp), retraits supérieur (12 dp) et inférieur (8 dp). Les hauteurs de composants du frontmatter représentent les minima observés ou natifs : ne pas transformer `heightIn(min=…)` en hauteur fixe.
 
-Le pied fixe de confirmation ou de résultat utilise `surfaceContainerLowest`, une élévation tonale (2 dp), les marges horizontales de page et des retraits supérieur compact et inférieur inline. La confirmation utilise un bouton pleine largeur, de hauteur minimale (52 dp), suivi de l’action textuelle de révision ; l’ouverture de source conserve son minimum (48 dp). Les hauteurs de boutons et puces du frontmatter sont des minima : laisser le texte agrandi augmenter le composant.
+L’accueil conserve LazyColumn avec marges latérales (20 dp), retrait supérieur (18 dp), réserve inférieure pour le FAB (112 dp) et aucun espace entre lignes. Les ListItem sont groupés sur une surface continue ; seuls les coins extérieurs du premier et dernier item sont arrondis (20 dp). Les lignes utilisent un retrait local horizontal (4 dp) et vertical (12 dp), puis leurs insets Material ; le séparateur est rentré (20 dp). Statut et dernier contrôle sont côte à côte seulement lorsque la largeur interne atteint (352 dp), fontScale ne dépasse pas (1,15) et que le suivi actif est sain sans commande non confirmée ; sinon ils s’empilent.
 
-L’accueil conserve une LazyColumn : marges horizontales de page, retrait supérieur compact, espacement inline et réserve inférieure pour le FAB (112 dp). Ses suivis restent des ListItem avec séparateur. Dans le détail, SectionCard applique un retrait de section et un espacement compact. CollectionCard réserve les retraits à son titre ; les ListItem possèdent leurs insets natifs, sans second retrait ni espacement de colonne autour des lignes. Les séparateurs se placent directement entre les lignes.
+Le détail place son titre hors d’un résumé neutre arrondi (20 dp), avec retrait interne (16 dp) et espacement (12 dp). CheckTiming partage l’espace en deux colonnes égales séparées de (16 dp), puis empile les dates au-delà de fontScale (1,15), avec espacement (12 dp). MetaRow et le réglage des notifications s’empilent également au-delà de ce seuil. Les dates compactes gardent l’année pour une observation d’une autre année.
 
-Les résumés de détail et de proposition utilisent un retrait de résumé et la forme `large`. CheckTiming présente deux colonnes égales, un espacement de section et un libellé au-dessus de chaque valeur. Cette structure reste en place au texte agrandi ; les valeurs peuvent revenir à la ligne. MetaRow, utilisé ailleurs, empile libellé et valeur au-delà d’une échelle de police (1,15) ; il conserve deux colonnes à l’échelle normale et un retrait vertical local (6 dp).
+SectionCard et CollectionCard placent leur titre au-dessus de la surface, séparé de (10 dp). SectionCard applique un retrait interne (16 dp) et un espacement (12 dp). CollectionCard laisse les ListItem gérer leurs insets, avec séparateurs directs et sans retrait doublé. Les sources gardent un minimum (56 dp). La confirmation conserve résumé, comportement après résultat puis réglages ; les choix radio ont un minimum (52 dp), les lignes de réglage (56 dp).
 
-La confirmation présente le résumé, le comportement après résultat, puis les réglages de zone, site, fréquence et sources. Les choix sont des lignes sélectionnables avec radio, hauteur minimale (52 dp) et libellé multilignes. Les réglages associent un label au-dessus de la valeur, un minimum (56 dp), des séparateurs et un chevron seulement quand la ligne est modifiable. Cette composition décrit la confirmation actuelle sans imposer son ordre aux autres écrans.
-
-Le Scaffold fournit les insets appliqués au contenu avec imePadding ; l’activité active l’affichage bord à bord. Les icônes des barres système suivent le thème. Les icônes communes mesurent (24 dp), ce qui ne définit pas leur cible tactile : conserver les contrôles natifs. Aucun breakpoint de tablette ni navigation rail n’est établi par les captures téléphone.
+Scaffold applique ses insets avant le contenu avec imePadding ; l’activité active l’affichage bord à bord. Les icônes de barres système suivent le thème. Les icônes communes mesurent (24 dp) ; cette taille n’est pas leur cible tactile. Conserver les contrôles natifs et une cible interactive minimale de (48 × 48 dp). Le plafond de largeur ne constitue pas une qualification tablette et aucun breakpoint tablette n’est établi.
 
 ## Elevation & Depth
 
-La profondeur vient des surfaces tonales et des composants natifs. Les Card sont les cartes remplies Material, sans ombre personnalisée. Le résumé du détail est plus tonal que les sections ; la proposition emploie le conteneur primaire. Le pied fixe est une Surface avec élévation tonale, sans ombre dessinée par l’application. Le FAB étendu conserve son élévation native de repos (6 dp), les menus et dialogues leur profondeur native.
+La profondeur repose sur les surfaces tonales et les composants Material. Les cartes remplies n’ajoutent aucune ombre de marque. Le pied de Page utilise une élévation tonale explicite (2 dp) ; le FAB garde l’élévation native de repos (6 dp), vérifiée dans la bibliothèque. Menus et dialogues conservent leurs défauts natifs.
 
-**The Native Elevation Rule.** Conserver les surfaces et élévations Material ; ne pas ajouter d’ombres décoratives aux cartes ou listes.
+**The Native Elevation Rule.** Conserver la profondeur des surfaces et composants Material ; aucune ombre décorative sur les cartes ou listes.
 
-Aucun token d’ombre ou de mouvement applicatif n’est défini. Indicateurs, ripple, états pressé/focus et transitions de navigation restent natifs. Les ombres des aperçus HTML sont des approximations de consultation.
+Aucun token de durée, d’easing ou d’ombre applicative supplémentaire n’est défini. Ripple, focus, états pressé/désactivé et transitions restent ceux des composants Android. Le sidecar ne revendique aucune équivalence de ces comportements dans le navigateur.
 
 ## Shapes
 
-Les formes sont héritées de Material 3 : `extra-small` pour les champs contour, `small` pour le statut contenu et l’AssistChip, `medium` pour les choix de mode et le bouton tonal, `large` pour les résumés, sections, collections et confirmation, `extra-large` pour les dialogues. Le FAB utilise `large` ; les autres boutons remplis et textuels gardent `full`. Les valeurs du frontmatter rendent l’extraction inspectable, sans créer un second thème.
-
-Les suivis d’accueil restent des lignes ; résultats et sources sont réunis dans des cartes de section. Aucun dégradé décoratif, illustration, texture ou traitement translucide n’est implémenté.
+Les formes héritées sont celles de Material 3 : `small` pour les statuts contenus, `medium` pour les champs, boutons de page, choix radio et reprise, `large` pour sections, collections, proposition et FAB, `extra-large` pour dialogues, `full` pour les boutons ordinaires et textuels. `grouped` est la forme locale (20 dp) du résumé de détail et des coins extérieurs de la liste groupée. `extra-small` est observé sur les barres du squelette. Le thème ne surcharge pas Shapes.
 
 ## Components
 
 ### Buttons
 
-Button porte l’action principale et la reprise. La confirmation garde sa forme `large` et sa hauteur minimale ; la reprise utilise `medium`. FilledTonalButton porte la pause et l’annulation de préparation avec les couleurs secondaires natives et la forme `medium`. TextButton sert aux actions légères ; la suppression utilise `error`. Aucun OutlinedButton n’est actuellement utilisé dans les sources main/remote inspectées.
+Button en graphite porte analyse, connexion, confirmation, ouverture de source et reprise ; la forme des boutons de page est `medium`. FilledTonalButton en `primary-container` porte pause ou annulation de préparation. Ces actions ont un minimum (48 dp), sauf confirmation (52 dp). Le bouton de confirmation et l’ouverture de source sont dans le pied fixe de Page, suivi de l’action textuelle de révision pour la confirmation. TextButton porte les actions légères ; les confirmations de suppression utilisent `error`. Conserver les états natifs et laisser les labels revenir à la ligne.
 
-Les espacements du frontmatter des boutons ordinaires correspondent aux défauts sans icône. Les états désactivé, pressé, focus et survol restent natifs. Les icônes communes sont les vecteurs officiels Material Symbols conservés sans changement de tracé ; la licence Apache 2.0 est dans `android/app/src/main/res/raw/material_symbols_license.txt`.
+Le seul FAB est l’ExtendedFloatingActionButton ambre de l’accueil, avec symbole plus et « Nouveau suivi ». Son affichage attend le chargement du compte et du brouillon. Aucun OutlinedButton n’est utilisé dans les sources inspectées.
 
-### Fields and choices
+### Inputs and choices
 
-OutlinedTextField prend toute la largeur. La demande accepte de trois à six lignes ; zone, site, email et code sont monolignes. Le site préféré utilise supportingText et isError ; focus et erreur restent natifs.
-
-ModeChoice place un RadioButton dans une ligne selectable avec rôle radio : la ligne gère le clic, le contrôle garde onClick = null. Le choix sélectionné utilise primaryContainer / onPrimaryContainer ; l’autre garde la surface de section. Les clarifications réemploient des radios en lignes sélectionnables. Conserver labels et sémantiques accessibles. FailureText annonce les erreurs dans une région polie.
+OutlinedTextField utilise `surface-container-lowest` à l’état normal et focalisé, avec forme `medium` (12 dp). La demande accepte de trois à six lignes ; zone, site, email et code sont monolignes. Labels, supportingText du site, isError, clavier et focus restent natifs. ModeChoice place un RadioButton sans clic propre dans une ligne selectable de rôle radio ; l’état sélectionné utilise `primary-container` / `on-primary-container`. Les clarifications réemploient les radios natives. FailureText annonce poliment ses messages.
 
 ### Navigation
 
-La production utilise TopAppBar sur background, le retour natif sur les routes secondaires et un menu d’actions sur le détail. Le titre de barre reste sur une ligne avec ellipse. L’accueil propose compte, actualisation et FAB étendu « Nouveau suivi ». Le retour passe par NavDisplay et sa pile ; aucun menu inférieur n’est implémenté.
+WatchAppBar utilise MediumTopAppBar sur l’accueil et TopAppBar sur les autres routes, sur `background`. La barre d’accueil contient actualisation et compte ; le détail contient retour, actualisation et menu d’actions. Le bouton tonal du compte affiche les initiales dérivées du véritable email : jusqu’à deux segments de sa partie locale séparés par point, tiret bas ou tiret, avec « ? » si vide. Les initiales d’une maquette ne sont jamais figées en production. Hors connexion, l’action textuelle de connexion le remplace. Le retour conserve la pile NavDisplay et le retour système ; aucune destination inférieure n’est ajoutée.
 
 ### Cards and collections
 
-Le résumé de détail associe titre, statut contenu, explication utile, CheckTiming et action disponible dans une Card(surfaceContainer). La proposition utilise Card(primaryContainer, onPrimaryContainer). SectionCard et CollectionCard utilisent surfaceContainerLowest ; leurs titres sont en titleMedium avec emphase SemiBold.
-
-SectionCard applique les retraits et l’espacement au contenu libre. CollectionCard laisse chaque ListItem gérer ses insets : les lignes ont un fond transparent pour conserver la surface de carte, et les séparateurs restent sans espacement ajouté. Les résultats portent un chevron interne ; les sources portent l’icône d’ouverture externe en primaire. Réutiliser sourceDomain pour afficher le domaine. Une source cliquable conserve sa hauteur minimale (56 dp).
-
-SectionTitle, SecondaryText et MetaRow restent les primitives de hiérarchie des autres contenus. Les métadonnées demeurent du texte lisible.
+Le résumé neutre du détail réunit statut, dates, explication utile et action disponible ; le titre principal reste au-dessus. La proposition conserve son conteneur primaire. Les résultats et sources sont des collections sur `surface-container-lowest`, les critères une SectionCard sur ce même rôle. Les ListItem transparents montrent la surface de leur collection ; résultats portent un chevron, sources une ouverture externe. Réutiliser sourceDomain pour les domaines.
 
 ### Watch status and chip
 
-WatchStatusLabel réunit icône, label et couleur sémantique : vert pour Actif/Terminé, bleu pour la préparation, ardoise pour la pause, ambre pour la limite ou l’incertitude et rouge pour l’échec de préparation. Sur l’accueil il reste une ligne transparente informative. Dans le résumé, Surface(shapes.small) ajoute le fond dérivé à 10 % et un retrait horizontal compact et vertical inline.
+WatchStatusLabel associe icône, libellé et couple sémantique. Accueil et résumé utilisent des statuts contenus : format compact (labelMedium, icône 16 dp, retrait vertical 5 dp) dans la liste ; format normal (labelLarge, icône 18 dp, retrait vertical 7 dp) dans le résumé. Le retrait horizontal est (10 dp), l’espace icône/texte (6 dp). Un statut contenu informatif n’est pas un bouton. La suspension par capacité utilise un AssistChip sans contour, minimum (48 dp), ouvrant un AlertDialog avec explication.
 
-La suspension par capacité seule utilise un AssistChip natif interactif, sans contour, de hauteur minimale (48 dp), avec chevron et ouverture d’un AlertDialog. Les autres statuts contenus restent informatifs.
+### Dialogs and loading
 
-### Dialogs, loading and fixed actions
-
-Suppression, confidentialité et explication de capacité utilisent AlertDialog. La suppression distingue annulation et action destructrice rouge. Busy associe l’indicateur (24 dp, trait de 2 dp) au libellé annoncé poliment ; l’évaluation peut employer l’indicateur compact (18 dp, trait de 2 dp). Confirmation et ouverture de source passent par le pied de Page, au-dessus des barres système.
+Suppression, confidentialité et capacité réemploient AlertDialog. La suppression conserve annulation et confirmation rouge. Une ligne LinearProgressIndicator apparaît sous la barre lors du chargement initial ou de l’actualisation de l’accueil, ainsi que de l’actualisation du détail. Le chargement initial sans liste conserve le squelette groupé de trois lignes et son libellé accessible. Busy est un LinearProgressIndicator pleine largeur ; l’analyse de demande et l’actualisation locale peuvent conserver un CircularProgressIndicator compact. Un échec de premier chargement montre son erreur et sa reprise ; un échec d’actualisation conserve l’indication de contenu ancien.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** utiliser les rôles de thème et les couleurs sémantiques pour chaque état.
-- **Do** conserver texte et icône sur les statuts, y compris en mode sombre.
-- **Do** réutiliser Page, SectionCard, CollectionCard, MetaRow et SecondaryText pour les nouveaux écrans.
-- **Do** vérifier le défilement, le clavier, les barres système et la lisibilité avec une échelle de texte de 1,3.
-- **Do** conserver les composants, cibles tactiles et interactions natives Material 3.
-- **Do** laisser les ListItem gérer leurs insets dans CollectionCard, avec des séparateurs sans espacement ajouté.
+- **Do** utiliser les rôles clair/sombre du thème et les couples de statut explicites.
+- **Do** garder le titre du suivi hors du résumé neutre et les titres de section hors de leur surface.
+- **Do** conserver les marges de page de 20 dp et les insets système et clavier.
+- **Do** empiler les dates et métadonnées lorsque fontScale dépasse 1,15 et laisser les composants grandir.
+- **Do** garder les composants Material, leurs cibles tactiles natives d’au moins 48 × 48 dp et leurs sémantiques.
+- **Do** préserver les vérités produit : état non confirmé, préparation, contenu ancien et erreurs restent explicites.
 
 ### Don't:
 
-- **Don’t** réintroduire la palette canard rejetée ou le violet par défaut pour les actions, ni utiliser le vert pour la préparation.
-- **Don’t** remplacer la typographie système par une police de marque ou ajouter une direction fantaisiste.
-- **Don’t** utiliser uniquement une couleur pour annoncer un état, une limite ou une erreur.
-- **Don’t** ajouter des ombres décoratives ou empiler les retraits autour des lignes natives.
-- **Don’t** présenter les anciens écrans de démonstration ou les captures tablette historiques comme la référence de cette V1 téléphone.
-
-- **Don’t** déduire une parité APK/web ou une qualification tablette des aperçus HTML et fixtures téléphone.
+- **Don’t** réintroduire l’ancienne identité cobalt ni le violet par défaut dans les écrans courants.
+- **Don’t** utiliser le vert pour une préparation, une opération en attente ou un état actif non confirmé.
+- **Don’t** figer les initiales du compte à celles d’une maquette ni coder un hexadécimal dans un écran.
+- **Don’t** ajouter une police décorative, des ombres de marque ou une direction fantaisiste.
+- **Don’t** empiler les cartes ou doubler les retraits des ListItem dans les collections.
+- **Don’t** déduire une qualification tablette, matérielle, réseau ou fournisseur des captures téléphone ou des aperçus HTML.

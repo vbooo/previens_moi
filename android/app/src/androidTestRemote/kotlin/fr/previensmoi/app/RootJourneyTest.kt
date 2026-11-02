@@ -36,6 +36,7 @@ class RootJourneyTest {
     private lateinit var proposal: JSONObject
     @Volatile private var listStatus = 200
     @Volatile private var listEmpty = false
+    @Volatile private var extraWatches = emptyList<JSONObject>()
     @Volatile private var gate: CountDownLatch? = null
     @Volatile private var tokenLifetime = 3600
     private val commands = java.util.concurrent.CopyOnWriteArrayList<String>()
@@ -65,7 +66,7 @@ class RootJourneyTest {
                     path.endsWith("/logout") || path.contains("/devices/") -> MockResponse.Builder().code(204).addHeader("Connection", "close").build()
                     path.endsWith("/watches") -> {
                         gate?.await(15,TimeUnit.SECONDS)
-                        if(listStatus!=200) error(listStatus) else response("""{"items":${if(listEmpty) "[]" else "[$watch]"},"nextCursor":null,"serverTime":"2026-11-02T12:00:00Z"}""")
+                        if(listStatus!=200) error(listStatus) else response("""{"items":${if(listEmpty) "[]" else (listOf(watch)+extraWatches).joinToString(prefix="[",postfix="]")},"nextCursor":null,"serverTime":"2026-11-02T12:00:00Z"}""")
                     }
                     path.endsWith("/findings") -> response("""{"items":[],"nextCursor":null,"serverTime":"2026-11-02T12:00:00Z"}""")
                     path.endsWith("/commands") && request.method=="POST" -> {
@@ -99,7 +100,14 @@ class RootJourneyTest {
     private fun signIn() = runBlocking { val result=app.sessions.verifyCode("fixture@example.test","123456"); assertTrue("Controlled auth outcome: ${if(result is Outcome.Error) result.reason else "success"}", result is Outcome.Success) }
     private fun launch() { activity=ActivityScenario.launch(Intent(context,MainActivity::class.java)) }
     private fun waitTag(tag:String) = compose.waitUntil(20000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
-    private fun tap(tag:String) { waitTag(tag); val node=compose.onNodeWithTag(tag); if (!node.isDisplayed()) node.performScrollTo(); node.performClick() }
+    private fun tap(tag:String) {
+        waitTag(tag)
+        val node=compose.onNodeWithTag(tag)
+        val scrollable=generateSequence(node.fetchSemanticsNode().parent) { it.parent }
+            .any { it.config.contains(androidx.compose.ui.semantics.SemanticsActions.ScrollBy) }
+        if (scrollable) node.performScrollTo()
+        node.assertIsEnabled().performClick()
+    }
     private fun back() { activity!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; compose.waitForIdle() }
     @Test fun coldStartWaitsForConfirmedDataAndNewIsDistinctFromResumeDraft() {
         signIn()
@@ -121,6 +129,7 @@ class RootJourneyTest {
         signIn();listStatus=503;launch()
         compose.waitUntil(20000) { compose.onAllNodesWithText(context.getString(R.string.v4_list_failed)).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText(context.getString(R.string.v1_empty_title)).assertDoesNotExist()
+        capture("initial-error")
         listStatus=200;tap("refresh_watches");waitTag("watch_$watchId")
         activity!!.recreate();waitTag("watch_$watchId")
         listStatus=503;tap("refresh_watches");waitTag("watch_$watchId")
@@ -161,6 +170,55 @@ class RootJourneyTest {
         findingGate!!.countDown();findingGate=null
         compose.waitUntil(20000) { compose.onAllNodesWithText(finding.getString("fact")).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("watch_list").assertDoesNotExist()
+    }
+
+    @Test fun captureIntegratedProductionScreensWithControlledHttp() {
+        val suffix=InstrumentationRegistry.getArguments().getString("uiIntegrationCapture")
+        assumeTrue(suffix!=null)
+        val plan=watch.getJSONObject("plan")
+        plan.put("title","Promotions PlayStation 5").put("intervalHours",1)
+            .put("criteria",org.json.JSONArray().put("Promotions sur la PlayStation 5 disponibles en France."))
+            .put("sources",org.json.JSONArray().put(JSONObject().put("url","https://direct.playstation.com/fr-fr/").put("label","PlayStation Direct")))
+        proposal=JSONObject(plan.toString())
+        watch.put("health","healthy").put("lastSuccessAt","2026-11-02T08:41:00Z").put("nextCheckAt","2026-11-02T09:41:00Z")
+        val preparing=JSONObject(watch.toString()).put("id","019a05be-8000-7000-8000-000000000089")
+            .put("status","pending").put("remoteState","starting").put("health","not_checked_yet").put("lastSuccessAt",JSONObject.NULL).put("baselineAt",JSONObject.NULL).put("nextCheckAt",JSONObject.NULL)
+        preparing.getJSONObject("plan").put("title","Offres d’emploi Android à Montpellier")
+            .put("criteria",org.json.JSONArray().put("Offres de développeur Android à Montpellier, en France."))
+            .put("sources",org.json.JSONArray())
+        val paused=JSONObject(watch.toString()).put("id","019a05be-8000-7000-8000-000000000090")
+            .put("status","paused").put("remoteState","stopped").put("nextCheckAt",JSONObject.NULL)
+        paused.getJSONObject("plan").put("title","Sortie du prochain iPhone")
+            .put("criteria",org.json.JSONArray().put("Annonce officielle du prochain iPhone."))
+            .put("sources",org.json.JSONArray().put(JSONObject().put("url","https://www.apple.com/fr/newsroom/").put("label","Apple Newsroom")))
+        extraWatches=listOf(preparing,paused)
+        signIn();gate=CountDownLatch(1);launch();waitTag("home_loading");capture("integrated-loading-$suffix")
+        gate!!.countDown();gate=null;waitTag("watch_$watchId");capture("integrated-home-$suffix")
+        tap("watch_$watchId");waitTag("pause");capture("integrated-active-$suffix")
+        tap("pause");waitTag("resume");capture("integrated-paused-$suffix")
+        back();tap("watch_019a05be-8000-7000-8000-000000000089");waitTag("pause");capture("integrated-preparing-$suffix")
+        back();tap("new_request");waitTag("request");capture("integrated-request-$suffix")
+        compose.onNodeWithTag("request").performTextReplacement("Promotions sur la PlayStation 5")
+        tap("evaluate")
+        try { waitTag("confirm") } catch (failure: Throwable) {
+            activity!!.onActivity { current ->
+                val state=androidx.lifecycle.ViewModelProvider(current)[fr.previensmoi.feature.create.presentation.CreateViewModel::class.java].state.value
+                println("Controlled UI state: step=${state.step}, error=${state.error}, loaded=${state.loaded}, requestMatches=${state.draft.text == "Promotions sur la PlayStation 5"}, mockHttpRequests=${server.requestCount}")
+            }
+            throw failure
+        }
+        compose.onNodeWithText(proposal.getString("title")).assertIsDisplayed()
+        capture("integrated-confirm-$suffix")
+        back();back();tap("account");waitTag("sign_out");capture("integrated-account-$suffix")
+        back()
+        finding.put("title","Une promotion sur la PlayStation 5").put("fact","Une offre correspond à ta demande sur la source consultée.")
+            .put("reason","La source mentionne une promotion sur la PlayStation 5 disponible en France.")
+            .put("observedAt","2026-11-02T08:41:00Z").put("event",JSONObject.NULL)
+        finding.getJSONArray("evidence").getJSONObject(0).put("url","https://direct.playstation.com/fr-fr/")
+            .put("quote","Offre PlayStation 5 disponible en France.").put("publication",JSONObject.NULL)
+        context.startActivity(Intent(context,MainActivity::class.java).putExtra("findingId",finding.getString("id")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP))
+        compose.waitUntil(20000) { compose.onAllNodesWithText(finding.getString("fact")).fetchSemanticsNodes().isNotEmpty() }
+        capture("integrated-result-$suffix")
     }
 
 }

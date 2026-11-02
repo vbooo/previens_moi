@@ -1,966 +1,434 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-24T08:53:52.408581Z",
+  "generatedAt": "2026-11-02T15:05:43.362995+00:00",
   "title": "Design System: Préviens-moi",
   "extensions": {
     "colorMeta": {
       "light-primary": {
         "role": "primary",
-        "displayName": "Clair · encre cobalt · primary",
-        "tonalRamp": [
-          "oklch(15% 0.1001 264.13)",
-          "oklch(26% 0.1001 264.13)",
-          "oklch(38% 0.1001 264.13)",
-          "oklch(49% 0.1001 264.13)",
-          "oklch(61% 0.1001 264.13)",
-          "oklch(72% 0.1001 264.13)",
-          "oklch(84% 0.1001 264.13)",
-          "oklch(95% 0.1001 264.13)"
-        ]
+        "displayName": "Clair · graphite végétal · primary",
+        "canonical": "#303D34"
       },
       "light-on-primary": {
         "role": "primary",
-        "displayName": "Clair · encre cobalt · on-primary",
-        "tonalRamp": [
-          "oklch(15% 0.0000 0.00)",
-          "oklch(26% 0.0000 0.00)",
-          "oklch(38% 0.0000 0.00)",
-          "oklch(49% 0.0000 0.00)",
-          "oklch(61% 0.0000 0.00)",
-          "oklch(72% 0.0000 0.00)",
-          "oklch(84% 0.0000 0.00)",
-          "oklch(95% 0.0000 0.00)"
-        ]
+        "displayName": "Clair · graphite végétal · on-primary",
+        "canonical": "#FFFFFF"
       },
       "light-primary-container": {
         "role": "primary",
-        "displayName": "Clair · encre cobalt · primary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0378 272.53)",
-          "oklch(26% 0.0378 272.53)",
-          "oklch(38% 0.0378 272.53)",
-          "oklch(49% 0.0378 272.53)",
-          "oklch(61% 0.0378 272.53)",
-          "oklch(72% 0.0378 272.53)",
-          "oklch(84% 0.0378 272.53)",
-          "oklch(95% 0.0378 272.53)"
-        ]
+        "displayName": "Clair · graphite végétal · primary-container",
+        "canonical": "#E0E8DD"
       },
       "light-on-primary-container": {
         "role": "primary",
-        "displayName": "Clair · encre cobalt · on-primary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0672 262.81)",
-          "oklch(26% 0.0672 262.81)",
-          "oklch(38% 0.0672 262.81)",
-          "oklch(49% 0.0672 262.81)",
-          "oklch(61% 0.0672 262.81)",
-          "oklch(72% 0.0672 262.81)",
-          "oklch(84% 0.0672 262.81)",
-          "oklch(95% 0.0672 262.81)"
-        ]
+        "displayName": "Clair · graphite végétal · on-primary-container",
+        "canonical": "#26352A"
       },
       "light-secondary": {
         "role": "secondary",
-        "displayName": "Clair · ardoise bleutée · secondary",
-        "tonalRamp": [
-          "oklch(15% 0.0376 265.82)",
-          "oklch(26% 0.0376 265.82)",
-          "oklch(38% 0.0376 265.82)",
-          "oklch(49% 0.0376 265.82)",
-          "oklch(61% 0.0376 265.82)",
-          "oklch(72% 0.0376 265.82)",
-          "oklch(84% 0.0376 265.82)",
-          "oklch(95% 0.0376 265.82)"
-        ]
+        "displayName": "Clair · neutre feuillu · secondary",
+        "canonical": "#586456"
       },
       "light-on-secondary": {
         "role": "secondary",
-        "displayName": "Clair · ardoise bleutée · on-secondary",
-        "tonalRamp": [
-          "oklch(15% 0.0000 0.00)",
-          "oklch(26% 0.0000 0.00)",
-          "oklch(38% 0.0000 0.00)",
-          "oklch(49% 0.0000 0.00)",
-          "oklch(61% 0.0000 0.00)",
-          "oklch(72% 0.0000 0.00)",
-          "oklch(84% 0.0000 0.00)",
-          "oklch(95% 0.0000 0.00)"
-        ]
+        "displayName": "Clair · neutre feuillu · on-secondary",
+        "canonical": "#FFFFFF"
       },
       "light-secondary-container": {
         "role": "secondary",
-        "displayName": "Clair · ardoise bleutée · secondary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0171 267.78)",
-          "oklch(26% 0.0171 267.78)",
-          "oklch(38% 0.0171 267.78)",
-          "oklch(49% 0.0171 267.78)",
-          "oklch(61% 0.0171 267.78)",
-          "oklch(72% 0.0171 267.78)",
-          "oklch(84% 0.0171 267.78)",
-          "oklch(95% 0.0171 267.78)"
-        ]
+        "displayName": "Clair · neutre feuillu · secondary-container",
+        "canonical": "#E7EBE2"
       },
       "light-on-secondary-container": {
         "role": "secondary",
-        "displayName": "Clair · ardoise bleutée · on-secondary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0419 267.44)",
-          "oklch(26% 0.0419 267.44)",
-          "oklch(38% 0.0419 267.44)",
-          "oklch(49% 0.0419 267.44)",
-          "oklch(61% 0.0419 267.44)",
-          "oklch(72% 0.0419 267.44)",
-          "oklch(84% 0.0419 267.44)",
-          "oklch(95% 0.0419 267.44)"
-        ]
+        "displayName": "Clair · neutre feuillu · on-secondary-container",
+        "canonical": "#303D34"
       },
       "light-tertiary": {
         "role": "tertiary",
-        "displayName": "Clair · grège chaud · tertiary",
-        "tonalRamp": [
-          "oklch(15% 0.0233 77.12)",
-          "oklch(26% 0.0233 77.12)",
-          "oklch(38% 0.0233 77.12)",
-          "oklch(49% 0.0233 77.12)",
-          "oklch(61% 0.0233 77.12)",
-          "oklch(72% 0.0233 77.12)",
-          "oklch(84% 0.0233 77.12)",
-          "oklch(95% 0.0233 77.12)"
-        ]
+        "displayName": "Clair · ambre doux · tertiary",
+        "canonical": "#765B14"
       },
       "light-on-tertiary": {
         "role": "tertiary",
-        "displayName": "Clair · grège chaud · on-tertiary",
-        "tonalRamp": [
-          "oklch(15% 0.0000 0.00)",
-          "oklch(26% 0.0000 0.00)",
-          "oklch(38% 0.0000 0.00)",
-          "oklch(49% 0.0000 0.00)",
-          "oklch(61% 0.0000 0.00)",
-          "oklch(72% 0.0000 0.00)",
-          "oklch(84% 0.0000 0.00)",
-          "oklch(95% 0.0000 0.00)"
-        ]
+        "displayName": "Clair · ambre doux · on-tertiary",
+        "canonical": "#FFFFFF"
       },
       "light-tertiary-container": {
         "role": "tertiary",
-        "displayName": "Clair · grège chaud · tertiary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0296 75.68)",
-          "oklch(26% 0.0296 75.68)",
-          "oklch(38% 0.0296 75.68)",
-          "oklch(49% 0.0296 75.68)",
-          "oklch(61% 0.0296 75.68)",
-          "oklch(72% 0.0296 75.68)",
-          "oklch(84% 0.0296 75.68)",
-          "oklch(95% 0.0296 75.68)"
-        ]
+        "displayName": "Clair · ambre doux · tertiary-container",
+        "canonical": "#F4D38B"
       },
       "light-on-tertiary-container": {
         "role": "tertiary",
-        "displayName": "Clair · grège chaud · on-tertiary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0242 71.75)",
-          "oklch(26% 0.0242 71.75)",
-          "oklch(38% 0.0242 71.75)",
-          "oklch(49% 0.0242 71.75)",
-          "oklch(61% 0.0242 71.75)",
-          "oklch(72% 0.0242 71.75)",
-          "oklch(84% 0.0242 71.75)",
-          "oklch(95% 0.0242 71.75)"
-        ]
+        "displayName": "Clair · ambre doux · on-tertiary-container",
+        "canonical": "#302406"
       },
       "light-background": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · background",
-        "tonalRamp": [
-          "oklch(15% 0.0054 274.97)",
-          "oklch(26% 0.0054 274.97)",
-          "oklch(38% 0.0054 274.97)",
-          "oklch(49% 0.0054 274.97)",
-          "oklch(61% 0.0054 274.97)",
-          "oklch(72% 0.0054 274.97)",
-          "oklch(84% 0.0054 274.97)",
-          "oklch(95% 0.0054 274.97)"
-        ]
+        "displayName": "Clair · neutre chaud · background",
+        "canonical": "#F6F6F0"
       },
       "light-on-background": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · on-background",
-        "tonalRamp": [
-          "oklch(15% 0.0179 270.55)",
-          "oklch(26% 0.0179 270.55)",
-          "oklch(38% 0.0179 270.55)",
-          "oklch(49% 0.0179 270.55)",
-          "oklch(61% 0.0179 270.55)",
-          "oklch(72% 0.0179 270.55)",
-          "oklch(84% 0.0179 270.55)",
-          "oklch(95% 0.0179 270.55)"
-        ]
+        "displayName": "Clair · neutre chaud · on-background",
+        "canonical": "#222820"
       },
       "light-surface": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · surface",
-        "tonalRamp": [
-          "oklch(15% 0.0054 274.97)",
-          "oklch(26% 0.0054 274.97)",
-          "oklch(38% 0.0054 274.97)",
-          "oklch(49% 0.0054 274.97)",
-          "oklch(61% 0.0054 274.97)",
-          "oklch(72% 0.0054 274.97)",
-          "oklch(84% 0.0054 274.97)",
-          "oklch(95% 0.0054 274.97)"
-        ]
+        "displayName": "Clair · neutre chaud · surface",
+        "canonical": "#F6F6F0"
       },
       "light-on-surface": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · on-surface",
-        "tonalRamp": [
-          "oklch(15% 0.0179 270.55)",
-          "oklch(26% 0.0179 270.55)",
-          "oklch(38% 0.0179 270.55)",
-          "oklch(49% 0.0179 270.55)",
-          "oklch(61% 0.0179 270.55)",
-          "oklch(72% 0.0179 270.55)",
-          "oklch(84% 0.0179 270.55)",
-          "oklch(95% 0.0179 270.55)"
-        ]
+        "displayName": "Clair · neutre chaud · on-surface",
+        "canonical": "#222820"
       },
       "light-surface-container-lowest": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · surface-container-lowest",
-        "tonalRamp": [
-          "oklch(15% 0.0000 0.00)",
-          "oklch(26% 0.0000 0.00)",
-          "oklch(38% 0.0000 0.00)",
-          "oklch(49% 0.0000 0.00)",
-          "oklch(61% 0.0000 0.00)",
-          "oklch(72% 0.0000 0.00)",
-          "oklch(84% 0.0000 0.00)",
-          "oklch(95% 0.0000 0.00)"
-        ]
+        "displayName": "Clair · neutre chaud · surface-container-lowest",
+        "canonical": "#FFFFFF"
       },
       "light-surface-container-low": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · surface-container-low",
-        "tonalRamp": [
-          "oklch(15% 0.0099 267.36)",
-          "oklch(26% 0.0099 267.36)",
-          "oklch(38% 0.0099 267.36)",
-          "oklch(49% 0.0099 267.36)",
-          "oklch(61% 0.0099 267.36)",
-          "oklch(72% 0.0099 267.36)",
-          "oklch(84% 0.0099 267.36)",
-          "oklch(95% 0.0099 267.36)"
-        ]
+        "displayName": "Clair · neutre chaud · surface-container-low",
+        "canonical": "#F0F1E9"
       },
       "light-surface-container": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · surface-container",
-        "tonalRamp": [
-          "oklch(15% 0.0129 266.70)",
-          "oklch(26% 0.0129 266.70)",
-          "oklch(38% 0.0129 266.70)",
-          "oklch(49% 0.0129 266.70)",
-          "oklch(61% 0.0129 266.70)",
-          "oklch(72% 0.0129 266.70)",
-          "oklch(84% 0.0129 266.70)",
-          "oklch(95% 0.0129 266.70)"
-        ]
+        "displayName": "Clair · neutre chaud · surface-container",
+        "canonical": "#ECEEE4"
       },
       "light-surface-container-high": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · surface-container-high",
-        "tonalRamp": [
-          "oklch(15% 0.0159 266.27)",
-          "oklch(26% 0.0159 266.27)",
-          "oklch(38% 0.0159 266.27)",
-          "oklch(49% 0.0159 266.27)",
-          "oklch(61% 0.0159 266.27)",
-          "oklch(72% 0.0159 266.27)",
-          "oklch(84% 0.0159 266.27)",
-          "oklch(95% 0.0159 266.27)"
-        ]
+        "displayName": "Clair · neutre chaud · surface-container-high",
+        "canonical": "#E5E8DD"
       },
       "light-surface-container-highest": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · surface-container-highest",
-        "tonalRamp": [
-          "oklch(15% 0.0189 265.98)",
-          "oklch(26% 0.0189 265.98)",
-          "oklch(38% 0.0189 265.98)",
-          "oklch(49% 0.0189 265.98)",
-          "oklch(61% 0.0189 265.98)",
-          "oklch(72% 0.0189 265.98)",
-          "oklch(84% 0.0189 265.98)",
-          "oklch(95% 0.0189 265.98)"
-        ]
+        "displayName": "Clair · neutre chaud · surface-container-highest",
+        "canonical": "#DFE3D7"
       },
       "light-on-surface-variant": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · on-surface-variant",
-        "tonalRamp": [
-          "oklch(15% 0.0243 269.80)",
-          "oklch(26% 0.0243 269.80)",
-          "oklch(38% 0.0243 269.80)",
-          "oklch(49% 0.0243 269.80)",
-          "oklch(61% 0.0243 269.80)",
-          "oklch(72% 0.0243 269.80)",
-          "oklch(84% 0.0243 269.80)",
-          "oklch(95% 0.0243 269.80)"
-        ]
+        "displayName": "Clair · neutre chaud · on-surface-variant",
+        "canonical": "#5C645A"
       },
       "light-outline": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · outline",
-        "tonalRamp": [
-          "oklch(15% 0.0208 268.93)",
-          "oklch(26% 0.0208 268.93)",
-          "oklch(38% 0.0208 268.93)",
-          "oklch(49% 0.0208 268.93)",
-          "oklch(61% 0.0208 268.93)",
-          "oklch(72% 0.0208 268.93)",
-          "oklch(84% 0.0208 268.93)",
-          "oklch(95% 0.0208 268.93)"
-        ]
+        "displayName": "Clair · neutre chaud · outline",
+        "canonical": "#767E71"
       },
       "light-outline-variant": {
         "role": "neutral",
-        "displayName": "Clair · neutre froid · outline-variant",
-        "tonalRamp": [
-          "oklch(15% 0.0176 267.77)",
-          "oklch(26% 0.0176 267.77)",
-          "oklch(38% 0.0176 267.77)",
-          "oklch(49% 0.0176 267.77)",
-          "oklch(61% 0.0176 267.77)",
-          "oklch(72% 0.0176 267.77)",
-          "oklch(84% 0.0176 267.77)",
-          "oklch(95% 0.0176 267.77)"
-        ]
+        "displayName": "Clair · neutre chaud · outline-variant",
+        "canonical": "#D8DED1"
       },
       "light-error": {
-        "role": "error",
-        "displayName": "Clair · rouge erreur · error",
-        "tonalRamp": [
-          "oklch(15% 0.1927 27.70)",
-          "oklch(26% 0.1927 27.70)",
-          "oklch(38% 0.1927 27.70)",
-          "oklch(49% 0.1927 27.70)",
-          "oklch(61% 0.1927 27.70)",
-          "oklch(72% 0.1927 27.70)",
-          "oklch(84% 0.1927 27.70)",
-          "oklch(95% 0.1927 27.70)"
-        ]
+        "role": "neutral",
+        "displayName": "Clair · erreur Material · error",
+        "canonical": "#BA1A1A"
       },
       "light-on-error": {
-        "role": "error",
-        "displayName": "Clair · rouge erreur · on-error",
-        "tonalRamp": [
-          "oklch(15% 0.0000 0.00)",
-          "oklch(26% 0.0000 0.00)",
-          "oklch(38% 0.0000 0.00)",
-          "oklch(49% 0.0000 0.00)",
-          "oklch(61% 0.0000 0.00)",
-          "oklch(72% 0.0000 0.00)",
-          "oklch(84% 0.0000 0.00)",
-          "oklch(95% 0.0000 0.00)"
-        ]
+        "role": "neutral",
+        "displayName": "Clair · erreur Material · on-error",
+        "canonical": "#FFFFFF"
       },
       "light-error-container": {
-        "role": "error",
-        "displayName": "Clair · rouge erreur · error-container",
-        "tonalRamp": [
-          "oklch(15% 0.0418 25.23)",
-          "oklch(26% 0.0418 25.23)",
-          "oklch(38% 0.0418 25.23)",
-          "oklch(49% 0.0418 25.23)",
-          "oklch(61% 0.0418 25.23)",
-          "oklch(72% 0.0418 25.23)",
-          "oklch(84% 0.0418 25.23)",
-          "oklch(95% 0.0418 25.23)"
-        ]
+        "role": "neutral",
+        "displayName": "Clair · erreur Material · error-container",
+        "canonical": "#FFDAD6"
       },
       "light-on-error-container": {
-        "role": "error",
-        "displayName": "Clair · rouge erreur · on-error-container",
-        "tonalRamp": [
-          "oklch(15% 0.0962 27.19)",
-          "oklch(26% 0.0962 27.19)",
-          "oklch(38% 0.0962 27.19)",
-          "oklch(49% 0.0962 27.19)",
-          "oklch(61% 0.0962 27.19)",
-          "oklch(72% 0.0962 27.19)",
-          "oklch(84% 0.0962 27.19)",
-          "oklch(95% 0.0962 27.19)"
-        ]
+        "role": "neutral",
+        "displayName": "Clair · erreur Material · on-error-container",
+        "canonical": "#410002"
+      },
+      "light-status-active": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-active",
+        "canonical": "#186544"
+      },
+      "light-status-preparing": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-preparing",
+        "canonical": "#805600"
+      },
+      "light-status-paused": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-paused",
+        "canonical": "#555F52"
+      },
+      "light-status-warning": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-warning",
+        "canonical": "#805600"
+      },
+      "light-status-active-container": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-active-container",
+        "canonical": "#E1F2E7"
+      },
+      "light-status-preparing-container": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-preparing-container",
+        "canonical": "#FFF0C9"
+      },
+      "light-status-paused-container": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-paused-container",
+        "canonical": "#E8EDE3"
+      },
+      "light-status-warning-container": {
+        "role": "neutral",
+        "displayName": "Clair · état sémantique · status-warning-container",
+        "canonical": "#FFF0C9"
       },
       "dark-primary": {
         "role": "primary",
-        "displayName": "Sombre · encre cobalt · primary",
-        "tonalRamp": [
-          "oklch(15% 0.0844 270.42)",
-          "oklch(26% 0.0844 270.42)",
-          "oklch(38% 0.0844 270.42)",
-          "oklch(49% 0.0844 270.42)",
-          "oklch(61% 0.0844 270.42)",
-          "oklch(72% 0.0844 270.42)",
-          "oklch(84% 0.0844 270.42)",
-          "oklch(95% 0.0844 270.42)"
-        ]
+        "displayName": "Sombre · graphite végétal · primary",
+        "canonical": "#DCE6D8"
       },
       "dark-on-primary": {
         "role": "primary",
-        "displayName": "Sombre · encre cobalt · on-primary",
-        "tonalRamp": [
-          "oklch(15% 0.1118 258.19)",
-          "oklch(26% 0.1118 258.19)",
-          "oklch(38% 0.1118 258.19)",
-          "oklch(49% 0.1118 258.19)",
-          "oklch(61% 0.1118 258.19)",
-          "oklch(72% 0.1118 258.19)",
-          "oklch(84% 0.1118 258.19)",
-          "oklch(95% 0.1118 258.19)"
-        ]
+        "displayName": "Sombre · graphite végétal · on-primary",
+        "canonical": "#243022"
       },
       "dark-primary-container": {
         "role": "primary",
-        "displayName": "Sombre · encre cobalt · primary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0989 259.94)",
-          "oklch(26% 0.0989 259.94)",
-          "oklch(38% 0.0989 259.94)",
-          "oklch(49% 0.0989 259.94)",
-          "oklch(61% 0.0989 259.94)",
-          "oklch(72% 0.0989 259.94)",
-          "oklch(84% 0.0989 259.94)",
-          "oklch(95% 0.0989 259.94)"
-        ]
+        "displayName": "Sombre · graphite végétal · primary-container",
+        "canonical": "#354132"
       },
       "dark-on-primary-container": {
         "role": "primary",
-        "displayName": "Sombre · encre cobalt · on-primary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0378 272.53)",
-          "oklch(26% 0.0378 272.53)",
-          "oklch(38% 0.0378 272.53)",
-          "oklch(49% 0.0378 272.53)",
-          "oklch(61% 0.0378 272.53)",
-          "oklch(72% 0.0378 272.53)",
-          "oklch(84% 0.0378 272.53)",
-          "oklch(95% 0.0378 272.53)"
-        ]
+        "displayName": "Sombre · graphite végétal · on-primary-container",
+        "canonical": "#DAE5D6"
       },
       "dark-secondary": {
         "role": "secondary",
-        "displayName": "Sombre · ardoise bleutée · secondary",
-        "tonalRamp": [
-          "oklch(15% 0.0341 266.89)",
-          "oklch(26% 0.0341 266.89)",
-          "oklch(38% 0.0341 266.89)",
-          "oklch(49% 0.0341 266.89)",
-          "oklch(61% 0.0341 266.89)",
-          "oklch(72% 0.0341 266.89)",
-          "oklch(84% 0.0341 266.89)",
-          "oklch(95% 0.0341 266.89)"
-        ]
+        "displayName": "Sombre · neutre feuillu · secondary",
+        "canonical": "#C0CBBA"
       },
       "dark-on-secondary": {
         "role": "secondary",
-        "displayName": "Sombre · ardoise bleutée · on-secondary",
-        "tonalRamp": [
-          "oklch(15% 0.0438 265.89)",
-          "oklch(26% 0.0438 265.89)",
-          "oklch(38% 0.0438 265.89)",
-          "oklch(49% 0.0438 265.89)",
-          "oklch(61% 0.0438 265.89)",
-          "oklch(72% 0.0438 265.89)",
-          "oklch(84% 0.0438 265.89)",
-          "oklch(95% 0.0438 265.89)"
-        ]
+        "displayName": "Sombre · neutre feuillu · on-secondary",
+        "canonical": "#2B3627"
       },
       "dark-secondary-container": {
         "role": "secondary",
-        "displayName": "Sombre · ardoise bleutée · secondary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0412 266.30)",
-          "oklch(26% 0.0412 266.30)",
-          "oklch(38% 0.0412 266.30)",
-          "oklch(49% 0.0412 266.30)",
-          "oklch(61% 0.0412 266.30)",
-          "oklch(72% 0.0412 266.30)",
-          "oklch(84% 0.0412 266.30)",
-          "oklch(95% 0.0412 266.30)"
-        ]
+        "displayName": "Sombre · neutre feuillu · secondary-container",
+        "canonical": "#364332"
       },
       "dark-on-secondary-container": {
         "role": "secondary",
-        "displayName": "Sombre · ardoise bleutée · on-secondary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0171 267.78)",
-          "oklch(26% 0.0171 267.78)",
-          "oklch(38% 0.0171 267.78)",
-          "oklch(49% 0.0171 267.78)",
-          "oklch(61% 0.0171 267.78)",
-          "oklch(72% 0.0171 267.78)",
-          "oklch(84% 0.0171 267.78)",
-          "oklch(95% 0.0171 267.78)"
-        ]
+        "displayName": "Sombre · neutre feuillu · on-secondary-container",
+        "canonical": "#DFE9D8"
       },
       "dark-tertiary": {
         "role": "tertiary",
-        "displayName": "Sombre · grège chaud · tertiary",
-        "tonalRamp": [
-          "oklch(15% 0.0275 74.72)",
-          "oklch(26% 0.0275 74.72)",
-          "oklch(38% 0.0275 74.72)",
-          "oklch(49% 0.0275 74.72)",
-          "oklch(61% 0.0275 74.72)",
-          "oklch(72% 0.0275 74.72)",
-          "oklch(84% 0.0275 74.72)",
-          "oklch(95% 0.0275 74.72)"
-        ]
+        "displayName": "Sombre · ambre doux · tertiary",
+        "canonical": "#E5C56F"
       },
       "dark-on-tertiary": {
         "role": "tertiary",
-        "displayName": "Sombre · grège chaud · on-tertiary",
-        "tonalRamp": [
-          "oklch(15% 0.0255 76.69)",
-          "oklch(26% 0.0255 76.69)",
-          "oklch(38% 0.0255 76.69)",
-          "oklch(49% 0.0255 76.69)",
-          "oklch(61% 0.0255 76.69)",
-          "oklch(72% 0.0255 76.69)",
-          "oklch(84% 0.0255 76.69)",
-          "oklch(95% 0.0255 76.69)"
-        ]
+        "displayName": "Sombre · ambre doux · on-tertiary",
+        "canonical": "#3C2E04"
       },
       "dark-tertiary-container": {
         "role": "tertiary",
-        "displayName": "Sombre · grège chaud · tertiary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0289 79.39)",
-          "oklch(26% 0.0289 79.39)",
-          "oklch(38% 0.0289 79.39)",
-          "oklch(49% 0.0289 79.39)",
-          "oklch(61% 0.0289 79.39)",
-          "oklch(72% 0.0289 79.39)",
-          "oklch(84% 0.0289 79.39)",
-          "oklch(95% 0.0289 79.39)"
-        ]
+        "displayName": "Sombre · ambre doux · tertiary-container",
+        "canonical": "#544319"
       },
       "dark-on-tertiary-container": {
         "role": "tertiary",
-        "displayName": "Sombre · grège chaud · on-tertiary-container",
-        "tonalRamp": [
-          "oklch(15% 0.0296 75.68)",
-          "oklch(26% 0.0296 75.68)",
-          "oklch(38% 0.0296 75.68)",
-          "oklch(49% 0.0296 75.68)",
-          "oklch(61% 0.0296 75.68)",
-          "oklch(72% 0.0296 75.68)",
-          "oklch(84% 0.0296 75.68)",
-          "oklch(95% 0.0296 75.68)"
-        ]
+        "displayName": "Sombre · ambre doux · on-tertiary-container",
+        "canonical": "#FFE4A3"
       },
       "dark-background": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · background",
-        "tonalRamp": [
-          "oklch(15% 0.0150 266.79)",
-          "oklch(26% 0.0150 266.79)",
-          "oklch(38% 0.0150 266.79)",
-          "oklch(49% 0.0150 266.79)",
-          "oklch(61% 0.0150 266.79)",
-          "oklch(72% 0.0150 266.79)",
-          "oklch(84% 0.0150 266.79)",
-          "oklch(95% 0.0150 266.79)"
-        ]
+        "displayName": "Sombre · neutre chaud · background",
+        "canonical": "#171C17"
       },
       "dark-on-background": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · on-background",
-        "tonalRamp": [
-          "oklch(15% 0.0139 272.68)",
-          "oklch(26% 0.0139 272.68)",
-          "oklch(38% 0.0139 272.68)",
-          "oklch(49% 0.0139 272.68)",
-          "oklch(61% 0.0139 272.68)",
-          "oklch(72% 0.0139 272.68)",
-          "oklch(84% 0.0139 272.68)",
-          "oklch(95% 0.0139 272.68)"
-        ]
+        "displayName": "Sombre · neutre chaud · on-background",
+        "canonical": "#E0E6DB"
       },
       "dark-surface": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · surface",
-        "tonalRamp": [
-          "oklch(15% 0.0150 266.79)",
-          "oklch(26% 0.0150 266.79)",
-          "oklch(38% 0.0150 266.79)",
-          "oklch(49% 0.0150 266.79)",
-          "oklch(61% 0.0150 266.79)",
-          "oklch(72% 0.0150 266.79)",
-          "oklch(84% 0.0150 266.79)",
-          "oklch(95% 0.0150 266.79)"
-        ]
+        "displayName": "Sombre · neutre chaud · surface",
+        "canonical": "#171C17"
       },
       "dark-on-surface": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · on-surface",
-        "tonalRamp": [
-          "oklch(15% 0.0139 272.68)",
-          "oklch(26% 0.0139 272.68)",
-          "oklch(38% 0.0139 272.68)",
-          "oklch(49% 0.0139 272.68)",
-          "oklch(61% 0.0139 272.68)",
-          "oklch(72% 0.0139 272.68)",
-          "oklch(84% 0.0139 272.68)",
-          "oklch(95% 0.0139 272.68)"
-        ]
+        "displayName": "Sombre · neutre chaud · on-surface",
+        "canonical": "#E0E6DB"
       },
       "dark-surface-container-lowest": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · surface-container-lowest",
-        "tonalRamp": [
-          "oklch(15% 0.0155 266.65)",
-          "oklch(26% 0.0155 266.65)",
-          "oklch(38% 0.0155 266.65)",
-          "oklch(49% 0.0155 266.65)",
-          "oklch(61% 0.0155 266.65)",
-          "oklch(72% 0.0155 266.65)",
-          "oklch(84% 0.0155 266.65)",
-          "oklch(95% 0.0155 266.65)"
-        ]
+        "displayName": "Sombre · neutre chaud · surface-container-lowest",
+        "canonical": "#111611"
       },
       "dark-surface-container-low": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · surface-container-low",
-        "tonalRamp": [
-          "oklch(15% 0.0184 266.19)",
-          "oklch(26% 0.0184 266.19)",
-          "oklch(38% 0.0184 266.19)",
-          "oklch(49% 0.0184 266.19)",
-          "oklch(61% 0.0184 266.19)",
-          "oklch(72% 0.0184 266.19)",
-          "oklch(84% 0.0184 266.19)",
-          "oklch(95% 0.0184 266.19)"
-        ]
+        "displayName": "Sombre · neutre chaud · surface-container-low",
+        "canonical": "#202620"
       },
       "dark-surface-container": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · surface-container",
-        "tonalRamp": [
-          "oklch(15% 0.0198 267.90)",
-          "oklch(26% 0.0198 267.90)",
-          "oklch(38% 0.0198 267.90)",
-          "oklch(49% 0.0198 267.90)",
-          "oklch(61% 0.0198 267.90)",
-          "oklch(72% 0.0198 267.90)",
-          "oklch(84% 0.0198 267.90)",
-          "oklch(95% 0.0198 267.90)"
-        ]
+        "displayName": "Sombre · neutre chaud · surface-container",
+        "canonical": "#252C24"
       },
       "dark-surface-container-high": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · surface-container-high",
-        "tonalRamp": [
-          "oklch(15% 0.0195 264.22)",
-          "oklch(26% 0.0195 264.22)",
-          "oklch(38% 0.0195 264.22)",
-          "oklch(49% 0.0195 264.22)",
-          "oklch(61% 0.0195 264.22)",
-          "oklch(72% 0.0195 264.22)",
-          "oklch(84% 0.0195 264.22)",
-          "oklch(95% 0.0195 264.22)"
-        ]
+        "displayName": "Sombre · neutre chaud · surface-container-high",
+        "canonical": "#2C342B"
       },
       "dark-surface-container-highest": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · surface-container-highest",
-        "tonalRamp": [
-          "oklch(15% 0.0205 265.97)",
-          "oklch(26% 0.0205 265.97)",
-          "oklch(38% 0.0205 265.97)",
-          "oklch(49% 0.0205 265.97)",
-          "oklch(61% 0.0205 265.97)",
-          "oklch(72% 0.0205 265.97)",
-          "oklch(84% 0.0205 265.97)",
-          "oklch(95% 0.0205 265.97)"
-        ]
+        "displayName": "Sombre · neutre chaud · surface-container-highest",
+        "canonical": "#374035"
       },
       "dark-on-surface-variant": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · on-surface-variant",
-        "tonalRamp": [
-          "oklch(15% 0.0176 267.77)",
-          "oklch(26% 0.0176 267.77)",
-          "oklch(38% 0.0176 267.77)",
-          "oklch(49% 0.0176 267.77)",
-          "oklch(61% 0.0176 267.77)",
-          "oklch(72% 0.0176 267.77)",
-          "oklch(84% 0.0176 267.77)",
-          "oklch(95% 0.0176 267.77)"
-        ]
+        "displayName": "Sombre · neutre chaud · on-surface-variant",
+        "canonical": "#BFC9B9"
       },
       "dark-outline": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · outline",
-        "tonalRamp": [
-          "oklch(15% 0.0215 270.09)",
-          "oklch(26% 0.0215 270.09)",
-          "oklch(38% 0.0215 270.09)",
-          "oklch(49% 0.0215 270.09)",
-          "oklch(61% 0.0215 270.09)",
-          "oklch(72% 0.0215 270.09)",
-          "oklch(84% 0.0215 270.09)",
-          "oklch(95% 0.0215 270.09)"
-        ]
+        "displayName": "Sombre · neutre chaud · outline",
+        "canonical": "#899582"
       },
       "dark-outline-variant": {
         "role": "neutral",
-        "displayName": "Sombre · neutre froid · outline-variant",
-        "tonalRamp": [
-          "oklch(15% 0.0228 268.73)",
-          "oklch(26% 0.0228 268.73)",
-          "oklch(38% 0.0228 268.73)",
-          "oklch(49% 0.0228 268.73)",
-          "oklch(61% 0.0228 268.73)",
-          "oklch(72% 0.0228 268.73)",
-          "oklch(84% 0.0228 268.73)",
-          "oklch(95% 0.0228 268.73)"
-        ]
+        "displayName": "Sombre · neutre chaud · outline-variant",
+        "canonical": "#414B3D"
       },
       "dark-error": {
-        "role": "error",
-        "displayName": "Sombre · rouge erreur · error",
-        "tonalRamp": [
-          "oklch(15% 0.0891 26.76)",
-          "oklch(26% 0.0891 26.76)",
-          "oklch(38% 0.0891 26.76)",
-          "oklch(49% 0.0891 26.76)",
-          "oklch(61% 0.0891 26.76)",
-          "oklch(72% 0.0891 26.76)",
-          "oklch(84% 0.0891 26.76)",
-          "oklch(95% 0.0891 26.76)"
-        ]
+        "role": "neutral",
+        "displayName": "Sombre · erreur Material · error",
+        "canonical": "#FFB4AB"
       },
       "dark-on-error": {
-        "role": "error",
-        "displayName": "Sombre · rouge erreur · on-error",
-        "tonalRamp": [
-          "oklch(15% 0.1336 27.32)",
-          "oklch(26% 0.1336 27.32)",
-          "oklch(38% 0.1336 27.32)",
-          "oklch(49% 0.1336 27.32)",
-          "oklch(61% 0.1336 27.32)",
-          "oklch(72% 0.1336 27.32)",
-          "oklch(84% 0.1336 27.32)",
-          "oklch(95% 0.1336 27.32)"
-        ]
+        "role": "neutral",
+        "displayName": "Sombre · erreur Material · on-error",
+        "canonical": "#690005"
       },
       "dark-error-container": {
-        "role": "error",
-        "displayName": "Sombre · rouge erreur · error-container",
-        "tonalRamp": [
-          "oklch(15% 0.1702 27.38)",
-          "oklch(26% 0.1702 27.38)",
-          "oklch(38% 0.1702 27.38)",
-          "oklch(49% 0.1702 27.38)",
-          "oklch(61% 0.1702 27.38)",
-          "oklch(72% 0.1702 27.38)",
-          "oklch(84% 0.1702 27.38)",
-          "oklch(95% 0.1702 27.38)"
-        ]
+        "role": "neutral",
+        "displayName": "Sombre · erreur Material · error-container",
+        "canonical": "#93000A"
       },
       "dark-on-error-container": {
-        "role": "error",
-        "displayName": "Sombre · rouge erreur · on-error-container",
-        "tonalRamp": [
-          "oklch(15% 0.0418 25.23)",
-          "oklch(26% 0.0418 25.23)",
-          "oklch(38% 0.0418 25.23)",
-          "oklch(49% 0.0418 25.23)",
-          "oklch(61% 0.0418 25.23)",
-          "oklch(72% 0.0418 25.23)",
-          "oklch(84% 0.0418 25.23)",
-          "oklch(95% 0.0418 25.23)"
-        ]
-      },
-      "light-status-active": {
-        "role": "status",
-        "displayName": "Clair · état sémantique · status-active",
-        "tonalRamp": [
-          "oklch(15% 0.1038 157.23)",
-          "oklch(26% 0.1038 157.23)",
-          "oklch(38% 0.1038 157.23)",
-          "oklch(49% 0.1038 157.23)",
-          "oklch(61% 0.1038 157.23)",
-          "oklch(72% 0.1038 157.23)",
-          "oklch(84% 0.1038 157.23)",
-          "oklch(95% 0.1038 157.23)"
-        ]
-      },
-      "light-status-preparing": {
-        "role": "status",
-        "displayName": "Clair · état sémantique · status-preparing",
-        "tonalRamp": [
-          "oklch(15% 0.1168 252.82)",
-          "oklch(26% 0.1168 252.82)",
-          "oklch(38% 0.1168 252.82)",
-          "oklch(49% 0.1168 252.82)",
-          "oklch(61% 0.1168 252.82)",
-          "oklch(72% 0.1168 252.82)",
-          "oklch(84% 0.1168 252.82)",
-          "oklch(95% 0.1168 252.82)"
-        ]
-      },
-      "light-status-paused": {
-        "role": "status",
-        "displayName": "Clair · état sémantique · status-paused",
-        "tonalRamp": [
-          "oklch(15% 0.0206 229.39)",
-          "oklch(26% 0.0206 229.39)",
-          "oklch(38% 0.0206 229.39)",
-          "oklch(49% 0.0206 229.39)",
-          "oklch(61% 0.0206 229.39)",
-          "oklch(72% 0.0206 229.39)",
-          "oklch(84% 0.0206 229.39)",
-          "oklch(95% 0.0206 229.39)"
-        ]
-      },
-      "light-status-warning": {
-        "role": "status",
-        "displayName": "Clair · état sémantique · status-warning",
-        "tonalRamp": [
-          "oklch(15% 0.1022 76.10)",
-          "oklch(26% 0.1022 76.10)",
-          "oklch(38% 0.1022 76.10)",
-          "oklch(49% 0.1022 76.10)",
-          "oklch(61% 0.1022 76.10)",
-          "oklch(72% 0.1022 76.10)",
-          "oklch(84% 0.1022 76.10)",
-          "oklch(95% 0.1022 76.10)"
-        ]
+        "role": "neutral",
+        "displayName": "Sombre · erreur Material · on-error-container",
+        "canonical": "#FFDAD6"
       },
       "dark-status-active": {
-        "role": "status",
+        "role": "neutral",
         "displayName": "Sombre · état sémantique · status-active",
-        "tonalRamp": [
-          "oklch(15% 0.0907 158.54)",
-          "oklch(26% 0.0907 158.54)",
-          "oklch(38% 0.0907 158.54)",
-          "oklch(49% 0.0907 158.54)",
-          "oklch(61% 0.0907 158.54)",
-          "oklch(72% 0.0907 158.54)",
-          "oklch(84% 0.0907 158.54)",
-          "oklch(95% 0.0907 158.54)"
-        ]
+        "canonical": "#98DBB7"
       },
       "dark-status-preparing": {
-        "role": "status",
+        "role": "neutral",
         "displayName": "Sombre · état sémantique · status-preparing",
-        "tonalRamp": [
-          "oklch(15% 0.0817 257.10)",
-          "oklch(26% 0.0817 257.10)",
-          "oklch(38% 0.0817 257.10)",
-          "oklch(49% 0.0817 257.10)",
-          "oklch(61% 0.0817 257.10)",
-          "oklch(72% 0.0817 257.10)",
-          "oklch(84% 0.0817 257.10)",
-          "oklch(95% 0.0817 257.10)"
-        ]
+        "canonical": "#ECCC83"
       },
       "dark-status-paused": {
-        "role": "status",
+        "role": "neutral",
         "displayName": "Sombre · état sémantique · status-paused",
-        "tonalRamp": [
-          "oklch(15% 0.0149 224.53)",
-          "oklch(26% 0.0149 224.53)",
-          "oklch(38% 0.0149 224.53)",
-          "oklch(49% 0.0149 224.53)",
-          "oklch(61% 0.0149 224.53)",
-          "oklch(72% 0.0149 224.53)",
-          "oklch(84% 0.0149 224.53)",
-          "oklch(95% 0.0149 224.53)"
-        ]
+        "canonical": "#C3CEC0"
       },
       "dark-status-warning": {
-        "role": "status",
+        "role": "neutral",
         "displayName": "Sombre · état sémantique · status-warning",
-        "tonalRamp": [
-          "oklch(15% 0.1105 84.15)",
-          "oklch(26% 0.1105 84.15)",
-          "oklch(38% 0.1105 84.15)",
-          "oklch(49% 0.1105 84.15)",
-          "oklch(61% 0.1105 84.15)",
-          "oklch(72% 0.1105 84.15)",
-          "oklch(84% 0.1105 84.15)",
-          "oklch(95% 0.1105 84.15)"
-        ]
+        "canonical": "#ECCC83"
+      },
+      "dark-status-active-container": {
+        "role": "neutral",
+        "displayName": "Sombre · état sémantique · status-active-container",
+        "canonical": "#223F2E"
+      },
+      "dark-status-preparing-container": {
+        "role": "neutral",
+        "displayName": "Sombre · état sémantique · status-preparing-container",
+        "canonical": "#43371C"
+      },
+      "dark-status-paused-container": {
+        "role": "neutral",
+        "displayName": "Sombre · état sémantique · status-paused-container",
+        "canonical": "#343E31"
+      },
+      "dark-status-warning-container": {
+        "role": "neutral",
+        "displayName": "Sombre · état sémantique · status-warning-container",
+        "canonical": "#43371C"
       }
     },
     "typographyMeta": {
       "headline-medium": {
         "displayName": "headline-medium",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "headline-small": {
         "displayName": "headline-small",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "title-large": {
         "displayName": "title-large",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "title-medium": {
         "displayName": "title-medium",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "body-large": {
         "displayName": "body-large",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "body-medium": {
         "displayName": "body-medium",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "label-large": {
         "displayName": "label-large",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "body-small": {
         "displayName": "body-small",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "label-medium": {
         "displayName": "label-medium",
-        "purpose": "Rôle natif Material 3 hérité ; voir DESIGN.md."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "headline-small-medium": {
         "displayName": "headline-small-medium",
-        "purpose": "Emphase locale observée, sans changement du thème."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "title-medium-semibold": {
         "displayName": "title-medium-semibold",
-        "purpose": "Emphase locale observée, sans changement du thème."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       },
       "body-medium-medium": {
         "displayName": "body-medium-medium",
-        "purpose": "Emphase locale observée, sans changement du thème."
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
+      },
+      "headline-small-semibold": {
+        "displayName": "headline-small-semibold",
+        "purpose": "Rôle hérité Material 3 1.4.0, avec emphase locale seulement si nommée ; voir DESIGN.md."
       }
     },
     "shadows": [
       {
         "name": "native-fab-rest",
         "value": "6dp",
-        "purpose": "Élévation native de repos du FAB ; ombre HTML approximative de consultation."
+        "purpose": "Élévation native de repos du FAB, héritée de Material 3 ; aucune ombre CSS revendiquée."
       },
       {
         "name": "native-fixed-footer-tonal",
         "value": "2dp",
-        "purpose": "Élévation tonale explicite du pied fixe, sans ombre applicative."
+        "purpose": "Élévation tonale explicite du pied de Page ; aucune ombre applicative."
       }
     ],
     "motion": [],
@@ -968,132 +436,119 @@
   },
   "components": [
     {
-      "name": "Bouton principal",
+      "name": "Bouton de page",
       "kind": "button",
-      "refersTo": "button-primary-light",
-      "description": "Action remplie Material 3 ; exemple de consultation en thème clair. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<button class=\"ds-primary\">Confirmer</button>",
-      "css": ".ds-primary{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;background:#324C85;color:#FFFFFF;border:0;border-radius:999px;padding:8px 24px;min-height:48px}.ds-primary:hover{background-image:linear-gradient(#FFFFFF14,#FFFFFF14)}.ds-primary:active{background-image:linear-gradient(#FFFFFF29,#FFFFFF29)}.ds-primary:focus-visible{outline:2px solid #324C85;outline-offset:3px}.ds-primary:disabled{background:#1B1E271a;color:#1B1E2761;cursor:default}"
+      "refersTo": "button-page-light",
+      "description": "Button graphite, forme medium et minimum natif observé. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<button class=\"ds-page\">Analyser</button>",
+      "css": ".ds-page{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;border:0;background:#303D34;color:#FFFFFF;border-radius:12px;padding:8px 24px;min-height:48px;width:100%}.ds-page:hover,.ds-page:focus-visible{outline:auto}.ds-page:active{outline:auto}.ds-page:disabled{cursor:default}"
+    },
+    {
+      "name": "Pause tonale",
+      "kind": "button",
+      "refersTo": "button-tonal-light",
+      "description": "FilledTonalButton sur le conteneur primaire explicitement surchargé. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<button class=\"ds-pause\">Mettre en pause</button>",
+      "css": ".ds-pause{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;border:0;background:#E0E8DD;color:#26352A;border-radius:12px;padding:8px 24px;min-height:48px;width:100%}.ds-pause:hover,.ds-pause:focus-visible,.ds-pause:active{outline:auto}"
     },
     {
       "name": "Action textuelle",
       "kind": "button",
       "refersTo": "button-text-light",
-      "description": "Action secondaire légère ; le rouge est réservé aux suppressions et erreurs. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<button class=\"ds-text\">Actualiser</button>",
-      "css": ".ds-text{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;background:transparent;color:#324C85;border:0;border-radius:999px;padding:8px 12px;min-height:48px}.ds-text:hover{background:#324C8514}.ds-text:active{background:#324C8529}.ds-text:focus-visible{outline:2px solid #324C85;outline-offset:2px}"
+      "description": "Action légère Material ; suppression rouge dans son contexte destructif. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<button class=\"ds-text\">Modifier</button>",
+      "css": ".ds-text{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;border:0;background:transparent;color:#303D34;border-radius:999px;padding:8px 12px;min-height:48px}.ds-text:hover,.ds-text:focus-visible,.ds-text:active{outline:auto}"
     },
     {
-      "name": "FAB étendu",
+      "name": "Création ambre",
       "kind": "button",
       "refersTo": "fab-extended-light",
-      "description": "Action unique de création sur l’accueil ; la profondeur native reste gérée par Material. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<button class=\"ds-fab\"><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M440,520L200,520L200,440L440,440L440,200L520,200L520,440L760,440L760,520L520,520L520,760L440,760L440,520Z\"/></svg><span>Nouveau suivi</span></button>",
-      "css": ".ds-fab{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;display:inline-flex;align-items:center;gap:12px;min-height:56px;padding:0 16px;background:#DCE4FF;color:#0B1B3C;border:0;border-radius:16px;box-shadow:0 4px 7px #00000029}.ds-fab:hover{background-image:linear-gradient(#0B1B3C14,#0B1B3C14)}.ds-fab:active{background-image:linear-gradient(#0B1B3C29,#0B1B3C29)}.ds-fab:focus-visible{outline:2px solid #324C85;outline-offset:3px}"
+      "description": "FAB étendu unique de l’accueil ; symbole plus et élévation restent natifs en production. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<button class=\"ds-fab\">Nouveau suivi</button>",
+      "css": ".ds-fab{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;border:0;background:#F4D38B;color:#302406;border-radius:16px;padding:0 20px;min-height:56px}.ds-fab:hover,.ds-fab:focus-visible,.ds-fab:active{outline:auto}"
     },
     {
-      "name": "Champ contour",
+      "name": "Champ de demande",
       "kind": "input",
       "refersTo": "field-outlined-light",
-      "description": "Champ natif pleine largeur ; exemple monoligne, focus au clavier consultable. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<label class=\"ds-field\"><span>Zone concernée</span><input value=\"France\" aria-label=\"Zone concernée\" /></label>",
-      "css": ".ds-field{display:block;position:relative;padding-top:7px;font:400 12px/16px sans-serif;color:#464B59}.ds-field>span{position:absolute;top:0;left:12px;padding:0 4px;background:#F5F6FA}.ds-field input{display:block;width:100%;min-height:56px;padding:12px 16px;border:1px solid #747986;border-radius:4px;background:#F5F6FA;color:#1B1E27;font:400 16px/24px sans-serif;box-sizing:border-box}.ds-field:hover input{border-color:#1B1E27}.ds-field:focus-within{color:#324C85}.ds-field input:focus-visible{outline:2px solid #324C85;outline-offset:-2px;border-color:#324C85}"
+      "description": "OutlinedTextField clair sur surfaceContainerLowest, arrondi medium ; label flottant et états d’erreur appartiennent au composant Android. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<label class=\"ds-field\">Votre demande<textarea rows=\"3\" placeholder=\"Que souhaitez-vous suivre ?\"></textarea></label>",
+      "css": ".ds-field{display:block;font:400 14px/20px sans-serif;color:#5C645A}.ds-field textarea{display:block;width:100%;font:400 16px/24px sans-serif;letter-spacing:.5px;background:#FFFFFF;color:#222820;border:1px solid #767E71;border-radius:12px;padding:16px}.ds-field textarea:hover,.ds-field textarea:focus-visible{outline:auto}"
     },
     {
-      "name": "Barre supérieure",
-      "kind": "nav",
-      "refersTo": "top-app-bar-light",
-      "description": "TopAppBar native et retour sur un écran secondaire ; aucun menu inférieur V1. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<nav class=\"ds-topbar\" aria-label=\"Navigation\"><button aria-label=\"Retour\"><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M313,520L537,744L480,800L160,480L480,160L537,216L313,440L800,440L800,520L313,520Z\"/></svg></button><span>Détail du suivi</span><button aria-label=\"Actions\"><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M480,800Q447,800 423.5,776.5Q400,753 400,720Q400,687 423.5,663.5Q447,640 480,640Q513,640 536.5,663.5Q560,687 560,720Q560,753 536.5,776.5Q513,800 480,800ZM480,560Q447,560 423.5,536.5Q400,513 400,480Q400,447 423.5,423.5Q447,400 480,400Q513,400 536.5,423.5Q560,447 560,480Q560,513 536.5,536.5Q513,560 480,560ZM480,320Q447,320 423.5,296.5Q400,273 400,240Q400,207 423.5,183.5Q447,160 480,160Q513,160 536.5,183.5Q560,207 560,240Q560,273 536.5,296.5Q513,320 480,320Z\"/></svg></button></nav>",
-      "css": ".ds-topbar{display:flex;align-items:center;gap:4px;min-height:64px;background:#F5F6FA;color:#1B1E27;font:400 22px/28px sans-serif}.ds-topbar>span{flex:1}.ds-topbar button{display:grid;place-items:center;width:48px;height:48px;border:0;border-radius:50%;background:transparent;color:#464B59;cursor:pointer}.ds-topbar button:hover{background:#464B5914}.ds-topbar button:active{background:#464B5929}.ds-topbar button:focus-visible{outline:2px solid #324C85}"
-    },
-    {
-      "name": "Confirmation fixe",
-      "kind": "button",
-      "refersTo": "button-confirm-light",
-      "description": "Button avec forme large et hauteur minimale. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<button class=\"ds-confirm\">Confirmer</button>",
-      "css": ".ds-confirm{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;width:100%;min-height:52px;padding:8px 24px;background:#324C85;color:#FFFFFF;border:0;border-radius:16px}.ds-confirm:hover{background-image:linear-gradient(#ffffff14,#ffffff14)}.ds-confirm:active{background-image:linear-gradient(#ffffff29,#ffffff29)}.ds-confirm:focus-visible{outline:2px solid #324C85;outline-offset:3px}.ds-confirm:disabled{background:#1b1e271a;color:#464b5961;cursor:default}"
-    },
-    {
-      "name": "Bouton tonal",
-      "kind": "button",
-      "refersTo": "button-tonal-light",
-      "description": "FilledTonalButton pour pause ou annulation de préparation. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<button class=\"ds-tonal\"><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M520,760L520,200L760,200L760,760L520,760ZM200,760L200,200L440,200L440,760L200,760ZM600,680L680,680L680,280L600,280L600,680ZM280,680L360,680L360,280L280,280L280,680ZM280,280L280,280L280,680L280,680L280,280ZM600,280L600,280L600,680L600,680L600,280Z\"/></svg><span>Mettre en pause</span></button>",
-      "css": ".ds-tonal{font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;background:#E0E5F1;color:#182035;border:0;border-radius:12px;padding:8px 24px}.ds-tonal:hover{background-image:linear-gradient(#18203514,#18203514)}.ds-tonal:active{background-image:linear-gradient(#18203529,#18203529)}.ds-tonal:focus-visible{outline:2px solid #324C85;outline-offset:3px}.ds-tonal:disabled{background:#1b1e271a;color:#464b5961;cursor:default}"
-    },
-    {
-      "name": "Puce de capacité",
+      "name": "Statut confirmé",
       "kind": "chip",
-      "refersTo": "capacity-chip-light",
-      "description": "AssistChip warning à 10 %, sans contour ; ouvre une explication. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<button class=\"ds-capacity\"><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M520,760L520,200L760,200L760,760L520,760ZM200,760L200,200L440,200L440,760L200,760ZM600,680L680,680L680,280L600,280L600,680ZM280,680L360,680L360,280L280,280L280,680ZM280,280L280,280L280,680L280,680L280,280ZM600,280L600,280L600,680L600,680L600,280Z\"/></svg><span>Suspendu</span><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M504,480L320,296L376,240L616,480L376,720L320,664L504,480Z\"/></svg></button>",
-      "css": ".ds-capacity{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:8px;border:0;border-radius:8px;background:rgb(128 86 0 / .10);color:#805600;font:500 14px/20px sans-serif;letter-spacing:.1px;cursor:pointer}.ds-capacity:hover{background:rgb(128 86 0 / .18)}.ds-capacity:active{background:rgb(128 86 0 / .26)}.ds-capacity:focus-visible{outline:2px solid currentColor;outline-offset:2px}"
+      "refersTo": "watch-status-active-light",
+      "description": "Statut contenu informatif vert ; le statut cliquable de capacité est un AssistChip distinct. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<span class=\"ds-status\"><svg aria-hidden=\"true\" viewBox=\"0 0 960 960\" width=\"18\" height=\"18\" fill=\"currentColor\"><path d=\"M424,664L706,382L650,326L424,552L310,438L254,494L424,664ZM480,880Q397,880 324,848.5Q251,817 197,763Q143,709 111.5,636Q80,563 80,480Q80,397 111.5,324Q143,251 197,197Q251,143 324,111.5Q397,80 480,80Q563,80 636,111.5Q709,143 763,197Q817,251 848.5,324Q880,397 880,480Q880,563 848.5,636Q817,709 763,763Q709,817 636,848.5Q563,880 480,880ZM480,800Q614,800 707,707Q800,614 800,480Q800,346 707,253Q614,160 480,160Q346,160 253,253Q160,346 160,480Q160,614 253,707Q346,800 480,800ZM480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Z\"/></svg>Actif</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;gap:6px;font:500 14px/20px sans-serif;letter-spacing:.1px;color:#186544;background:#E1F2E7;border-radius:8px;padding:7px 10px}"
     },
     {
-      "name": "Résumé de suivi",
+      "name": "Résumé neutre",
       "kind": "card",
       "refersTo": "watch-summary-light",
-      "description": "Card tonale : titre, statut contenu et dates en deux colonnes. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<section class=\"ds-summary\"><h3>Promotions PlayStation 5</h3><span class=\"ds-summary-state\"><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M424,664L706,382L650,326L424,552L310,438L254,494L424,664ZM480,880Q397,880 324,848.5Q251,817 197,763Q143,709 111.5,636Q80,563 80,480Q80,397 111.5,324Q143,251 197,197Q251,143 324,111.5Q397,80 480,80Q563,80 636,111.5Q709,143 763,197Q817,251 848.5,324Q880,397 880,480Q880,563 848.5,636Q817,709 763,763Q709,817 636,848.5Q563,880 480,880ZM480,800Q614,800 707,707Q800,614 800,480Q800,346 707,253Q614,160 480,160Q346,160 253,253Q160,346 160,480Q160,614 253,707Q346,800 480,800ZM480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Z\"/></svg>Actif</span><div class=\"ds-timing\"><div><small>Dernière réussite</small><span>23 oct. 2026 17:05</span></div><div><small>Prochain contrôle</small><span>23 oct. 2026 18:05</span></div></div></section>",
-      "css": ".ds-summary{padding:20px;border-radius:16px;background:#E6EAF3;color:#1B1E27;font-family:sans-serif}.ds-summary h3{font:500 24px/32px sans-serif;margin:0 0 16px}.ds-summary-state{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:rgb(20 108 67 / .1);color:#146C43;font:500 14px/20px sans-serif;letter-spacing:.1px}.ds-timing{display:flex;gap:16px;margin-top:16px}.ds-timing>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}.ds-timing small{font:500 12px/16px sans-serif;letter-spacing:.5px;color:#464B59}.ds-timing span{font:500 14px/20px sans-serif;letter-spacing:.2px}"
+      "description": "Résumé neutre sous le titre extérieur. Dates illustratives ; empilement natif au-delà de fontScale 1,15. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<section class=\"ds-summary\"><span class=\"ds-summary-state\">Actif</span><div class=\"ds-summary-dates\"><div>Dernier contrôle<br><strong>2 nov. · 09:20</strong></div><div>Prochain contrôle<br><strong>2 nov. · 10:20</strong></div></div></section>",
+      "css": ".ds-summary{font:400 14px/20px sans-serif;color:#222820;background:#ECEEE4;border-radius:20px;padding:16px}.ds-summary-state{display:inline-block;background:#E1F2E7;color:#186544;border-radius:8px;padding:7px 10px;font-weight:500}.ds-summary-dates{display:flex;gap:16px;margin-top:12px}.ds-summary-dates>div{flex:1;color:#5C645A}.ds-summary-dates strong{color:#222820;font-weight:600}"
     },
     {
-      "name": "Collection de résultats",
+      "name": "Barre de contexte",
+      "kind": "nav",
+      "refersTo": "top-app-bar-light",
+      "description": "TopAppBar des routes secondaires ; accueil en MediumTopAppBar. Navigation, retour et indicateur sont natifs. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Contexte\"><span>Détail du suivi</span></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;background:#F6F6F0;color:#222820;font:400 22px/28px sans-serif}"
+    },
+    {
+      "name": "Section de critères",
       "kind": "card",
-      "refersTo": "collection-card-light",
-      "description": "CollectionCard : titre séparé, insets ListItem et séparateurs sans espacement ajouté. Aperçu HTML consultatif ; référence Android native.",
-      "html": "<section class=\"ds-collection\"><h3>Résultats</h3><button><span><strong>Une promotion sur la PS5</strong><small>Déjà disponible au démarrage</small><small>Vérifié le 23 oct. 2026 17:05</small></span><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M504,480L320,296L376,240L616,480L376,720L320,664L504,480Z\"/></svg></button><button><span><strong>Une autre offre vérifiée</strong><small>Vérifié le 23 oct. 2026 18:05</small></span><svg aria-hidden=\"true\" width=\"24\" height=\"24\" viewBox=\"0 0 960 960\" fill=\"currentColor\"><path d=\"M504,480L320,296L376,240L616,480L376,720L320,664L504,480Z\"/></svg></button></section>",
-      "css": ".ds-collection{padding:0 0 8px;border-radius:16px;background:#FFFFFF;color:#1B1E27;overflow:hidden;font-family:sans-serif}.ds-collection h3{font:600 16px/24px sans-serif;letter-spacing:.2px;margin:0;padding:16px 16px 8px}.ds-collection button{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:12px 16px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}.ds-collection button+button{border-top:1px solid #C5CAD6}.ds-collection strong{display:block;font:400 16px/24px sans-serif;letter-spacing:.5px}.ds-collection small{display:block;font:400 14px/20px sans-serif;letter-spacing:.2px;color:#464B59}.ds-collection button:hover{background:#EDF0F7}.ds-collection button:active{background:#D9DFEC}.ds-collection button:focus-visible{outline:2px solid #324C85;outline-offset:-2px}"
+      "refersTo": "section-card-light",
+      "description": "Titre extérieur et surface de section sobre ; ListItem gère lui-même les insets dans les collections. Aperçu HTML consultatif à échelle 1 ; unités dp/sp traduites en px, sans preuve de parité Android.",
+      "html": "<section class=\"ds-section\"><h3>Critères</h3><div>Votre demande<br>Zone suivie</div></section>",
+      "css": ".ds-section{font:400 14px/20px sans-serif;color:#222820}.ds-section h3{font:600 16px/24px sans-serif;letter-spacing:.2px;margin:0 0 10px}.ds-section>div{background:#FFFFFF;border-radius:16px;padding:16px}"
     }
   ],
   "narrative": {
-    "northStar": "Material 3 natif, encre et cobalt",
-    "overview": "Préviens-moi adopte les composants natifs Jetpack Compose Material 3, la typographie système Android et une palette sobre choisie pour remplacer le violet par défaut. La palette encre et cobalt et les surfaces tonales structurent la lecture : demande, état et prochaine action forment un résumé identifiable, suivi de sections lisibles. Les comportements restent ceux des composants natifs.\n\nCette documentation décrit la révision téléphone actuellement implémentée, après autorisation de réviser la palette et les écrans de détail et de confirmation. Les valeurs du frontmatter sont normatives pour cette extraction : les couleurs proviennent de PreviensTheme.kt ; les rôles typographiques et les formes sont hérités de Material 3 (version résolue 1.4.0, BOM 2026.09.00), sans surcharge du thème ; les emphases de graisse locales sont décrites ci-dessous. Les unités Android restent en dp et sp : ne pas copier ces valeurs comme des pixels fixes dans Compose. Les aperçus HTML du sidecar sont des traductions de consultation et ne remplacent ni les composants natifs ni leurs comportements.\n\nLa source visuelle courante est `.impeccable/review/v2/` : 16 captures de fixtures Android, dont les variantes sombres et le texte agrandi. Les sources Kotlin gouvernent cette extraction. Les fixtures ne qualifient ni réseau ni service ; les aperçus HTML ne démontrent aucune parité APK/web. Les écrans de production sont ceux de la variante `remote`. `PRODUCT.md` conserve un contexte historique de démonstration et n’a pas été réécrit pendant cette extraction ; il ne définit pas les couleurs de cette V1. Cette documentation ne modifie aucune promesse produit.\n",
+    "northStar": "Material 3 natif, graphite et ambre",
+    "overview": "Préviens-moi adopte les composants conventionnels Jetpack Compose Material 3, la police système Android et une palette graphite légèrement végétale, sur des surfaces neutres chaudes. Le FAB ambre distingue la création ; les états restent séparés des actions. La sobriété et les composants officiels choisis par Fabien gouvernent cette première version.\n\nCette extraction documente le système intégré dans la production Android 0.1.6, après approbation des maquettes le 2 novembre 2026. Les couleurs viennent de PreviensTheme.kt, les compositions des composants Kotlin main et remote. La typographie et les formes héritées ont été vérifiées dans les sources de Material 3 résolu (1.4.0) ; aucune nouvelle police, durée ou élévation applicative n’est introduite. Les unités restent en dp et sp ; les aperçus HTML du sidecar sont consultatifs et ne remplacent pas Android natif.",
     "keyCharacteristics": [
-      "Composants Material 3 et typographie système.",
-      "Actions en encre et cobalt, états sémantiques séparés.",
-      "Résumés tonals, sections claires et profondeur native mesurée.",
-      "Pages lisibles, défilantes, compatibles avec le texte agrandi."
+      "Composants officiels Material 3 et typographie système.",
+      "Actions graphite, création ambre et statuts sémantiques indépendants.",
+      "Liste groupée, titre de détail hors du résumé et surfaces calmes.",
+      "Dates adaptatives, défilement et actions fixes lisibles avec le texte agrandi."
     ],
     "rules": [
       {
-        "name": "The Semantic Color Rule",
-        "body": "Employer MaterialTheme.colorScheme et les couleurs de statut du thème ; choisir la variante claire ou sombre par le thème, jamais par un hexadécimal ajouté dans un écran.",
+        "name": "Semantic Color",
+        "body": "Employer MaterialTheme.colorScheme et LocalStatus ; conserver libellé et icône avec la couleur. Le vert indique Actif ou Terminé, l’ambre la préparation ou l’attention, le neutre la pause et le rouge l’échec.",
         "section": "colors"
       },
       {
-        "name": "The Redundant Status Rule",
-        "body": "Conserver le libellé et l’icône de WatchStatusLabel avec sa couleur. Le vert est réservé à Actif ou Terminé ; la préparation utilise le bleu.",
-        "section": "colors"
-      },
-      {
-        "name": "The Material Type Roles Rule",
-        "body": "Utiliser les rôles MaterialTheme.typography existants et laisser Android appliquer l’échelle système. Les chiffres extraits ne sont pas une invitation à créer des tailles par écran.",
+        "name": "Material Type Roles",
+        "body": "Réutiliser MaterialTheme.typography et les emphases observées ; laisser Android appliquer son échelle de texte sans taille fixe par écran.",
         "section": "typography"
       },
       {
-        "name": "The Native Elevation Rule",
-        "body": "Conserver les surfaces et élévations Material ; ne pas ajouter d’ombres décoratives aux cartes ou listes.",
+        "name": "Native Elevation",
+        "body": "Conserver la profondeur des surfaces et composants Material ; aucune ombre décorative sur les cartes ou listes.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** utiliser les rôles de thème et les couleurs sémantiques pour chaque état.",
-      "**Do** conserver texte et icône sur les statuts, y compris en mode sombre.",
-      "**Do** réutiliser Page, SectionCard, CollectionCard, MetaRow et SecondaryText pour les nouveaux écrans.",
-      "**Do** vérifier le défilement, le clavier, les barres système et la lisibilité avec une échelle de texte de 1,3.",
-      "**Do** conserver les composants, cibles tactiles et interactions natives Material 3.",
-      "**Do** laisser les ListItem gérer leurs insets dans CollectionCard, avec des séparateurs sans espacement ajouté."
+      "Do utiliser les rôles clair/sombre du thème et les couples de statut explicites.",
+      "Do garder le titre du suivi hors du résumé neutre et les titres de section hors de leur surface.",
+      "Do conserver les marges de page de 20 dp et les insets système et clavier.",
+      "Do empiler les dates et métadonnées lorsque fontScale dépasse 1,15 et laisser les composants grandir.",
+      "Do garder les composants Material, leurs cibles tactiles natives d’au moins 48 × 48 dp et leurs sémantiques.",
+      "Do préserver les vérités produit : état non confirmé, préparation, contenu ancien et erreurs restent explicites."
     ],
     "donts": [
-      "**Don’t** réintroduire la palette canard rejetée ou le violet par défaut pour les actions, ni utiliser le vert pour la préparation.",
-      "**Don’t** remplacer la typographie système par une police de marque ou ajouter une direction fantaisiste.",
-      "**Don’t** utiliser uniquement une couleur pour annoncer un état, une limite ou une erreur.",
-      "**Don’t** ajouter des ombres décoratives ou empiler les retraits autour des lignes natives.",
-      "**Don’t** présenter les anciens écrans de démonstration ou les captures tablette historiques comme la référence de cette V1 téléphone.",
-      "**Don’t** déduire une parité APK/web ou une qualification tablette des aperçus HTML et fixtures téléphone."
+      "Don’t réintroduire l’ancienne identité cobalt ni le violet par défaut dans les écrans courants.",
+      "Don’t utiliser le vert pour une préparation, une opération en attente ou un état actif non confirmé.",
+      "Don’t figer les initiales du compte à celles d’une maquette ni coder un hexadécimal dans un écran.",
+      "Don’t ajouter une police décorative, des ombres de marque ou une direction fantaisiste.",
+      "Don’t empiler les cartes ou doubler les retraits des ListItem dans les collections.",
+      "Don’t déduire une qualification tablette, matérielle, réseau ou fournisseur des captures téléphone ou des aperçus HTML."
     ]
   }
 }

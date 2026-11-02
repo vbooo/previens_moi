@@ -4,7 +4,4 @@
     <string name="v3_resuming">Resuming…</string>
     <string name="v3_deleting">Deleting…</string>
     <string name="v3_confirmation_unknown">The current status could not be checked.</string>
-    <string name="v3_behaviour">How this watch works</string>
-    <string name="v3_continuous_description">Checks continue after each result.</string>
-    <string name="v3_once_description">Checks stop after the first result.</string>
 </resources>

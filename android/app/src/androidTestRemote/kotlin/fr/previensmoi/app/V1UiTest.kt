@@ -470,7 +470,7 @@ class V1UiTest {
         assertEquals(listOf("one-pause"), service.submittedCommands.map { it.id }.distinct())
         capture("paused-confirmed")
         compose
-            .onNodeWithText(compose.activity.getString(R.string.v3_continuous_description))
+            .onNodeWithText(compose.activity.getString(R.string.v5_notify_continuous))
             .performScrollTo()
             .assertIsDisplayed()
         compose

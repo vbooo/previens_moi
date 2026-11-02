@@ -10,7 +10,7 @@
     <string name="v1_site_error">Enter a complete public address starting with https://.</string>
     <string name="v1_site_hint">We will check whether this site can support your request.</string>
     <string name="v1_add_site">Add a preferred website</string>
-    <string name="v1_wait">One moment…</string>
+    <string name="v1_wait">In progress…</string>
     <string name="v1_continue">Continue</string>
     <string name="v1_region">Area</string>
     <string name="v1_site_preferred">Preferred website</string>
@@ -24,7 +24,6 @@
     <string name="v1_mode_continuous">Continue following new information</string>
     <string name="v1_mode_once">Stop after the first result</string>
     <string name="v1_initial_results">Information already available will be shown when preparation is complete.</string>
-    <string name="v1_trial_limits">Limited trial of the selected public sources. Checks are suspended when the trial limit is reached.</string>
     <string name="v1_confirm">Confirm</string>
     <string name="v1_login_title">Sign in to save your watch</string>
     <string name="v1_login_body">Find your watches and results in your account.</string>
@@ -38,7 +37,6 @@
     <string name="v1_technical_failed">Preparation could not be completed. You can try again by editing your request.</string>
     <string name="v1_completed_body">A result matches your request. This watch is complete.</string>
     <string name="v1_last_failed">The last check failed. Previous results remain available.</string>
-    <string name="v1_alerts_phone">Receive alerts on this phone</string>
     <string name="v1_results">What we found</string>
     <string name="v1_verified">Verified on %1$s</string>
     <string name="v1_criteria">What you are following</string>
@@ -64,7 +62,6 @@
     <string name="v1_validate">Verify</string>
     <string name="v1_change_email">Change email address</string>
     <string name="v1_resend_wait">Resend a code in %1$d s</string>
-    <string name="v1_enable_notifications">Enable notifications</string>
     <plurals name="v1_partial_check">
         <item quantity="one">%1$d source checked out of %2$d. A website is temporarily unavailable.</item>
         <item quantity="other">%1$d sources checked out of %2$d. A website is temporarily unavailable.</item>

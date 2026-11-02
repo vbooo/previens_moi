@@ -25,11 +25,13 @@ import java.util.Locale
 @Composable
 fun RequestFields(state: CreateUiState, vm: CreateViewModel) {
     var siteExpanded by rememberSaveable { mutableStateOf(state.draft.preferredSite.isNotBlank()) }
-    Text(stringResource(R.string.question), style = MaterialTheme.typography.headlineMedium)
+    Text(stringResource(R.string.question), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
     OutlinedTextField(
         state.draft.text,
         vm::updateText,
         label = { Text(stringResource(R.string.request_label)) },
+        shape = MaterialTheme.shapes.medium,
+        colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
         placeholder = { Text(stringResource(R.string.v1_request_example)) },
         minLines = 3,
         maxLines = 6,
@@ -41,6 +43,8 @@ fun RequestFields(state: CreateUiState, vm: CreateViewModel) {
             state.draft.preferredSite,
             vm::updateSite,
             label = { Text(stringResource(R.string.v1_site_label)) },
+            shape = MaterialTheme.shapes.medium,
+            colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
             supportingText = {
                 Text(
                     stringResource(
@@ -59,6 +63,8 @@ fun RequestFields(state: CreateUiState, vm: CreateViewModel) {
         state.draft.region,
         vm::updateRegion,
         label = { Text(stringResource(R.string.v1_region)) },
+        shape = MaterialTheme.shapes.medium,
+        colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
         singleLine = true,
         modifier = Modifier.fillMaxWidth().testTag("region"),
     )
@@ -139,6 +145,13 @@ fun CreateScreen(
     login: (() -> Unit)? = null,
     remote: Boolean = false,
 ) {
+    var questionIndex by rememberSaveable(state.questions.map { it.id }.joinToString()) { mutableIntStateOf(0) }
+    val contentKey = when (state.step) {
+        CreationStep.Editing, CreationStep.Evaluating -> "request"
+        CreationStep.Ready, CreationStep.Confirming -> "confirmation"
+        CreationStep.Clarifying -> "clarifying:$questionIndex"
+        else -> state.step.name
+    }
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
     val submit = {
@@ -156,7 +169,7 @@ fun CreateScreen(
                             !state.optionsUpdating &&
                             (state.proposal?.partial != true || state.partialAccepted),
                     modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("confirm"),
-                    shape = MaterialTheme.shapes.large,
+                    shape = MaterialTheme.shapes.medium,
                 ) {
                     Text(
                         stringResource(
@@ -174,7 +187,7 @@ fun CreateScreen(
                 }
             }
         } else null
-    Page(footer = footer) {
+    Page(footer = footer, contentKey = contentKey) {
         if (state.storageFailed) FailureText(Failure.StorageFailure)
         when (state.step) {
             CreationStep.Editing,
@@ -188,6 +201,7 @@ fun CreateScreen(
                             state.draft.text.isNotBlank() &&
                             state.step != CreationStep.Evaluating,
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("evaluate"),
+                    shape = MaterialTheme.shapes.medium,
                 ) {
                     if (state.step == CreationStep.Evaluating) {
                         CircularProgressIndicator(Modifier.size(18.dp), strokeWidth = 2.dp)
@@ -209,10 +223,6 @@ fun CreateScreen(
                     }
             }
             CreationStep.Clarifying -> {
-                var questionIndex by
-                    rememberSaveable(state.questions.map { it.id }.joinToString()) {
-                        mutableIntStateOf(0)
-                    }
                 val question = state.questions.getOrNull(questionIndex)
                 Text(
                     question?.label ?: stringResource(R.string.clarification_title),

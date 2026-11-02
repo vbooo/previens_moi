@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
                         NavDisplay(modifier = Modifier.weight(1f), backStack = stack,
                             onBack = { if (stack.size > 1) stack.removeLastOrNull() }, entryProvider = entryProvider {
                                 entry<Home> { HomeScreen(state, create, creation, preview = {
-                                    focus.clearFocus(); keyboard?.hide(); creation.startNew(); creation.evaluate(Locale.getDefault().language); stack.add(Create)
+                                    focus.clearFocus(); keyboard?.hide(); creation.evaluate(Locale.getDefault().language); stack.add(Create)
                                 }, refresh = watches::refresh, open = { watches.clearCommandError(); stack.add(Detail(it)) }) }
                                 entry<Create> { CreateScreen(create, creation) }
                                 entry<Detail> { key -> DetailScreen(key.id, state, watches,

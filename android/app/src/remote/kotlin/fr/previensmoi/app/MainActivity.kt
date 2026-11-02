@@ -19,6 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
@@ -209,7 +213,11 @@ class MainActivity : ComponentActivity() {
                 }
                 Scaffold(
                     topBar = {
-                        TopAppBar(
+                        WatchAppBar(
+                            expanded = route == Home,
+                            loading = (route == Home && (!account.loaded ||
+                                (account.session != null && (state.refreshing || (!state.hasLoaded && !state.refreshFailed))))) ||
+                                (route is Detail && state.refreshing),
                             title = {
                                 Text(
                                     stringResource(
@@ -232,6 +240,7 @@ class MainActivity : ComponentActivity() {
                                     ),
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
+                                    fontWeight = if (route == Home) FontWeight.SemiBold else FontWeight.Normal,
                                 )
                             },
                             navigationIcon = {
@@ -256,14 +265,21 @@ class MainActivity : ComponentActivity() {
                                                 stringResource(R.string.refresh_short),
                                             )
                                         }
-                                    TextButton(onClick = { stack.add(Account) }, modifier = Modifier.testTag("account")) {
-                                        Text(
-                                            stringResource(
-                                                if (account.session == null) R.string.sign_in
-                                                else R.string.connected_account,
-                                            ),
-                                        )
-                                    }
+                                    if (account.loaded && account.session != null) {
+                                        val description = stringResource(R.string.v5_account)
+                                        val initials = account.session?.email.orEmpty().substringBefore('@')
+                                            .split(Regex("[._-]+"))
+                                            .filter { it.isNotBlank() }.take(2)
+                                            .joinToString("") { it.first().uppercaseChar().toString() }
+                                            .ifBlank { "?" }
+                                        FilledTonalIconButton(
+                                            onClick = { stack.add(Account) },
+                                            modifier = Modifier.padding(end = 12.dp).testTag("account")
+                                                .semantics { contentDescription = description },
+                                        ) { Text(initials, style = MaterialTheme.typography.labelLarge) }
+                                    } else if (account.loaded) TextButton(
+                                        onClick = { stack.add(Account) }, modifier = Modifier.testTag("account"),
+                                    ) { Text(stringResource(R.string.sign_in)) }
                                 }
                                 if (route is Detail)
                                     RefreshWatchAction(state.refreshing, watches::refresh)
@@ -328,6 +344,8 @@ class MainActivity : ComponentActivity() {
                                 icon = { AppIcon(R.drawable.symbol_add) },
                                 text = { Text(stringResource(R.string.new_watch)) },
                                 modifier = Modifier.testTag("new_request"),
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             )
                     },
                 ) { insets ->

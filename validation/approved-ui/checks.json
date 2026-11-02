@@ -1,0 +1,204 @@
+{
+  "date": "2026-11-02",
+  "base_commit": "5161781",
+  "version": "0.1.6 (7)",
+  "scope": "Integrate user-approved native Material3 graphite/amber interface; preserve real workflows and budget safeguards",
+  "unit_tests": {
+    "remote": {
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 80,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native_tests": {
+    "remote_unique_passed": 21,
+    "actual_root_http_functional_journeys": 6,
+    "actual_root_integrated_visual_flow": 1,
+    "component_navigation_regressions": 14,
+    "dark_and_large_integrated_flow_reruns": 2,
+    "demo_unique_passed": 5,
+    "environment": "Dedicated API36 emulator,1080x1920,density440; real MainActivity/Hilt/ViewModels/DataStore/Keystore/repositories; controlled loopback HTTP only",
+    "font_scales": [
+      1.0,
+      1.3
+    ]
+  },
+  "captures": [
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/account-dark.png",
+      "sha256": "2e25d8c88f3c928e8919e4ac3fca9f6597ae6b7507d7ee1b397a5615259a04ef"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/account-large.png",
+      "sha256": "0017e49d109c136da923274061f9c6cdc932e94c9297788ed297f9aa6395c954"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/account-light.png",
+      "sha256": "d8e864b196b7909ca8e8b3dc708dc863c36b43797c41608e2ae036f263ebd9c3"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/active-dark.png",
+      "sha256": "df4a7462f1df4eed5f87913c7b6e293e04e264ef184107f81d8d1e613f0270cc"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/active-large.png",
+      "sha256": "b79bbf9da60511e2792e0404d5ebd01d71d955ba38d1738595b56d6c4b481062"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/active-light.png",
+      "sha256": "a81cd52115adca397ba7e5a8c96c2b789f465338e2e74cbc4a0ff987f154a996"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/confirm-dark.png",
+      "sha256": "29fc139a88905e75f9e25d6e932f56cd41abb25f5bf38c6580215e597a6cd99f"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/confirm-large.png",
+      "sha256": "f1028c192d0db37192819717285618a2e11b52de2a518c72b90e80dc705f9978"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/confirm-light.png",
+      "sha256": "d1b93ab76bad877529ab264119ea4b09253e743b42c753c63a4dcb694ae50e17"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/home-dark.png",
+      "sha256": "e1b4b94a201608d2539a094b6915488f171df6abe8a34c9c069a5deb2e37a305"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/home-large.png",
+      "sha256": "7612cbba584bd659f3d3bcfb4dcb86ab669ab4029cd28695db5bc8f86de8ef26"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/home-light.png",
+      "sha256": "e4f28ed5541ebfdb682cb93af5de76c65ca98b0a44bf4689842e230c34360f11"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/initial-error-light.png",
+      "sha256": "826fdeb51a374f013f5deb476d49f14ccd80c113152355950c0d446ed3d2ad21"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/loading-dark.png",
+      "sha256": "a21045af21b112db92abf9b4e535c4bce0eabf30290dbb51707c386ace1954c7"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/loading-large.png",
+      "sha256": "bf35d156ee46e851e3bc9b2955e27f20bf1b09a3f1b4bc3e10d18ca8a6715028"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/loading-light.png",
+      "sha256": "54772ac4cc730f918deb893537c2813721b1b00e8c70e0845eb356c776acc05c"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/paused-dark.png",
+      "sha256": "07a3d48dbef2dcaadb77632e7e0cdd3bd86e68e0282a40cff1b97493957f8267"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/paused-large.png",
+      "sha256": "f79b7dbc0b94b92280c2279530abb8a0ede591da615969eb72b1f5e228e2e887"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/paused-light.png",
+      "sha256": "64c620c985723cedce3c0327dac640ec58d39190adcc8d188f8ab25b342f1f2c"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/preparing-dark.png",
+      "sha256": "f26bec4f9c711e205b20908bd26b73c67e0b5183e5187c76e8f25bb47db10a2a"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/preparing-large.png",
+      "sha256": "3854d0d90d5b616f51114b41199814882b8460841685fa39139b638ea68e13e9"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/preparing-light.png",
+      "sha256": "ce9d9e37756c26ad999b452961f3accbae5564b973a2fccfbc6bc28332bb630a"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/request-dark.png",
+      "sha256": "06a7a2a84829c1752f87a47060a3ff899c590d1e452945b33fccfedc5662ee20"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/request-large.png",
+      "sha256": "c29611c437ac75bd3c6bd95e371fd014269ac9b4e7b907380b117762d47cb780"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/request-light.png",
+      "sha256": "20eb20600c8c7a8dd71b18c184b5d44f8aaf00d58d7c5d04dbb26ac6adad847d"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/result-dark.png",
+      "sha256": "9c1b826eb9a5bb7e2e154d3632907c7a3517e2fcbdb2f4dfbdcd9202c1a4eacb"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/result-large.png",
+      "sha256": "ea362456006d053ffe85ec9a93b07b1938c6938bc885ee3610100bebf62078f3"
+    },
+    {
+      "path": ".impeccable/review/approved-ui-2026-11-02/result-light.png",
+      "sha256": "48fa54b3e612c4e5d6ef071a7ce44d1ac6665725dcabe6aacbe4fb7fcfb87c2f"
+    }
+  ],
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "7494d143cdfbc6b2a47d6927148527068db0b4b96d7f94536c153c46364d81a3",
+        "bytes": 16146398,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='7' versionName='0.1.6' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "83987eafbdb09e36e733c8664b9400528368c5c562ba0ce27984e8816cac7977",
+        "bytes": 14677495,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='7' versionName='0.1.6' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/approved-ui-2026-11-02/Previens-moi-0.1.6-test.apk"
+  },
+  "boundaries": "passed",
+  "provider_work": {
+    "manual_openai_calls": 0,
+    "manual_firecrawl_calls": 0,
+    "additional_test_cost_eur": 0,
+    "budget_cap_changed": false,
+    "server_or_database_changed": false
+  },
+  "service_tests": {
+    "rerun": false,
+    "reason": "No service changes; preceding reliability lot reports105 passing server tests"
+  },
+  "limits": [
+    "No physical OnePlus rerun for0.1.6",
+    "Native fixture results are not live provider/SMTP/FCM evidence",
+    "API36 phone only; no tablet or full API23/37 matrix qualification",
+    "No long-run observation, signing/release or Play publication",
+    "Known local literal credential scan is not a general security audit"
+  ],
+  "independent_review": {
+    "disposition": "ship",
+    "required_captures_reviewed": 28,
+    "approved_references_reviewed": 9,
+    "material_fixes": [],
+    "scope": "Native phone UI fidelity and sampled interaction source; not live providers, physical hardware or publication readiness"
+  }
+}

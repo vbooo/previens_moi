@@ -1,4 +1,4 @@
-# Proposition UI — à valider
+# Proposition UI — approuvée le 2 novembre 2026
 
 Mode : Operate. Deux écrans Android existants : Mes suivis et Détail du suivi, avec états chargement, actif, préparation et pause. Captures d’un prototype natif dans l’APK de tests uniquement ; aucune intégration aux parcours ni au thème de production avant validation.
 
@@ -15,3 +15,7 @@ Références officielles consultées :
 - https://developer.android.com/develop/ui/compose/components/progress
 
 Les changements de textes restent visibles dans les maquettes pour validation, notamment Dernier contrôle et Notifications / À chaque nouveau résultat. Aucune promesse de continuité ou de délai n’est ajoutée à la portée du moteur.
+
+## Décision utilisateur
+
+Fabien a approuvé ce rendu pour la première version. La palette et la composition sont intégrées dans les composants de production en 0.1.6 ; voir DESIGN.md et validation/approved-ui/bilan.md. Les captures de ce dossier restent celles du prototype de tests, sans commandes raccordées.

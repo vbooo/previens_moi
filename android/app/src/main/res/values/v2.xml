@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="v2_last_success">Last successful check</string>
+    <string name="v2_last_success">Last check</string>
     <string name="v2_next_check">Next check</string>
     <string name="v2_not_checked">Not checked yet</string>
     <string name="v2_not_scheduled">Not scheduled</string>

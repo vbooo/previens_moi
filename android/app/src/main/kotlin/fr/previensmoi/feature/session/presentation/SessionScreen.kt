@@ -104,7 +104,7 @@ fun SessionScreen(
                 stringResource(
                     if (forConfirmation) R.string.v1_login_title else R.string.v1_sign_in_title,
                 ),
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall,
             )
             SecondaryText(stringResource(R.string.v1_login_body))
             OutlinedTextField(
@@ -112,6 +112,8 @@ fun SessionScreen(
                 vm::email,
                 enabled = !state.busy,
                 singleLine = true,
+                shape = MaterialTheme.shapes.medium,
+                colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
                 label = { Text(stringResource(R.string.email_label)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth().testTag("email"),
@@ -120,7 +122,8 @@ fun SessionScreen(
             Button(
                 vm::send,
                 enabled = !state.busy && state.resendSeconds == 0 && state.email.contains('@'),
-                modifier = Modifier.fillMaxWidth().testTag("send_code"),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("send_code"),
+                shape = MaterialTheme.shapes.medium,
             ) {
                 Text(
                     if (state.resendSeconds > 0)
@@ -131,7 +134,7 @@ fun SessionScreen(
         } else {
             Text(
                 stringResource(R.string.v1_check_email),
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineSmall,
             )
             SecondaryText(stringResource(R.string.v1_code_sent, state.email))
             OutlinedTextField(
@@ -139,6 +142,8 @@ fun SessionScreen(
                 vm::code,
                 enabled = !state.busy,
                 singleLine = true,
+                shape = MaterialTheme.shapes.medium,
+                colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
                 label = { Text(stringResource(R.string.v1_code_label)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 modifier = Modifier.fillMaxWidth().testTag("otp"),
@@ -151,7 +156,8 @@ fun SessionScreen(
             Button(
                 vm::verify,
                 enabled = !state.busy && state.code.length == 6,
-                modifier = Modifier.fillMaxWidth().testTag("verify_code"),
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("verify_code"),
+                shape = MaterialTheme.shapes.medium,
             ) {
                 Text(stringResource(if (state.busy) R.string.v1_wait else R.string.v1_validate))
             }

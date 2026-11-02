@@ -14,13 +14,11 @@
     <string name="login_action">Use the fictional account</string>
     <string name="unsupported_title">This request is unsupported in this scenario</string>
     <string name="unsupported_body">This scenario simulates unavailable private access. No watch is activated. You can reword your request or choose another scenario.</string>
-    <string name="processing">Processing the demonstration…</string>
     <string name="storage_error">The draft could not be read or saved. It may be lost when closing. Try again before leaving.</string>
     <string name="status_active">Active in demo</string>
     <string name="status_paused">Paused</string>
     <string name="status_completed">Completed after the first result</string>
     <string name="status_capacity">Suspended by capacity limit</string>
-    <string name="last_success">Last successful check: %1$s</string>
     <string name="no_results">No results yet.</string>
     <string name="pause">Pause watch</string>
     <string name="resume">Resume watch</string>

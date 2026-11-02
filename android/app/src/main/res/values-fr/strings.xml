@@ -14,13 +14,11 @@
     <string name="login_action">Utiliser le compte fictif</string>
     <string name="unsupported_title">Cette demande n’est pas prise en charge dans ce scénario</string>
     <string name="unsupported_body">Le scénario simule un accès privé indisponible. Aucun suivi n’est activé. Tu peux reformuler ta demande ou choisir un autre scénario.</string>
-    <string name="processing">Traitement de démonstration en cours…</string>
     <string name="storage_error">Le brouillon n’a pas pu être lu ou enregistré. Il peut être perdu à la fermeture. Réessaie avant de quitter.</string>
     <string name="status_active">Actif dans la démo</string>
     <string name="status_paused">En pause</string>
     <string name="status_completed">Terminé après le premier résultat</string>
     <string name="status_capacity">Suspendu par une limite de capacité</string>
-    <string name="last_success">Dernière réussite : %1$s</string>
     <string name="no_results">Aucun résultat pour le moment.</string>
     <string name="pause">Mettre en pause</string>
     <string name="resume">Reprendre le suivi</string>

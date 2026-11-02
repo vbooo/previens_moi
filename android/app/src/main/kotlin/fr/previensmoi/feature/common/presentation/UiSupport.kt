@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -26,16 +27,18 @@ import java.util.Date
 fun Page(
     footer: (@Composable ColumnScope.() -> Unit)? = null,
     spacing: Dp = 16.dp,
+    contentKey: Any? = Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val scroll = key(contentKey) { rememberScrollState() }
     Surface(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
                 Column(
                     Modifier.widthIn(max = 720.dp)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 24.dp)
+                        .verticalScroll(scroll)
+                        .padding(horizontal = 20.dp)
                         .padding(top = 12.dp, bottom = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(spacing),
                     content = content,
@@ -49,7 +52,7 @@ fun Page(
                     Column(
                         Modifier.widthIn(max = 720.dp)
                             .fillMaxWidth()
-                            .padding(horizontal = 24.dp)
+                            .padding(horizontal = 20.dp)
                             .padding(top = 12.dp, bottom = 8.dp),
                         content = footer,
                     )
@@ -106,60 +109,39 @@ fun statusLabel(status: WatchStatus) =
 
 @Composable
 fun Busy() {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
-        Text(
-            stringResource(R.string.processing),
-            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
-        )
-    }
+    LinearProgressIndicator(Modifier.fillMaxWidth())
 }
 
 @Composable
 fun SectionCard(title: String, content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            ),
-        shape = MaterialTheme.shapes.large,
-    ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(
-                title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-            )
-            content()
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SectionTitle(title)
+        Surface(Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            shape = MaterialTheme.shapes.large) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
         }
     }
 }
 
-/** Native ListItems own their insets; the collection adds none around them. */
+/** Native list items own their insets, without nesting cards or duplicating section headings. */
 @Composable
 fun CollectionCard(title: String, content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            ),
-        shape = MaterialTheme.shapes.large,
-    ) {
-        Column(Modifier.padding(bottom = 8.dp)) {
-            Text(
-                title,
-                Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-            )
-            content()
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        SectionTitle(title)
+        Surface(Modifier.fillMaxWidth(), color = MaterialTheme.colorScheme.surfaceContainerLowest,
+            shape = MaterialTheme.shapes.large) {
+            Column(content = content)
         }
     }
+}
+
+/** Compact local date, with the year retained when the observation is from a different year. */
+fun compactDateText(value: Long): String {
+    val now = java.util.Calendar.getInstance()
+    val observed = java.util.Calendar.getInstance().apply { timeInMillis = value }
+    val pattern = if (observed.get(java.util.Calendar.YEAR) == now.get(java.util.Calendar.YEAR))
+        "d MMM '·' HH:mm" else "d MMM yyyy '·' HH:mm"
+    return java.text.SimpleDateFormat(pattern, java.util.Locale.getDefault()).format(Date(value))
 }
 
 @Composable

@@ -10,7 +10,7 @@
     <string name="v1_site_error">Saisis une adresse publique complète commençant par https://.</string>
     <string name="v1_site_hint">Nous vérifierons si ce site permet de suivre ta demande.</string>
     <string name="v1_add_site">Ajouter un site à privilégier</string>
-    <string name="v1_wait">Un instant…</string>
+    <string name="v1_wait">En cours…</string>
     <string name="v1_continue">Continuer</string>
     <string name="v1_region">Zone concernée</string>
     <string name="v1_site_preferred">Site à privilégier</string>
@@ -24,7 +24,6 @@
     <string name="v1_mode_continuous">Continuer à suivre les nouveautés</string>
     <string name="v1_mode_once">Arrêter après le premier résultat</string>
     <string name="v1_initial_results">Les informations déjà disponibles seront affichées à la fin de la préparation.</string>
-    <string name="v1_trial_limits">Essai limité aux sources publiques retenues. Les vérifications sont suspendues lorsque la limite d’essai est atteinte.</string>
     <string name="v1_confirm">Confirmer</string>
     <string name="v1_login_title">Connecte-toi pour enregistrer ton suivi</string>
     <string name="v1_login_body">Retrouve tes suivis et leurs résultats sur ton compte.</string>
@@ -38,7 +37,6 @@
     <string name="v1_technical_failed">La préparation n’a pas pu aboutir. Tu peux réessayer en modifiant ta demande.</string>
     <string name="v1_completed_body">Un résultat correspond à ta demande. Le suivi est terminé.</string>
     <string name="v1_last_failed">La dernière vérification a échoué. Les résultats précédents restent disponibles.</string>
-    <string name="v1_alerts_phone">Recevoir les alertes sur ce téléphone</string>
     <string name="v1_results">Informations trouvées</string>
     <string name="v1_verified">Vérifié le %1$s</string>
     <string name="v1_criteria">Ce que tu suis</string>
@@ -64,7 +62,6 @@
     <string name="v1_validate">Valider</string>
     <string name="v1_change_email">Modifier l’adresse e-mail</string>
     <string name="v1_resend_wait">Renvoyer un code dans %1$d s</string>
-    <string name="v1_enable_notifications">Activer les notifications</string>
     <plurals name="v1_partial_check">
         <item quantity="one">%1$d source vérifiée sur %2$d. Un site est temporairement indisponible.</item>
         <item quantity="many">%1$d sources vérifiées sur %2$d. Un site est temporairement indisponible.</item>

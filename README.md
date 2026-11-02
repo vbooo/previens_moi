@@ -4,7 +4,7 @@ Application Android native pour demander à être prévenu d’une information p
 
 ## État au 2 novembre 2026
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. La version connectée **0.1.5** fiabilise le premier chargement, distingue un nouveau suivi d'un brouillon et protège les transitions de session. Les diagnostics Android et serveur sont disponibles. [Le bilan courant](validation/reliability/bilan.md) précise les six parcours complets avec HTTP local et l'essai restant sur OnePlus. La passe visuelle dédiée vient ensuite.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.6** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/approved-ui/bilan.md) précise les tests natifs, les captures et l’essai restant sur OnePlus.
 
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 
@@ -63,7 +63,7 @@ La CI Android est configurée pour vérifier les deux variantes. Le dépôt rest
 ## Suite du plan
 
 - Tester l’APK stabilisé sur le OnePlus et corriger les problèmes fonctionnels constatés.
-- Finaliser l’UI/UX à partir des écrans déjà validés et des retours d’usage.
+- Recueillir les retours sur l’interface validée et corriger les défauts observés sur le téléphone.
 - Organiser les sept jours d’observation dans une enveloppe compatible avec le budget disponible.
 - Préparer les contrôles de diffusion, la confidentialité, la sauvegarde indépendante, la signature et le compte Play, puis la publication.
 - Créer le dépôt GitHub quand Fabien le décide ; le benchmark et la modularisation restent différés.
