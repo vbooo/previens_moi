@@ -21,4 +21,5 @@
     <string name="notification_preparation_failed">Ton suivi n’a pas pu démarrer</string>
     <string name="notification_preparation_body">Ouvre le suivi pour consulter son état et ses sources.</string>
     <string name="new_watch">Nouveau suivi</string>
+    <string name="notification_result_found">Trouvé pour toi : %1$s</string>
 </resources>

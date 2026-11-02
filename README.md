@@ -2,9 +2,9 @@
 
 Application Android native pour demander à être prévenu d’une information publique : une offre d’emploi, une promotion ou une annonce, par exemple. L’objectif prioritaire est une réalisation propre que Fabien peut comprendre, démontrer et défendre en entretien Android.
 
-## État au 1er novembre 2026
+## État au 2 novembre 2026
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. Le lot de stabilisation est terminé et la version connectée 0.1.1 est prête à tester ; [son bilan](validation/stabilization/bilan.md) distingue les vérifications locales, les essais réels précédents et le test restant sur OnePlus.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. Une première interface Material 3 est intégrée. La stabilisation est terminée. La version connectée **0.1.2** ajoute la synchronisation automatique au premier plan et annonce le résultat trouvé pendant la première recherche. [Le bilan de cette correction](validation/foreground-sync/bilan.md) distingue les vérifications locales et le test restant sur OnePlus.
 
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 
@@ -14,7 +14,7 @@ Le socle Android, le service réel et le parcours « comprendre → confirmer �
 2. OpenAI reformule les critères ou demande une précision. Aucune recherche Web ne précède la confirmation.
 3. Après confirmation, le serveur cherche des sources avec Firecrawl, lit les pages sélectionnées et vérifie qu’elles permettent le suivi.
 4. L’application présente la préparation, le suivi actif ou un échec explicite. La préparation et les vérifications continuent côté serveur quand l’app est fermée.
-5. Les résultats comportent une source et un passage justificatif. Les alertes utilisent Firebase Cloud Messaging et ouvrent le contenu concerné.
+5. Pendant que l’app est visible, ses états et résultats sont relus automatiquement ; la mise à jour ne dépend pas du push. Les résultats comportent une source et un passage justificatif. Les alertes utilisent Firebase Cloud Messaging et ouvrent le contenu concerné.
 6. La personne peut mettre en pause, reprendre, modifier ou supprimer son suivi et demander l’effacement de son compte.
 
 Pour les nouveaux suivis généraux, la politique actuelle retient jusqu’à trois pages publiques, relues environ toutes les heures ; la recherche de nouvelles sources est renouvelée tous les 24 passages. Les anciens plans conservent leurs paramètres confirmés. La couverture reste partielle : pages protégées, sources non trouvées et informations non prouvables peuvent empêcher un suivi. Les informations déjà disponibles au démarrage sont distinguées des nouveautés ; un suivi ponctuel peut donc se terminer dès son premier résultat initial.

@@ -77,6 +77,7 @@ class MainActivity : ComponentActivity() {
                 val state by watches.state.collectAsStateWithLifecycle()
                 val create by creation.state.collectAsStateWithLifecycle()
                 val account by session.state.collectAsStateWithLifecycle()
+                WatchSynchronizationEffect(watches, account.session?.id)
                 val focus = LocalFocusManager.current
                 val keyboard = LocalSoftwareKeyboardController.current
                 val stack = rememberNavBackStack(Home)
@@ -146,7 +147,6 @@ class MainActivity : ComponentActivity() {
                 LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
                     notificationsEnabled =
                         NotificationManagerCompat.from(this).areNotificationsEnabled()
-                    if (account.session != null) watches.refresh()
                 }
                 LaunchedEffect(requestedWatch, account.session) {
                     requestedWatch?.let { id ->
@@ -200,7 +200,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 LaunchedEffect(account.session) {
-                    if (account.session != null) watches.refresh()
                     if (account.session != null) {
                         creation.resumeAfterSignIn()
                         if (returnToProposal && stack.lastOrNull() == Account)

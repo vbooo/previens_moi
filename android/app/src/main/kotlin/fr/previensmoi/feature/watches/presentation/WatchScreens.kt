@@ -527,6 +527,5 @@ fun FindingScreen(id: String, state: WatchesUiState, remote: Boolean = false) {
             )
         }
         finding.eventDate?.let { MetaRow(stringResource(R.string.v1_event_date), it) }
-        SecondaryText(stringResource(R.string.v1_result_conditions))
     }
 }

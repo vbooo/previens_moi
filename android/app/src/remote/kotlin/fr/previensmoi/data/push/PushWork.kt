@@ -93,6 +93,10 @@ class PushWorker(context: Context, params: WorkerParameters,
         }
         val expiresAt = inputData.getLong("expiresAt",0)
         if (System.currentTimeMillis() >= expiresAt) return Result.success()
+        // Refresh the shared StateFlows even when notifications are disabled or the app is open.
+        // A data-only push is a hint to re-read authenticated state, never trusted UI content.
+        if (repository.refresh() != RefreshResult.Success) return Result.retry()
+        if (sessions.currentUserId() != owner || System.currentTimeMillis() >= expiresAt) return Result.success()
         if (inputData.getString("kind") == "preparation") return preparation(owner,expiresAt)
         val findingId = inputData.getString("finding") ?: return Result.failure()
         val value = repository.getFinding(findingId)
@@ -104,19 +108,25 @@ class PushWorker(context: Context, params: WorkerParameters,
         if (watchResponse !is ApiResult.Value) return if (watchResponse is ApiResult.ConnectionFailure) Result.retry() else Result.success()
         val current = watchResponse.body
         if (current.status !in setOf("active","completed") || current.plan.id != finding.planId || current.plan.version != finding.planVersion) return Result.success()
+        return showFinding(owner,finding,expiresAt)
+    }
+    @Suppress("DEPRECATION")
+    private suspend fun showFinding(owner: String, finding: Finding, expiresAt: Long): Result {
         if (Build.VERSION.SDK_INT >= 33 && applicationContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return Result.success()
         val manager = applicationContext.getSystemService(NotificationManager::class.java)
         if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return Result.success()
         if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(NotificationChannel("findings",applicationContext.getString(R.string.notification_channel),NotificationManager.IMPORTANCE_DEFAULT))
-        val intent = Intent(applicationContext,MainActivity::class.java).setAction("finding:$findingId").putExtra("findingId",findingId)
+        val intent = Intent(applicationContext,MainActivity::class.java).setAction("finding:${finding.id}").putExtra("findingId",finding.id)
         val pending = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         val builder = if(Build.VERSION.SDK_INT>=26) Notification.Builder(applicationContext,"findings") else @Suppress("DEPRECATION") Notification.Builder(applicationContext)
-        val notification = builder.setSmallIcon(R.drawable.ic_demo).setContentTitle(finding.title.ifBlank { applicationContext.getString(R.string.finding_title) })
-            .setContentText(finding.fact).setOnlyAlertOnce(true).setContentIntent(pending).setAutoCancel(true).setVisibility(Notification.VISIBILITY_PRIVATE).build()
+        val resultTitle = finding.title.ifBlank { applicationContext.getString(R.string.finding_title) }
+        val title = if (finding.noveltyBasis == "initial") applicationContext.getString(R.string.notification_result_found,resultTitle) else resultTitle
+        val notification = builder.setSmallIcon(R.drawable.ic_demo).setContentTitle(title)
+            .setContentText(finding.fact).setStyle(Notification.BigTextStyle().bigText(finding.fact)).setOnlyAlertOnce(true).setContentIntent(pending).setAutoCancel(true).setVisibility(Notification.VISIBILITY_PRIVATE).build()
         // Last local session fence before displaying; the fetched result was authorized above.
         if (sessions.currentUserId() == owner && System.currentTimeMillis() < expiresAt) {
-            val first = try { claims.claim(owner,findingId) } catch (e: CancellationException) { throw e } catch (_: Exception) { return Result.retry() }
-            if (first && sessions.currentUserId() == owner) manager.notify(findingId,0,notification)
+            val first = try { claims.claim(owner,finding.id) } catch (e: CancellationException) { throw e } catch (_: Exception) { return Result.retry() }
+            if (first && sessions.currentUserId() == owner) manager.notify(finding.id,0,notification)
         }
         return Result.success()
     }
@@ -130,6 +140,8 @@ class PushWorker(context: Context, params: WorkerParameters,
         val watch = response.body
         if (sessions.currentUserId() != owner || watch.version.toString() != inputData.getString("version") || !watch.plan.backgroundPreparation || watch.status !in setOf("active","paused","completed")) return Result.success()
         if (watch.status == "paused" && watch.health != "degraded") return Result.success()
+        val initial = preparationFinding(watch.domain(),repository.observeFindings().first())
+        if (initial != null) return showFinding(owner,initial,expiresAt)
         if (Build.VERSION.SDK_INT >= 33 && applicationContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return Result.success()
         val manager = applicationContext.getSystemService(NotificationManager::class.java)
         if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return Result.success()

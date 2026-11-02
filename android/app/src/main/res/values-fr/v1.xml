@@ -42,8 +42,8 @@
     <string name="v1_last_failed">La dernière vérification a échoué. Les résultats précédents restent disponibles.</string>
     <string name="v1_stopping_body">L’arrêt du suivi est en cours de confirmation.</string>
     <string name="v1_alerts_phone">Recevoir les alertes sur ce téléphone</string>
-    <string name="v1_results">Résultats</string>
-    <string name="v1_initial">Déjà disponible au démarrage</string>
+    <string name="v1_results">Informations trouvées</string>
+    <string name="v1_initial">Trouvé dès la première recherche</string>
     <string name="v1_verified">Vérifié le %1$s</string>
     <string name="v1_criteria">Ce que tu suis</string>
     <string name="v1_sources_followed">Sources suivies</string>
@@ -52,7 +52,6 @@
     <string name="v1_source">Source</string>
     <string name="v1_verified_label">Vérifié le</string>
     <string name="v1_event_date">Date de l’événement</string>
-    <string name="v1_result_conditions">Vérifié à cette date. Consulte le site pour connaître les conditions actuelles.</string>
     <string name="v1_open_site">Voir sur le site</string>
     <string name="v1_erase_body">Ton compte, tes suivis et leurs résultats seront supprimés. Une connexion récente est nécessaire pour confirmer cette action.</string>
     <string name="v1_privacy">Confidentialité</string>

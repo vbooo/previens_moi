@@ -63,6 +63,7 @@ Sur un émulateur **réservé aux tests**, installer les APK app et AndroidTest 
 Les classes hors réseau utiles sont :
 
 - `fr.previensmoi.app.V1UiTest` : création, confirmation, connexion simulée, préparation, limite, pause, reprise échouée, résultat et captures des écrans de production.
+- `fr.previensmoi.app.ForegroundSynchronizationTest` : préparation et résultat visibles sans actualisation/push, annulation en arrière-plan et à la déconnexion, reprise immédiate.
 - `fr.previensmoi.app.PreparationFlowTest` : geste d’actualisation, conservation de la liste lors d’un échec, masquage des données après déconnexion.
 - `fr.previensmoi.app.FoundationsTest` dans demo : scénarios déterministes, modification/suppression, erreurs et recréation d’écran.
 
@@ -76,7 +77,7 @@ adb -s emulator-5556 shell am instrument -w -r \
 
 Les scripts de restauration de processus effacent les données de leur variante sur le périphérique ciblé ; ils sont réservés à un émulateur jetable et ne doivent pas être lancés sur le OnePlus de Fabien. Ces scripts ne sont pas requalifiés par le lot du 1er novembre. Le contrat local complet, avec Supabase local, est préparé par `scripts/check-local-android.py` ; voir [service/README.md](../service/README.md).
 
-Les résultats datés du lot courant sont dans [validation/stabilization](../validation/stabilization/bilan.md). Les rapports Gradle sont générés sous `app/build/reports/`. Les captures de fixtures ne prouvent ni la qualité de toutes les recherches ni la livraison FCM sur un appareil physique.
+La correction courante de synchronisation (0.1.2, 2 novembre) est décrite dans [validation/foreground-sync](../validation/foreground-sync/bilan.md). Le [bilan de stabilisation](../validation/stabilization/bilan.md) conserve les contrôles du 1er novembre. Les rapports Gradle sont générés sous `app/build/reports/`. Les captures de fixtures ne prouvent ni la qualité de toutes les recherches ni la livraison FCM sur un appareil physique.
 
 ## Lire le code pour un entretien
 
@@ -91,6 +92,8 @@ Les résultats datés du lot courant sont dans [validation/stabilization](../val
 | Navigation et assemblage réel | `app/src/remote/kotlin/fr/previensmoi/app/MainActivity.kt`, `RemoteModule.kt` |
 | Notification et relecture authentifiée | `app/src/remote/kotlin/fr/previensmoi/data/push/PushWork.kt` |
 | Simulateur déterministe | `app/src/demo/kotlin/fr/previensmoi/data/demo/DemoService.kt` |
+
+`WatchSynchronizationEffect` lance `synchronizeWhileVisible` dans `repeatOnLifecycle(STARTED)`, avec la session comme clé. Une préparation est relue environ toutes les 3 secondes après succès, les états stables et erreurs toutes les 30 secondes. Les appels manuels se partagent un verrou avec ces lectures ; quitter le premier plan ou la session annule le travail. Ces lectures ne déclenchent aucune recherche fournisseur. Les pushes relisent aussi les données et un résultat initial ouvre sa fiche plutôt qu’un simple message « suivi prêt ».
 
 Compose déclenche une action du ViewModel. Celui-ci utilise les interfaces du domaine et expose un `StateFlow` immuable, collecté avec le cycle de vie. Hilt fournit les implémentations ; les écrans n’importent pas la couche data. Un contrôle d’imports vérifie ces frontières. Il n’y a pas de cas d’usage qui transmettent simplement un appel pour ajouter une couche.
 

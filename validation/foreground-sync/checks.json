@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-02",
+  "base_commit": "d878fef",
+  "scope": "Android foreground synchronization, preparation notification routing and copy; no server migration/deployment",
+  "app_version": "0.1.2 (code 3)",
+  "root_causes": [
+    "UI collected local StateFlows but did not re-read server state continuously while visible; resume and command-only refresh did not cover asynchronous preparation",
+    "Preparation push always rendered the ready template, including when a first result already completed a once-only watch"
+  ],
+  "behavior": {
+    "foreground": "Immediate authenticated read on sign-in/resume; about 3 seconds between successful reads during preparation/transitions, 30 seconds otherwise or after a failed read; newly pending preparation wakes an idle reader",
+    "lifecycle": "repeatOnLifecycle(STARTED) inside an owner-keyed LaunchedEffect; cancellation on stop/sign-out/owner change",
+    "network": "Only existing application API reads plus reconciliation of the same pending command ID; no new provider searches or new activation IDs",
+    "push": "Authenticated repository reload before presentation, even when notification permission is denied; initial finding on current watch/plan opens finding detail, uses fact as notification body and canonical finding ID for deduplication",
+    "copy": {
+      "initial_fr": "Trouvé dès la première recherche",
+      "results_fr": "Informations trouvées",
+      "removed": "Vérifié à cette date. Consulte le site pour connaître les conditions actuelles."
+    }
+  },
+  "unit_tests": {
+    "remote": {
+      "tests": 52,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 69,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "new_unit_tests": {
+    "synchronization_common": 5,
+    "preparation_finding_remote": 5
+  },
+  "native_tests": [
+    {
+      "device": "dedicated API 36 emulator",
+      "configuration": "French, light, font 1.0",
+      "passed": 8,
+      "classes": [
+        "ForegroundSynchronizationTest (2)",
+        "PreparationFlowTest (1)",
+        "V1UiTest (5)"
+      ],
+      "evidence": [
+        "Server fixture completes without emitting client state until read; detail and home update without tap/push",
+        "Result opens with new wording and no removed sentence",
+        "Background and sign-out stop reads; resume refreshes immediately",
+        "Existing command pending and failed-resume flows still pass"
+      ]
+    },
+    {
+      "configuration": "English, dark, font 1.3",
+      "passed": 1,
+      "scope": "Native result fixture render"
+    }
+  ],
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "d573995b13e8af7ecbb9dc8db0405ffbb4d90ab5dc11ba57341e952aff2d83ba",
+        "bytes": 15441111,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='3' versionName='0.1.2' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "56d2a9fe2576163fa4d3fdc3ed171a78e6ca5f528b64d7a2c0b1dd64d2bfc04c",
+        "bytes": 14117714,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='3' versionName='0.1.2' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/sync-fix-2026-11-02/Previens-moi-0.1.2-test.apk"
+  },
+  "visual_review": {
+    "result": "No clipped text or controls in inspected captures; original Material 3 design preserved",
+    "fixtures_only": true,
+    "captures": {
+      ".local/review-sync-fix/completed-fr.png": "8b2fb45003f26dfd180e682d1a3d92f1f7e89672bde01d1ccf16e59f2c02c8bb",
+      ".local/review-sync-fix/result-fr.png": "0e7bfad8ba662944b7a780b295f86eb5b6b945781bbbd5436a5dc6cd790960f8",
+      ".local/review-sync-fix/result-en-dark.png": "a6012cce534a8e7cc854a3b566782525c918dcbaf39d28379d6291a76feb7b68"
+    }
+  },
+  "paid_provider_calls": 0,
+  "additional_provider_cost_eur": 0,
+  "cumulative_cap_eur": 2,
+  "quotas_changed": false,
+  "user_data_modified": false,
+  "physical_phone_updated": false,
+  "github_push": false,
+  "not_claimed": [
+    "New real HelloWork/Firecrawl/OpenAI campaign",
+    "FCM timing or end-to-end delivery on physical OnePlus",
+    "New email code test",
+    "Release or long-term monitoring"
+  ],
+  "local_log_hashes": {
+    ".local/cloud/sync-fix-build.log": "a9b06b3f7ebe60c9b5ffb42135e6cb82c2534529cef8ec03355ca5e19a949e0e",
+    ".local/cloud/sync-fix-native-build.log": "33a135695d0806cfaf8019035bd04d66d6c008a7582a0a53da675d32464fe2c1",
+    ".local/cloud/sync-fix-native.log": "4f5b7fd693a9c81277030e11f555a1e3d9bdadb4290ee6d370ac5b89ef1da96a",
+    ".local/cloud/sync-fix-dark.log": "12d3352c568720dc295711c181c34cea285813bad13c872bb869210701f18356",
+    ".local/cloud/sync-fix-lint-final.log": "3b1ba5dc8212ec03a8e6a8e91691e051f907ff1dc9abcf22128a1d92a0b22d63",
+    ".local/cloud/sync-fix-boundaries.log": "f41d0f8c8a3c2fab80a10f9651a5a625efd8d9b8d599b3d86a65ec0b2b44d448"
+  }
+}

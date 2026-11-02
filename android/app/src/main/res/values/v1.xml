@@ -42,8 +42,8 @@
     <string name="v1_last_failed">The last check failed. Previous results remain available.</string>
     <string name="v1_stopping_body">The service is confirming that this watch has stopped.</string>
     <string name="v1_alerts_phone">Receive alerts on this phone</string>
-    <string name="v1_results">Results</string>
-    <string name="v1_initial">Already available at startup</string>
+    <string name="v1_results">What we found</string>
+    <string name="v1_initial">Found on the first search</string>
     <string name="v1_verified">Verified on %1$s</string>
     <string name="v1_criteria">What you are following</string>
     <string name="v1_sources_followed">Sources being followed</string>
@@ -52,7 +52,6 @@
     <string name="v1_source">Source</string>
     <string name="v1_verified_label">Verified on</string>
     <string name="v1_event_date">Event date</string>
-    <string name="v1_result_conditions">Verified at this time. Check the website for current conditions.</string>
     <string name="v1_open_site">View on the website</string>
     <string name="v1_erase_body">Your account, watches and results will be deleted. A recent sign-in is required to confirm this action.</string>
     <string name="v1_privacy">Privacy</string>

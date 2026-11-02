@@ -7,6 +7,11 @@ import fr.previensmoi.domain.model.*
 import fr.previensmoi.domain.repository.*
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,6 +46,7 @@ constructor(
     val state = mutableState.asStateFlow()
     private var pending: Command? = null
     private var findingEpoch = 0L
+    private val refreshMutex = Mutex()
 
     init {
         viewModelScope.launch {
@@ -56,25 +62,53 @@ constructor(
     }
 
     fun refresh() {
-        if (state.value.refreshing) return
-        mutableState.update { it.copy(refreshing = true, refreshFailed = false, offline = false) }
-        viewModelScope.launch {
-            try {
-                val result = repository.refresh()
-                mutableState.update {
-                    it.copy(
-                        refreshFailed = result != RefreshResult.Success,
-                        offline = result == RefreshResult.Offline,
-                    )
-                }
-                // A list read alone cannot settle a mutation: reconcile the original
-                // receipt as well, including after the bounded automatic wait ended.
-                if (result == RefreshResult.Success && state.value.commandUnconfirmed && !state.value.commandPending) {
-                    retryCommand()
-                }
-            } finally {
-                mutableState.update { it.copy(refreshing = false) }
+        viewModelScope.launch { refreshFromService(showLoading = true) }
+    }
+
+    /** Called only inside the signed-in screen's STARTED lifecycle. No provider work is triggered. */
+    suspend fun synchronizeWhileVisible() {
+        while (currentCoroutineContext().isActive) {
+            val result = refreshFromService(showLoading = false)
+            val preparing = state.value.commandUnconfirmed || state.value.watches.any {
+                it.status == WatchStatus.Pending ||
+                    it.remoteState in setOf(RemoteState.Starting, RemoteState.Stopping)
             }
+            // A slow/offline read backs off. Settled watches still receive later checks/results.
+            withTimeoutOrNull(if (result != RefreshResult.Success || !preparing) 30_000 else 3_000) {
+                // A newly submitted preparation wakes an otherwise idle reader immediately.
+                state.first { !preparing && (it.commandUnconfirmed || it.watches.any { watch ->
+                    watch.status == WatchStatus.Pending ||
+                        watch.remoteState in setOf(RemoteState.Starting, RemoteState.Stopping)
+                }) }
+            }
+        }
+    }
+
+    private suspend fun refreshFromService(showLoading: Boolean): RefreshResult? {
+        // Manual and lifecycle refreshes share one reader; keep existing content visible.
+        if (!refreshMutex.tryLock()) return null
+        if (showLoading) mutableState.update { it.copy(refreshing = true) }
+        return try {
+            val result = try {
+                repository.refresh()
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                RefreshResult.TemporaryFailure
+            }
+            mutableState.update {
+                it.copy(
+                    refreshFailed = result != RefreshResult.Success,
+                    offline = result == RefreshResult.Offline,
+                )
+            }
+            if (result == RefreshResult.Success && state.value.commandUnconfirmed && !state.value.commandPending) {
+                retryCommand()
+            }
+            result
+        } finally {
+            mutableState.update { it.copy(refreshing = false) }
+            refreshMutex.unlock()
         }
     }
 

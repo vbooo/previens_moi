@@ -1,8 +1,10 @@
 # Plan de validation et conduite du projet
 
-Mis à jour le 1er novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
+Mis à jour le 2 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
 
 ## Position actuelle
+
+**Correctif du 2 novembre livré — version connectée 0.1.2.** Synchronisation automatique au premier plan, relecture sur réception du push, notification du résultat trouvé dès la première recherche et textes allégés. Le scénario préparation → terminé passe sans actualisation ni push dans le test natif, avec annulation en arrière-plan/déconnexion. 52 tests unitaires remote, 69 demo, 8 parcours natifs et un rendu sombre/anglais passent ; Lint des deux variantes et frontières passent. Aucun changement serveur, nouvel essai fournisseur ou coût supplémentaire. Mise à jour et essai sur le OnePlus encore nécessaires. Voir [le bilan du correctif](../validation/foreground-sync/bilan.md).
 
 **État courant : S0 à S3 clos pour leur périmètre d’essai, S4 « comprendre puis préparer » livré, première passe UI Material 3 intégrée.** La variante `remoteDebug` utilise le service réel ; `demoDebug` reste un simulateur hors réseau. Les corrections du 29 octobre ont été vérifiées sur des copies des demandes Montpellier/PS5 et sur l’émulateur, sans observation longue ni publication revendiquée. Voir [les contrôles de préparation](../validation/preparation/checks.json).
 
