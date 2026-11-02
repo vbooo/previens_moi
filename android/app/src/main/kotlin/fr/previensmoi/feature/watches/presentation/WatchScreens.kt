@@ -41,8 +41,6 @@ fun HomeScreen(
     remote: Boolean = false,
     signedIn: Boolean = true,
     signIn: () -> Unit = {},
-    newRequest: (() -> Unit)? = null,
-    resumeDraft: (() -> Unit)? = null,
     sessionReady: Boolean = true,
 ) {
     PullToRefreshBox(
@@ -68,12 +66,6 @@ fun HomeScreen(
                             Text(stringResource(R.string.analyse))
                         }
                         HorizontalDivider()
-                    }
-                }
-            if (resumeDraft != null && sessionReady && creation.loaded && creation.draft.text.isNotBlank())
-                item {
-                    TextButton(resumeDraft, modifier = Modifier.testTag("resume_draft")) {
-                        Text(stringResource(R.string.v4_resume_draft))
                     }
                 }
             val firstLoad = remote && signedIn && !state.hasLoaded && state.watches.isEmpty() && !state.refreshFailed
@@ -454,9 +446,9 @@ fun DetailScreen(
             }
         }
         SectionCard(stringResource(R.string.v1_criteria)) {
-            if (watch.plan.criteria.isEmpty()) Text(watch.plan.draft.text)
+            if (criteriaForDisplay(watch.plan).isEmpty()) Text(watch.plan.draft.text)
             else
-                watch.plan.criteria.forEach {
+                criteriaForDisplay(watch.plan).forEach {
                     Text(it, style = MaterialTheme.typography.bodyMedium)
                 }
             watch.plan.draft.region

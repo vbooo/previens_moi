@@ -241,7 +241,13 @@ constructor(
 
     fun startNew() {
         if (state.value.step == CreationStep.Confirming || pending != null) return
-        val draft = RequestDraft(revision = state.value.draft.revision + 1, answers = mapOf("region" to "France"))
+        // Returning to a new request keeps the unsubmitted input, never an existing watch's edit target.
+        val current = state.value
+        val input = if (current.editingId == null) current.draft else RequestDraft()
+        val draft = input.copy(
+            revision = current.draft.revision + 1,
+            answers = if (input.region.isBlank()) input.answers + ("region" to "France") else input.answers,
+        )
         resetEditing(draft)
         persist(draft)
     }

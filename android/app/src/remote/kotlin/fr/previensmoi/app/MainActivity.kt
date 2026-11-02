@@ -370,12 +370,7 @@ class MainActivity : ComponentActivity() {
                                             remote = true,
                                             signedIn = account.session != null,
                                             sessionReady = account.loaded && (account.session == null || state.ownerId == account.session?.id),
-                                            resumeDraft = { stack.add(Create) },
                                             signIn = { stack.add(Account) },
-                                            newRequest = {
-                                                creation.startNew()
-                                                stack.add(Create)
-                                            },
                                         )
                                     }
                                     entry<Account> {

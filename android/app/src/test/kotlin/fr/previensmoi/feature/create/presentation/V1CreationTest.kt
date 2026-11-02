@@ -182,13 +182,14 @@ class V1CreationTest {
             assertTrue(vm.state.value.invalidSite)
             assertEquals(0, f.evaluations)
         }
-    @Test fun `new resets restored text site clarification and edit context`() = test { f ->
+    @Test fun `new retains unsubmitted input but clears existing watch edit context`() = test { f ->
         f.draft = RequestDraft("Old webhook request", answers = mapOf("preferred_site" to "https://old.example", "question" to "old"))
         val vm = f.vm(); runCurrent()
         vm.evaluate("fr"); runCurrent()
         vm.startNew(); runCurrent()
-        assertEquals("", vm.state.value.draft.text)
-        assertEquals(mapOf("region" to "France"), vm.state.value.draft.answers)
+        assertEquals("Old webhook request", vm.state.value.draft.text)
+        assertEquals("https://old.example", vm.state.value.draft.preferredSite)
+        assertEquals("France", vm.state.value.draft.region)
         assertEquals(CreationStep.Editing, vm.state.value.step)
         assertNull(vm.state.value.proposal)
         val watch = Watch("existing", Proposal("plan", 1, RequestDraft("Existing watch"), Long.MAX_VALUE), baselineAt = 0, version = 4)

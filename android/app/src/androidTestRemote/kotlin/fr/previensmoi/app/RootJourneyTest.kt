@@ -109,20 +109,21 @@ class RootJourneyTest {
         node.assertIsEnabled().performClick()
     }
     private fun back() { activity!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; compose.waitForIdle() }
-    @Test fun coldStartWaitsForConfirmedDataAndNewIsDistinctFromResumeDraft() {
+    @Test fun coldStartWaitsForConfirmedDataAndNewRetainsUnsubmittedInput() {
         signIn()
         runBlocking { LocalDraftRepository(context).save(RequestDraft("Old webhook draft")) }
         gate=CountDownLatch(1);launch(); waitTag("home_loading")
         compose.onNodeWithText(context.getString(R.string.v1_empty_title)).assertDoesNotExist()
         capture("loading")
         gate!!.countDown();gate=null;waitTag("watch_$watchId");capture("home")
-        tap("resume_draft");compose.onNodeWithTag("request").assertTextContains("Old webhook draft")
-        back();tap("new_request");capture("new")
-        compose.onNodeWithTag("request").assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("")))
-        compose.onNodeWithTag("request").performTextInput("My new request")
+        compose.onNodeWithTag("resume_draft").assertDoesNotExist()
+        tap("new_request");compose.onNodeWithTag("request").assertTextContains("Old webhook draft")
+        compose.onNodeWithTag("request").performTextReplacement("My new request")
         compose.waitForIdle(); activity!!.recreate();waitTag("request")
         compose.onNodeWithTag("request").assertTextContains("My new request")
-        back();tap("new_request")
+        back();capture("draft-home");tap("new_request");capture("retained-request")
+        compose.onNodeWithTag("request").assertTextContains("My new request")
+        compose.onNodeWithText(context.getString(R.string.discard)).performScrollTo().performClick()
         compose.onNodeWithTag("request").assert(SemanticsMatcher.expectValue(androidx.compose.ui.semantics.SemanticsProperties.EditableText, androidx.compose.ui.text.AnnotatedString("")))
     }
     @Test fun initialServerFailureIsNotAnEmptyAccountAndSignOutDoesNotStickLoading() {
@@ -170,6 +171,21 @@ class RootJourneyTest {
         findingGate!!.countDown();findingGate=null
         compose.waitUntil(20000) { compose.onAllNodesWithText(finding.getString("fact")).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithTag("watch_list").assertDoesNotExist()
+    }
+
+    @Test fun countrySummaryIsNotRepeatedInDetailsOrConfirmation() {
+        val plan = watch.getJSONObject("plan")
+        plan.getJSONObject("draft").put("answers", org.json.JSONArray().put(JSONObject().put("questionId", "region").put("value", "France")))
+        plan.put("criteria", org.json.JSONArray().put("Le pays de surveillance est la France").put("Promotions sur la PlayStation 5"))
+        proposal = JSONObject(plan.toString())
+        signIn();launch();waitTag("watch_$watchId");tap("watch_$watchId")
+        compose.onNodeWithText("Promotions sur la PlayStation 5").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Le pays de surveillance est la France").assertDoesNotExist()
+        compose.onNodeWithText("France").assertIsDisplayed();capture("country-detail")
+        back();tap("new_request");waitTag("request")
+        compose.onNodeWithTag("request").performTextReplacement("Promotions PS5")
+        tap("evaluate");waitTag("confirm")
+        compose.onNodeWithText("Le pays de surveillance est la France").assertDoesNotExist()
     }
 
     @Test fun captureIntegratedProductionScreensWithControlledHttp() {

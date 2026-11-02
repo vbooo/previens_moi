@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-02",
+  "base_commit": "aa20520",
+  "version": "0.1.7 (8)",
+  "unit_tests": {
+    "remote": {
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native_tests": {
+    "passed": 8,
+    "functional_root_journeys": 7,
+    "integrated_visual_flow": 1,
+    "environment": "Dedicated API36 phone emulator,1080x1920,density440; realMainActivity/repositories with controlledHTTP fixtures; no liveaccount/provider"
+  },
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "c1b31085f0c29724fc903a43041f49ffaab032eccbdeb80c21c33e83f446ddcb",
+        "bytes": 15586176,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='8' versionName='0.1.7' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "b4d17fe15a1a5815df8a7a72a8b44bc547347d6c21075fe223cc1a4858f14390",
+        "bytes": 14130960,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='8' versionName='0.1.7' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/draft-copy-2026-11-02/Previens-moi-0.1.7-test.apk"
+  },
+  "captures": [
+    {
+      "path": ".impeccable/review/draft-copy-2026-11-02/detail.png",
+      "sha256": "89132606b1af7a5524121cdcaa6628487eac8b87ef626d4e300cb3c67b1b4945"
+    },
+    {
+      "path": ".impeccable/review/draft-copy-2026-11-02/home.png",
+      "sha256": "744bb8e535bddcc537505646e931da8ddcc1bc02616f96f1271cfec27828285e"
+    },
+    {
+      "path": ".impeccable/review/draft-copy-2026-11-02/request.png",
+      "sha256": "aa00ec57746ee1d68a04388e5eb99ac550c73de50beb34785d183bdea0179956"
+    }
+  ],
+  "independent_review": {
+    "disposition": "ship",
+    "material_fixes": [],
+    "scope": "NarrowHome/inputretention/countrypresentation correction; not renewedwholeappqualification"
+  },
+  "boundaries": "passed",
+  "provider_cost_eur": 0,
+  "budget_cap_changed": false,
+  "server_changed": false,
+  "limitations": [
+    "No physicalOnePlus rerun of0.1.7",
+    "No paidengine/SMTP/FCM calls inthislot",
+    "No prolongedobservation or publication",
+    "Knownliteralcredentialscan isnotgeneralsecurityaudit"
+  ]
+}

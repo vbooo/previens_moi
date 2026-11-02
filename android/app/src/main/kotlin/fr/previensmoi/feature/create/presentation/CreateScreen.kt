@@ -320,11 +320,7 @@ fun CreateScreen(
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Medium,
                         )
-                        p.criteria
-                            .filterNot {
-                                it.equals("Région spécifiée : ${state.draft.region}", true) ||
-                                    it.equals("Specified region: ${state.draft.region}", true)
-                            }
+                        criteriaForDisplay(p)
                             .forEach {
                                 Text(
                                     it,

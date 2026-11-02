@@ -4,7 +4,7 @@ Application Android native pour demander à être prévenu d’une information p
 
 ## État au 2 novembre 2026
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.6** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/approved-ui/bilan.md) précise les tests natifs, les captures et l’essai restant sur OnePlus.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.7** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/draft-copy/bilan.md) précise les retouches de saisie et de texte, les tests et l’essai restant sur OnePlus. La [revue visuelle principale](validation/approved-ui/bilan.md) conserve les captures clair/sombre/texte agrandi.
 
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 
