@@ -109,7 +109,7 @@ fun statusLabel(status: WatchStatus) =
 
 @Composable
 fun Busy() {
-    LinearProgressIndicator(Modifier.fillMaxWidth())
+    LinearProgressIndicator(Modifier.fillMaxWidth().testTag("content_progress"))
 }
 
 @Composable

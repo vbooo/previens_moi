@@ -217,7 +217,9 @@ class MainActivity : ComponentActivity() {
                             expanded = route == Home,
                             loading = (route == Home && (!account.loaded ||
                                 (account.session != null && (state.refreshing || (!state.hasLoaded && !state.refreshFailed))))) ||
-                                (route is Detail && state.refreshing),
+                                (route is Detail && state.refreshing && account.loaded &&
+                                    account.session != null && state.ownerId == account.session?.id &&
+                                    state.watches.any { it.id == route.id }),
                             title = {
                                 Text(
                                     stringResource(

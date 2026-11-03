@@ -166,6 +166,28 @@ class RootJourneyTest {
         assertEquals(1,commands.size)
         assertEquals("Concerts à Montpellier",watch.getJSONObject("plan").getJSONObject("draft").getString("text"))
     }
+    @Test fun notificationDetailHasOneHorizontalIndicatorBeforeDataAndDuringRefresh() {
+        signIn();gate=CountDownLatch(1)
+        activity=ActivityScenario.launch(Intent(context,MainActivity::class.java).putExtra("watchId",watchId))
+        lateinit var model: fr.previensmoi.feature.watches.presentation.WatchesViewModel
+        activity!!.onActivity { model=androidx.lifecycle.ViewModelProvider(it)[fr.previensmoi.feature.watches.presentation.WatchesViewModel::class.java] }
+        compose.waitUntil(20000) { model.state.value.refreshing && model.state.value.ownerId != null }
+        waitTag("content_progress")
+        compose.onAllNodesWithTag("content_progress").assertCountEquals(1)
+        compose.onNodeWithTag("app_bar_progress").assertDoesNotExist()
+        compose.onNodeWithTag("watch_list").assertDoesNotExist()
+        capture("single-detail-initial")
+        gate!!.countDown();gate=null;waitTag("watch_status")
+        compose.waitUntil(20000) { !model.state.value.refreshing }
+        gate=CountDownLatch(1);tap("refresh_watches");waitTag("app_bar_progress")
+        compose.onAllNodesWithTag("app_bar_progress").assertCountEquals(1)
+        compose.onNodeWithTag("content_progress").assertDoesNotExist()
+        compose.onNodeWithTag("watch_status").assertIsDisplayed()
+        capture("single-detail-refresh")
+        gate!!.countDown();gate=null
+        compose.waitUntil(20000) { !model.state.value.refreshing }
+        compose.onNodeWithTag("app_bar_progress").assertDoesNotExist()
+    }
     @Test fun coldNotificationLoadsResultInPlaceThroughActualHttpClient() {
         signIn();findingGate=CountDownLatch(1)
         activity=ActivityScenario.launch(Intent(context,MainActivity::class.java).putExtra("findingId",finding.getString("id")))

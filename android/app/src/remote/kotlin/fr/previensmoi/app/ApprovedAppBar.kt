@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 /** One bar vocabulary for the real navigation, with a larger collection title. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -19,6 +20,6 @@ internal fun WatchAppBar(
     Column {
         if (expanded) MediumTopAppBar(title = title, navigationIcon = navigationIcon, actions = actions, colors = colors)
         else TopAppBar(title = title, navigationIcon = navigationIcon, actions = actions, colors = colors)
-        if (loading) LinearProgressIndicator(Modifier.fillMaxWidth())
+        if (loading) LinearProgressIndicator(Modifier.fillMaxWidth().testTag("app_bar_progress"))
     }
 }

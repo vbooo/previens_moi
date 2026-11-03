@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-03",
+  "base_commit": "d762550",
+  "version": "0.1.9 (10)",
+  "scope": "Single horizontal progressbar when opening watchDetail fromnotification, retaining existing loaded-detail refresh behavior",
+  "unit_tests": {
+    "remote": {
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native_tests": {
+    "unique_root_passed": 9,
+    "functional_journeys": 8,
+    "integrated_visual_journey": 1,
+    "dark_targeted_rerun": 1,
+    "environment": "DedicatedAPI36 phone1080x1920density440; actualMainActivity/Hilt/ViewModels/repositories with controlled loopbackHTTP",
+    "regression": "NotificationwatchId -> ownerready/refreshing/emptydata: exactlyonecontentline andnoappbarline; then manualrefresh: exactlyoneappbarline,nocontentline,dataremains; completeswithoutline",
+    "cold_finding_notification_regression": "passed"
+  },
+  "captures": [
+    {
+      "path": ".impeccable/review/single-progress-2026-11-03/single-detail-initial-dark.png",
+      "sha256": "ca9abf83736360b907479d7aee0e6c8c351654087f60b4113843ca92612bc996"
+    },
+    {
+      "path": ".impeccable/review/single-progress-2026-11-03/single-detail-initial-light.png",
+      "sha256": "fa13766eb53e9d559f8e4639b44c403246f4e290daa3b62c0627bb4ba5a137e1"
+    },
+    {
+      "path": ".impeccable/review/single-progress-2026-11-03/single-detail-refresh-dark.png",
+      "sha256": "bc5d8d521a871f250e81501e2d72d635f9ac41ebfda023c29115df53168e5fde"
+    },
+    {
+      "path": ".impeccable/review/single-progress-2026-11-03/single-detail-refresh-light.png",
+      "sha256": "1577a1146cc6870ace2d978854c988d4a7cd5d2b573407aef7ef94245615300b"
+    }
+  ],
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "9c3b351ac7367194c5aaa4873fa39900ac4a9b77714b2dffef3e25a61c6307c1",
+        "bytes": 15612538,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='10' versionName='0.1.9' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "2e904d82ef90ad43430516f43d2957989864b32ee4702a8d211eff2d907e57ab",
+        "bytes": 14151222,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='10' versionName='0.1.9' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/single-progress-2026-11-03/Previens-moi-0.1.9-test.apk"
+  },
+  "independent_review": {
+    "disposition": "ship",
+    "required_captures": 4,
+    "material_fixes": [],
+    "scope": "Narrow nativephone loading/refreshrendering;existingcircularrefreshindicator retained"
+  },
+  "design_system": "Existingtokens/components preserved",
+  "android_boundaries": "passed",
+  "provider_cost_eur": 0,
+  "server_changed": false,
+  "budget_or_quota_changed": false,
+  "limits": [
+    "No physicalOnePlus rerun for0.1.9",
+    "FixturesnotliveSMTP/FCM/provider work",
+    "No additional tablet,fontscaleorOSmatrixqualification",
+    "Knownliteralcredentialscan isnot a general securityaudit"
+  ]
+}
