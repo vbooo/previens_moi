@@ -106,7 +106,10 @@ class RootJourneyTest {
         val scrollable=generateSequence(node.fetchSemanticsNode().parent) { it.parent }
             .any { it.config.contains(androidx.compose.ui.semantics.SemanticsActions.ScrollBy) }
         if (scrollable) node.performScrollTo()
-        node.assertIsEnabled().performClick()
+        // Exercise the rendered control's action after scrolling. Platform IME inset animations
+        // can move touch coordinates after hiding the keyboard, outside Compose's test clock.
+        node.assertIsDisplayed().assertIsEnabled()
+        node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick) { it() }
     }
     private fun back() { activity!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; compose.waitForIdle() }
     @Test fun coldStartWaitsForConfirmedDataAndNewRetainsUnsubmittedInput() {
@@ -181,11 +184,37 @@ class RootJourneyTest {
         signIn();launch();waitTag("watch_$watchId");tap("watch_$watchId")
         compose.onNodeWithText("Promotions sur la PlayStation 5").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Le pays de surveillance est la France").assertDoesNotExist()
-        compose.onNodeWithText("France").assertIsDisplayed();capture("country-detail")
+        compose.onNodeWithText("France").performScrollTo().assertIsDisplayed();capture("country-detail")
         back();tap("new_request");waitTag("request")
         compose.onNodeWithTag("request").performTextReplacement("Promotions PS5")
-        tap("evaluate");waitTag("confirm")
+        tap("evaluate")
+        try { waitTag("confirm") } catch (failure: Throwable) {
+            activity!!.onActivity { current ->
+                val state = androidx.lifecycle.ViewModelProvider(current)[fr.previensmoi.feature.create.presentation.CreateViewModel::class.java].state.value
+                println("Controlled confirmation: step=${state.step}, error=${state.error}, loaded=${state.loaded}, requestMatches=${state.draft.text == "Promotions PS5"}, mockHttpRequests=${server.requestCount}")
+            }
+            throw failure
+        }
         compose.onNodeWithText("Le pays de surveillance est la France").assertDoesNotExist()
+        compose.onNodeWithText("Promotions sur la PlayStation 5").assertDoesNotExist()
+        compose.onNodeWithText(context.getString(R.string.v2_trial_note)).assertDoesNotExist()
+        compose.onNodeWithText(context.getString(R.string.v1_initial_results)).assertDoesNotExist()
+        capture("confirmation-clean")
+        tap("confirmation_info")
+        compose.onNodeWithText(context.getString(R.string.confirmation_info_title)).assertIsDisplayed()
+        compose.onNodeWithText("Promotions sur la PlayStation 5").assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.v2_trial_note)).performScrollTo().assertIsDisplayed()
+        capture("confirmation-info")
+        activity!!.recreate()
+        waitTag("close_confirmation_info")
+        tap("close_confirmation_info")
+        waitTag("confirm")
+        compose.onNodeWithText(context.getString(R.string.v2_trial_note)).assertDoesNotExist()
+        tap("confirmation_info");waitTag("close_confirmation_info");compose.waitForIdle()
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithTag("close_confirmation_info").assertDoesNotExist()
+        tap("confirm");waitTag("watch_status")
+        assertEquals(1, commands.size)
     }
 
     @Test fun captureIntegratedProductionScreensWithControlledHttp() {

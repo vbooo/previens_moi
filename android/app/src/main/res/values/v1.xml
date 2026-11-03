@@ -23,7 +23,7 @@
     <string name="v1_after_result">After a result</string>
     <string name="v1_mode_continuous">Continue following new information</string>
     <string name="v1_mode_once">Stop after the first result</string>
-    <string name="v1_initial_results">Information already available will be shown when preparation is complete.</string>
+    <string name="v1_initial_results">If matching results already exist, they will appear as soon as your watch is ready.</string>
     <string name="v1_confirm">Confirm</string>
     <string name="v1_login_title">Sign in to save your watch</string>
     <string name="v1_login_body">Find your watches and results in your account.</string>

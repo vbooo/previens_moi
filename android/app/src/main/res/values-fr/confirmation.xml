@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="confirmation_info_action">Informations sur ce suivi</string>
+    <string name="confirmation_info_title">À propos de ce suivi</string>
+    <string name="confirmation_info_close">Fermer les informations</string>
+    <string name="confirmation_info_criteria">Ta demande en détail</string>
+    <string name="confirmation_info_start">Au démarrage</string>
+    <string name="confirmation_info_limits">Ce que couvre le suivi</string>
+</resources>

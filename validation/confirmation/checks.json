@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-03",
+  "base_commit": "c2d54c8",
+  "version": "0.1.8 (9)",
+  "unit_tests": {
+    "remote": {
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "demo": {
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "remote": {
+      "Hint": 13
+    },
+    "demo": {
+      "Hint": 13
+    }
+  },
+  "native_tests": {
+    "unique_remote_passed": 13,
+    "root_functional_journeys": 7,
+    "integrated_visual_journey": 1,
+    "component_journeys": 5,
+    "dark_large_information_flow_repeats": 2,
+    "environment": "Dedicated API36 phone emulator,1080x1920,density440; realMainActivity/Hilt/ViewModels/repositories with controlled loopbackHTTP",
+    "scope": "Opening and closing info sheet, realBack after windowready, recreation, preserved confirmation with onecommand; mainpage details and paragraphs absent; no liveproviders",
+    "harness": "Root control actions use visible/enabled Compose semantics after scroll to avoid platformIME touch-coordinate animation races; nativeBack is keyevent. Component suite retains touch interactions."
+  },
+  "captures": [
+    {
+      "path": ".impeccable/review/confirmation-2026-11-03/confirmation-clean-dark.png",
+      "sha256": "7333ea908026dae1ae92cd438b494f18b715708aeec10f0e23b56d51fa359e12"
+    },
+    {
+      "path": ".impeccable/review/confirmation-2026-11-03/confirmation-clean-large.png",
+      "sha256": "65a92c9bcb3f74fefac812a9b43a45cfe3876fd4d6dcd906203ac5facfb8a61e"
+    },
+    {
+      "path": ".impeccable/review/confirmation-2026-11-03/confirmation-clean-light.png",
+      "sha256": "2dc680a8a82b06a1141d76be84cd6542fa18daab79746dc29269da4fe114c20f"
+    },
+    {
+      "path": ".impeccable/review/confirmation-2026-11-03/confirmation-info-dark.png",
+      "sha256": "223e6e7aa31c0e7ec02c7deb467b38094e4812b159ee2eba30b9b992986051ac"
+    },
+    {
+      "path": ".impeccable/review/confirmation-2026-11-03/confirmation-info-large.png",
+      "sha256": "605d3f504503c0a2af3a392ac175df4b19d121798bd34d4047be3077a3bd7bef"
+    },
+    {
+      "path": ".impeccable/review/confirmation-2026-11-03/confirmation-info-light.png",
+      "sha256": "be58ce835b96a0fe8acadd8485b4d14e298c1265997ee2445b5dd274e477cc06"
+    }
+  ],
+  "review": {
+    "initial": "ship",
+    "bounded_copy_finding": "sans connexion could imply offlineInternet",
+    "fix": "pages publiques, accessibles sans compte",
+    "final": "ship",
+    "material_fixes_remaining": []
+  },
+  "documentation": "Existingtokens/schema2 preserved; newnativeinfo sheet recipe added to DESIGN.md and .impeccable/design.json",
+  "artifacts": {
+    "artifacts": {
+      "remote": {
+        "sha256": "26b8c274d79de5fa10eca5213f20ddc99356bd24a000be608bd158f5e936ba60",
+        "bytes": 16149324,
+        "manifest": "package: name='fr.previensmoi.prototype.remote' versionCode='9' versionName='0.1.8' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      },
+      "demo": {
+        "sha256": "d5e69c3e6bbc2354dd3b6659b87823242d1073a63b9c8208057dbe9388d35557",
+        "bytes": 14711953,
+        "manifest": "package: name='fr.previensmoi.prototype.demo' versionCode='9' versionName='0.1.8' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'",
+        "license_sha256": "f7ae0f6c3e58d29c0d22243d0c993cd12ee26ee33f3babfd4ecb8a088ff2c020",
+        "known_server_credentials_detected": false
+      }
+    },
+    "remote_configuration_present": true,
+    "local_service": false,
+    "known_secret_values_checked": 34,
+    "secret_scan_scope": "Literal known local server credential values only; not a general security audit",
+    "test_apk": ".local/builds/confirmation-2026-11-03/Previens-moi-0.1.8-test.apk"
+  },
+  "android_boundaries": "passed",
+  "provider_cost_eur": 0,
+  "budget_cap_changed": false,
+  "server_changed": false,
+  "limits": [
+    "Controlledfixtures are not liveprovider/SMTP/FCM evidence",
+    "No physicalOnePlus test or TalkBack session for0.1.8",
+    "No tablet, fullOSmatrix, extendedobservation or publication qualification",
+    "Knownliteralcredentialscan is not general securityaudit"
+  ]
+}

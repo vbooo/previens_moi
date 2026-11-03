@@ -8,7 +8,7 @@
     <string name="clarification_title">Refine your request</string>
     <string name="answer_label">Which changes would you like to follow?</string>
     <string name="partial_text">Limited scope: this scenario only covers announcements from the fictional source shown. Other sources are excluded.</string>
-    <string name="baseline_info">The initial state is a baseline: it does not trigger a new alert.</string>
+    <string name="baseline_info">The first reading sets a starting point. You will then be notified of detected changes.</string>
     <string name="revise">Edit my request</string>
     <string name="discard">Clear my draft</string>
     <string name="login_action">Use the fictional account</string>

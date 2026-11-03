@@ -1,5 +1,7 @@
 package fr.previensmoi.feature.create.presentation
 
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -138,6 +140,7 @@ private fun ConfirmationSetting(label: String, value: String, onClick: (() -> Un
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateScreen(
     state: CreateUiState,
@@ -151,6 +154,10 @@ fun CreateScreen(
         CreationStep.Ready, CreationStep.Confirming -> "confirmation"
         CreationStep.Clarifying -> "clarifying:$questionIndex"
         else -> state.step.name
+    }
+    var showInfo by rememberSaveable(state.proposal?.id) { mutableStateOf(false) }
+    if (showInfo && state.step in setOf(CreationStep.Ready, CreationStep.Confirming)) {
+        state.proposal?.let { ConfirmationInfoSheet(it) { showInfo = false } }
     }
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
@@ -315,19 +322,20 @@ fun CreateScreen(
                         Modifier.padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        Text(
-                            p.title.ifBlank { p.draft.text },
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Medium,
-                        )
-                        criteriaForDisplay(p)
-                            .forEach {
-                                Text(
-                                    it,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                )
+                        Row(verticalAlignment = Alignment.Top) {
+                            Text(
+                                p.title.ifBlank { p.draft.text },
+                                Modifier.weight(1f),
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            IconButton(
+                                onClick = { showInfo = true },
+                                modifier = Modifier.testTag("confirmation_info"),
+                            ) {
+                                AppIcon(R.drawable.symbol_info, stringResource(R.string.confirmation_info_action))
                             }
+                        }
                     }
                 }
                 SectionCard(stringResource(R.string.v1_after_result)) {
@@ -398,19 +406,42 @@ fun CreateScreen(
                         )
                     }
                 }
-                SecondaryText(
-                    stringResource(
-                        if (p.method == "web_search") R.string.v1_initial_results
-                        else R.string.baseline_info,
-                    ),
-                )
-                Text(
-                    stringResource(R.string.v2_trial_note),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
                 FailureText(state.error)
             }
+        }
+    }
+}
+
+/** Optional context is shown on request; confirmation and real admission errors stay on the page. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ConfirmationInfoSheet(proposal: Proposal, dismiss: () -> Unit) {
+    ModalBottomSheet(
+        onDismissRequest = dismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+    ) {
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp).padding(bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.confirmation_info_title), Modifier.weight(1f),
+                    style = MaterialTheme.typography.titleLarge)
+                IconButton(dismiss, Modifier.testTag("close_confirmation_info")) {
+                    AppIcon(R.drawable.symbol_close, stringResource(R.string.confirmation_info_close))
+                }
+            }
+            val criteria = criteriaForDisplay(proposal)
+            if (criteria.isNotEmpty()) {
+                SectionTitle(stringResource(R.string.confirmation_info_criteria))
+                criteria.forEach { Text(it, style = MaterialTheme.typography.bodyMedium) }
+            }
+            SectionTitle(stringResource(R.string.confirmation_info_start))
+            Text(stringResource(if (proposal.method == "web_search") R.string.v1_initial_results
+                else R.string.baseline_info), style = MaterialTheme.typography.bodyMedium)
+            SectionTitle(stringResource(R.string.confirmation_info_limits))
+            Text(stringResource(R.string.v2_trial_note), style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

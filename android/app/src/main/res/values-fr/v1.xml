@@ -23,7 +23,7 @@
     <string name="v1_after_result">Après un résultat</string>
     <string name="v1_mode_continuous">Continuer à suivre les nouveautés</string>
     <string name="v1_mode_once">Arrêter après le premier résultat</string>
-    <string name="v1_initial_results">Les informations déjà disponibles seront affichées à la fin de la préparation.</string>
+    <string name="v1_initial_results">Si des résultats correspondent déjà à ta demande, ils seront affichés dès que le suivi sera prêt.</string>
     <string name="v1_confirm">Confirmer</string>
     <string name="v1_login_title">Connecte-toi pour enregistrer ton suivi</string>
     <string name="v1_login_body">Retrouve tes suivis et leurs résultats sur ton compte.</string>

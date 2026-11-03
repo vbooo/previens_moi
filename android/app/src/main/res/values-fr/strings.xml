@@ -8,7 +8,7 @@
     <string name="clarification_title">Précisons ta demande</string>
     <string name="answer_label">Quels changements souhaites-tu suivre ?</string>
     <string name="partial_text">Portée réduite : ce scénario couvre uniquement les annonces de la source fictive indiquée. Les autres sources sont exclues.</string>
-    <string name="baseline_info">L’état initial sert de référence : il ne déclenche pas de nouvelle alerte.</string>
+    <string name="baseline_info">La première lecture sert de point de départ. Tu seras ensuite prévenu des changements détectés.</string>
     <string name="revise">Modifier ma demande</string>
     <string name="discard">Effacer mon brouillon</string>
     <string name="login_action">Utiliser le compte fictif</string>

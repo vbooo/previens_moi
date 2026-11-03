@@ -811,10 +811,10 @@ class V1UiTest {
             compose.waitForIdle()
             if (args.getString("scroll") == "sources")
                 compose.onAllNodesWithTag("prepared_source").onLast().performScrollTo()
-            if (args.getString("scroll") == "disclosure")
-                compose
-                    .onNodeWithText(compose.activity.getString(R.string.v2_trial_note))
-                    .performScrollTo()
+            if (args.getString("scroll") == "disclosure") {
+                compose.onNodeWithTag("confirmation_info").performScrollTo().performClick()
+                compose.onNodeWithText(compose.activity.getString(R.string.v2_trial_note)).performScrollTo()
+            }
             if (args.getString("scroll") == "choices")
                 compose.onNodeWithTag("once").performScrollTo()
             capture(name + if (dark) "-dark" else args.getString("suffix", ""))

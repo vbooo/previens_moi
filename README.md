@@ -2,9 +2,9 @@
 
 Application Android native pour demander à être prévenu d’une information publique : une offre d’emploi, une promotion ou une annonce, par exemple. L’objectif prioritaire est une réalisation propre que Fabien peut comprendre, démontrer et défendre en entretien Android.
 
-## État au 2 novembre 2026
+## État au 3 novembre 2026
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.7** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/draft-copy/bilan.md) précise les retouches de saisie et de texte, les tests et l’essai restant sur OnePlus. La [revue visuelle principale](validation/approved-ui/bilan.md) conserve les captures clair/sombre/texte agrandi.
+Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.8** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/confirmation/bilan.md) décrit la confirmation allégée et son volet d’information. Les [retouches précédentes](validation/draft-copy/bilan.md) conservent la saisie et évitent le doublon de pays. La [revue visuelle principale](validation/approved-ui/bilan.md) conserve les captures clair/sombre/texte agrandi.
 
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 

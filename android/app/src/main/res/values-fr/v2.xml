@@ -7,5 +7,5 @@
     <string name="v2_capacity_title">Pourquoi ce suivi est suspendu ?</string>
     <string name="v2_capacity_body">Ce suivi a atteint une limite d’essai du service. La reprise n’est pas disponible ici. Tes résultats restent accessibles. Les crédits de l’essai sont partagés entre les comptes ; actualiser ne les réinitialise pas.</string>
     <string name="v2_limit_summary">Limite d’essai atteinte. Tes résultats restent accessibles.</string>
-    <string name="v2_trial_note">Sources publiques · essai limité. L’activation dépend des places et des crédits disponibles.</string>
+    <string name="v2_trial_note">Nous consultons des pages publiques, accessibles sans compte. Le suivi ne couvre pas tous les sites. Il peut être refusé ou suspendu si la limite d’utilisation du service est atteinte.</string>
 </resources>

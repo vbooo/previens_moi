@@ -1,8 +1,10 @@
 # Plan de validation et conduite du projet
 
-Mis à jour le 2 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
+Mis à jour le 3 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
 
 ## Position actuelle
+
+**Confirmation allégée — version connectée 0.1.8, 3 novembre.** Titre seul dans le résumé ; détails et explications reformulées accessibles par un volet Material 3. Les réglages, la confirmation, les restrictions à accepter et les erreurs restent visibles. 147 tests unitaires et 13 parcours natifs passent, avec répétition du volet en sombre/texte agrandi et six captures revues. Aucun coût fournisseur ni changement du moteur ; voir [le bilan courant](../validation/confirmation/bilan.md). La suite du plan reste l’essai complet OnePlus puis les contrôles de diffusion et l’observation dans le budget existant.
 
 **Retouches validées — version connectée 0.1.7, 2 novembre.** L’accueil ne propose plus de bouton de brouillon : Nouveau suivi retrouve une saisie non confirmée, avec effacement explicite dans le formulaire. La confirmation et le détail évitent les phrases autonomes répétant le pays. 65 tests unitaires remote, 82 demo et huit parcours natifs réussis ; Lint/frontières réussis, aucun coût fournisseur supplémentaire. UI V1 acceptée par Fabien avec ces retouches ; voir [le bilan courant](../validation/draft-copy/bilan.md). Prochaine étape : essai complet sur OnePlus, puis contrôles de diffusion et observation de sept jours à organiser dans le budget ; GitHub attend la création du dépôt. Benchmark général et modularisation restent différés.
 

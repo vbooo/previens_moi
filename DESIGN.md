@@ -438,6 +438,26 @@ components:
     textColor: "{colors.dark-on-surface}"
     rounded: "{rounded.extra-large}"
     padding: "24dp"
+  confirmation-info-action-light:
+    textColor: "{colors.light-on-primary-container}"
+    width: "48dp"
+    height: "48dp"
+  confirmation-info-action-dark:
+    textColor: "{colors.dark-on-primary-container}"
+    width: "48dp"
+    height: "48dp"
+  confirmation-info-sheet-light:
+    backgroundColor: "{colors.light-surface-container-low}"
+    textColor: "{colors.light-on-surface}"
+    typography: "{typography.body-medium}"
+    padding: "0 24dp 24dp"
+    width: "100%"
+  confirmation-info-sheet-dark:
+    backgroundColor: "{colors.dark-surface-container-low}"
+    textColor: "{colors.dark-on-surface}"
+    typography: "{typography.body-medium}"
+    padding: "0 24dp 24dp"
+    width: "100%"
 ---
 
 # Design System: Préviens-moi
@@ -449,6 +469,8 @@ components:
 Préviens-moi adopte les composants conventionnels Jetpack Compose Material 3, la police système Android et une palette graphite légèrement végétale, sur des surfaces neutres chaudes. Le FAB ambre distingue la création ; les états restent séparés des actions. La sobriété et les composants officiels choisis par Fabien gouvernent cette première version.
 
 Cette extraction documente le système intégré dans la production Android 0.1.6, après approbation des maquettes le 2 novembre 2026. Les couleurs viennent de PreviensTheme.kt, les compositions des composants Kotlin main et remote. La typographie et les formes héritées ont été vérifiées dans les sources de Material 3 résolu (1.4.0) ; aucune nouvelle police, durée ou élévation applicative n’est introduite. Les unités restent en dp et sp ; les aperçus HTML du sidecar sont consultatifs et ne remplacent pas Android natif.
+
+La confirmation reçoit une extension locale en Android 0.1.8 : les informations facultatives passent dans une feuille modale Material 3 ouverte à la demande. Cette recette prolonge le système accepté sans modifier sa palette, sa typographie ou ses formes ; les composants et tokens antérieurs restent la référence.
 
 **Key Characteristics:**
 
@@ -560,6 +582,18 @@ WatchAppBar utilise MediumTopAppBar sur l’accueil et TopAppBar sur les autres 
 ### Cards and collections
 
 Le résumé neutre du détail réunit statut, dates, explication utile et action disponible ; le titre principal reste au-dessus. La proposition conserve son conteneur primaire. Les résultats et sources sont des collections sur `surface-container-lowest`, les critères une SectionCard sur ce même rôle. Les ListItem transparents montrent la surface de leur collection ; résultats portent un chevron, sources une ouverture externe. Réutiliser sourceDomain pour les domaines.
+
+### Confirmation information
+
+La carte de proposition affiche le titre seul, sans sous-titre répété, et une action d’information à droite. Le titre garde `headlineSmall` Medium et son retour à la ligne ; la carte garde `primary-container` / `on-primary-container`, sa forme `large` et son retrait (20 dp). L’action est un IconButton natif à cible (48 × 48 dp), avec le symbole officiel Material Symbols Outlined `info` (24 dp) et un libellé accessible localisé (« Informations sur ce suivi » en français). Le symbole réutilise le SVG Google sous Apache 2.0, sans police d’icônes embarquée.
+
+L’action ouvre `ConfirmationInfoSheet`, un ModalBottomSheet Material 3 avec `skipPartiallyExpanded = true`. Surface, coins supérieurs `extra-large`, poignée, voile, animation et comportement de retour restent natifs. Le conteneur hérite de `surface-container-low` / `on-surface` ; aucun nouveau token de couleur, d’ombre ou de mouvement n’est introduit. Son contenu est une colonne défilante, avec retraits horizontaux et inférieur (24 dp) et espacement (16 dp). Le `padding` du frontmatter décrit ces retraits de contenu ; il n’ajoute pas un retrait supérieur uniforme. La feuille garde les insets système Material.
+
+Le titre « À propos de ce suivi » utilise `titleLarge`, avec une action fermer native à cible (48 × 48 dp), symbole `close` et libellé localisé. La fermeture est disponible par ce bouton, le retour Android ou un appui hors de la feuille. Les titres de section réemploient SectionTitle (`titleMedium` SemiBold) et le texte `bodyMedium`, sans hauteur fixe ni troncature. Le titre et le bouton de fermeture font partie du contenu défilant.
+
+Les sections sont « Ta demande en détail » uniquement si `criteriaForDisplay(proposal)` fournit des critères, « Au démarrage » selon la méthode de suivi, puis « Ce que couvre le suivi ». Pour `web_search`, le texte explique l’affichage des résultats déjà présents dès que le suivi est prêt ; pour les autres méthodes, il explique la première lecture comme point de départ des changements. Le texte de couverture précise « Nous consultons des pages publiques, accessibles sans compte. », puis l’absence de couverture de tous les sites et le refus ou la suspension possibles à la limite d’utilisation du service. Les ressources anglaises et françaises restent localisées ; la formulation « sans compte » décrit l’accès aux pages consultées.
+
+Cette feuille contient le contexte facultatif. Le consentement à une couverture partielle et FailureText restent directement dans la page, avec les réglages, les choix après résultat et le pied fixe de confirmation. Ne pas masquer une décision requise ou une erreur d’admission derrière l’action d’information.
 
 ### Watch status and chip
 

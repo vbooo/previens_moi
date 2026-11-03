@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="confirmation_info_action">Information about this watch</string>
+    <string name="confirmation_info_title">About this watch</string>
+    <string name="confirmation_info_close">Close information</string>
+    <string name="confirmation_info_criteria">Your request in detail</string>
+    <string name="confirmation_info_start">When it starts</string>
+    <string name="confirmation_info_limits">What this watch covers</string>
+</resources>
