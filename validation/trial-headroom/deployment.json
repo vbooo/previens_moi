@@ -1,0 +1,48 @@
+{
+  "authorizedMaxEUR": 2,
+  "modelBudgetIncreased": false,
+  "newPaidProviderCalls": 0,
+  "subscriptionOrTopup": false,
+  "providerCreditsBefore": 853,
+  "migration": "202611030037_trial_credit_headroom.sql",
+  "migrationSha256": "fd9655a81b3d051e7dde1bede21f0e661a56adff2f488544eaffe5e29d85508e",
+  "runtimeCreditLimit": 150,
+  "budgetBefore": {
+    "id": true,
+    "enabled": true,
+    "qualified": true,
+    "model_held": 0,
+    "model_used": 58989,
+    "credit_held": 20,
+    "credit_used": 80,
+    "model_limit": 100000,
+    "credit_limit": 100
+  },
+  "budgetAfter": {
+    "id": true,
+    "enabled": true,
+    "qualified": true,
+    "model_held": 0,
+    "model_used": 58989,
+    "credit_held": 20,
+    "credit_used": 80,
+    "model_limit": 100000,
+    "credit_limit": 150
+  },
+  "capacity": {
+    "id": true,
+    "slots": 3,
+    "enabled": true,
+    "reserved": 0,
+    "used_units": 13,
+    "budget_units": 14,
+    "reserved_units": 0,
+    "active_per_account": 3
+  },
+  "watchDataUnchanged": true,
+  "heldCreditsUnchanged": true,
+  "modelLimitsAndUsageUnchanged": true,
+  "activationPreflightAvailable": true,
+  "migrationHistoryRecorded": true,
+  "applied": true
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "activeDatabaseModified": false,
+  "providerCalls": 0,
+  "migrationPreservesAllRuntimeValues": true,
+  "headroomRestoresAdmissionWithoutResettingUsage": true,
+  "FiniteCeilingModelCapAndAccountingGuardsRemain": true
+}
