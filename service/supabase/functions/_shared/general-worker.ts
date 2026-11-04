@@ -59,13 +59,13 @@ export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,en
     const memory=c.memory!;let judgment;
     if(memory.baselineAt!==null&&documents.every(d=>d.changedText==='')){actual=0;judgment={status:'no_match',fact:'',reason:'No added source text.',identity:null,sameAs:null,evidence:[]};}
     else judgment=parseJudgment(await model(modelRequest('judgment',{draft:c.draft,intent,documents,previous:memory.facts.slice(-20),baseline:memory.baselineAt===null,observedAt:new Date().toISOString()})),c.draft,intent,documents,memory.facts);
-    const observedAt=new Date().toISOString();const decision=await decideNovelty(memory,work.generation,c.draft,intent,[{documents,response:judgment}],observedAt,c.retrievalHealthy===true);
+    const observedAt=new Date().toISOString();const decision=await decideNovelty(memory,work.generation,c.draft,intent,[{documents,response:judgment}],observedAt,c.retrievalHealthy===true,c.priorDocuments??[]);
     if(decision.memory.facts.length>80)throw new Error('Fact memory limit reached');
     const initial=stable&&memory.baselineAt===null&&decision.outcome==='baseline'&&judgment.status==='match' ? decision.memory.facts.filter(f=>!memory.facts.some(old=>old.key===f.key)).map(f=>({fact:f,evidence:judgment.evidence,publication:null})) : [];
     if(initial.length&&c.draft.mode==='once')decision.memory.completed=true;
     const findings=[...decision.findings,...initial].map(f=>{
      const evidence=[...new Map(f.evidence.map(e=>[e.url+'\0'+e.quote,{url:e.url,quote:e.quote,observedAt,publication:documents.find(d=>d.url===e.url)?.publication?{precision:'instant',value:documents.find(d=>d.url===e.url)!.publication}:null}])).values()].slice(0,10);
-     const finding={id:crypto.randomUUID(),watchId:work.watchId,planId:c.plan.id,planVersion:c.plan.version,title:intent.title,fact:f.fact.text,reason:judgment.reason,criteriaSnapshot:c.plan.criteria,evidence,observedAt,event:f.fact.identity.when&&/^\d{4}-\d\d-\d\d$/.test(f.fact.identity.when)&&Number.isFinite(Date.parse(f.fact.identity.when))?{precision:'date',value:f.fact.identity.when}:null,noveltyBasis:initial.length?'initial':f.publication?'verified_publication':'baseline_change',correctsFindingId:null};
+     const finding={id:crypto.randomUUID(),watchId:work.watchId,planId:c.plan.id,planVersion:c.plan.version,title:f.fact.job?[f.fact.job.title,f.fact.job.employer].join(' — ').slice(0,200):intent.title,fact:f.fact.text,reason:judgment.reason,criteriaSnapshot:c.plan.criteria,evidence,observedAt,event:f.fact.identity.when&&/^\d{4}-\d\d-\d\d$/.test(f.fact.identity.when)&&Number.isFinite(Date.parse(f.fact.identity.when))?{precision:'date',value:f.fact.identity.when}:null,noveltyBasis:initial.length?'initial':f.publication?'verified_publication':'baseline_change',correctsFindingId:null};
      if(!valid('Finding',finding))throw new Error('Invalid general finding');return {key:f.fact.key,finding};
     });
     result={decision,findings,documents:decision.outcome==='degraded'?c.priorDocuments??[]:documents,observedAt};

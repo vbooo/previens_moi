@@ -1,8 +1,10 @@
 # Plan de validation et conduite du projet
 
-Mis à jour le 3 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
+Mis à jour le 4 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
 
 ## Position actuelle
+
+**Alertes d’emploi corrigées — 4 novembre.** Fabien valide la recette physique du point 1, puis signale des notifications nocturnes répétées. Le serveur exige désormais une annonce individuelle prouvée, distingue les identités d’offres des dates/résumés et conserve une référence silencieuse lors de la transition des suivis existants. 124 tests service, 34 exemples de contrat et trois cas IA réels ciblés réussissent ; coût estimé 0,002884 USD dans l’enveloppe existante. Pas de nouvel APK, source/fréquence/quota inchangés. Voir [le bilan et ses limites](../validation/job-opportunities/bilan.md). La qualité des prochaines alertes reste à observer ; cela ne clôture pas les sept jours ni la publication.
 
 **Chargement du détail corrigé — version connectée 0.1.9, 3 novembre.** Une seule barre horizontale lors de l’ouverture depuis une notification et pendant l’actualisation, avec conservation du contenu déjà chargé. 147 tests unitaires et neuf parcours natifs passent ; scénario ciblé repassé en sombre, quatre captures revues. Aucun changement du moteur, du serveur ou des plafonds. Voir [le bilan courant](../validation/single-progress/bilan.md). Les arbitrages de quotas et de budget d’exploitation publique restent ouverts, distincts de l’enveloppe d’essai.
 

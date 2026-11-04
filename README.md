@@ -6,6 +6,8 @@ Application Android native pour demander à être prévenu d’une information p
 
 Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.9** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/single-progress/bilan.md) corrige le doublon de chargement du détail après notification. Le [bilan de confirmation](validation/confirmation/bilan.md) décrit le volet d’information. Les [retouches précédentes](validation/draft-copy/bilan.md) conservent la saisie et évitent le doublon de pays. La [revue visuelle principale](validation/approved-ui/bilan.md) conserve les captures clair/sombre/texte agrandi.
 
+Le [correctif des alertes d’emploi du 4 novembre](validation/job-opportunities/bilan.md) exige une annonce précise et renforce la distinction entre une offre nouvelle et une liste simplement mise à jour. Il est déployé côté serveur, sans nouvel APK ; les mêmes URL peuvent rester utiles pour des opportunités réellement distinctes.
+
 **La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
 
 ## Ce que fait l’application

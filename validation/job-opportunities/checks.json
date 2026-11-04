@@ -1,0 +1,139 @@
+{
+  "date": "2026-11-04",
+  "incident": "Repeated generic job-listing alerts instead of distinct relevant vacancies",
+  "serviceTests": {
+    "passed": 124,
+    "failed": 0,
+    "newTargetedTests": 19
+  },
+  "typeCheck": true,
+  "contractFixturesPassed": 34,
+  "realModelQualification": {
+    "calls": 3,
+    "passed": 3,
+    "cases": [
+      {
+        "id": "precise-screenwriter",
+        "expected": "match",
+        "status": "match",
+        "passed": true
+      },
+      {
+        "id": "related-copywriting",
+        "expected": "no_match",
+        "status": "no_match",
+        "passed": true
+      },
+      {
+        "id": "mixed-cards-geography",
+        "expected": "no_match",
+        "status": "no_match",
+        "passed": true
+      }
+    ],
+    "estimatedUSD": 0.002884,
+    "source": "synthetic controlled documents, no real web discovery",
+    "currentParserReplay": {
+      "cases": [
+        {
+          "id": "precise-screenwriter",
+          "passed": true,
+          "sameModelRequest": true
+        },
+        {
+          "id": "related-copywriting",
+          "passed": true,
+          "sameModelRequest": true
+        },
+        {
+          "id": "mixed-cards-geography",
+          "passed": true,
+          "sameModelRequest": true
+        }
+      ],
+      "passed": true,
+      "newPaidCalls": 0
+    },
+    "newFirecrawlCalls": 0,
+    "automaticRetries": 0
+  },
+  "costAccounting": {
+    "developerTestsInSeparateExistingQualificationLedger": true,
+    "developerTestExpenseNotForgivenOrDeleted": true,
+    "runtimeModelLimitUSD": 0.1,
+    "runtimeCreditLimit": 150,
+    "historicalQualificationPlusTheseTestsUSD": 0.09013,
+    "qualificationPlusRuntimeUpperUSD": 0.19013000000000002,
+    "existingS3EnvelopeUSD": 0.4,
+    "existingCumulativeConservativeBoundEUR": 0.99587625,
+    "authorizedMaxEUR": 2,
+    "invoiceReconciled": false,
+    "subscriptionOrTopUp": false
+  },
+  "deployment": {
+    "date": "2026-11-04T08:56:36.679199+00:00",
+    "before": {
+      "public": {
+        "version": 15,
+        "updated_at": 1793782016559,
+        "verify_jwt": false,
+        "status": "ACTIVE"
+      },
+      "worker": {
+        "version": 29,
+        "updated_at": 1793782013755,
+        "verify_jwt": false,
+        "status": "ACTIVE"
+      }
+    },
+    "after": {
+      "public": {
+        "version": 16,
+        "updated_at": 1793782592283,
+        "verify_jwt": false,
+        "status": "ACTIVE"
+      },
+      "worker": {
+        "version": 30,
+        "updated_at": 1793782580839,
+        "verify_jwt": false,
+        "status": "ACTIVE"
+      }
+    },
+    "httpChecks": {
+      "health": {
+        "status": 200,
+        "passed": true
+      },
+      "workerUnauthorized": {
+        "status": 403,
+        "passed": true
+      },
+      "understandingUnauthorized": {
+        "status": 401,
+        "passed": true
+      }
+    },
+    "databaseMigration": false,
+    "quotaLimitsChanged": false,
+    "manualWorkerInvocation": false,
+    "userDataRewritten": false,
+    "newAndroidBuild": false,
+    "passed": true
+  },
+  "codeSha256": {
+    "service/supabase/functions/_shared/job-opportunity.ts": "9496faf05e7686eeb73f861abd2aa4174cc47d17e0341c705210861a70b16c51",
+    "service/supabase/functions/_shared/semantic.ts": "73594b56205bf7d4e6bd787adbe5a4cccb32a8de548bf38130c93e9d43adf524",
+    "service/supabase/functions/_shared/novelty.ts": "62537739456512795d286728060a40242bb2e8898ee5e66ccbef00823a920f64",
+    "service/supabase/functions/_shared/general-worker.ts": "639ff47d16ea6313437f3f259a69fec37e2a4c8ecb79194716be4867d81de40f",
+    "service/tests/job_opportunity_test.ts": "425707a7cb5c185f9a3834716c2f150d90048803195fc2ec7bbed0584e0858aa"
+  },
+  "limits": [
+    "AI relevance checked on three targeted cases only, not a broad benchmark",
+    "Listing URL may remain the result source; no unverified direct job link invented",
+    "Conservative fallback identity can merge similar unreferenced vacancies",
+    "First valid existing-watch job assessment establishes a silent stricter reference; history retained",
+    "Conservative old-publication rule can omit updated older postings",
+    "No new overnight observation or physical Android run performed for this server-only fix"
+  ]
+}
