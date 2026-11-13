@@ -2,14 +2,18 @@ package fr.previensmoi.feature.session.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fr.previensmoi.R
@@ -23,6 +27,24 @@ fun SessionScreen(
     notificationsEnabled: Boolean = true,
     notificationSettings: () -> Unit = {},
 ) {
+    val focus = LocalFocusManager.current
+    val keyboard = LocalSoftwareKeyboardController.current
+    val canSend = !state.busy && state.resendSeconds == 0 && state.email.contains('@')
+    val canVerify = !state.busy && state.code.length == 6
+    val send = {
+        if (canSend) {
+            focus.clearFocus()
+            keyboard?.hide()
+            vm.send()
+        }
+    }
+    val verify = {
+        if (canVerify) {
+            focus.clearFocus()
+            keyboard?.hide()
+            vm.verify()
+        }
+    }
     var deleting by rememberSaveable { mutableStateOf(false) }
     var privacy by rememberSaveable { mutableStateOf(false) }
     if (deleting)
@@ -115,13 +137,14 @@ fun SessionScreen(
                 shape = MaterialTheme.shapes.medium,
                 colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
                 label = { Text(stringResource(R.string.email_label)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { send() }),
                 modifier = Modifier.fillMaxWidth().testTag("email"),
             )
             FailureText(state.error)
             Button(
-                vm::send,
-                enabled = !state.busy && state.resendSeconds == 0 && state.email.contains('@'),
+                send,
+                enabled = canSend,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("send_code"),
                 shape = MaterialTheme.shapes.medium,
             ) {
@@ -145,7 +168,8 @@ fun SessionScreen(
                 shape = MaterialTheme.shapes.medium,
                 colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
                 label = { Text(stringResource(R.string.v1_code_label)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { verify() }),
                 modifier = Modifier.fillMaxWidth().testTag("otp"),
             )
             if (state.error != null)
@@ -154,8 +178,8 @@ fun SessionScreen(
                     color = MaterialTheme.colorScheme.error,
                 )
             Button(
-                vm::verify,
-                enabled = !state.busy && state.code.length == 6,
+                verify,
+                enabled = canVerify,
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("verify_code"),
                 shape = MaterialTheme.shapes.medium,
             ) {

@@ -1,8 +1,10 @@
 # Plan de validation et conduite du projet
 
-Mis à jour le 4 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
+Mis à jour le 13 novembre 2026. **Document de référence pour l'ordre du travail et l'état courant.** Le recadrage méthodologique a été validé par Fabien ; les choix de fournisseur de production restent ouverts. Les documents 01 à 09 conservent les décisions produit, Android et qualité déjà validées.
 
 ## Position actuelle
+
+**Finitions utiles — 0.1.10, 13 novembre.** Validation e-mail/code depuis le clavier, correction du déplacement de la fenêtre par `adjustResize`, clé stable des résultats. Pas de changement d’espacements ni optimisation spéculative. 147 tests unitaires, dix parcours natifs distincts dont deux répétés en sombre/130 %, Lint et frontières réussis ; revue native ship. Aucun appel fournisseur ni coût nouveau. Voir [le bilan](../validation/form-polish/bilan.md). Nouveau comportement à confirmer sur OnePlus ; GitHub reste différé à la demande de Fabien. Les limites de publication et d’exploitation restent ouvertes.
 
 **Alertes d’emploi corrigées — 4 novembre.** Fabien valide la recette physique du point 1, puis signale des notifications nocturnes répétées. Le serveur exige désormais une annonce individuelle prouvée, distingue les identités d’offres des dates/résumés et conserve une référence silencieuse lors de la transition des suivis existants. 124 tests service, 34 exemples de contrat et trois cas IA réels ciblés réussissent ; coût estimé 0,002884 USD dans l’enveloppe existante. Pas de nouvel APK, source/fréquence/quota inchangés. Voir [le bilan et ses limites](../validation/job-opportunities/bilan.md). La qualité des prochaines alertes reste à observer ; cela ne clôture pas les sept jours ni la publication.
 

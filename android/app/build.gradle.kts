@@ -29,8 +29,8 @@ android {
         minSdk = 23
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = 10
-        versionName = "0.1.9"
+        versionCode = 11
+        versionName = "0.1.10"
     }
     flavorDimensions += "environment"
     productFlavors {

@@ -40,6 +40,8 @@ class RootJourneyTest {
     @Volatile private var gate: CountDownLatch? = null
     @Volatile private var tokenLifetime = 3600
     private val commands = java.util.concurrent.CopyOnWriteArrayList<String>()
+    private val authSends = java.util.concurrent.atomic.AtomicInteger()
+    private val authVerifications = java.util.concurrent.atomic.AtomicInteger()
     private fun response(body: String, status: Int = 200) = MockResponse.Builder().code(status).addHeader("Content-Type", "application/json").addHeader("Connection", "close").body(body).build()
     private fun error(status: Int) = response("""{"code":"temporary_failure","requestId":"019a05be-8000-7000-8000-000000000099","retryAfterSeconds":null,"scope":null}""",status)
     @Before fun setup() {
@@ -52,7 +54,7 @@ class RootJourneyTest {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 val path=request.url.encodedPath
                 return when {
-                    path.endsWith("/otp") -> response("{}")
+                    path.endsWith("/otp") -> { authSends.incrementAndGet(); response("{}") }
                     path.endsWith("/preview-sessions") -> response("""{"token":"local-fixture-preview","expiresAt":"2099-01-01T00:00:00Z"}""")
                     path.endsWith("/understandings") -> {
                         val body=JSONObject(request.body!!.utf8())
@@ -61,7 +63,7 @@ class RootJourneyTest {
                     }
                     path.contains("/proposals/") -> response(proposal.toString())
                     path.contains("/findings/") -> { findingGate?.await(15,TimeUnit.SECONDS); response(finding.toString()) }
-                    path.endsWith("/verify") -> response("""{"access_token":"local-fixture-token","refresh_token":"local-fixture-refresh","expires_in":$tokenLifetime,"user":{"id":"019a05be-8000-7000-8000-000000000088","email":"fixture@example.test"}}""")
+                    path.endsWith("/verify") -> { authVerifications.incrementAndGet(); response("""{"access_token":"local-fixture-token","refresh_token":"local-fixture-refresh","expires_in":$tokenLifetime,"user":{"id":"019a05be-8000-7000-8000-000000000088","email":"fixture@example.test"}}""") }
                     path.endsWith("/token") -> response("{}",400)
                     path.endsWith("/logout") || path.contains("/devices/") -> MockResponse.Builder().code(204).addHeader("Connection", "close").build()
                     path.endsWith("/watches") -> {
@@ -165,6 +167,56 @@ class RootJourneyTest {
         tap("evaluate");waitTag("confirm");activity!!.recreate();waitTag("confirm");tap("confirm");waitTag("watch_status")
         assertEquals(1,commands.size)
         assertEquals("Concerts à Montpellier",watch.getJSONObject("plan").getJSONObject("draft").getString("text"))
+    }
+    private fun imeVisible(): Boolean {
+        var shown = false
+        activity!!.onActivity { shown = it.window.decorView.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == true }
+        return shown
+    }
+    private fun focusAboveKeyboard(tag: String) {
+        val node = compose.onNodeWithTag(tag)
+        node.performScrollTo().performClick()
+        compose.waitUntil(5000) { imeVisible() }
+        node.assertIsDisplayed()
+        var keyboardTop = 0
+        activity!!.onActivity { current ->
+            val view = current.window.decorView
+            keyboardTop = view.height - view.rootWindowInsets.getInsets(android.view.WindowInsets.Type.ime()).bottom
+        }
+        // Both values are native window pixels, not dp or test-root coordinates.
+        compose.waitUntil(5000) { node.fetchSemanticsNode().boundsInWindow.bottom <= keyboardTop + 2 }
+        var statusBarBottom = 0
+        activity!!.onActivity { statusBarBottom = it.window.decorView.rootWindowInsets.getInsets(android.view.WindowInsets.Type.statusBars()).top }
+        val backButton = compose.onNodeWithContentDescription(context.getString(R.string.back))
+        backButton.assertIsDisplayed()
+        assertTrue("IME must not pan navigation under the status bar", backButton.fetchSemanticsNode().boundsInWindow.top >= statusBarBottom - 2)
+    }
+    @Test fun keyboardSubmitsOnlyValidEmailAndCodeThroughActualRepositories() {
+        launch();tap("account");waitTag("email")
+        compose.onNodeWithTag("email").performTextReplacement("invalid")
+        focusAboveKeyboard("email");compose.onNodeWithTag("email").performImeAction()
+        compose.onNodeWithTag("send_code").assertIsNotEnabled();assertEquals(0,authSends.get())
+        compose.onNodeWithTag("email").performTextReplacement("fixture@example.test")
+        focusAboveKeyboard("email");capture("forms-email")
+        compose.onNodeWithTag("email").performImeAction();waitTag("otp")
+        compose.waitUntil(5000) { !imeVisible() };assertEquals(1,authSends.get())
+        compose.onNodeWithTag("otp").performTextReplacement("123")
+        focusAboveKeyboard("otp");compose.onNodeWithTag("otp").performImeAction()
+        compose.onNodeWithTag("verify_code").assertIsNotEnabled();assertEquals(0,authVerifications.get())
+        compose.onNodeWithTag("otp").performTextReplacement("123456")
+        focusAboveKeyboard("otp");capture("forms-code")
+        compose.onNodeWithTag("otp").performImeAction();waitTag("watch_$watchId")
+        compose.waitUntil(5000) { !imeVisible() };assertEquals(1,authVerifications.get())
+    }
+    @Test fun requestAndOptionalFieldsRemainReachableAboveKeyboard() {
+        signIn()
+        runBlocking { LocalDraftRepository(context).save(RequestDraft(text="Préviens-moi des prochains concerts.\nJe souhaite suivre les annonces publiques.\nConserver mes critères et ma ville.\nAvec des informations détaillées.",answers=mapOf("preferred_site" to "https://example.org/agenda","region" to "France"))) }
+        launch();tap("new_request");waitTag("request")
+        for (tag in listOf("request","preferred_site","region")) {
+            focusAboveKeyboard(tag);capture("forms-$tag")
+        }
+        // Scrolling to the submission control while IME is open must remain possible.
+        compose.onNodeWithTag("evaluate").performScrollTo().assertIsDisplayed().assertIsEnabled()
     }
     @Test fun notificationDetailHasOneHorizontalIndicatorBeforeDataAndDuringRefresh() {
         signIn();gate=CountDownLatch(1)

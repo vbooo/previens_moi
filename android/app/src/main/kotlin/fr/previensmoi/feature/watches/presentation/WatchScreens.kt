@@ -423,26 +423,28 @@ fun DetailScreen(
         }
         if (findings.isNotEmpty()) CollectionCard(stringResource(R.string.v1_results)) {
             findings.forEachIndexed { index, finding ->
-                if (index > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                ListItem(
-                    colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                    headlineContent = {
-                        Text(
-                            finding.title.ifBlank { stringResource(R.string.finding_title) },
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    supportingContent = {
-                        Column {
-                            SecondaryText(
-                                stringResource(R.string.v1_verified, dateText(finding.observedAt)),
+                key(finding.id) {
+                    if (index > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    ListItem(
+                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+                        headlineContent = {
+                            Text(
+                                finding.title.ifBlank { stringResource(R.string.finding_title) },
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
                             )
-                        }
-                    },
-                    trailingContent = { AppIcon(R.drawable.symbol_chevron_right) },
-                    modifier = Modifier.clickable { openFinding(finding.id) }.testTag("finding"),
-                )
+                        },
+                        supportingContent = {
+                            Column {
+                                SecondaryText(
+                                    stringResource(R.string.v1_verified, dateText(finding.observedAt)),
+                                )
+                            }
+                        },
+                        trailingContent = { AppIcon(R.drawable.symbol_chevron_right) },
+                        modifier = Modifier.clickable { openFinding(finding.id) }.testTag("finding"),
+                    )
+                }
             }
         }
         SectionCard(stringResource(R.string.v1_criteria)) {

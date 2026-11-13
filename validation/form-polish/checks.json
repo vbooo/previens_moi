@@ -1,0 +1,72 @@
+{
+  "version": "0.1.10",
+  "versionCode": 11,
+  "connectedBuild": true,
+  "knownServerValuesScanned": 7,
+  "knownServerValuesAbsent": true,
+  "scope": "known literal server values only; not a general security audit",
+  "unitTests": {
+    "Demo": {
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Remote": {
+      "tests": 65,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "lint": {
+    "demo": {
+      "Hint": 13
+    },
+    "remote": {
+      "Hint": 13
+    }
+  },
+  "androidBoundaries": true,
+  "nativeKeyboardFlows": {
+    "unique": 2,
+    "configurations": [
+      "light font1.0",
+      "dark font1.3"
+    ],
+    "executions": 4,
+    "existingJourneysPassed": 8
+  },
+  "newPaidCalls": 0,
+  "apk": {
+    "path": ".local/builds/form-polish-2026-11-13/Previens-moi-0.1.10-test.apk",
+    "sha256": "b9e58fe6b9a732ca1706e269340560a333137a8225c31f9275112d56b74e2d35",
+    "bytes": 15592346
+  },
+  "date": "2026-11-13",
+  "finishReview": "ship",
+  "designDocumenter": "preserve",
+  "designArtifactsChanged": false,
+  "physicalPhoneTested": false,
+  "serverChanged": false,
+  "caption": "Native API36 emulator, 1080x1920, density440; light font1.0 and dark font1.3; controlled HTTP only",
+  "codeSha256": {
+    "android/app/src/main/AndroidManifest.xml": "d3c1c826eac40e020bce989ff3ff17dc5986b5d79740d3dab8b0087ff1daa714",
+    "android/app/src/main/kotlin/fr/previensmoi/feature/session/presentation/SessionScreen.kt": "c2d7ec8caa77bc377283dad10bf3b81f17850921d81a8ba56e4654ddb0458d45",
+    "android/app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchScreens.kt": "f42d70cbb0ca5ca05744301023fc1db5a3e2a521f89cc5a8ffcb7b27b3e769c6",
+    "android/app/src/androidTestRemote/kotlin/fr/previensmoi/app/RootJourneyTest.kt": "957ef563c323c77fe3269e6231bf2d9bb4efad6e76b757d95409899c36f5d2d9"
+  },
+  "screenshots": {
+    "email-light.png": "36b6df06d21251c04397449fdc847ff68315984ff0b7db5bd0fbbba57648ad3a",
+    "region-light.png": "588b4a447efbf4cee2ffdc529a8fa9df9faea16ee37bef28a2f567e76e0e16aa",
+    "email-dark-large.png": "5b50647bb2a400c9bf1df73291617e8fb7b4442f1b8c698db982a3b2d78d6b63",
+    "before-keyboard-pan.png": "cd59ac0d6ba9539e7c88d50e01c4c8a2d198850650741c69aaeeb8c2909122ba",
+    "code-dark-large.png": "fd6f7307f3793694dc33b3ce00c7be5625101deb65e9143ef1ad76b469eb51f9",
+    "preferred_site-light.png": "a46fef2a9fe791f410c9ad94f9dd56805df1150b99f033f9996a5f08ec64129e",
+    "request-dark-large.png": "3b7e1f20655a333c0faa97729c729d25f18511c5f500e9b8fb60b710d72872de",
+    "code-light.png": "4ec423857b98674ce5d545119879fd3b849e076c330fd82b1d7f25abc8f17742",
+    "region-dark-large.png": "d7a88f053e699b17c81bed30e882c891b7ee5f8f18a249553f4a100a354ed44f",
+    "preferred_site-dark-large.png": "82806222632e51dcfb7ec92ea2b16b8d44eb776ad13baab0c8d9dcd446571cab",
+    "request-light.png": "41a97f660d9b0dfc5540778fc7aa4afe76a2dc582ee3fa9ccf7a8144621f4b00"
+  }
+}

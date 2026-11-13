@@ -2,6 +2,8 @@
 
 Client natif Kotlin / Jetpack Compose / Material 3, avec MVVM et dépendances orientées vers un domaine indépendant d’Android. Un seul module Gradle. Les recherches et la surveillance durable tournent dans le service Supabase, pas dans le téléphone.
 
+Version connectée courante : **0.1.10** — [finitions clavier et résultats](../validation/form-polish/bilan.md). La validation par le clavier suit les conditions des boutons ; la fenêtre garde sa navigation visible pendant la saisie.
+
 ## Choisir la bonne variante
 
 | Variante | Nom sur le téléphone | Usage |
