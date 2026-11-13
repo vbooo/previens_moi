@@ -27,3 +27,7 @@ supabase/.temp/
 
 # Public mobile client configuration for this checkout; generated, never server keys
 android/client.properties
+
+# IDE assistant plans and machine-specific daemon selection
+.artifacts/
+android/gradle/gradle-daemon-jvm.properties

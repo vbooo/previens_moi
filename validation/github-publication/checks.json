@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-13",
+  "repository": "https://github.com/vbooo/previens_moi",
+  "historicalCommitsReviewed": 42,
+  "historicalBlobsCompared": 1042,
+  "knownLocalServerValuesCompared": 6,
+  "knownLocalServerValuesFound": false,
+  "gitleaks": {
+    "version": "8.30.1",
+    "historyPassed": true,
+    "narrowFactDigestException": true,
+    "negativeControlsPassed": true
+  },
+  "media": {
+    "historicalImagesOCRChecked": 151,
+    "ocrFailures": 0,
+    "nonFixtureEmailsFoundByOCR": 0,
+    "rawOCRSaved": false,
+    "manualHighRiskSamples": 3,
+    "scope": "Automatic OCR is supplementary and does not prove absence of every kind of private information"
+  },
+  "cleanTrackedSnapshot": {
+    "java": 17,
+    "cloudConfigPresent": false,
+    "ideJvmFilePresent": false,
+    "buildPassed": true,
+    "unitTests": {
+      "Demo": 82,
+      "Remote": 65
+    },
+    "lintPassed": true
+  },
+  "serverTests": 124,
+  "contractExamples": 34,
+  "workflowActionlint": {
+    "version": "1.7.12",
+    "passed": true
+  },
+  "ci": {
+    "workflow": ".github/workflows/android.yml",
+    "jobs": [
+      "android",
+      "service",
+      "secrets"
+    ],
+    "providerCredentials": false,
+    "paidProviderCalls": 0,
+    "automaticDeployment": false,
+    "remoteResults": "https://github.com/vbooo/previens_moi/actions"
+  },
+  "historyRewritten": false,
+  "originalUncommittedAndroidEditsPreserved": true,
+  "newPaidCalls": 0,
+  "subscriptionOrTopUp": false
+}

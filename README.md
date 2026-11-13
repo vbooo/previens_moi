@@ -1,86 +1,109 @@
 # Préviens-moi
 
-Application Android native pour demander à être prévenu d’une information publique : une offre d’emploi, une promotion ou une annonce, par exemple. L’objectif prioritaire est une réalisation propre que Fabien peut comprendre, démontrer et défendre en entretien Android.
+[![CI](https://github.com/vbooo/previens_moi/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/vbooo/previens_moi/actions/workflows/android.yml)
 
-## État au 13 novembre 2026
+Application Android native pour suivre une information publique et recevoir une notification lorsqu’un résultat correspond à sa demande : offre d’emploi, promotion ou annonce.
 
-Le socle Android, le service réel et le parcours « comprendre → confirmer → préparer en arrière-plan » sont livrés pour un essai limité. La version connectée **0.1.10** intègre l’interface Material 3 graphite et ambre validée : liste, détails, création, résultats et compte. Les chargements et transitions conservent leurs protections, et les diagnostics restent disponibles. [Le bilan courant](validation/form-polish/bilan.md) décrit les finitions clavier et les clés utiles. Le [correctif du 3 novembre](validation/single-progress/bilan.md) évite le double chargement du détail après notification. Le [bilan de confirmation](validation/confirmation/bilan.md) décrit le volet d’information. Les [retouches précédentes](validation/draft-copy/bilan.md) conservent la saisie et évitent le doublon de pays. La [revue visuelle principale](validation/approved-ui/bilan.md) conserve les captures clair/sombre/texte agrandi.
+**Kotlin · Jetpack Compose · Material 3 · Coroutines/StateFlow · Hilt · Supabase · Firebase Cloud Messaging**
 
-Le [correctif des alertes d’emploi du 4 novembre](validation/job-opportunities/bilan.md) exige une annonce précise et renforce la distinction entre une offre nouvelle et une liste simplement mise à jour. Il est déployé côté serveur, sans nouvel APK ; les mêmes URL peuvent rester utiles pour des opportunités réellement distinctes.
+Projet personnel conçu pour approfondir le développement Android : gestion d’état, reprises après interruption, opérations asynchrones et tests. La version **0.1.10** fonctionne avec un service réel d’essai ; la publication Play Store et l’exploitation à plus grande échelle restent à préparer.
 
-**La V1 est une version de test connectée ; aucune publication Play ni observation de sept jours n’est revendiquée.** Les anciens bilans datés conservent leurs résultats et limites, mais leurs anciens états « prochaine étape » ne décrivent pas la livraison courante.
+## Aperçu
 
-## Ce que fait l’application
+<table>
+<tr>
+<td><img src=".impeccable/review/draft-copy-2026-11-02/home.png" width="220" alt="Liste des suivis avec leur état" /></td>
+<td><img src=".impeccable/review/confirmation-2026-11-03/confirmation-clean-light.png" width="220" alt="Confirmation des critères d’un suivi" /></td>
+<td><img src=".impeccable/review/draft-copy-2026-11-02/detail.png" width="220" alt="Détail d’un suivi et sources consultées" /></td>
+</tr>
+</table>
 
-1. La personne décrit ce qu’elle souhaite suivre et peut proposer un site.
-2. OpenAI reformule les critères ou demande une précision. Aucune recherche Web ne précède la confirmation.
-3. Après confirmation, le serveur cherche des sources avec Firecrawl, lit les pages sélectionnées et vérifie qu’elles permettent le suivi.
-4. L’application présente la préparation, le suivi actif ou un échec explicite. La préparation et les vérifications continuent côté serveur quand l’app est fermée.
-5. Pendant que l’app est visible, ses états et résultats sont relus automatiquement ; la mise à jour ne dépend pas du push. Les résultats comportent une source et un passage justificatif. Les alertes utilisent Firebase Cloud Messaging et ouvrent le contenu concerné.
-6. La personne peut mettre en pause, reprendre, modifier ou supprimer son suivi et demander l’effacement de son compte.
+Captures natives de parcours contrôlés. Les bilans datés conservent également les anciennes interfaces pour documenter leur évolution.
 
-Pour les nouveaux suivis généraux, la politique actuelle retient jusqu’à trois pages publiques, relues environ toutes les heures ; la recherche de nouvelles sources est renouvelée tous les 24 passages. Les anciens plans conservent leurs paramètres confirmés. La couverture reste partielle : pages protégées, sources non trouvées et informations non prouvables peuvent empêcher un suivi. Les informations déjà disponibles au démarrage sont distinguées des nouveautés ; un suivi ponctuel peut donc se terminer dès son premier résultat initial.
+## Parcours
 
-## Architecture
+1. Décrire ce que l’on souhaite suivre, avec un site préféré et une zone géographique si nécessaire.
+2. Vérifier les critères compris ou répondre à une question de clarification.
+3. Confirmer : la recherche de sources et la préparation se poursuivent côté serveur, application fermée comprise.
+4. Consulter les résultats sourcés et recevoir une notification qui ouvre le résultat concerné.
+5. Mettre en pause, reprendre, modifier ou supprimer un suivi ; demander la suppression de son compte.
 
-| Partie | Responsabilité |
-| --- | --- |
-| Android : Kotlin, Jetpack Compose et Material 3 | Écrans, navigation, permissions, état des parcours et accès aux résultats. |
-| MVVM et dépendances dirigées vers le domaine | Compose appelle les ViewModels ; ceux-ci utilisent les ports des repositories. Hilt choisit les implémentations. Un seul module Gradle reste volontaire. |
-| Supabase : Auth, PostgreSQL et fonctions serveur | Connexion par code e-mail, données privées, commandes identifiées/versionnées, préparation, planification, quotas et historique. |
-| OpenAI / Firecrawl | Compréhension et jugement avec références aux passages / recherche et lecture des pages publiques. |
-| Firebase Cloud Messaging | Transport des notifications Android ; les résultats sont relus auprès du service authentifié. |
+Le statut se synchronise aussi au premier plan : sa mise à jour ne dépend pas uniquement de la réception d’un push. Une réponse réseau incertaine conserve l’identifiant de la commande pour éviter un second effet lors d’une reprise.
 
-Une opération incertaine conserve son identifiant : réessayer vérifie la même commande et évite un deuxième effet. Le statut affiché vient du service ; un échec confirmé est distinct d’une réponse réseau encore inconnue. Les secrets serveur, la surveillance et les plafonds restent hors de l’APK.
+## Lancer sans compte ni clé API
 
-## Lancer l’application
-
-Ouvrir **`android/`** dans Android Studio et sélectionner **`remoteDebug`** pour essayer le service réel. Le nom visible est **Préviens-moi**. La variante **`demoDebug`**, nommée **Préviens-moi · Simulation**, est un simulateur hors réseau avec des scénarios déterministes ; elle sert aux tests.
-
-Les instructions de configuration, compilation et lecture du code sont dans [android/README.md](android/README.md). Les paramètres publics du client passent par `android/client.properties`, ignoré par Git ; voir son modèle `.example`. Les clés serveur et mots de passe ne doivent jamais y figurer.
-
-## Contrôles reproductibles
-
-Depuis `android/`, les vérifications de compilation, tests unitaires et Lint peuvent être exécutées sans configuration cloud :
+Ouvrir **`android/`** dans Android Studio et choisir **`demoDebug`** dans *Build Variants*. Cette variante utilise des repositories en mémoire et des scénarios déterministes ; elle fonctionne sans réseau et sans frais fournisseur.
 
 ```sh
+cd android
+./gradlew assembleDemoDebug
+```
+
+La CI fournit aussi l’APK **`previens-moi-offline-demo-debug`** dans les artefacts de son job Android. C’est la variante locale de démonstration, pas un accès au service d’essai connecté.
+
+Pour les recherches réelles, choisir **`remoteDebug`** et renseigner les paramètres publics du client selon [le guide Android](android/README.md). Le fichier `android/client.properties` est ignoré par Git ; son modèle est fourni. Les mots de passe et clés serveur restent côté serveur.
+
+Environnement de compilation : JDK 17, SDK Android 37 et Build Tools 36.0.0 ; wrapper Gradle et dépendances versionnés. Minimum Android : API 23. Android Studio peut utiliser son JDK embarqué compatible.
+
+## Architecture et choix
+
+| Couche | Responsabilité |
+| --- | --- |
+| `feature/*/presentation` | Compose, navigation, ViewModels et états d’écran via StateFlow. |
+| `domain` | Modèles et ports des repositories, indépendants d’Android et des SDK réseau. |
+| `data` | Implémentations HTTP, session et persistance locale ; injection par Hilt. |
+| `service/supabase` | Auth, PostgreSQL, commandes versionnées, préparation, planification, quotas et historique. |
+| OpenAI / Firecrawl | Compréhension et qualification avec preuves / recherche et lecture de pages publiques. |
+| Firebase Cloud Messaging | Transport des notifications ; le résultat est relu auprès du service authentifié. |
+
+Un seul module Gradle est conservé : les frontières des couches sont contrôlées sans multiplier les modules pour cette taille de projet. Les variantes séparent les implémentations en mémoire du client connecté.
+
+Quelques points de lecture :
+
+- [WatchesViewModel](android/app/src/main/kotlin/fr/previensmoi/feature/watches/presentation/WatchesViewModel.kt) : état du suivi, commandes et synchronisation.
+- [CreateViewModel](android/app/src/main/kotlin/fr/previensmoi/feature/create/presentation/CreateViewModel.kt) : création, clarification, confirmation et restauration.
+- [Modèles et ports du domaine](android/app/src/main/kotlin/fr/previensmoi/domain) et [repositories HTTP](android/app/src/main/kotlin/fr/previensmoi/data/remote/RemoteRepositories.kt).
+- [Tests de parcours avec la vraie activité](android/app/src/androidTestRemote/kotlin/fr/previensmoi/app/RootJourneyTest.kt) et réponses HTTP contrôlées.
+- [Moteur serveur](service/supabase/functions/_shared/general-worker.ts), [preuves](service/supabase/functions/_shared/semantic.ts) et [décision de nouveauté](service/supabase/functions/_shared/novelty.ts).
+- [Décisions et architecture détaillée](docs/08-architecture-et-donnees.md).
+
+## Tests et CI
+
+La [CI GitHub Actions](.github/workflows/android.yml) s’exécute sur les push et pull requests, sans configuration du service réel :
+
+- Android : compilation des deux variantes, tests unitaires, Lint et frontières d’architecture.
+- Serveur : types et tests Deno avec réponses contrôlées, puis validation du contrat OpenAPI et de ses exemples.
+- Secrets : analyse de l’historique Git par Gitleaks ; l’exception documentée ne concerne que les empreintes SHA-256 des faits dans les rapports de qualification.
+
+```sh
+# Android, depuis android/
 ./gradlew assembleDemoDebug assembleRemoteDebug \
   testDemoDebugUnitTest testRemoteDebugUnitTest \
   lintDemoDebug lintRemoteDebug -PlocalService=true
+
+# Serveur, depuis service/ ; Deno 2.5.4
+deno task check
+deno task test
+
+# Contrat, depuis la racine
+python -m pip install -r contracts/requirements.txt
+python scripts/check-service-contract.py
 ```
 
-Depuis la racine :
+Les tests natifs sur émulateur, l’intégration PostgreSQL et les qualifications de fournisseurs sont documentés séparément et lancés explicitement. La CI ne les présente pas comme exécutés. Elle ne déploie ni le serveur ni l’application sur Google Play.
 
-```sh
-python3 scripts/check-android-boundaries.py --merged
-cd service
-./node_modules/.bin/deno task check
-./node_modules/.bin/deno task test
-```
+## Limites actuelles
 
-`localService=true` isole le build des paramètres cloud locaux ; ce n’est pas l’APK à installer pour tester les vraies recherches. Les tests du service injectent leurs réponses et ne déclenchent aucun appel fournisseur payant. Les parcours natifs utilisent un émulateur de qualification et des fixtures identifiées. Les commandes détaillées sont dans [le guide Android](android/README.md).
+Le service connecté est un essai à quota fini, sans promesse de couverture exhaustive du Web. Pour les nouveaux suivis généraux, jusqu’à trois pages publiques sont relues environ toutes les heures ; la découverte de sources est renouvelée tous les 24 passages. Les anciens plans conservent leurs paramètres confirmés.
 
-La CI Android est configurée pour vérifier les deux variantes. Le dépôt reste local, sans remote GitHub : aucune exécution de CI distante ni aucun push n’est revendiqué.
+Une information doit être sourcée et correspondre aux critères ; trouver une page ou constater sa modification ne suffit pas à prouver une nouvelle opportunité. Les pages protégées, les sources non découvertes et l’incertitude du jugement peuvent empêcher un résultat. Une nouvelle annonce d’emploi est distinguée d’une liste d’offres simplement mise à jour.
 
-## Suite du plan
+Restent notamment l’observation prolongée, les règles d’usage publiques, les contrôles de diffusion/confidentialité et la signature release. Le benchmark général de compréhension et une éventuelle modularisation sont différés. Les variantes release restent volontairement désactivées.
 
-- Tester l’APK stabilisé sur le OnePlus et corriger les problèmes fonctionnels constatés.
-- Recueillir les retours sur l’interface validée et corriger les défauts observés sur le téléphone.
-- Organiser les sept jours d’observation dans une enveloppe compatible avec le budget disponible.
-- Préparer les contrôles de diffusion, la confidentialité, la sauvegarde indépendante, la signature et le compte Play, puis la publication.
-- Créer le dépôt GitHub quand Fabien le décide ; le benchmark et la modularisation restent différés.
+## Documentation
 
-Le plafond des essais reste **2 € cumulés**, sans abonnement ni recharge implicite. Il ne définit pas un budget d’exploitation publique. La compilation release reste désactivée jusqu’au lot de diffusion.
+- [Guide Android](android/README.md), [service](service/README.md) et [contrat API](contracts/application-v1.openapi.json).
+- [Plan et état courant](docs/10-plan-de-validation-technique.md), [décisions](docs/decisions/README.md), [diagnostics](docs/diagnostics.md).
+- [Dernière qualification Android](validation/form-polish/bilan.md), [correctif des alertes d’emploi](validation/job-opportunities/bilan.md), [bilans de validation](validation).
 
-## Documents utiles
-
-- [Plan actif et historique des étapes](docs/10-plan-de-validation-technique.md)
-- [Parcours comprendre / confirmer / préparer](docs/12-comprendre-puis-preparer.md)
-- [Périmètre du MVP](docs/03-perimetre-mvp.md) et [règles des alertes](docs/05-regles-des-alertes.md)
-- [Architecture et données](docs/08-architecture-et-donnees.md)
-- [Contrat réseau](contracts/application-v1.openapi.json) et [service](service/README.md)
-- [Qualité et publication](docs/09-qualite-et-publication.md)
-- [Bilan S3](validation/s3/bilan.md), [bilan du nouveau parcours](validation/workflow/bilan.md), [corrections de préparation](validation/preparation/checks.json)
-- [Décisions d’architecture et produit](docs/decisions/README.md)
-
-Le [guide de diagnostic](docs/diagnostics.md) explique les filtres Logcat et la recherche du même identifiant dans les logs Supabase.
+Les documents de conception et bilans historiques expliquent les choix et leurs limites ; leur date fait foi. Ils ne constituent pas des résultats de tests de la CI actuelle.

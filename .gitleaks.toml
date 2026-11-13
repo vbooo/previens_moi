@@ -1,0 +1,14 @@
+title = "Préviens-moi public source scan"
+
+[extend]
+useDefault = true
+
+# factKey is the SHA-256 identity of a verified fact (semantic.ts), not an API key.
+# Limit this exception to the exact field shape in historical qualification outputs.
+[[allowlists]]
+description = "SHA-256 fact identities in qualification reports"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^validation/s3/general-[a-z0-9-]+-result\.json$''']
+regexTarget = "line"
+regexes = ['''^\s*"factKey": "[0-9a-f]{64}",?\s*$''']

@@ -56,7 +56,7 @@ Pour produire ensuite l’APK réel configuré, sans l’option d’isolation :
 
 APK : `app/build/outputs/apk/remote/debug/app-remote-debug.apk`. L’installation de mise à jour conserve les données si le package et la signature sont les mêmes ; ne pas désinstaller ni effacer les données pour mettre à jour. Les variantes release restent désactivées : le lot de diffusion/signature est distinct.
 
-Lint garde les avertissements comme erreurs. Les suggestions de nouvelles versions restent informatives ; aucune baseline ni désactivation globale de règle ne masque les défauts. La CI configurée exécute les contrôles des deux variantes, mais aucun dépôt distant ni passage de CI GitHub n’est encore disponible.
+Lint garde les avertissements comme erreurs. Les suggestions de nouvelles versions restent informatives ; aucune baseline ni désactivation globale de règle ne masque les défauts. La CI GitHub vérifie les deux variantes sans configuration cloud ; [le workflow](../.github/workflows/android.yml) conserve les rapports et un APK de démonstration hors ligne. Les parcours instrumentés restent une qualification locale explicite.
 
 ## Parcours natifs sans fournisseur
 

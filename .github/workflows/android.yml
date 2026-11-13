@@ -1,23 +1,112 @@
-name: Android checks
+name: CI
+
 on:
   push:
-    paths: ["android/**", "scripts/**", "contracts/**", ".github/workflows/android.yml"]
   pull_request:
-    paths: ["android/**", "scripts/**", "contracts/**", ".github/workflows/android.yml"]
+  workflow_dispatch:
+
 permissions:
   contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  android:
+    name: Android build, tests and Lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-      - run: python3 scripts/check-android-boundaries.py
-      - run: ./gradlew --no-daemon assembleDemoDebug assembleRemoteDebug testDemoDebugUnitTest testRemoteDebugUnitTest lintDemoDebug lintRemoteDebug -PlocalService=true
+          cache: gradle
+          cache-dependency-path: |
+            android/**/*.gradle.kts
+            android/gradle/libs.versions.toml
+            android/gradle/wrapper/gradle-wrapper.properties
+      - uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+      - name: Install the pinned Android SDK packages
+        run: sdkmanager 'platforms;android-37' 'build-tools;36.0.0'
+      - name: Check Android boundaries
+        run: python3 scripts/check-android-boundaries.py
+      - name: Build and check both variants without cloud configuration
         working-directory: android
-      - run: python3 scripts/check-android-boundaries.py --merged
+        run: >-
+          ./gradlew --no-daemon --max-workers=2
+          assembleDemoDebug assembleRemoteDebug
+          testDemoDebugUnitTest testRemoteDebugUnitTest
+          lintDemoDebug lintRemoteDebug
+          -PlocalService=true
+      - name: Check merged manifests
+        run: python3 scripts/check-android-boundaries.py --merged
+      - name: Keep test and Lint reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: android-check-reports
+          retention-days: 7
+          if-no-files-found: ignore
+          path: |
+            android/app/build/test-results/test*DebugUnitTest/TEST-*.xml
+            android/app/build/reports/lint-results-*Debug.xml
+      - name: Keep the offline demonstration APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: previens-moi-offline-demo-debug
+          retention-days: 7
+          if-no-files-found: error
+          path: android/app/build/outputs/apk/demo/debug/app-demo-debug.apk
+
+  service:
+    name: Server tests and API contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
+        with:
+          deno-version: '2.5.4'
+      - name: Check server types
+        working-directory: service
+        run: deno task check
+      - name: Run controlled server tests without provider permissions
+        working-directory: service
+        run: deno task test
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: contracts/requirements.txt
+      - name: Install contract validation dependencies
+        run: python -m pip install -r contracts/requirements.txt
+      - name: Check the API specification and examples
+        run: python scripts/check-service-contract.py
+
+  secrets:
+    name: Check the Git history for secrets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Download the pinned secret scanner and verify its checksum
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl --fail --location --silent --show-error -o gitleaks.tar.gz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          curl --fail --location --silent --show-error -o checksums.txt https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_checksums.txt
+          checksum=$(awk '$2 == "gitleaks_8.30.1_linux_x64.tar.gz" {print $1}' checksums.txt)
+          test -n "$checksum"
+          echo "$checksum  gitleaks.tar.gz" | sha256sum --check --strict
+          tar -xzf gitleaks.tar.gz gitleaks
+      - name: Scan all commits with redacted output
+        run: '"${{ runner.temp }}/gitleaks" git --config .gitleaks.toml --redact=100 --no-banner --log-opts=--all'
