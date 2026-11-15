@@ -71,7 +71,7 @@ Quelques points de lecture :
 
 La [CI GitHub Actions](.github/workflows/android.yml) s’exécute sur les push et pull requests, sans configuration du service réel :
 
-- Android : compilation des deux variantes, tests unitaires, Lint et frontières d’architecture.
+- Android : compilation des deux variantes debug, tests unitaires, Lint et frontières d’architecture ; construction release optimisée et contrôle du binaire avec paramètres publics synthétiques.
 - Serveur : types et tests Deno avec réponses contrôlées, puis validation du contrat OpenAPI et de ses exemples.
 - Secrets : analyse de l’historique Git par Gitleaks ; l’exception documentée ne concerne que les empreintes SHA-256 des faits dans les rapports de qualification.
 
@@ -98,7 +98,7 @@ Le service connecté est un essai à quota fini, sans promesse de couverture exh
 
 Une information doit être sourcée et correspondre aux critères ; trouver une page ou constater sa modification ne suffit pas à prouver une nouvelle opportunité. Les pages protégées, les sources non découvertes et l’incertitude du jugement peuvent empêcher un résultat. Une nouvelle annonce d’emploi est distinguée d’une liste d’offres simplement mise à jour.
 
-Restent notamment l’observation prolongée, les règles d’usage publiques, les contrôles de diffusion/confidentialité et la signature release. Le benchmark général de compréhension et une éventuelle modularisation sont différés. Les variantes release restent volontairement désactivées.
+Restent notamment l’observation prolongée, les règles d’usage publiques, les contrôles de diffusion/confidentialité et la signature release. Le benchmark général de compréhension et une éventuelle modularisation sont différés. La variante connectée release optimisée est construite et contrôlée, mais reste non signée pour la diffusion. Voir la [préparation release et observation](docs/13-release-et-observation.md).
 
 ## Documentation
 

@@ -1,4 +1,6 @@
 import java.util.Properties
+import java.util.Base64
+import java.net.URI
 
 plugins {
     alias(libs.plugins.android.application)
@@ -32,6 +34,14 @@ android {
         versionCode = 11
         versionName = "0.1.10"
     }
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            // Intentionally unsigned: the production key is never a debug key.
+        }
+    }
     flavorDimensions += "environment"
     productFlavors {
         create("demo") { dimension = "environment"; applicationIdSuffix = ".demo" }
@@ -61,8 +71,44 @@ android {
         informational += setOf("GradleDependency", "NewerVersionAvailable", "AndroidGradlePluginVersion")
     }
 }
-// No demo release artifact: publication is a separate, explicit sprint.
-androidComponents { beforeVariants(selector().withBuildType("release")) { it.enable = false } }
+// Only the connected app has a release variant. CI uses explicit public fixtures;
+// a successful build does not itself authorize signing or publication.
+androidComponents {
+    beforeVariants(selector().withBuildType("release")) {
+        if (it.productFlavors.any { (_, flavor) -> flavor == "demo" }) it.enable = false
+    }
+}
+val validateRemoteReleaseConfiguration = tasks.register("validateRemoteReleaseConfiguration") {
+    group = "verification"
+    description = "Reject local/test-mode or incomplete connected release settings without logging values."
+    doLast {
+        check(!localServiceBuild) { "Release requires localService=false and explicit HTTPS client settings." }
+        for ((name, expectedPath) in listOf("serviceUrl" to "/functions/v1/", "authUrl" to "/auth/v1/")) {
+            val url = runCatching { URI(clientSetting(name)) }.getOrNull()
+            check(url != null && url.scheme == "https" && url.host != null &&
+                url.host !in setOf("localhost", "127.0.0.1", "10.0.2.2", "::1") &&
+                !url.host.endsWith(".invalid") && url.rawUserInfo == null &&
+                url.rawQuery == null && url.rawFragment == null && url.path == expectedPath) {
+                "Release requires a valid HTTPS $name without credentials, query or fragment."
+            }
+        }
+        val key = clientSetting("authPublicKey")
+        val anonJwt = runCatching {
+            val payload = String(Base64.getUrlDecoder().decode(key.split('.')[1]))
+            Regex("\"role\"\\s*:\"anon\"").containsMatchIn(payload.replace(" ", ""))
+        }.getOrDefault(false)
+        check(anonJwt || key.startsWith("sb_publishable_")) { "Release requires an anonymous/public Supabase client key." }
+        check(Regex("1:[0-9]+:android:[a-f0-9]+").matches(clientSetting("firebaseAppId")) &&
+            Regex("[a-z][a-z0-9-]{4,62}").matches(clientSetting("firebaseProjectId")) &&
+            Regex("[A-Za-z0-9_-]+").matches(clientSetting("firebaseApiKey")) &&
+            Regex("[0-9]+").matches(clientSetting("firebaseSenderId"))) {
+            "Release requires all public Firebase Android settings."
+        }
+    }
+}
+tasks.matching { it.name == "preRemoteReleaseBuild" }.configureEach {
+    dependsOn(validateRemoteReleaseConfiguration)
+}
 dependencies {
     "remoteImplementation"(libs.firebase.messaging)
     "remoteImplementation"(libs.work.runtime)

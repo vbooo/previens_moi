@@ -31,3 +31,6 @@ android/client.properties
 # IDE assistant plans and machine-specific daemon selection
 .artifacts/
 android/gradle/gradle-daemon-jvm.properties
+
+# Python checks
+__pycache__/

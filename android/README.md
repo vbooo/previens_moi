@@ -54,7 +54,7 @@ Pour produire ensuite l’APK réel configuré, sans l’option d’isolation :
 ./gradlew assembleRemoteDebug
 ```
 
-APK : `app/build/outputs/apk/remote/debug/app-remote-debug.apk`. L’installation de mise à jour conserve les données si le package et la signature sont les mêmes ; ne pas désinstaller ni effacer les données pour mettre à jour. Les variantes release restent désactivées : le lot de diffusion/signature est distinct.
+APK : `app/build/outputs/apk/remote/debug/app-remote-debug.apk`. L’installation de mise à jour conserve les données si le package et la signature sont les mêmes ; ne pas désinstaller ni effacer les données pour mettre à jour. `remoteRelease` est désormais disponible avec R8 et réduction des ressources, sans clé de signature de production ; `demoRelease` reste désactivée. Voir la [préparation release](../docs/13-release-et-observation.md).
 
 Lint garde les avertissements comme erreurs. Les suggestions de nouvelles versions restent informatives ; aucune baseline ni désactivation globale de règle ne masque les défauts. La CI GitHub vérifie les deux variantes sans configuration cloud ; [le workflow](../.github/workflows/android.yml) conserve les rapports et un APK de démonstration hors ligne. Les parcours instrumentés restent une qualification locale explicite.
 
@@ -112,4 +112,4 @@ Les vecteurs officiels Material Symbols sont accompagnés de leur licence inchan
 
 ## Limites avant publication
 
-Restent : essai de cette version sur le OnePlus, accessibilité complète dont TalkBack, matrice d’appareils/API, performance et build release, confidentialité/effacement externe, sauvegarde indépendante, observation de sept jours dans le budget disponible et situation Play Console. Le benchmark et la modularisation restent différés. Le [plan actif](../docs/10-plan-de-validation-technique.md) porte ces étapes.
+Restent : essai de cette version sur le OnePlus, accessibilité complète dont TalkBack, matrice d’appareils/API, qualification physique release et performance, confidentialité/effacement externe, sauvegarde indépendante, observation de sept jours dans le budget disponible et situation Play Console. Le benchmark et la modularisation restent différés. Le [plan actif](../docs/10-plan-de-validation-technique.md) porte ces étapes.

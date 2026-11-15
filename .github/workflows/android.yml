@@ -45,6 +45,10 @@ jobs:
           -PlocalService=true
       - name: Check merged manifests
         run: python3 scripts/check-android-boundaries.py --merged
+      - name: Check optimized connected release with offline public fixtures
+        run: python3 scripts/check-android-release.py --build-fixture
+      - name: Check observation budget calculations
+        run: python3 -m unittest discover -s scripts/tests -v
       - name: Keep test and Lint reports
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -55,6 +59,8 @@ jobs:
           path: |
             android/app/build/test-results/test*DebugUnitTest/TEST-*.xml
             android/app/build/reports/lint-results-*Debug.xml
+            android/app/build/reports/lint-results-remoteRelease.xml
+            android/app/build/reports/release-check.json
       - name: Keep the offline demonstration APK
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

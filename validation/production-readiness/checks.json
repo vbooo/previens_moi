@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-15",
+  "productionReady": false,
+  "observationStarted": false,
+  "sevenDaysProven": false,
+  "release": {
+    "artifactSha256": "41860de503a138faf3430b9a3746bae9cf6edc713edd4db4e75f3405103abc85",
+    "apkBytes": 2512960,
+    "checks": {
+      "connectedPackage": true,
+      "notDebuggable": true,
+      "backupsDisabled": true,
+      "httpsOnlyIncludingLoopback": true,
+      "internetPermission": true,
+      "notificationPermission": true,
+      "noSensitiveDevicePermission": true,
+      "r8MappingPresent": true,
+      "noDemoOrPreviewClasses": true,
+      "noConfigurationOrFixtureFiles": true,
+      "noPrivateKeyOrProviderKeyMarkers": true,
+      "noPrivilegedSupabaseJwt": true
+    },
+    "passed": true,
+    "limits": [
+      "Static binary checks and compilation do not prove real notification delivery or seven days of operation.",
+      "Unsigned artifact; no production signing identity created or configured."
+    ],
+    "configurationKind": "supplied-client-configuration",
+    "productionReady": false
+  },
+  "nativeReleaseSmoke": {
+    "device": "isolated API 36 arm64 emulator",
+    "build": "optimized release, test-signed locally",
+    "checks": {
+      "optimizedColdStart": true,
+      "signInScreenAndKeyboard": true,
+      "emailSubmitDisabledForInvalidAddress": true,
+      "backReturnsHome": true,
+      "coldNotificationRequiresSession": true,
+      "cancelNotificationSignInReturnsHome": true,
+      "noCrash": true
+    },
+    "passed": true,
+    "emailSent": false,
+    "providerWorkRequested": false,
+    "limits": [
+      "No signed-in release session, live FCM delivery or minimum-API device qualification in this smoke test."
+    ]
+  },
+  "checks": {
+    "androidUnitTestsPassed": 147,
+    "lintErrorOrWarningCount": 0,
+    "releaseConfigurationRefusalsPassed": 4,
+    "observationBudgetTestsPassed": 3,
+    "controlledHttpNativeJourneysPassed": 4,
+    "nativeReleaseSmokeAssertionsPassed": 7,
+    "localOfflineFixtureReleaseBuildPassed": true,
+    "knownServerValuesCompared": 7,
+    "knownServerValueMatches": 0
+  },
+  "currentSharedBudget": {
+    "modelLimitMicroUsd": 100000,
+    "modelUsedMicroUsd": 80929,
+    "modelHeldMicroUsd": 0,
+    "webCreditLimit": 150,
+    "webCreditsUsed": 112,
+    "webCreditsHeld": 29,
+    "webCreditsAvailable": 9
+  },
+  "cost": {
+    "authorizedCumulativeMaxEUR": 2,
+    "newPaidCalls": 0,
+    "newWebSearches": 0,
+    "newWebScrapes": 0,
+    "providerBalanceGetCalls": 1,
+    "providerCreditsAtRead": 1000,
+    "subscriptionOrTopUp": false,
+    "invoiceReconciled": false
+  },
+  "changesNotMade": [
+    "Production signing identity",
+    "Cloud quota or cadence update",
+    "Counter reset or release of unknown reservations",
+    "Per-account free-offer deployment",
+    "Observation automation or seven-day execution",
+    "Model migration",
+    "Physical-phone installation"
+  ],
+  "remainingGates": [
+    "Signed-in optimized OnePlus journeys and device/accessibility matrix",
+    "Approved and implemented daily observation quota before launch",
+    "Seven days of actual operation and relevant results",
+    "Public operating budget, privacy/erasure, backup, Play and signing",
+    "Model replacement before published January 2027 retirement"
+  ]
+}
