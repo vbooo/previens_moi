@@ -1,0 +1,110 @@
+{
+  "phase": "enabled",
+  "before": {
+    "budget": {
+      "enabled": true,
+      "qualified": true,
+      "modelLimit": 100000,
+      "modelUsed": 80929,
+      "modelHeld": 0,
+      "creditLimit": 150,
+      "creditUsed": 112,
+      "creditHeld": 29
+    },
+    "capacity": {
+      "enabled": true,
+      "slots": 3,
+      "reserved": 0,
+      "perAccount": 3
+    },
+    "watchFingerprint": "7bf3df7f03a20634b522b26b7492e387",
+    "activeOrPending": 0,
+    "eligibleQueuedWork": 0
+  },
+  "versionsBefore": {
+    "public": {
+      "version": 16,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    },
+    "api": {
+      "version": 14,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    },
+    "webhook": {
+      "version": 12,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    },
+    "worker": {
+      "version": 30,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    }
+  },
+  "newPaidCalls": 0,
+  "subscriptionOrTopUp": false,
+  "versionsAfter": {
+    "public": {
+      "version": 17,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    },
+    "api": {
+      "version": 15,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    },
+    "webhook": {
+      "version": 13,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    },
+    "worker": {
+      "version": 31,
+      "verify_jwt": false,
+      "status": "ACTIVE"
+    }
+  },
+  "cloudRollbackQualification": {
+    "syntheticTransactionRolledBack": true,
+    "sevenDays": true,
+    "grantReservedAtomically": true,
+    "activationReplaySafe": true,
+    "expiryVisible": true,
+    "workerInvoked": false,
+    "providerCalls": 0
+  },
+  "after": {
+    "budget": {
+      "enabled": true,
+      "qualified": true,
+      "modelLimit": 300000,
+      "modelUsed": 80929,
+      "modelHeld": 0,
+      "creditLimit": 171,
+      "creditUsed": 112,
+      "creditHeld": 29
+    },
+    "capacity": {
+      "enabled": true,
+      "slots": 3,
+      "reserved": 0,
+      "perAccount": 1
+    },
+    "watchFingerprint": "7bf3df7f03a20634b522b26b7492e387",
+    "activeOrPending": 0,
+    "eligibleQueuedWork": 0
+  },
+  "date": "2026-11-15T12:17:18.246904+00:00",
+  "authorizedCumulativeMaxEUR": 2,
+  "existingQualificationUSD": 0.09013,
+  "runtimeModelMaxUSD": 0.3,
+  "qualificationAndRuntimeUpperUSD": 0.39013,
+  "existingEnvelopeUSD": 0.4,
+  "cumulativeConservativeUpperEUR": 0.99587625,
+  "invoiceReconciled": false,
+  "automaticTrialRestart": false,
+  "sevenDayObservationStarted": false
+}

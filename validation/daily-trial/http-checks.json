@@ -1,0 +1,21 @@
+{
+  "expiredAuthenticatedUnderstanding": {
+    "status": 403,
+    "code": "free_trial_ended",
+    "passed": true
+  },
+  "health": {
+    "status": 200
+  },
+  "workerUnauthorized": {
+    "status": 403
+  },
+  "passed": true,
+  "syntheticIdentityRemoved": true,
+  "runtimeBudgetCountersUnchanged": true,
+  "newPaidCalls": 0,
+  "newWebSearches": 0,
+  "newWebScrapes": 0,
+  "emailSent": false,
+  "scope": "Deployed HTTP on a synthetic expired account; no real monitoring or seven-day elapsed claim."
+}

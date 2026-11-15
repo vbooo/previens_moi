@@ -1,0 +1,25 @@
+{
+  "artifactSha256": "1c3f6e9d2f985a55d7ad788e09a81c874f696ed31dab13e9c9ec1078e01cf82c",
+  "apkBytes": 2516936,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation.",
+    "Unsigned artifact; no production signing identity created or configured."
+  ],
+  "configurationKind": "supplied-client-configuration",
+  "productionReady": false
+}

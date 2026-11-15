@@ -380,10 +380,15 @@ fun CreateScreen(
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                         ConfirmationSetting(
                             stringResource(R.string.v1_frequency),
-                            if (p.intervalHours == 1) stringResource(R.string.v1_hourly)
+                            if (p.trialDays == 7) stringResource(R.string.trial_daily)
+                            else if (p.intervalHours == 1) stringResource(R.string.v1_hourly)
                             else stringResource(R.string.v1_interval, p.intervalHours),
                         )
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        if (p.trialDays == 7) {
+                            ConfirmationSetting(stringResource(R.string.trial_offer_label), stringResource(R.string.trial_offer_value))
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        }
                         ConfirmationSetting(
                             stringResource(R.string.v1_sources),
                             stringResource(
@@ -441,7 +446,7 @@ private fun ConfirmationInfoSheet(proposal: Proposal, dismiss: () -> Unit) {
             Text(stringResource(if (proposal.method == "web_search") R.string.v1_initial_results
                 else R.string.baseline_info), style = MaterialTheme.typography.bodyMedium)
             SectionTitle(stringResource(R.string.confirmation_info_limits))
-            Text(stringResource(R.string.v2_trial_note), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(if (proposal.trialDays == 7) R.string.trial_offer_info else R.string.v2_trial_note), style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

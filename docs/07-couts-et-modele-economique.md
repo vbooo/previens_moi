@@ -2,6 +2,16 @@
 
 Validé par Fabien le 2 octobre 2026, avec publication de la V1 sur le Play Store et premiers essais prévus surtout par Fabien, sa femme et éventuellement un ami. Les montants d'exploitation, quotas et cadences restent à mesurer avant publication. **Ce document n'autorise aucune dépense, ne choisit aucun fournisseur et ne fixe aucun tarif public.** Les décisions sont consignées dans la [décision 0007](decisions/0007-couts-et-modele-economique.md). Il complète la [stratégie de recherche validée](06-sources-et-strategie-de-recherche.md) et les [règles d'alerte](05-regles-des-alertes.md).
 
+## Règle en vigueur depuis le 15 novembre 2026
+
+Fabien valide et fait appliquer un essai gratuit : **un suivi actif par compte, jusqu’à trois sources, contrôle quotidien pendant sept jours consécutifs à partir de la première activation confirmée**. Les anciens plans ne changent pas sans nouvelle confirmation. Les paragraphes datés suivants sont historiques.
+
+La période appartient au compte, pas au suivi : pause, reprise, remplacement ou suppression du suivi ne la renouvellent pas. Les modifications partagent la même enveloppe finie. Plafond de 30 crédits Web et 180 000 micro-USD d’IA après confirmation ; la compréhension préalable utilise le budget global. Une panne ou une réserve insuffisante peut arrêter le suivi avant sept jours : aucune garantie de résultat ni de couverture exhaustive. Les résultats acquis restent accessibles.
+
+Le serveur réserve cette enveloppe au moment de l’admission, avant de laisser un autre compte ou une analyse anonyme la consommer. Le pilote dispose actuellement de 0,30 USD de plafond IA général et 171 crédits Web cumulés, compteurs existants conservés. Cela finance prudemment **un nouvel essai complet à la fois au départ**, pas dix essais simultanés. La borne cumulée conservatrice reste 0,99587625 € sous les 2 € autorisés ; ce n’est pas une facture rapprochée. Aucun achat ni renouvellement automatique. [Preuve du déploiement](../validation/daily-trial/deployment.json).
+
+**Paiement : la V1 reste gratuite.** À expiration, arrêt du suivi et consultation des résultats, sans prélèvement et sans abonnement automatique. Aucun prix, offre payante, SDK de paiement ou contrat de prestataire n’est configuré. Pour une future offre Android payante, le chemin recommandé est [Google Play Billing](https://developer.android.com/google/play/billing), avec vérification des achats côté serveur. Le tarif, les droits achetés, la restauration et les annulations devront être définis avant ce lot. Aucun intermédiaire supplémentaire n’est nécessaire à ce stade. Cette recommandation ne vaut pas lancement d’un chantier de paiement ni budget public approuvé.
+
 ## Révision économique du 20 octobre 2026
 
 **Décision de conduite : priorité à l'application Android ; pas de chantier de monétisation maintenant.** Le cadre reste une V1 gratuite et bornée. Le paiement futur n'est ni acquis ni nécessaire pour commencer Android. Aucun achat, recharge ou appel fournisseur effectué pour cette révision. Le plafond autorisé des essais demeure **2 € cumulés** ; les 50 € plus bas sont un historique de préparation, pas le budget en vigueur.

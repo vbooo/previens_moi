@@ -318,3 +318,21 @@ Deno.test("resuming stable monitoring reuses retained links without a discovery 
   assert(state==="start:collect" && urls.join()===u(0) && settled.credits===1);
   assert(settled.result.documents[0].url===u(0));
 });
+
+
+Deno.test("daily free proposals are immediate, explicit and do not search before confirmation", async () => {
+  for (const dailyTrial of [true, false]) {
+    const work: GeneralWork = { id: "daily", lease: "lease", kind: "admission", phase: "interpret", generation: 0, watchId: null,
+      context: { draft, understandingOnly: true, dailyTrial } };
+    let result: any; let requests = 0;
+    await generalOne({ async lease() { return work; }, async finish(_, value) { result = value; } },
+      "fixture", new Firecrawl("", false), true, (async (url) => {
+        assert(String(url) === "https://api.openai.com/v1/responses"); requests++;
+        return reply(intent);
+      }) as typeof fetch);
+    assert(requests === 1 && result.proposal.backgroundPreparation && result.proposal.sources.length === 0);
+    assert(result.proposal.intervalHours === (dailyTrial ? 24 : 1));
+    assert(result.proposal.trialDays === (dailyTrial ? 7 : undefined));
+    assert(result.proposal.sourcePolicy === "stable_v1");
+  }
+});

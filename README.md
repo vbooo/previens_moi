@@ -6,7 +6,7 @@ Application Android native pour suivre une information publique et recevoir une 
 
 **Kotlin · Jetpack Compose · Material 3 · Coroutines/StateFlow · Hilt · Supabase · Firebase Cloud Messaging**
 
-Projet personnel conçu pour approfondir le développement Android : gestion d’état, reprises après interruption, opérations asynchrones et tests. La version **0.1.10** fonctionne avec un service réel d’essai ; la publication Play Store et l’exploitation à plus grande échelle restent à préparer.
+Projet personnel conçu pour approfondir le développement Android : gestion d’état, reprises après interruption, opérations asynchrones et tests. La version **0.1.11** fonctionne avec un service réel d’essai ; la publication Play Store et l’exploitation à plus grande échelle restent à préparer.
 
 ## Aperçu
 
@@ -94,11 +94,11 @@ Les tests natifs sur émulateur, l’intégration PostgreSQL et les qualificatio
 
 ## Limites actuelles
 
-Le service connecté est un essai à quota fini, sans promesse de couverture exhaustive du Web. Pour les nouveaux suivis généraux, jusqu’à trois pages publiques sont relues environ toutes les heures ; la découverte de sources est renouvelée tous les 24 passages. Les anciens plans conservent leurs paramètres confirmés.
+Le service connecté est un essai à quota fini, sans promesse de couverture exhaustive du Web. Pour les nouveaux suivis, un compte dispose d’un suivi actif gratuit pendant sept jours à partir de sa première activation confirmée : jusqu’à trois sources publiques, contrôlées environ toutes les 24 heures. Le plafond technique de 30 crédits Web par compte et le budget global peuvent arrêter l’essai plus tôt. Pause, modification et nouveau suivi ne renouvellent pas la période. Les résultats restent consultables ; aucun paiement automatique. Les anciens plans conservent leurs paramètres confirmés. Voir la [règle et ses tests](validation/daily-trial/bilan.md).
 
 Une information doit être sourcée et correspondre aux critères ; trouver une page ou constater sa modification ne suffit pas à prouver une nouvelle opportunité. Les pages protégées, les sources non découvertes et l’incertitude du jugement peuvent empêcher un résultat. Une nouvelle annonce d’emploi est distinguée d’une liste d’offres simplement mise à jour.
 
-Restent notamment l’observation prolongée, les règles d’usage publiques, les contrôles de diffusion/confidentialité et la signature release. Le benchmark général de compréhension et une éventuelle modularisation sont différés. La variante connectée release optimisée est construite et contrôlée, mais reste non signée pour la diffusion. Voir la [préparation release et observation](docs/13-release-et-observation.md).
+Restent notamment l’observation prolongée, le budget d’exploitation publique, les contrôles de diffusion/confidentialité et la signature release. Le benchmark général de compréhension et une éventuelle modularisation sont différés. La variante connectée release optimisée est construite et contrôlée, mais reste non signée pour la diffusion. Voir la [préparation release et observation](docs/13-release-et-observation.md).
 
 ## Documentation
 

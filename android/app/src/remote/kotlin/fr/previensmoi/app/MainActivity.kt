@@ -307,7 +307,7 @@ class MainActivity : ComponentActivity() {
                                                         text = {
                                                             Text(stringResource(R.string.revise))
                                                         },
-                                                        enabled = !state.commandPending,
+                                                        enabled = !state.commandPending && !watch.trialEnded,
                                                         onClick = {
                                                             menuOpen = false
                                                             creation.edit(watch)

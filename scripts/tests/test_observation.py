@@ -15,7 +15,7 @@ class ObservationBudgetTest(unittest.TestCase):
         self.assertLessEqual(plan["webCreditReservationUpper"], 30)
         self.assertGreater(plan["webCreditReservationUpper"], 7 * 3)
         self.assertEqual(plan["modelCallsUpper"], 10)
-        self.assertTrue(plan["requiresCadencePolicyChange"])
+        self.assertFalse(plan["requiresCadencePolicyChange"])
 
     def test_hourly_trial_cannot_be_advertised_as_the_same_allowance(self):
         daily = observation.forecast(interval_hours=24)

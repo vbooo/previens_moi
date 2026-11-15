@@ -169,6 +169,7 @@ fun WatchStatusLabel(
     }
     val label =
         when {
+            watch.trialEnded -> R.string.trial_ended
             operation == Operation.Pause -> R.string.v3_pausing
             operation == Operation.Resume -> R.string.v3_resuming
             operation == Operation.Delete -> R.string.v3_deleting
@@ -181,7 +182,7 @@ fun WatchStatusLabel(
                     WatchStatus.Pending -> R.string.status_pending
                     WatchStatus.Paused -> R.string.status_paused
                     WatchStatus.Completed -> R.string.v1_completed
-                    WatchStatus.SuspendedByCapacity -> R.string.v1_suspended
+                    WatchStatus.SuspendedByCapacity -> if (watch.trialEnded) R.string.trial_ended else R.string.v1_suspended
                 }
         }
     val icon =

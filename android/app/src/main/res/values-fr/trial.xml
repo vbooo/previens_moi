@@ -1,0 +1,10 @@
+<resources>
+    <string name="trial_ended">Essai terminé</string>
+    <string name="trial_ended_body">Ton essai gratuit est terminé. Tes résultats restent disponibles.</string>
+    <string name="trial_ends_at">Essai jusqu’au %1$s</string>
+    <string name="trial_offer_info">Un suivi gratuit pendant 7 jours, vérifié chaque jour sur les sources retenues. La pause ne prolonge pas l’essai. Des modifications répétées peuvent épuiser l’essai plus tôt. Aucun paiement automatique.</string>
+    <string name="trial_daily">Chaque jour</string>
+    <string name="trial_offer_label">Essai gratuit</string>
+    <string name="trial_offer_value">7 jours · 1 suivi</string>
+    <string name="trial_active_limit">Tu as déjà un suivi actif. Mets-le en pause pour en créer un autre.</string>
+</resources>

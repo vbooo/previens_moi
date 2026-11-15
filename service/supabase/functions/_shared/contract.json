@@ -1139,7 +1139,18 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional signed-in bearer session: reject an ended free trial before interpretation."
+          }
+        ]
       }
     },
     "/public/v1/proposals/{id}/options": {
@@ -1258,7 +1269,9 @@
               "command_expired",
               "quota_exceeded",
               "temporary_failure",
-              "unsupported_client"
+              "unsupported_client",
+              "free_trial_ended",
+              "active_watch_limit"
             ]
           },
           "requestId": {
@@ -1634,6 +1647,11 @@
               "verified",
               "total"
             ]
+          },
+          "trialDays": {
+            "type": "integer",
+            "const": 7,
+            "description": "One non-renewing seven-day free trial per account; pauses and new requests do not restart it."
           }
         },
         "required": [
@@ -1999,6 +2017,16 @@
               "stopping",
               "unknown"
             ]
+          },
+          "trialEndsAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "trialEnded": {
+            "type": "boolean"
           }
         },
         "required": [

@@ -220,6 +220,7 @@ private fun SourceLink(url: String, label: String = sourceDomain(url)) {
 @Composable
 private fun CheckTiming(watch: Watch, pausing: Boolean = false) {
     val next = when {
+        watch.trialEnded -> stringResource(R.string.v2_not_scheduled)
         pausing -> stringResource(R.string.v3_pausing)
         watch.status == WatchStatus.Active && watch.nextCheck != null -> compactDateText(watch.nextCheck)
         watch.status == WatchStatus.Paused -> stringResource(R.string.v5_on_resume)
@@ -302,12 +303,13 @@ fun DetailScreen(
                         contained = true,
                         operation = pendingOperation,
                         onClick =
-                            if (watch.status == WatchStatus.SuspendedByCapacity)
+                            if (watch.status == WatchStatus.SuspendedByCapacity && !watch.trialEnded)
                                 ({ explainLimit = true })
                             else null,
                     )
                 }
                 when {
+                    watch.trialEnded -> SecondaryText(stringResource(R.string.trial_ended_body))
                     pendingOperation != null || pausing -> Unit
                     failed -> {
                         Text(
@@ -324,14 +326,15 @@ fun DetailScreen(
                         }
                     }
                     watch.status == WatchStatus.SuspendedByCapacity ->
-                        SecondaryText(stringResource(R.string.v2_limit_summary))
+                        SecondaryText(stringResource(if (watch.trialEnded) R.string.trial_ended_body else R.string.v2_limit_summary))
                     watch.status == WatchStatus.Completed ->
                         SecondaryText(stringResource(R.string.v1_completed_body))
                 }
                 if (watch.status != WatchStatus.Pending && !failed && pendingOperation == null && !pausing) CheckTiming(watch)
+                if (!watch.trialEnded) watch.trialEndsAt?.let { SecondaryText(stringResource(R.string.trial_ends_at, dateText(it))) }
                 if (
                     watch.health == Health.Degraded &&
-                        !failed &&
+                        !watch.trialEnded && !failed &&
                         watch.status != WatchStatus.SuspendedByCapacity
                 )
                     SecondaryText(
@@ -383,7 +386,7 @@ fun DetailScreen(
                             ),
                         )
                     }
-                if (watch.status == WatchStatus.Paused && !failed && !pausing &&
+                if (watch.status == WatchStatus.Paused && !watch.trialEnded && !failed && !pausing &&
                     !state.commandPending && !state.commandUnconfirmed) {
                     Button(
                         onClick = { vm.command(watch, Operation.Resume) },

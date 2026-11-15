@@ -35,13 +35,13 @@ def forecast(days=7, interval_hours=24, sources=3):
         'extraRestartsOrEditsIncluded': False,
         'automaticRetriesIncluded': False,
         'existingConfirmedPlansChanged': False,
-        'requiresCadencePolicyChange': interval_hours != 1,
+        'requiresCadencePolicyChange': interval_hours != 24,
     }
 
 
 QUERIES = {
     'capacity': 'select enabled,slots,reserved,active_per_account,budget_units,used_units,reserved_units from private.capacity',
-    'generalBudget': 'select enabled,qualified,model_limit,model_used,model_held,credit_limit,credit_used,credit_held from private.general_budget',
+    'generalBudget': 'select enabled,qualified,model_limit,model_used,model_held,model_committed,credit_limit,credit_used,credit_held,credit_committed from private.general_budget',
     'watches': """select status,remote_state,health,plan->>'method' method,
         plan->>'sourcePolicy' policy,plan->>'intervalHours' interval_hours,
         jsonb_array_length(plan->'sources') sources,count(*) count,
@@ -65,6 +65,7 @@ QUERIES = {
         where d.start_time>=now()-interval '24 hours' and j.jobname like 'previens-moi-%'
         group by 1,2""",
     'workerSchedule': 'select enabled from private.worker_schedule',
+    'trials': 'select (ended_at is not null) ended,count(*) count,sum(model_used) model_used,sum(model_held) model_held,sum(credit_used) credit_used,sum(credit_held) credit_held from private.account_trials group by 1',
 }
 
 
@@ -95,8 +96,8 @@ def read_snapshot():
         conn.rollback()
     budget = data['generalBudget'][0]
     data['remaining'] = {
-        'modelMicroUsd': budget['model_limit'] - budget['model_used'] - budget['model_held'],
-        'webCredits': budget['credit_limit'] - budget['credit_used'] - budget['credit_held'],
+        'modelMicroUsd': budget['model_limit'] - budget['model_used'] - budget['model_held'] - budget['model_committed'],
+        'webCredits': budget['credit_limit'] - budget['credit_used'] - budget['credit_held'] - budget['credit_committed'],
     }
     data['sevenDayNewWatchForecasts'] = [forecast(interval_hours=n) for n in (24, 1)]
     data['createdAt'] = datetime.now(timezone.utc).isoformat()

@@ -19,7 +19,7 @@ import kotlinx.serialization.json.JsonClassDiscriminator
     val id: String, val version: Long, val draft: DraftDto, val title: String,
     val criteria: List<String>, val exclusions: List<String>, val coverage: String,
     val partial: Boolean, val sources: List<SourceDto>, val method: String,
-    val intervalHours: Int, val limitations: List<String>, val limits: LimitsDto, val expiresAt: String, val backgroundPreparation: Boolean = false, val preparationFailure: String? = null, val checkCoverage: CheckCoverageDto? = null,
+    val intervalHours: Int, val limitations: List<String>, val limits: LimitsDto, val expiresAt: String, val backgroundPreparation: Boolean = false, val preparationFailure: String? = null, val checkCoverage: CheckCoverageDto? = null, val trialDays: Int? = null,
 )
 @Serializable data class PreviewSessionDto(val token: String, val expiresAt: String) {
     override fun toString() = "PreviewSessionDto(token=[redacted], expiresAt=$expiresAt)"
@@ -39,6 +39,7 @@ import kotlinx.serialization.json.JsonClassDiscriminator
     val id: String, val version: Long, val plan: ProposalDto, val status: String, val health: String,
     val lastSuccessAt: String?, val lastFailureAt: String?, val baselineAt: String?,
     val nextCheckAt: String?, val pendingCommandId: String?, val remoteState: String,
+    val trialEndsAt: String? = null, val trialEnded: Boolean = false,
 )
 @Serializable @JsonClassDiscriminator("precision") sealed interface TemporalEvidenceDto {
     val value: String

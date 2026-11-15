@@ -103,7 +103,7 @@ class RemoteRepositories(
         val request = evaluationRequest?.takeIf { it.draft == wire }
             ?: EvaluationRequestDto(ids.next(), wire, previousEvaluation.takeIf { evaluationRequest?.draft?.text == wire.text && evaluationRequest?.draft?.mode == wire.mode }).also { evaluationRequest = it }
         if (!saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
-        var response = apiCall { api.evaluate(token, request) }
+        var response = apiCall { api.evaluate(token, request, sessions.bearer()) }
         repeat(evaluationPolls) { attempt ->
             when (val r = response) {
                 is ApiResult.Value -> {
@@ -271,12 +271,12 @@ internal fun instant(value: String): Long {
 }
 internal fun ProposalDto.domain() = Proposal(id, version, RequestDraft(draft.text, draft.answers.filter { it.questionId !in setOf("region","preferred_site") }.joinToString("\n") { it.value }, draft.language,
     when(draft.mode) { "once" -> FollowMode.Once; "continuous" -> FollowMode.Continuous; else -> throw IllegalArgumentException() }, draft.revision, draft.answers.associate { it.questionId to it.value }), instant(expiresAt), partial, sources.map { it.url }, intervalHours, limits.activePerAccount,
-    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure, sources.associate { it.url to it.label }, checkCoverage?.verified, checkCoverage?.total)
+    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure, sources.associate { it.url to it.label }, checkCoverage?.verified, checkCoverage?.total, trialDays)
 internal fun WatchDto.domain() = Watch(id, plan.domain(), version,
     when(status) { "pending" -> WatchStatus.Pending; "active" -> WatchStatus.Active; "paused" -> WatchStatus.Paused; "completed" -> WatchStatus.Completed; "suspended_by_capacity" -> WatchStatus.SuspendedByCapacity; else -> throw IllegalArgumentException() },
     when(health) { "not_checked_yet" -> Health.NotCheckedYet; "healthy" -> Health.Healthy; "degraded" -> Health.Degraded; else -> throw IllegalArgumentException() },
     lastSuccessAt?.let(::instant), lastFailureAt?.let(::instant), baselineAt?.let(::instant), nextCheckAt?.let(::instant),
-    when(remoteState) { "starting" -> RemoteState.Starting; "running" -> RemoteState.Running; "stopping" -> RemoteState.Stopping; "stopped" -> RemoteState.Stopped; "unknown" -> RemoteState.Unknown; else -> throw IllegalArgumentException() })
+    when(remoteState) { "starting" -> RemoteState.Starting; "running" -> RemoteState.Running; "stopping" -> RemoteState.Stopping; "stopped" -> RemoteState.Stopped; "unknown" -> RemoteState.Unknown; else -> throw IllegalArgumentException() }, trialEndsAt?.let(::instant), trialEnded)
 internal fun FindingDto.domain(): Finding {
     require(evidence.isNotEmpty())
     return Finding(id, watchId, planId, planVersion, criteriaSnapshot.joinToString("\n"), instant(observedAt),
@@ -286,6 +286,6 @@ internal fun FindingDto.domain(): Finding {
 internal fun errorFailure(code: String) = when(code) {
     "session_required" -> Failure.SessionRequired; "access_denied" -> Failure.AccessDenied; "not_found" -> Failure.NotFound
     "proposal_expired", "command_expired" -> Failure.ProposalExpired; "version_conflict" -> Failure.VersionConflict; "command_conflict" -> Failure.CommandConflict
-    "quota_exceeded" -> Failure.QuotaExceeded; "invalid_input" -> Failure.InvalidInput; "unsupported_client" -> Failure.Unsupported; else -> Failure.TemporaryFailure
+    "active_watch_limit" -> Failure.ActiveLimit; "free_trial_ended" -> Failure.TrialEnded; "quota_exceeded" -> Failure.QuotaExceeded; "invalid_input" -> Failure.InvalidInput; "unsupported_client" -> Failure.Unsupported; else -> Failure.TemporaryFailure
 }
 private fun ApiResult<*>.failure(): Failure = when(this) { is ApiResult.Rejected -> error?.code?.let(::errorFailure) ?: if(httpStatus==401) Failure.SessionRequired else Failure.TemporaryFailure; else -> Failure.TemporaryFailure }

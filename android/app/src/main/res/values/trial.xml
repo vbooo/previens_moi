@@ -1,0 +1,10 @@
+<resources>
+    <string name="trial_ended">Trial ended</string>
+    <string name="trial_ended_body">Your free trial has ended. Your results remain available.</string>
+    <string name="trial_ends_at">Trial until %1$s</string>
+    <string name="trial_offer_info">One free watch for 7 days, checked daily on the selected sources. Pausing does not extend the trial. Repeated changes can exhaust the trial sooner. No automatic payment.</string>
+    <string name="trial_daily">Daily</string>
+    <string name="trial_offer_label">Free trial</string>
+    <string name="trial_offer_value">7 days · 1 watch</string>
+    <string name="trial_active_limit">You already have an active watch. Pause it to create another.</string>
+</resources>

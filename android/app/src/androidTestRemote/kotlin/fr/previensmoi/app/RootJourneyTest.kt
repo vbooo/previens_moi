@@ -114,6 +114,30 @@ class RootJourneyTest {
         node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick) { it() }
     }
     private fun back() { activity!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; compose.waitForIdle() }
+    @Test fun dailyTrialIsVisibleBeforeConfirmation() {
+        proposal.put("trialDays",7).put("intervalHours",24)
+        signIn(); launch(); waitTag("new_request"); tap("new_request"); waitTag("request")
+        compose.onNodeWithTag("request").performTextReplacement("Préviens-moi des promotions PS5")
+        tap("evaluate"); waitTag("confirm")
+        compose.onNodeWithText(context.getString(R.string.trial_daily)).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.trial_offer_value)).performScrollTo().assertIsDisplayed()
+        tap("confirmation_info")
+        compose.onNodeWithText(context.getString(R.string.trial_offer_info)).performScrollTo().assertIsDisplayed()
+        capture("daily-trial-confirmation")
+    }
+    @Test fun expiredTrialKeepsDetailsReadableWithoutResumeOrEdit() {
+        watch.put("status","paused").put("trialEnded",true).put("trialEndsAt","2026-11-01T12:00:00Z")
+        watch.getJSONObject("plan").put("trialDays",7).put("intervalHours",24)
+        signIn(); launch(); waitTag("watch_$watchId"); tap("watch_$watchId"); waitTag("watch_status")
+        compose.onNodeWithText(context.getString(R.string.trial_ended)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.trial_ended_body)).assertIsDisplayed()
+        compose.onNodeWithTag("resume").assertDoesNotExist()
+        compose.onNodeWithTag("pause").assertDoesNotExist()
+        compose.onNodeWithContentDescription(context.getString(R.string.v1_actions)).performClick()
+        compose.onNodeWithTag("edit").assertIsNotEnabled()
+        compose.onNodeWithTag("delete").assertIsEnabled()
+        capture("daily-trial-ended")
+    }
     @Test fun coldStartWaitsForConfirmedDataAndNewRetainsUnsubmittedInput() {
         signIn()
         runBlocking { LocalDraftRepository(context).save(RequestDraft("Old webhook draft")) }

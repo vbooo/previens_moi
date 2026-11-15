@@ -77,6 +77,8 @@ fun FailureText(failure: Failure?) {
             Failure.ProposalExpired -> R.string.error_expired
             Failure.VersionConflict -> R.string.error_version
             Failure.CommandConflict -> R.string.error_command
+            Failure.ActiveLimit -> R.string.trial_active_limit
+            Failure.TrialEnded -> R.string.trial_ended_body
             Failure.QuotaExceeded -> R.string.error_quota
             Failure.Unsupported -> R.string.error_unsupported
             Failure.InvalidInput -> R.string.error_input

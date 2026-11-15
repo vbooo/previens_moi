@@ -10,7 +10,7 @@ export function valid(name: string, value: unknown) {
   return validators.get(name)!(value);
 }
 export class Fault extends Error { constructor(public code: string, public status: number) { super(code); } }
-const statuses: Record<string, number> = {invalid_input:400, session_required:401,preview_required:401,access_denied:403,not_found:404,proposal_expired:410,command_expired:410,version_conflict:409,command_conflict:409,quota_exceeded:429,rate_limited:429,unsupported:409,reauthentication_required:401};
+const statuses: Record<string, number> = {invalid_input:400, session_required:401,preview_required:401,access_denied:403,free_trial_ended:403,not_found:404,proposal_expired:410,command_expired:410,version_conflict:409,command_conflict:409,quota_exceeded:429,active_watch_limit:429,rate_limited:429,unsupported:409,reauthentication_required:401};
 function iso(value: unknown): unknown {
   if (typeof value==='string' && /^\d{4}-\d\d-\d\dT.*\+00:00$/.test(value)) return value.replace(/\+00:00$/,'Z');
   if (Array.isArray(value)) return value.map(iso);

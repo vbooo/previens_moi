@@ -12,7 +12,7 @@
     <string name="error_temporary">Impossible de terminer cette action. Réessaie ; aucun doublon ne sera créé.</string>
     <string name="error_session">Connecte-toi pour continuer.</string>
     <string name="error_expired">Cette proposition a expiré. Reviens à ta demande pour la confirmer à nouveau.</string>
-    <string name="error_quota">Impossible d’activer ce suivi : une place ou des crédits d’essai manquent. Si un autre suivi est actif, mets-le en pause avant de réessayer.</string>
+    <string name="error_quota">Le service a atteint sa capacité d’essai. Aucun nouveau suivi n’a été activé.</string>
     <string name="operation_pending">Nous vérifions si ton suivi a bien été enregistré.</string>
     <string name="missing">Ce contenu n’est plus disponible. Il a pu être supprimé.</string>
     <string name="detail_title">Détail du suivi</string>
