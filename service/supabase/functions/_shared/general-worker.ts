@@ -13,7 +13,7 @@ export interface GeneralPort {lease():Promise<GeneralWork|null>;finish(work:Gene
 export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,enabled:boolean,request:typeof fetch=fetch,trace:(entry:{event:"model_rejected";phase:GeneralWork["phase"];status:number})=>void=entry=>console.warn(JSON.stringify(entry))):Promise<string> {
  if(!enabled||!key)return 'disabled';const work=await port.lease();if(!work)return 'empty';
  let actual:number|null=work.phase==='collect'?0:null;let credits:number|null=work.phase==='collect'?null:0;
- const c=work.context;const daily=c.dailyTrial===true||c.plan?.trialDays===7;const stable=daily||c.plan?.sourcePolicy==='stable_v1'||c.draft.answers.some((a:any)=>a.questionId==='region');let result:unknown;
+ const c=work.context;const daily=c.dailyTrial===true||c.plan?.trialDays===7||c.plan?.accessTier==='plus';const stable=daily||c.plan?.sourcePolicy==='stable_v1'||c.draft.answers.some((a:any)=>a.questionId==='region');let result:unknown;
  const model=async(body:string)=>{
   // UTF-8 bytes plus schema/transport margin are an input-token upper bound.
   const upper=Math.ceil((new TextEncoder().encode(body).length+4096)*.4+JSON.parse(body).max_output_tokens*1.6);if(upper>20000)throw new Error('Model reservation exceeded');

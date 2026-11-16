@@ -147,6 +147,7 @@ fun CreateScreen(
     vm: CreateViewModel,
     login: (() -> Unit)? = null,
     remote: Boolean = false,
+    subscription: (() -> Unit)? = null,
 ) {
     var questionIndex by rememberSaveable(state.questions.map { it.id }.joinToString()) { mutableIntStateOf(0) }
     val contentKey = when (state.step) {
@@ -201,6 +202,9 @@ fun CreateScreen(
             CreationStep.Evaluating -> {
                 RequestFields(state, vm)
                 FailureText(state.error, R.string.error_analysis_unavailable)
+                if (state.error in setOf(Failure.TrialEnded, Failure.SubscriptionRequired) && subscription != null) {
+                    Button(subscription, modifier = Modifier.fillMaxWidth().testTag("creation_subscription")) { Text(stringResource(R.string.billing_title)) }
+                }
                 Button(
                     onClick = submit,
                     enabled =
@@ -268,6 +272,9 @@ fun CreateScreen(
                         }
                     }
                 FailureText(state.error, R.string.error_analysis_unavailable)
+                if (state.error in setOf(Failure.TrialEnded, Failure.SubscriptionRequired) && subscription != null) {
+                    Button(subscription, modifier = Modifier.fillMaxWidth().testTag("creation_subscription")) { Text(stringResource(R.string.billing_title)) }
+                }
                 Button(
                     onClick = {
                         if (questionIndex < state.questions.lastIndex) questionIndex++
@@ -380,12 +387,15 @@ fun CreateScreen(
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                         ConfirmationSetting(
                             stringResource(R.string.v1_frequency),
-                            if (p.trialDays == 7) stringResource(R.string.trial_daily)
+                            if (p.accessTier == "plus" || p.trialDays == 7) stringResource(R.string.trial_daily)
                             else if (p.intervalHours == 1) stringResource(R.string.v1_hourly)
                             else stringResource(R.string.v1_interval, p.intervalHours),
                         )
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                        if (p.trialDays == 7) {
+                        if (p.accessTier == "plus") {
+                            ConfirmationSetting(stringResource(R.string.billing_title), stringResource(R.string.billing_plus))
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        } else if (p.trialDays == 7) {
                             ConfirmationSetting(stringResource(R.string.trial_offer_label), stringResource(R.string.trial_offer_value))
                             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                         }
@@ -446,7 +456,7 @@ private fun ConfirmationInfoSheet(proposal: Proposal, dismiss: () -> Unit) {
             Text(stringResource(if (proposal.method == "web_search") R.string.v1_initial_results
                 else R.string.baseline_info), style = MaterialTheme.typography.bodyMedium)
             SectionTitle(stringResource(R.string.confirmation_info_limits))
-            Text(stringResource(if (proposal.trialDays == 7) R.string.trial_offer_info else R.string.v2_trial_note), style = MaterialTheme.typography.bodyMedium)
+            Text(stringResource(if (proposal.accessTier == "plus") R.string.billing_daily_offer else if (proposal.trialDays == 7) R.string.trial_offer_info else R.string.v2_trial_note), style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

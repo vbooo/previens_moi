@@ -1,0 +1,10 @@
+<resources>
+    <string name="billing_title">Subscription</string>
+    <string name="billing_plus">Préviens-moi Plus</string>
+    <string name="billing_manage">Manage or cancel in Google Play</string>
+    <string name="billing_delete_warning">Deleting your account does not cancel your Google Play subscription. Cancel in Google Play to stop future payments.</string>
+    <string name="billing_required">Your subscription is no longer active. Your results remain available.</string>
+    <string name="billing_monthly_limit">You have used your requests for this period. Your active watches continue.</string>
+    <string name="billing_daily_offer">Préviens-moi Plus · Daily checks</string>
+    <string name="billing_watch_suspended">Access suspended</string>
+</resources>

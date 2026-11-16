@@ -1,3 +1,4 @@
+import {refreshSubscriptions} from '../_shared/billing-runtime.ts';
 import {serve,json,rpc,Fault,bytes} from '../_shared/http.ts';
 import {generalOne} from '../_shared/general-worker.ts';
 import {providerOne} from '../_shared/provider-worker.ts';
@@ -12,6 +13,9 @@ serve(async req=>{
  const secret=Deno.env.get('WORKER_SECRET');if(!secret)throw new Fault('temporary_failure',503);
  if(!await workerAuthorized(req.headers,secret,async value=>await rpc('s3_worker_nonce',{value}) as boolean))throw new Fault('access_denied',403);
  if(req.body)await bytes(req,1024);
+ // Billing outages delay paid leases via plus_fresh; they must not stop free
+ // trials, erasure, pause acknowledgements or notification delivery.
+ try{await refreshSubscriptions();}catch{console.warn(JSON.stringify({event:'subscription_refresh_unavailable'}));}
  const generalEnabled=Deno.env.get('GENERAL_EXECUTION_ENABLED')==='true';
  const runGeneral=async()=>await generalOne({async lease(){return await rpc('s3_general_lease',{});},async finish(work,result,actual,credits){await rpc('s3_general_finish',{target:work.id,lease_id:work.lease,result,actual,credits});}},Deno.env.get('OPENAI_API_KEY')??'',new Firecrawl(Deno.env.get('FIRECRAWL_API_KEY')??'',generalEnabled),generalEnabled);
  const admission=await interpretOne({async lease(){return await rpc('s3_admission_lease',{});},async finish(job,result,interpretation,actual){await rpc('s3_admission_finish',{target:job.id,lease_id:job.lease,result,interpretation,actual});}},Deno.env.get('OPENAI_API_KEY')??'',Deno.env.get('ADMISSION_EXECUTION_ENABLED')==='true');

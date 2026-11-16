@@ -13,7 +13,7 @@ plugins {
 // Only public mobile-client settings live here; server credentials never enter Gradle.
 // Explicit -P properties still take precedence for isolated local and CI builds.
 val clientProperties = Properties().apply {
-    val file = rootProject.file("client.properties")
+    val file = rootProject.file(if (providers.gradleProperty("playApplicationId").isPresent) "play-client.properties" else "client.properties")
     if (file.isFile) file.inputStream().use { load(it) }
 }
 val localServiceBuild = providers.gradleProperty("localService").getOrElse("false") == "true"
@@ -31,8 +31,8 @@ android {
         minSdk = 23
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = 13
-        versionName = "0.1.12"
+        versionCode = 14
+        versionName = "0.2.0"
     }
     buildTypes {
         getByName("release") {
@@ -47,7 +47,13 @@ android {
         create("demo") { dimension = "environment"; applicationIdSuffix = ".demo" }
         create("remote") {
             isDefault = true
-            dimension = "environment"; applicationIdSuffix = ".remote"
+            val playId = providers.gradleProperty("playApplicationId").orNull
+            if (playId != null) {
+                check(playId == "fr.previensmoi.app") { "Unexpected Play application ID." }
+                applicationId = playId
+            }
+            buildConfigField("String", "PLAY_PACKAGE_NAME", "\"fr.previensmoi.app\"")
+            dimension = "environment"; applicationIdSuffix = if (playId == null) ".remote" else ""
             for ((field, property) in listOf("FIREBASE_APP_ID" to "firebaseAppId", "FIREBASE_PROJECT_ID" to "firebaseProjectId", "FIREBASE_API_KEY" to "firebaseApiKey", "FIREBASE_SENDER_ID" to "firebaseSenderId")) {
                 buildConfigField("String", field, "\"${clientSetting(property)}\"")
             }
@@ -82,6 +88,9 @@ val validateRemoteReleaseConfiguration = tasks.register("validateRemoteReleaseCo
     group = "verification"
     description = "Reject local/test-mode or incomplete connected release settings without logging values."
     doLast {
+        if (providers.gradleProperty("playApplicationId").isPresent) {
+            check(clientSetting("firebasePackageName") == "fr.previensmoi.app") { "Play release requires matching public Firebase package settings." }
+        }
         check(!localServiceBuild) { "Release requires localService=false and explicit HTTPS client settings." }
         for ((name, expectedPath) in listOf("serviceUrl" to "/functions/v1/", "authUrl" to "/auth/v1/")) {
             val url = runCatching { URI(clientSetting(name)) }.getOrNull()
@@ -110,6 +119,7 @@ tasks.matching { it.name == "preRemoteReleaseBuild" }.configureEach {
     dependsOn(validateRemoteReleaseConfiguration)
 }
 dependencies {
+    "remoteImplementation"(libs.play.billing)
     "remoteImplementation"(libs.firebase.messaging)
     "remoteImplementation"(libs.work.runtime)
     implementation(platform(libs.compose.bom))

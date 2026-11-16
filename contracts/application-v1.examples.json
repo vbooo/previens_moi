@@ -771,5 +771,130 @@
       "trialDays": 8,
       "sourcePolicy": "stable_v1"
     }
+  },
+  {
+    "name": "subscription_active",
+    "schema": "SubscriptionAccess",
+    "valid": true,
+    "payload": {
+      "status": "active",
+      "active": true,
+      "expiresAt": "2027-01-01T00:00:00Z",
+      "remainingCreations": 3,
+      "canPurchase": false,
+      "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "trialEndsAt": null,
+      "trialEnded": false,
+      "packageName": "fr.previensmoi.app",
+      "productId": "previens_moi_plus",
+      "basePlanId": "monthly"
+    }
+  },
+  {
+    "name": "subscription_pending",
+    "schema": "SubscriptionAccess",
+    "valid": true,
+    "payload": {
+      "status": "pending",
+      "active": false,
+      "expiresAt": null,
+      "remainingCreations": 3,
+      "canPurchase": false,
+      "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "trialEndsAt": null,
+      "trialEnded": false,
+      "packageName": "fr.previensmoi.app",
+      "productId": "previens_moi_plus",
+      "basePlanId": "monthly"
+    }
+  },
+  {
+    "name": "subscription_cancelled",
+    "schema": "SubscriptionAccess",
+    "valid": true,
+    "payload": {
+      "status": "cancelled",
+      "active": true,
+      "expiresAt": "2027-01-01T00:00:00Z",
+      "remainingCreations": 3,
+      "canPurchase": false,
+      "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "trialEndsAt": null,
+      "trialEnded": false,
+      "packageName": "fr.previensmoi.app",
+      "productId": "previens_moi_plus",
+      "basePlanId": "monthly"
+    }
+  },
+  {
+    "name": "subscription_hold",
+    "schema": "SubscriptionAccess",
+    "valid": true,
+    "payload": {
+      "status": "hold",
+      "active": false,
+      "expiresAt": "2027-01-01T00:00:00Z",
+      "remainingCreations": 3,
+      "canPurchase": false,
+      "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "trialEndsAt": null,
+      "trialEnded": false,
+      "packageName": "fr.previensmoi.app",
+      "productId": "previens_moi_plus",
+      "basePlanId": "monthly"
+    }
+  },
+  {
+    "name": "subscription_invalid_state",
+    "schema": "SubscriptionAccess",
+    "valid": false,
+    "payload": {
+      "status": "made_up",
+      "active": true,
+      "expiresAt": null,
+      "remainingCreations": 3,
+      "canPurchase": false,
+      "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "trialEndsAt": null,
+      "trialEnded": false,
+      "packageName": "fr.previensmoi.app",
+      "productId": "previens_moi_plus",
+      "basePlanId": "monthly"
+    }
+  },
+  {
+    "name": "subscription_excess_quota",
+    "schema": "SubscriptionAccess",
+    "valid": false,
+    "payload": {
+      "status": "active",
+      "active": true,
+      "expiresAt": "2027-01-01T00:00:00Z",
+      "remainingCreations": 6,
+      "canPurchase": false,
+      "accountId": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "trialEndsAt": null,
+      "trialEnded": false,
+      "packageName": "fr.previensmoi.app",
+      "productId": "previens_moi_plus",
+      "basePlanId": "monthly"
+    }
+  },
+  {
+    "name": "purchase_token_write_only",
+    "schema": "PurchaseVerification",
+    "valid": true,
+    "payload": {
+      "purchaseToken": "synthetic-purchase-token-00001"
+    }
+  },
+  {
+    "name": "purchase_rejects_client_entitlement",
+    "schema": "PurchaseVerification",
+    "valid": false,
+    "payload": {
+      "purchaseToken": "synthetic-purchase-token-00001",
+      "active": true
+    }
   }
 ]

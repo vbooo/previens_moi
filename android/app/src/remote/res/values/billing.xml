@@ -1,0 +1,35 @@
+<resources>
+    <string name="billing_price_reference">€6.99</string>
+    <string name="billing_per_month">%1$s per month</string>
+    <string name="billing_subscribe">Subscribe for %1$s/month</string>
+    <string name="billing_offer_intro">More watches, beyond the free trial.</string>
+    <string name="billing_included">Included</string>
+    <string name="billing_two_watches">2 active watches at a time</string>
+    <string name="billing_daily_sources">One check per day, with up to 3 sources for each watch.</string>
+    <string name="billing_five_creations">5 new watches or topic changes per month.</string>
+    <string name="billing_pause_free">Pausing and resuming do not use a new request.</string>
+    <string name="billing_your_period">Your current period</string>
+    <string name="billing_remaining">Requests remaining: %1$d of 5</string>
+    <string name="billing_quota_definition">Creating a watch or changing what you are looking for uses one request.</string>
+    <string name="billing_active">Subscription active</string>
+    <string name="billing_cancelled">Cancellation confirmed</string>
+    <string name="billing_grace">Your payment needs attention. Your watches continue for now.</string>
+    <string name="billing_hold">Update your payment in Google Play. Your watches are suspended.</string>
+    <string name="billing_paused">Subscription paused</string>
+    <string name="billing_expired">Subscription ended</string>
+    <string name="billing_pending">Payment pending in Google Play. Your subscription starts after confirmation.</string>
+    <string name="billing_access_until">Access until %1$s</string>
+    <string name="billing_renewal">Next renewal: %1$s</string>
+    <string name="billing_restore">Restore purchases</string>
+    <string name="billing_restored">Your subscription was restored.</string>
+    <string name="billing_restore_none">No active subscription found for this Google account.</string>
+    <string name="billing_purchase_cancelled">Purchase cancelled. Your subscription has not changed.</string>
+    <string name="billing_not_available">Subscriptions are unavailable right now. You can continue your free trial if it is still running.</string>
+    <string name="billing_load_failed">Your subscription could not be loaded. Please try again shortly.</string>
+    <string name="billing_wrong_account">This purchase belongs to another Préviens-moi account. Sign in with the account used for the purchase.</string>
+    <string name="billing_invalid">This purchase could not be verified. Check your subscription in Google Play.</string>
+    <string name="billing_offline">The service could not be reached. Check your connection and try again.</string>
+    <string name="billing_verify_failed">Your purchase could not be confirmed. Use Restore purchases to try again.</string>
+    <string name="billing_terms">Monthly subscription, automatically renewed. Cancel in Google Play at any time; access continues until the end of the paid period.</string>
+    <string name="billing_no_commitment">The free trial never starts a subscription automatically. If you subscribe, the paid period starts immediately.</string>
+</resources>

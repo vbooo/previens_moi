@@ -220,7 +220,7 @@ private fun SourceLink(url: String, label: String = sourceDomain(url)) {
 @Composable
 private fun CheckTiming(watch: Watch, pausing: Boolean = false) {
     val next = when {
-        watch.trialEnded -> stringResource(R.string.v2_not_scheduled)
+        watch.trialEnded || watch.subscriptionEnded -> stringResource(R.string.v2_not_scheduled)
         pausing -> stringResource(R.string.v3_pausing)
         watch.status == WatchStatus.Active && watch.nextCheck != null -> compactDateText(watch.nextCheck)
         watch.status == WatchStatus.Paused -> stringResource(R.string.v5_on_resume)
@@ -254,6 +254,7 @@ fun DetailScreen(
     remote: Boolean = false,
     notificationsEnabled: Boolean = true,
     enableNotifications: () -> Unit = {},
+    subscription: (() -> Unit)? = null,
 ) {
     val watch = state.watches.find { it.id == id }
     if (watch == null) {
@@ -303,12 +304,13 @@ fun DetailScreen(
                         contained = true,
                         operation = pendingOperation,
                         onClick =
-                            if (watch.status == WatchStatus.SuspendedByCapacity && !watch.trialEnded)
+                            if (watch.status == WatchStatus.SuspendedByCapacity && !watch.trialEnded && !watch.subscriptionEnded)
                                 ({ explainLimit = true })
                             else null,
                     )
                 }
                 when {
+                    watch.subscriptionEnded -> SecondaryText(stringResource(R.string.billing_required))
                     watch.trialEnded -> SecondaryText(stringResource(R.string.trial_ended_body))
                     pendingOperation != null || pausing -> Unit
                     failed -> {
@@ -331,10 +333,13 @@ fun DetailScreen(
                         SecondaryText(stringResource(R.string.v1_completed_body))
                 }
                 if (watch.status != WatchStatus.Pending && !failed && pendingOperation == null && !pausing) CheckTiming(watch)
-                if (!watch.trialEnded) watch.trialEndsAt?.let { SecondaryText(stringResource(R.string.trial_ends_at, dateText(it))) }
+                if ((watch.trialEnded || watch.subscriptionEnded) && subscription != null) {
+                    Button(subscription, modifier = Modifier.fillMaxWidth().testTag("watch_subscription")) { Text(stringResource(R.string.billing_title)) }
+                }
+                if (!watch.trialEnded && !watch.subscriptionEnded) watch.trialEndsAt?.let { SecondaryText(stringResource(R.string.trial_ends_at, dateText(it))) }
                 if (
                     watch.health == Health.Degraded &&
-                        !watch.trialEnded && !failed &&
+                        !watch.trialEnded && !watch.subscriptionEnded && !failed &&
                         watch.status != WatchStatus.SuspendedByCapacity
                 )
                     SecondaryText(
@@ -386,7 +391,7 @@ fun DetailScreen(
                             ),
                         )
                     }
-                if (watch.status == WatchStatus.Paused && !watch.trialEnded && !failed && !pausing &&
+                if (watch.status == WatchStatus.Paused && !watch.trialEnded && !watch.subscriptionEnded && !failed && !pausing &&
                     !state.commandPending && !state.commandUnconfirmed) {
                     Button(
                         onClick = { vm.command(watch, Operation.Resume) },

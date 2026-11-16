@@ -39,7 +39,9 @@ import fr.previensmoi.feature.common.presentation.*
 import fr.previensmoi.feature.create.presentation.*
 import fr.previensmoi.feature.session.presentation.*
 import fr.previensmoi.feature.watches.presentation.*
+import fr.previensmoi.feature.subscription.*
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -66,6 +68,8 @@ class MainActivity : ComponentActivity() {
         intent.removeExtra("findingId")
     }
 
+    @Inject lateinit var playBilling: fr.previensmoi.data.billing.GooglePlayBilling
+    private val membership: SubscriptionViewModel by viewModels()
     private val watches: WatchesViewModel by viewModels()
     private val creation: CreateViewModel by viewModels()
     private val session: SessionViewModel by viewModels()
@@ -81,7 +85,12 @@ class MainActivity : ComponentActivity() {
                 val state by watches.state.collectAsStateWithLifecycle()
                 val create by creation.state.collectAsStateWithLifecycle()
                 val account by session.state.collectAsStateWithLifecycle()
+                val subscription by membership.state.collectAsStateWithLifecycle()
+                LaunchedEffect(account.session?.id) { membership.bindOwner(account.session?.id) }
                 WatchSynchronizationEffect(watches, account.session?.id)
+                LaunchedEffect(subscription.access?.active, subscription.access?.expiresAt) {
+                    if (subscription.loaded && account.session != null) watches.refresh()
+                }
                 val stack = rememberNavBackStack(*notificationInitialRoutes(requestedFinding, requestedWatch).toTypedArray())
                 var returnToProposal by rememberSaveable { mutableStateOf(false) }
                 var notificationsEnabled by remember {
@@ -114,6 +123,9 @@ class MainActivity : ComponentActivity() {
                     )
                         permission.launch(Manifest.permission.POST_NOTIFICATIONS)
                     else notificationSettings()
+                }
+                val manageSubscription = {
+                    startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.Builder().scheme("https").authority("play.google.com").path("/store/account/subscriptions").appendQueryParameter("sku","previens_moi_plus").appendQueryParameter("package","fr.previensmoi.app").build()))
                 }
                 var menuOpen by remember { mutableStateOf(false) }
                 var deleting by remember { mutableStateOf<Watch?>(null) }
@@ -148,6 +160,8 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+                    if(account.session != null && subscription.access?.canPurchase == true) membership.restore(false)
+                    else if(route==Membership)membership.refresh()
                     notificationsEnabled =
                         NotificationManagerCompat.from(this).areNotificationsEnabled()
                 }
@@ -167,7 +181,7 @@ class MainActivity : ComponentActivity() {
                     requestedFinding, account, state, stack, watches::requestFinding, ::consumeFinding, notificationRequestKey,
                 )
                 LaunchedEffect(route, account.loaded, account.session?.id) {
-                    if (account.loaded && account.session == null && (route is Detail || route is Result)) {
+                    if (account.loaded && account.session == null && (route is Detail || route is Result || route == Membership)) {
                         if (requestedFinding != null || requestedWatch != null) {
                             if (stack.lastOrNull() != Account) stack.add(Account)
                         } else { stack.clear(); stack.add(Home) }
@@ -225,6 +239,7 @@ class MainActivity : ComponentActivity() {
                                     stringResource(
                                         when (route) {
                                             Home -> R.string.v1_home
+                                            Membership -> R.string.billing_title
                                             Account ->
                                                 if (account.session == null) R.string.v1_connection
                                                 else R.string.v1_account
@@ -307,7 +322,7 @@ class MainActivity : ComponentActivity() {
                                                         text = {
                                                             Text(stringResource(R.string.revise))
                                                         },
-                                                        enabled = !state.commandPending && !watch.trialEnded,
+                                                        enabled = !state.commandPending && !watch.trialEnded && !watch.subscriptionEnded,
                                                         onClick = {
                                                             menuOpen = false
                                                             creation.edit(watch)
@@ -382,7 +397,15 @@ class MainActivity : ComponentActivity() {
                                             forConfirmation = returnToProposal,
                                             notificationsEnabled = notificationsEnabled,
                                             notificationSettings = notificationSettings,
+                                            subscriptionAction = { membership.refresh();stack.add(Membership) },
+                                            hasSubscription = subscription.access?.status != SubscriptionStatus.None,
+                                            manageSubscription = manageSubscription,
                                         )
+                                    }
+                                    entry<Membership> {
+                                        SubscriptionScreen(subscription,
+                                            subscribe = { membership.beginPurchase()?.let { membership.launchResult(playBilling.launch(this@MainActivity,it)) } },
+                                            restore = { membership.restore() }, refresh = membership::refresh, manage = manageSubscription)
                                     }
                                     entry<Create> {
                                         CreateScreen(
@@ -393,6 +416,7 @@ class MainActivity : ComponentActivity() {
                                                 stack.add(Account)
                                             },
                                             remote = true,
+                                            subscription = { membership.refresh();stack.add(Membership) },
                                         )
                                     }
                                     entry<Detail> { key ->
@@ -410,6 +434,7 @@ class MainActivity : ComponentActivity() {
                                             remote = true,
                                             notificationsEnabled = notificationsEnabled,
                                             enableNotifications = enableNotifications,
+                                            subscription = { membership.refresh();stack.add(Membership) },
                                         )
                                     }
                                     entry<Result> { key ->

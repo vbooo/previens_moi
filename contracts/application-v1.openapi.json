@@ -1234,6 +1234,138 @@
           }
         }
       }
+    },
+    "/api/v1/subscription": {
+      "get": {
+        "operationId": "subscriptionAccess",
+        "summary": "État serveur de l’abonnement",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionAccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subscription/purchases": {
+      "post": {
+        "operationId": "verifyPlayPurchase",
+        "summary": "Vérifier un achat Google avant de donner accès",
+        "security": [
+          {
+            "UserJWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Réponse selon état métier ; 202 ne prouve pas une activation.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionAccess"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Erreur typée. 400 invalide ; 401 session ; 404 absent ou autre propriétaire ; 409 conflit ; 410 expiré ; 429 quota ; 503 temporaire.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store pour les données privées."
+              },
+              "X-Request-Id": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseVerification"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1271,7 +1403,13 @@
               "temporary_failure",
               "unsupported_client",
               "free_trial_ended",
-              "active_watch_limit"
+              "active_watch_limit",
+              "billing_unavailable",
+              "purchase_invalid",
+              "purchase_account_mismatch",
+              "subscription_required",
+              "monthly_creation_limit",
+              "monthly_analysis_limit"
             ]
           },
           "requestId": {
@@ -1652,6 +1790,12 @@
             "type": "integer",
             "const": 7,
             "description": "One non-renewing seven-day free trial per account; pauses and new requests do not restart it."
+          },
+          "accessTier": {
+            "type": "string",
+            "enum": [
+              "plus"
+            ]
           }
         },
         "required": [
@@ -2026,6 +2170,9 @@
             "format": "date-time"
           },
           "trialEnded": {
+            "type": "boolean"
+          },
+          "subscriptionEnded": {
             "type": "boolean"
           }
         },
@@ -2723,6 +2870,105 @@
         "required": [
           "version",
           "mode"
+        ]
+      },
+      "PurchaseVerification": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "purchaseToken": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 4096,
+            "writeOnly": true
+          }
+        },
+        "required": [
+          "purchaseToken"
+        ]
+      },
+      "SubscriptionAccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "none",
+              "active",
+              "cancelled",
+              "grace",
+              "hold",
+              "paused",
+              "expired",
+              "pending"
+            ]
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "expiresAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "remainingCreations": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "canPurchase": {
+            "type": "boolean"
+          },
+          "accountId": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "trialEndsAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "trialEnded": {
+            "type": "boolean"
+          },
+          "packageName": {
+            "type": "string",
+            "const": "fr.previensmoi.app"
+          },
+          "productId": {
+            "type": "string",
+            "const": "previens_moi_plus"
+          },
+          "basePlanId": {
+            "type": "string",
+            "const": "monthly"
+          }
+        },
+        "required": [
+          "status",
+          "active",
+          "expiresAt",
+          "remainingCreations",
+          "canPurchase",
+          "accountId",
+          "trialEndsAt",
+          "trialEnded",
+          "packageName",
+          "productId",
+          "basePlanId"
         ]
       }
     }

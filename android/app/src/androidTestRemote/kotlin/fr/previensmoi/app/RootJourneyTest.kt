@@ -54,6 +54,8 @@ class RootJourneyTest {
         server = MockWebServer()
         server.dispatcher = object: Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
+                if(request.url.encodedPath.endsWith("/api/v1/subscription"))return MockResponse.Builder().body("""{"status":"none","active":false,"expiresAt":null,"remainingCreations":5,"canPurchase":false,"accountId":"${"a".repeat(64)}","trialEndsAt":null,"trialEnded":false,"packageName":"fr.previensmoi.app","productId":"previens_moi_plus","basePlanId":"monthly"}""").addHeader("Content-Type","application/json").build()
+
                 val path=request.url.encodedPath
                 return when {
                     path.endsWith("/otp") -> { authSends.incrementAndGet(); response("{}") }
@@ -183,6 +185,11 @@ class RootJourneyTest {
         tap("account");tap("sign_out");waitTag("email");back();waitTag("signed_out_watches")
         compose.onNodeWithTag("home_loading").assertDoesNotExist()
         compose.onNodeWithTag("watch_$watchId").assertDoesNotExist()
+    }
+    @Test fun subscriptionIsReachableFromAccountAndUnavailableCheckoutStaysDisabled() {
+        signIn();launch();waitTag("watch_$watchId");tap("account");tap("open_subscription");waitTag("subscription_status")
+        compose.onNodeWithTag("subscribe").assertIsNotEnabled()
+        compose.onNodeWithTag("restore_purchases").performScrollTo().assertIsEnabled()
     }
     @Test fun actualHttpPauseAndResumeUpdateTheSameWatchWithoutRepeatedCommands() {
         signIn();launch();tap("watch_$watchId");tap("pause");waitTag("resume")

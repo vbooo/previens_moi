@@ -77,6 +77,8 @@ fun FailureText(failure: Failure?, temporaryMessage: Int = R.string.error_tempor
             Failure.ProposalExpired -> R.string.error_expired
             Failure.VersionConflict -> R.string.error_version
             Failure.CommandConflict -> R.string.error_command
+            Failure.SubscriptionRequired -> R.string.billing_required
+            Failure.MonthlyLimit -> R.string.billing_monthly_limit
             Failure.ActiveLimit -> R.string.trial_active_limit
             Failure.TrialEnded -> R.string.trial_ended_body
             Failure.QuotaExceeded -> R.string.error_quota

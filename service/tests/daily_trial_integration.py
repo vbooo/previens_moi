@@ -22,7 +22,7 @@ try:
  run([D,'exec','-i',C,'pg_restore','-U','postgres','-d',name,'--no-owner','--no-privileges','--exit-on-error'],input=raw)
  with psycopg.connect(BASE+name,autocommit=True) as c:
   def q(sql,args=()):
-   cur=c.execute(sql,args);return cur.fetchone()[0] if cur.description else None
+   cur=c.execute(sql,args or None);return cur.fetchone()[0] if cur.description else None
   q('create extension if not exists pgcrypto with schema extensions')
   # Accept both the historical qualification template and a current local stack.
   # Only this disposable copy receives missing migrations.

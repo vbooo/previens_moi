@@ -34,3 +34,6 @@ android/gradle/gradle-daemon-jvm.properties
 
 # Python checks
 __pycache__/
+
+# Public client settings for the separate Play application.
+android/play-client.properties

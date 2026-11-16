@@ -1,0 +1,35 @@
+<resources>
+    <string name="billing_price_reference">6,99 €</string>
+    <string name="billing_per_month">%1$s par mois</string>
+    <string name="billing_subscribe">S’abonner à %1$s/mois</string>
+    <string name="billing_offer_intro">Plus de suivis, au-delà de l’essai gratuit.</string>
+    <string name="billing_included">Ce qui est inclus</string>
+    <string name="billing_two_watches">2 suivis actifs en même temps</string>
+    <string name="billing_daily_sources">Une vérification par jour, sur 3 sources au maximum pour chaque suivi.</string>
+    <string name="billing_five_creations">5 créations ou changements de sujet par mois.</string>
+    <string name="billing_pause_free">La pause et la reprise ne comptent pas comme une création.</string>
+    <string name="billing_your_period">Ta période en cours</string>
+    <string name="billing_remaining">Demandes restantes : %1$d sur 5</string>
+    <string name="billing_quota_definition">Créer un suivi ou changer ce que tu recherches utilise une demande.</string>
+    <string name="billing_active">Abonnement actif</string>
+    <string name="billing_cancelled">Résiliation prise en compte</string>
+    <string name="billing_grace">Ton paiement nécessite une vérification. Tes suivis continuent pour le moment.</string>
+    <string name="billing_hold">Paiement à régulariser dans Google Play. Tes suivis sont suspendus.</string>
+    <string name="billing_paused">Abonnement en pause</string>
+    <string name="billing_expired">Abonnement terminé</string>
+    <string name="billing_pending">Paiement en attente dans Google Play. L’abonnement sera activé après confirmation.</string>
+    <string name="billing_access_until">Accès jusqu’au %1$s</string>
+    <string name="billing_renewal">Prochain renouvellement : %1$s</string>
+    <string name="billing_restore">Restaurer mes achats</string>
+    <string name="billing_restored">Ton abonnement a été retrouvé.</string>
+    <string name="billing_restore_none">Aucun abonnement actif retrouvé pour ce compte Google.</string>
+    <string name="billing_purchase_cancelled">Achat annulé. Ton abonnement n’a pas changé.</string>
+    <string name="billing_not_available">L’abonnement n’est pas disponible pour le moment. Tu peux continuer ton essai gratuit s’il est en cours.</string>
+    <string name="billing_load_failed">Impossible de charger ton abonnement. Réessaie dans un instant.</string>
+    <string name="billing_wrong_account">Cet achat est lié à un autre compte Préviens-moi. Connecte-toi au compte utilisé lors de l’achat.</string>
+    <string name="billing_invalid">Cet achat ne peut pas être validé. Vérifie ton abonnement dans Google Play.</string>
+    <string name="billing_offline">Impossible de joindre le service. Vérifie ta connexion et réessaie.</string>
+    <string name="billing_verify_failed">La confirmation de ton achat est indisponible. Utilise Restaurer mes achats pour réessayer.</string>
+    <string name="billing_terms">Abonnement mensuel à renouvellement automatique. Tu peux le résilier dans Google Play ; ton accès reste ouvert jusqu’à la fin de la période payée.</string>
+    <string name="billing_no_commitment">L’essai gratuit ne déclenche aucun abonnement automatique. Si tu t’abonnes, la période payante commence dès l’achat.</string>
+</resources>

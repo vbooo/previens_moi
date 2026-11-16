@@ -22,6 +22,9 @@ import javax.inject.Singleton
 
 @Module @InstallIn(SingletonComponent::class)
 object RemoteModule {
+    @Provides @Singleton fun playBilling(@ApplicationContext context: Context) = fr.previensmoi.data.billing.GooglePlayBilling(context)
+    @Provides fun storeBilling(value: fr.previensmoi.data.billing.GooglePlayBilling): StoreBilling = value
+    @Provides @Singleton fun subscriptions(api: ApplicationApi, session: RemoteSessionRepository): SubscriptionRepository = fr.previensmoi.data.billing.RemoteSubscriptionRepository(api,session)
     @Provides fun clock(): Clock = Clock { System.currentTimeMillis() }
     @Provides @Singleton fun ids(): IdGenerator = IdGenerator {
         val bytes = ByteArray(16).also { SecureRandom().nextBytes(it) }; val now = System.currentTimeMillis()

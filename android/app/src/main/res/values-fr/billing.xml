@@ -1,0 +1,10 @@
+<resources>
+    <string name="billing_title">Abonnement</string>
+    <string name="billing_plus">Préviens-moi Plus</string>
+    <string name="billing_manage">Gérer ou résilier dans Google Play</string>
+    <string name="billing_delete_warning">Supprimer ton compte ne résilie pas ton abonnement Google Play. Résilie-le dans Google Play pour arrêter les prochains paiements.</string>
+    <string name="billing_required">Ton abonnement n’est plus actif. Tes résultats restent disponibles.</string>
+    <string name="billing_monthly_limit">Tu as utilisé tes demandes pour cette période. Tes suivis déjà actifs continuent.</string>
+    <string name="billing_daily_offer">Préviens-moi Plus · Vérification quotidienne</string>
+    <string name="billing_watch_suspended">Accès suspendu</string>
+</resources>

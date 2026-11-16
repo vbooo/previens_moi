@@ -49,7 +49,7 @@
     <string name="v1_open_site">Voir sur le site</string>
     <string name="v1_erase_body">Ton compte, tes suivis et leurs résultats seront supprimés. Une connexion récente est nécessaire pour confirmer cette action.</string>
     <string name="v1_privacy">Confidentialité</string>
-    <string name="v1_privacy_body">Ton adresse e-mail sert à te connecter. Tes demandes, les sources consultées et les résultats sont enregistrés pour assurer le suivi. Les demandes et des extraits de pages publiques sont traités par OpenAI et Firecrawl. Supabase héberge le service et les données ; Firebase transmet les alertes à ce téléphone. Tu peux arrêter un suivi ou demander la suppression de ton compte depuis cette application.</string>
+    <string name="v1_privacy_body">Ton adresse e-mail sert à te connecter. Tes demandes, les sources consultées et les résultats sont enregistrés pour assurer le suivi. Les demandes et des extraits de pages publiques sont traités par OpenAI et Firecrawl. Supabase héberge le service et les données ; Firebase transmet les alertes à ce téléphone. Tu peux arrêter un suivi ou demander la suppression de ton compte depuis cette application. Google Play gère les paiements des abonnements. Le service conserve la référence technique de ton achat et son état pour vérifier tes droits.</string>
     <string name="v1_close">Fermer</string>
     <string name="v1_notifications">Notifications</string>
     <string name="v1_notifications_on">Les alertes sont activées sur ce téléphone.</string>

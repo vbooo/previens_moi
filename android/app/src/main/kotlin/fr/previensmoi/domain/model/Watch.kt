@@ -16,14 +16,14 @@ data class Proposal(
     val partial: Boolean = false, val sources: List<String> = emptyList(),
     val intervalHours: Int = 24, val limit: Int = 1,
     val title: String = "", val criteria: List<String> = emptyList(), val exclusions: List<String> = emptyList(),
-    val coverage: String = "", val limitations: List<String> = emptyList(), val method: String = "", val backgroundPreparation: Boolean = false, val preparationFailure: String? = null, val sourceLabels: Map<String,String> = emptyMap(), val checkedSources: Int? = null, val totalSources: Int? = null, val trialDays: Int? = null,
+    val coverage: String = "", val limitations: List<String> = emptyList(), val method: String = "", val backgroundPreparation: Boolean = false, val preparationFailure: String? = null, val sourceLabels: Map<String,String> = emptyMap(), val checkedSources: Int? = null, val totalSources: Int? = null, val trialDays: Int? = null, val accessTier: String? = null,
 )
 data class Watch(
     val id: String, val plan: Proposal, val version: Long = 1,
     val status: WatchStatus = WatchStatus.Active, val health: Health = Health.NotCheckedYet,
     val lastSuccess: Long? = null, val lastFailure: Long? = null,
     val baselineAt: Long?, val nextCheck: Long? = null, val remoteState: RemoteState = RemoteState.Stopped,
-    val trialEndsAt: Long? = null, val trialEnded: Boolean = false,
+    val trialEndsAt: Long? = null, val trialEnded: Boolean = false, val subscriptionEnded: Boolean = false,
 )
 data class Finding(
     val id: String, val watchId: String, val planId: String, val planVersion: Long,
@@ -35,7 +35,7 @@ data class Proof(val url: String, val quote: String, val observedAt: Long, val p
 enum class Failure {
     OperationPending, OperationFailed, AnalysisPending,
     Offline, TemporaryFailure, SessionRequired, AccessDenied, NotFound, ProposalExpired,
-    VersionConflict, CommandConflict, QuotaExceeded, ActiveLimit, TrialEnded, Unsupported, InvalidInput, StorageFailure,
+    VersionConflict, CommandConflict, QuotaExceeded, SubscriptionRequired, MonthlyLimit, ActiveLimit, TrialEnded, Unsupported, InvalidInput, StorageFailure,
 }
 sealed interface Outcome<out T> {
     data class Success<T>(val value: T) : Outcome<T>
@@ -65,5 +65,5 @@ fun interface Clock { fun now(): Long }
 fun interface IdGenerator { fun next(): String }
 
 /** A resumed generation may fail while retaining results from an earlier run. */
-val Watch.preparationFailed: Boolean get() = !trialEnded && status == WatchStatus.Paused &&
+val Watch.preparationFailed: Boolean get() = !trialEnded && !subscriptionEnded && status == WatchStatus.Paused &&
     health == Health.Degraded && (baselineAt == null || plan.preparationFailure != null)

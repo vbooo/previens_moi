@@ -1,0 +1,24 @@
+{
+  "migrations": [
+    "202611160039",
+    "202611160040"
+  ],
+  "deployedFunctions": [
+    "api",
+    "public",
+    "worker",
+    "webhook",
+    "play-notifications"
+  ],
+  "billingEnabled": false,
+  "testPurchasesOnly": true,
+  "paidMonitoringEnabled": false,
+  "globalModelLimitMicroUsd": 300000,
+  "globalWebCreditLimit": 171,
+  "existingTrialsAndPlansUnchangedByMigration": true,
+  "newPaidProviderCalls": 0,
+  "googleLicensePurchaseTested": false,
+  "productionReady": false,
+  "trialUpgradeDuringPreparationQualifiedLocally": true,
+  "paidProposalAccountSwitchGuardQualifiedLocally": true
+}

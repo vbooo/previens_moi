@@ -6,5 +6,5 @@
     <string name="trial_daily">Chaque jour</string>
     <string name="trial_offer_label">Essai gratuit</string>
     <string name="trial_offer_value">7 jours · 1 suivi</string>
-    <string name="trial_active_limit">Tu as déjà un suivi actif. Mets-le en pause pour en créer un autre.</string>
+    <string name="trial_active_limit">La limite de suivis actifs de ton offre est atteinte. Mets un suivi en pause pour en démarrer un autre.</string>
 </resources>

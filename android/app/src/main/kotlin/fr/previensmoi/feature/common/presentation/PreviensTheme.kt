@@ -169,6 +169,7 @@ fun WatchStatusLabel(
     }
     val label =
         when {
+            watch.subscriptionEnded -> R.string.billing_watch_suspended
             watch.trialEnded -> R.string.trial_ended
             operation == Operation.Pause -> R.string.v3_pausing
             operation == Operation.Resume -> R.string.v3_resuming

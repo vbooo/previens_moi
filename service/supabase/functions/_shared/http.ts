@@ -10,7 +10,7 @@ export function valid(name: string, value: unknown) {
   return validators.get(name)!(value);
 }
 export class Fault extends Error { constructor(public code: string, public status: number) { super(code); } }
-const statuses: Record<string, number> = {invalid_input:400, session_required:401,preview_required:401,access_denied:403,free_trial_ended:403,not_found:404,proposal_expired:410,command_expired:410,version_conflict:409,command_conflict:409,quota_exceeded:429,active_watch_limit:429,rate_limited:429,unsupported:409,reauthentication_required:401};
+const statuses: Record<string, number> = {billing_unavailable:503,purchase_invalid:400,purchase_account_mismatch:403,subscription_required:403,monthly_creation_limit:429,monthly_analysis_limit:429,invalid_input:400, session_required:401,preview_required:401,access_denied:403,free_trial_ended:403,not_found:404,proposal_expired:410,command_expired:410,version_conflict:409,command_conflict:409,quota_exceeded:429,active_watch_limit:429,rate_limited:429,unsupported:409,reauthentication_required:401};
 function iso(value: unknown): unknown {
   if (typeof value==='string' && /^\d{4}-\d\d-\d\dT.*\+00:00$/.test(value)) return value.replace(/\+00:00$/,'Z');
   if (Array.isArray(value)) return value.map(iso);
@@ -51,7 +51,7 @@ export async function authenticated(req: Request) {
 // Fixed route categories: never log user paths, query strings, headers or bodies.
 function routeCategory(req: Request): string {
   const path = new URL(req.url).pathname;
-  for (const category of ['watches','findings','commands','account','devices','understandings','evaluations','proposals','preview-sessions','health']) {
+  for (const category of ['subscription','watches','findings','commands','account','devices','understandings','evaluations','proposals','preview-sessions','health']) {
     if (path.split('/').includes(category)) return category;
   }
   return 'other';

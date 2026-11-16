@@ -22,6 +22,7 @@ def fixture_settings():
         return base64.urlsafe_b64encode(json.dumps(value).encode()).decode().rstrip('=')
     return {
         'localService': 'false',
+        'firebasePackageName': 'fr.previensmoi.app',
         'serviceUrl': 'https://release-check.example.test/functions/v1/',
         'authUrl': 'https://release-check.example.test/auth/v1/',
         'authPublicKey': b64({'alg': 'HS256'}) + '.' + b64({'role': 'anon'}) + '.not-a-real-signature',
@@ -39,7 +40,7 @@ def run(command):
     return result.stdout
 
 
-def inspect(apk, sdk, mapping):
+def inspect(apk, sdk, mapping, package=PACKAGE):
     aapt = sdk / 'build-tools/36.0.0/aapt2'
     manifest = run([aapt, 'dump', 'xmltree', apk, '--file', 'AndroidManifest.xml'])
     badging = run([aapt, 'dump', 'badging', apk])
@@ -50,7 +51,7 @@ def inspect(apk, sdk, mapping):
     network = run([aapt, 'dump', 'xmltree', apk, '--file', network_path[1]])
     truthy = lambda attribute, text: bool(re.search(attribute + r'\([^\n]*?\)=(?:true|0xffffffff|\(type 0x12\)0xffffffff)', text))
     checks = {
-        'connectedPackage': "package: name='" + PACKAGE + "'" in badging,
+        'connectedPackage': "package: name='" + package + "'" in badging,
         'notDebuggable': not truthy('debuggable', manifest),
         'backupsDisabled': 'allowBackup(0x01010280)=false' in manifest and 'fullBackupContent(0x010104eb)=false' in manifest,
         'httpsOnlyIncludingLoopback': 'cleartextTrafficPermitted' in network and not truthy('cleartextTrafficPermitted', network) and 'domain-config' not in network,
@@ -95,9 +96,11 @@ def main():
     parser.add_argument('--sdk', type=Path, default=Path(os.environ.get('ANDROID_HOME', ROOT / '.local/sdk')))
     parser.add_argument('--apk', type=Path, default=ROOT / 'android/app/build/outputs/apk/remote/release/app-remote-release-unsigned.apk')
     parser.add_argument('--report', type=Path, default=ROOT / 'android/app/build/reports/release-check.json')
+    parser.add_argument('--play', action='store_true', help='Check the definitive Play package with separate client settings')
     args = parser.parse_args()
     if args.build_fixture:
         settings = ['-P' + name + '=' + value for name, value in fixture_settings().items()]
+        if args.play: settings.append('-PplayApplicationId=fr.previensmoi.app')
         command = [str(ROOT / 'android/gradlew'), '-p', str(ROOT / 'android'), '--no-daemon', '--max-workers=2',
                    'assembleRemoteRelease', 'bundleRemoteRelease', 'lintRemoteRelease', *settings]
         # Exercise refusals against deliberately synthetic values, never real secrets.
@@ -117,7 +120,7 @@ def main():
             if refusal.returncode == 0 or 'Release requires' not in refusal.stdout + refusal.stderr:
                 raise RuntimeError('Release configuration refusal not verified: ' + next(iter(override)))
         subprocess.run(command, check=True)
-    result = inspect(args.apk, args.sdk, ROOT / 'android/app/build/outputs/mapping/remoteRelease/mapping.txt')
+    result = inspect(args.apk, args.sdk, ROOT / 'android/app/build/outputs/mapping/remoteRelease/mapping.txt', 'fr.previensmoi.app' if args.play else PACKAGE)
     result['configurationKind'] = 'offline-public-fixture' if args.build_fixture else 'supplied-client-configuration'
     result['productionReady'] = False
     args.report.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,29 @@
+{
+  "android": {
+    "remote": {
+      "tests": 78,
+      "failures": 0,
+      "errors": 0
+    },
+    "demo": {
+      "tests": 87,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "serviceTests": 134,
+  "serviceFailures": 0,
+  "contractFixtures": 45,
+  "localNativeSubscriptionScreen": {
+    "light": true,
+    "darkWithFontScale1_3": true
+  },
+  "realActivityHttpJourneys": {
+    "executed": 14,
+    "optionalCaptureSkipped": 1
+  },
+  "googleLicensePurchasesTested": false,
+  "newPaidProviderCalls": 0,
+  "publicCommerceEnabled": false,
+  "productionReady": false
+}

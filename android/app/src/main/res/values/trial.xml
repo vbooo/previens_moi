@@ -6,5 +6,5 @@
     <string name="trial_daily">Daily</string>
     <string name="trial_offer_label">Free trial</string>
     <string name="trial_offer_value">7 days · 1 watch</string>
-    <string name="trial_active_limit">You already have an active watch. Pause it to create another.</string>
+    <string name="trial_active_limit">Your plan’s active-watch limit is reached. Pause a watch before starting another.</string>
 </resources>

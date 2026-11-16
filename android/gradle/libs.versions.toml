@@ -13,6 +13,7 @@ junit = "4.13.2"
 turbine = "1.2.1"
 
 [libraries]
+play-billing = { module = "com.android.billingclient:billing", version = "9.1.0" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling" }

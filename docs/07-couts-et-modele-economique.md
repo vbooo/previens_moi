@@ -2,7 +2,17 @@
 
 Validé par Fabien le 2 octobre 2026, avec publication de la V1 sur le Play Store et premiers essais prévus surtout par Fabien, sa femme et éventuellement un ami. Les montants d'exploitation, quotas et cadences restent à mesurer avant publication. **Ce document n'autorise aucune dépense, ne choisit aucun fournisseur et ne fixe aucun tarif public.** Les décisions sont consignées dans la [décision 0007](decisions/0007-couts-et-modele-economique.md). Il complète la [stratégie de recherche validée](06-sources-et-strategie-de-recherche.md) et les [règles d'alerte](05-regles-des-alertes.md).
 
-## Règle en vigueur depuis le 15 novembre 2026
+## Offre Plus validée le 16 novembre 2026
+
+Fabien a validé **6,99 € TTC par mois**, renouvellement automatique via Google Play, avec **deux suivis actifs**, **trois sources maximum par suivi**, **un contrôle quotidien** et **cinq créations ou changements de sujet par période mensuelle**. Pause et reprise ne consomment pas de création. Les critères et la cadence existants ne sont pas changés silencieusement ; un ancien plan horaire nécessite une nouvelle confirmation. L’essai gratuit de sept jours reste sans carte et sans conversion automatique.
+
+L’abonnement apporte la surveillance continue ; les cinq demandes limitent son coût de préparation. Les résultats conservés restent consultables après l’expiration. Une résiliation garde les droits jusqu’à la fin payée ; une suspension de paiement les arrête selon l’état vérifié chez Google. La suppression du compte ne résilie pas l’abonnement Google.
+
+**Intégration en préparation, vente non ouverte.** L’offre ne constitue pas une autorisation de payer un fournisseur, d’augmenter le budget global ou de publier. Les essais d’intégration utilisent des réponses contrôlées et une base locale jetable, sans achat réel. Le plafond cumulé de 2 € et tous les compteurs actifs restent inchangés. La rentabilité reste à vérifier sur l’usage réel et les tarifs fournisseurs ; aucun résultat exhaustif ni garantie de résultat n’est vendu.
+
+Le serveur prévoit par période payée une enveloppe interne finie de 250 crédits Web et 2 USD d’IA après confirmation, plus 25 analyses initiales/clarifications au maximum, chacune bornée par la réserve IA existante. Ces garde-fous complètent le plafond global, ils ne l’augmentent pas. **Ne pas ouvrir les ventes avec les petits plafonds actuels du pilote** : ces plafonds protègent un essai personnel, pas des clients payants. Le financement global, l’information sur les interruptions et le cycle complet Google restent à qualifier avant ouverture. [Configuration et contrôles](14-abonnement-google-play.md).
+
+## Essai gratuit depuis le 15 novembre 2026
 
 Fabien valide et fait appliquer un essai gratuit : **un suivi actif par compte, jusqu’à trois sources, contrôle quotidien pendant sept jours consécutifs à partir de la première activation confirmée**. Les anciens plans ne changent pas sans nouvelle confirmation. Les paragraphes datés suivants sont historiques.
 
@@ -10,7 +20,7 @@ La période appartient au compte, pas au suivi : pause, reprise, remplacement ou
 
 Le serveur réserve cette enveloppe au moment de l’admission, avant de laisser un autre compte ou une analyse anonyme la consommer. Le pilote dispose actuellement de 0,30 USD de plafond IA général et 171 crédits Web cumulés, compteurs existants conservés. Cela finance prudemment **un nouvel essai complet à la fois au départ**, pas dix essais simultanés. La borne cumulée conservatrice reste 0,99587625 € sous les 2 € autorisés ; ce n’est pas une facture rapprochée. Aucun achat ni renouvellement automatique. [Preuve du déploiement](../validation/daily-trial/deployment.json).
 
-**Paiement : la V1 reste gratuite.** À expiration, arrêt du suivi et consultation des résultats, sans prélèvement et sans abonnement automatique. Aucun prix, offre payante, SDK de paiement ou contrat de prestataire n’est configuré. Pour une future offre Android payante, le chemin recommandé est [Google Play Billing](https://developer.android.com/google/play/billing), avec vérification des achats côté serveur. Le tarif, les droits achetés, la restauration et les annulations devront être définis avant ce lot. Aucun intermédiaire supplémentaire n’est nécessaire à ce stade. Cette recommandation ne vaut pas lancement d’un chantier de paiement ni budget public approuvé.
+**Décision historique avant l’offre Plus : la V1 reste gratuite.** À expiration, arrêt du suivi et consultation des résultats, sans prélèvement et sans abonnement automatique. Aucun prix, offre payante, SDK de paiement ou contrat de prestataire n’est configuré. Pour une future offre Android payante, le chemin recommandé est [Google Play Billing](https://developer.android.com/google/play/billing), avec vérification des achats côté serveur. Le tarif, les droits achetés, la restauration et les annulations devront être définis avant ce lot. Aucun intermédiaire supplémentaire n’est nécessaire à ce stade. Cette recommandation ne vaut pas lancement d’un chantier de paiement ni budget public approuvé.
 
 ## Révision économique du 20 octobre 2026
 

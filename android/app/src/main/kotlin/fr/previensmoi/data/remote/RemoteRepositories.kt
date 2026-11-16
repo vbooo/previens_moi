@@ -84,7 +84,7 @@ class RemoteRepositories(
         if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
         if (expireEvaluation()) { saveEvaluation(); return Outcome.Error(Failure.ProposalExpired) }
         val token = preview ?: return Outcome.Error(Failure.ProposalExpired)
-        return when (val r = apiCall { api.proposalOptions(token, proposal.id, ProposalOptionsDto(proposal.version, if(mode==FollowMode.Once) "once" else "continuous")) }) {
+        return when (val r = apiCall { api.proposalOptions(token, proposal.id, ProposalOptionsDto(proposal.version, if(mode==FollowMode.Once) "once" else "continuous"), sessions.bearer()) }) {
             is ApiResult.Value -> mapped { r.body.domain() }
             else -> Outcome.Error(evaluationFailure(r))
         }
@@ -114,7 +114,7 @@ class RemoteRepositories(
                         is EvaluationDto.Pending -> {
                             if (attempt == evaluationPolls - 1) return Outcome.Error(Failure.AnalysisPending)
                             delay(evaluationPollDelayMillis)
-                            response = apiCall { api.evaluation(token, request.id) }
+                            response = apiCall { api.evaluation(token, request.id, sessions.bearer()) }
                         }
                         is EvaluationDto.Ready -> return mapped { Evaluation.Ready(value.proposal.domain()) }
                         is EvaluationDto.Clarification -> {
@@ -145,7 +145,7 @@ class RemoteRepositories(
         if (!restoreEvaluation()) return Outcome.Error(Failure.StorageFailure)
         if (expireEvaluation()) return Outcome.Error(if(saveEvaluation()) Failure.ProposalExpired else Failure.StorageFailure)
         val token = preview ?: return Outcome.Error(Failure.NotFound)
-        return when (val r = apiCall { api.proposal(token, id) }) {
+        return when (val r = apiCall { api.proposal(token, id, sessions.bearer()) }) {
             is ApiResult.Value -> mapped { r.body.domain() }
             else -> Outcome.Error(evaluationFailure(r))
         }
@@ -282,12 +282,12 @@ internal fun instant(value: String): Long {
 }
 internal fun ProposalDto.domain() = Proposal(id, version, RequestDraft(draft.text, draft.answers.filter { it.questionId !in setOf("region","preferred_site") }.joinToString("\n") { it.value }, draft.language,
     when(draft.mode) { "once" -> FollowMode.Once; "continuous" -> FollowMode.Continuous; else -> throw IllegalArgumentException() }, draft.revision, draft.answers.associate { it.questionId to it.value }), instant(expiresAt), partial, sources.map { it.url }, intervalHours, limits.activePerAccount,
-    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure, sources.associate { it.url to it.label }, checkCoverage?.verified, checkCoverage?.total, trialDays)
+    title, criteria, exclusions, coverage, limitations, method, backgroundPreparation, preparationFailure, sources.associate { it.url to it.label }, checkCoverage?.verified, checkCoverage?.total, trialDays, accessTier)
 internal fun WatchDto.domain() = Watch(id, plan.domain(), version,
     when(status) { "pending" -> WatchStatus.Pending; "active" -> WatchStatus.Active; "paused" -> WatchStatus.Paused; "completed" -> WatchStatus.Completed; "suspended_by_capacity" -> WatchStatus.SuspendedByCapacity; else -> throw IllegalArgumentException() },
     when(health) { "not_checked_yet" -> Health.NotCheckedYet; "healthy" -> Health.Healthy; "degraded" -> Health.Degraded; else -> throw IllegalArgumentException() },
     lastSuccessAt?.let(::instant), lastFailureAt?.let(::instant), baselineAt?.let(::instant), nextCheckAt?.let(::instant),
-    when(remoteState) { "starting" -> RemoteState.Starting; "running" -> RemoteState.Running; "stopping" -> RemoteState.Stopping; "stopped" -> RemoteState.Stopped; "unknown" -> RemoteState.Unknown; else -> throw IllegalArgumentException() }, trialEndsAt?.let(::instant), trialEnded)
+    when(remoteState) { "starting" -> RemoteState.Starting; "running" -> RemoteState.Running; "stopping" -> RemoteState.Stopping; "stopped" -> RemoteState.Stopped; "unknown" -> RemoteState.Unknown; else -> throw IllegalArgumentException() }, trialEndsAt?.let(::instant), trialEnded, subscriptionEnded)
 internal fun FindingDto.domain(): Finding {
     require(evidence.isNotEmpty())
     return Finding(id, watchId, planId, planVersion, criteriaSnapshot.joinToString("\n"), instant(observedAt),
@@ -297,6 +297,7 @@ internal fun FindingDto.domain(): Finding {
 internal fun errorFailure(code: String) = when(code) {
     "session_required" -> Failure.SessionRequired; "access_denied" -> Failure.AccessDenied; "not_found" -> Failure.NotFound
     "proposal_expired", "command_expired" -> Failure.ProposalExpired; "version_conflict" -> Failure.VersionConflict; "command_conflict" -> Failure.CommandConflict
+    "subscription_required" -> Failure.SubscriptionRequired; "monthly_creation_limit", "monthly_analysis_limit" -> Failure.MonthlyLimit
     "active_watch_limit" -> Failure.ActiveLimit; "free_trial_ended" -> Failure.TrialEnded; "quota_exceeded" -> Failure.QuotaExceeded; "invalid_input" -> Failure.InvalidInput; "unsupported_client" -> Failure.Unsupported; else -> Failure.TemporaryFailure
 }
 private fun ApiResult<*>.failure(): Failure = when(this) { is ApiResult.Rejected -> error?.code?.let(::errorFailure) ?: if(httpStatus==401) Failure.SessionRequired else Failure.TemporaryFailure; else -> Failure.TemporaryFailure }

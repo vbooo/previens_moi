@@ -49,7 +49,7 @@
     <string name="v1_open_site">View on the website</string>
     <string name="v1_erase_body">Your account, watches and results will be deleted. A recent sign-in is required to confirm this action.</string>
     <string name="v1_privacy">Privacy</string>
-    <string name="v1_privacy_body">Your email address is used to sign in. Requests, sources and results are stored to operate your watches. OpenAI and Firecrawl process requests and excerpts from public pages. Supabase hosts the service and data; Firebase delivers alerts to this phone. You can stop a watch or request account deletion in this app.</string>
+    <string name="v1_privacy_body">Your email address is used to sign in. Requests, sources and results are stored to operate your watches. OpenAI and Firecrawl process requests and excerpts from public pages. Supabase hosts the service and data; Firebase delivers alerts to this phone. You can stop a watch or request account deletion in this app. Google Play handles subscription payments. The service stores the technical purchase reference and its status to verify your access.</string>
     <string name="v1_close">Close</string>
     <string name="v1_notifications">Notifications</string>
     <string name="v1_notifications_on">Alerts are enabled on this phone.</string>

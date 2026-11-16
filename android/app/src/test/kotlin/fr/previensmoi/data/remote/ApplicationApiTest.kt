@@ -34,6 +34,8 @@ class ApplicationApiTest {
                 "CommandReceipt" -> json.decodeFromString<CommandReceiptDto>(body)
                 "WatchPage" -> json.decodeFromString<WatchPageDto>(body)
                 "DeletionReceipt" -> json.decodeFromString<DeletionReceiptDto>(body)
+                "SubscriptionAccess" -> json.decodeFromString<SubscriptionAccessDto>(body)
+                "PurchaseVerification" -> json.decodeFromString<PurchaseVerificationDto>(body)
                 else -> fail("Fixture schema not covered: ${item["schema"]}")
             }
         }

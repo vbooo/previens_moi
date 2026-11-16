@@ -1,7 +1,7 @@
 {
   "lock": "deno.lock",
   "tasks": {
-    "check": "deno check supabase/functions/public/index.ts supabase/functions/api/index.ts supabase/functions/webhook/index.ts src/fcm.ts supabase/functions/worker/index.ts supabase/functions/_shared/admission.ts supabase/functions/_shared/firecrawl.ts",
+    "check": "deno check supabase/functions/public/index.ts supabase/functions/api/index.ts supabase/functions/webhook/index.ts src/fcm.ts supabase/functions/worker/index.ts supabase/functions/_shared/admission.ts supabase/functions/_shared/firecrawl.ts supabase/functions/play-notifications/index.ts",
     "test": "deno test tests/"
   },
   "nodeModulesDir": "none"

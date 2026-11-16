@@ -26,6 +26,9 @@ fun SessionScreen(
     forConfirmation: Boolean = false,
     notificationsEnabled: Boolean = true,
     notificationSettings: () -> Unit = {},
+    subscriptionAction: (() -> Unit)? = null,
+    hasSubscription: Boolean = false,
+    manageSubscription: () -> Unit = {},
 ) {
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
@@ -51,7 +54,7 @@ fun SessionScreen(
         AlertDialog(
             onDismissRequest = { deleting = false },
             title = { Text(stringResource(R.string.erase_account)) },
-            text = { Text(stringResource(R.string.v1_erase_body)) },
+            text = { Column { Text(stringResource(R.string.v1_erase_body)); if(hasSubscription) { Text(stringResource(R.string.billing_delete_warning));TextButton(manageSubscription){Text(stringResource(R.string.billing_manage))} } } },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -93,6 +96,9 @@ fun SessionScreen(
                 state.session.email.ifBlank { stringResource(R.string.connected_account) },
                 style = MaterialTheme.typography.titleLarge,
             )
+            subscriptionAction?.let { action ->
+                OutlinedButton(action,modifier=Modifier.fillMaxWidth().testTag("open_subscription")){Text(stringResource(R.string.billing_title))}
+            }
             Spacer(Modifier.height(8.dp))
             SectionTitle(stringResource(R.string.v1_notifications))
             SecondaryText(

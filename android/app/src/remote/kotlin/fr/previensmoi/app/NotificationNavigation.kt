@@ -15,6 +15,7 @@ import kotlinx.serialization.Serializable
 @Serializable internal data object Home : NavKey
 @Serializable internal data object Account : NavKey
 @Serializable internal data object Create : NavKey
+@Serializable internal data object Membership : NavKey
 @Serializable internal data class Detail(val id: String) : NavKey
 @Serializable internal data class Result(val id: String) : NavKey
 
