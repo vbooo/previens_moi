@@ -100,6 +100,7 @@ class RemoteRepositories(
         }
         val answers = draft.answers.entries.sortedBy { it.key }.map { AnswerDto(it.key, it.value) }
         val wire = DraftDto(draft.text, draft.language, if (draft.mode == FollowMode.Once) "once" else "continuous", draft.revision, answers)
+        val retrying = evaluationRequest?.draft == wire
         val request = evaluationRequest?.takeIf { it.draft == wire }
             ?: EvaluationRequestDto(ids.next(), wire, previousEvaluation.takeIf { evaluationRequest?.draft?.text == wire.text && evaluationRequest?.draft?.mode == wire.mode }).also { evaluationRequest = it }
         if (!saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
@@ -122,7 +123,17 @@ class RemoteRepositories(
                             return Outcome.Success(Evaluation.Questions(value.questions.map { ClarificationQuestion(it.id, it.label, it.options, it.required) }))
                         }
                         is EvaluationDto.Unsupported -> return Outcome.Success(Evaluation.Rejected(value.reason, value.explanation))
-                        is EvaluationDto.Failed -> return Outcome.Error(errorFailure(value.error.code))
+                        is EvaluationDto.Failed -> {
+                            // A terminal failure is not an uncertain HTTP response. Only a
+                            // new explicit user attempt may start another analysis.
+                            evaluationRequest = null
+                            previousEvaluation = null
+                            if (!saveEvaluation()) return Outcome.Error(Failure.StorageFailure)
+                            // An explicit retry can discover a terminal failure cached by
+                            // an older client. Renew once; uncertain responses keep their ID.
+                            if (retrying && attempt == 0) return evaluate(draft)
+                            return Outcome.Error(errorFailure(value.error.code))
+                        }
                     }
                 }
                 else -> return Outcome.Error(evaluationFailure(r))

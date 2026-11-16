@@ -9,7 +9,7 @@
     <string name="connected_account">Signed in</string>
     <string name="stale_content">Unable to refresh. Displayed information may be out of date.</string>
     <string name="error_offline">No connection. Your text is saved. Try again when connected.</string>
-    <string name="error_temporary">Unable to complete this action. Try again; no duplicate will be created.</string>
+    <string name="error_temporary">The service cannot respond right now. Please try again later.</string>
     <string name="error_session">Sign in to continue.</string>
     <string name="error_expired">This proposal expired. Return to your request to confirm it again.</string>
     <string name="error_quota">The service has reached its trial capacity. No new watch was activated.</string>

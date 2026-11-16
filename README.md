@@ -6,7 +6,7 @@ Application Android native pour suivre une information publique et recevoir une 
 
 **Kotlin · Jetpack Compose · Material 3 · Coroutines/StateFlow · Hilt · Supabase · Firebase Cloud Messaging**
 
-Projet personnel conçu pour approfondir le développement Android : gestion d’état, reprises après interruption, opérations asynchrones et tests. La version **0.1.11** fonctionne avec un service réel d’essai ; la publication Play Store et l’exploitation à plus grande échelle restent à préparer.
+Projet personnel conçu pour approfondir le développement Android : gestion d’état, reprises après interruption, opérations asynchrones et tests. La version **0.1.12** fonctionne avec un service réel d’essai ; la publication Play Store et l’exploitation à plus grande échelle restent à préparer.
 
 ## Aperçu
 

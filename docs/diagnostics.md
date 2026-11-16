@@ -32,3 +32,13 @@ Ces traces décrivent une requête, pas toutes les étapes d'une préparation. U
 Pour un blocage de l'interface, le débogueur et ses points d'arrêt permettent de suivre les ViewModels ; pour un problème de consommation mémoire ou de fluidité, les outils de profilage Android seront utilisés sur un cas reproductible. Aucun SDK Crashlytics/Sentry ni nouvel abonnement n'a été installé dans ce lot. Une collecte de crashs avant publication sera une décision explicite, avec sa politique de confidentialité.
 
 En cas de problème, fournir l'action effectuée, l'heure, le modèle de téléphone, la version de l'app et le `requestId` suffit souvent pour commencer. Ne partager aucun code e-mail ni jeton ; les journaux généraux du système ou d'un fournisseur peuvent contenir d'autres informations que nos nouvelles traces.
+
+## Avant une observation réelle : vérifier l’accès au modèle
+
+```sh
+python3 scripts/check-model-access.py
+```
+
+Ce contrôle lit la clé serveur locale et effectue uniquement un GET de métadonnées modèle : aucune génération payante, recharge ou modification du service. Il distingue notamment une clé expirée, un refus d’accès et une panne de connexion sans afficher de clé ni de réponse fournisseur brute. Un succès ne prouve pas le solde facturable ni les droits Responses. Vérifier aussi que l’empreinte de la clé déployée correspond à celle du fichier local après une rotation.
+
+Dans les logs des fonctions `public` et `worker`, `event: model_rejected`, `phase: interpret`, `status: 401` indiquent que l’accès au modèle a été refusé avant la compréhension. Cette trace ne contient ni demande utilisateur, clé ni corps d’erreur du fournisseur. Un refus 401 explicite règle la tentative à zéro ; une réponse perdue reste couverte par sa réserve. Les anciennes réservations inconnues ne sont pas effacées rétroactivement.

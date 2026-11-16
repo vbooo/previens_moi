@@ -48,7 +48,7 @@ Le scénario conservateur compte jusqu’à sept contrôles, préparation et com
 
 ## Protocole d’observation préparé
 
-Le jour 0 sera la date effective de lancement, pas celle de ce document. Avant départ : version exacte de l’app/service, cadence confirmée, sources retenues, résultat attendu et enveloppe sont consignés. Les essais contrôlés existants restent une preuve séparée de la qualité des sources réelles.
+Le jour 0 sera la date effective de lancement, pas celle de ce document. Avant départ : exécuter `python3 scripts/check-model-access.py` (lecture gratuite des métadonnées, pas une génération), vérifier la correspondance de la clé déployée, puis consigner version exacte de l’app/service, cadence confirmée, sources retenues, résultat attendu et enveloppe sont consignés. Les essais contrôlés existants restent une preuve séparée de la qualité des sources réelles.
 
 | Moment | Vérification | Preuve attendue |
 | --- | --- | --- |

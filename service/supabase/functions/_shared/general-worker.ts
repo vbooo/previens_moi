@@ -10,7 +10,7 @@ export interface GeneralWork {id:string;lease:string;kind:'admission'|'start'|'c
 export interface GeneralPort {lease():Promise<GeneralWork|null>;finish(work:GeneralWork,result:unknown,actualMicroUsd:number|null,credits:number|null):Promise<void>}
 /** One bounded phase per wakeup. Reservations are committed by lease BEFORE HTTP.
  * A lost response leaves the reservation held and is never automatically retried. */
-export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,enabled:boolean,request:typeof fetch=fetch):Promise<string> {
+export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,enabled:boolean,request:typeof fetch=fetch,trace:(entry:{event:"model_rejected";phase:GeneralWork["phase"];status:number})=>void=entry=>console.warn(JSON.stringify(entry))):Promise<string> {
  if(!enabled||!key)return 'disabled';const work=await port.lease();if(!work)return 'empty';
  let actual:number|null=work.phase==='collect'?0:null;let credits:number|null=work.phase==='collect'?null:0;
  const c=work.context;const daily=c.dailyTrial===true||c.plan?.trialDays===7;const stable=daily||c.plan?.sourcePolicy==='stable_v1'||c.draft.answers.some((a:any)=>a.questionId==='region');let result:unknown;
@@ -18,7 +18,13 @@ export async function generalOne(port:GeneralPort,key:string,client:Firecrawl,en
   // UTF-8 bytes plus schema/transport margin are an input-token upper bound.
   const upper=Math.ceil((new TextEncoder().encode(body).length+4096)*.4+JSON.parse(body).max_output_tokens*1.6);if(upper>20000)throw new Error('Model reservation exceeded');
   const r=await request('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body,redirect:'error',signal:AbortSignal.timeout(25000)});
-  if(!r.ok){await r.body?.cancel();throw new Error('Model unavailable');}
+  if(!r.ok){
+   // An explicit authentication rejection cannot have generated output. A lost
+   // response or a server error remains an unknown charge, conservatively held.
+   if(r.status===401)actual=0;
+   try{trace({event:'model_rejected',phase:work.phase,status:r.status});}catch{/* diagnostics cannot affect settlement */}
+   await r.body?.cancel();throw new Error('Model unavailable');
+  }
   const value=await r.json();if(value.model!==MODEL||value.service_tier!=='default'||!Number.isSafeInteger(value.usage?.input_tokens)||!Number.isSafeInteger(value.usage?.output_tokens)||Math.min(value.usage.input_tokens,value.usage.output_tokens)<0)throw new Error('Unknown model charge');
   actual=Math.ceil(value.usage.input_tokens*.4+value.usage.output_tokens*1.6);if(actual>20000)throw new Error('Unexpected model charge');return responseValue(value);
  };

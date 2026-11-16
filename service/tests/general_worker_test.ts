@@ -55,3 +55,15 @@ Deno.test('separate background baseline remains silent when the requested event 
  await generalOne(p,'test',unused,true,(async()=>reply({decision:{status:'no_match',fact:'',reason:'The target price is not reached.',identity:null,sameAs:null,evidence:[]}})) as typeof fetch);
  assert(events[1].result.decision.outcome==='baseline'&&events[1].result.findings.length===0);
 });
+
+Deno.test('model authentication rejection settles zero without retry and logs only safe metadata',async()=>{
+ const {p,events}=port(job('interpret'));const traces:any[]=[];let calls=0;
+ const state=await generalOne(p,'never-log-key',unused,true,(async()=>{calls++;return new Response(JSON.stringify({error:{code:'expired_secret_key',message:'never-log-provider-body'}}),{status:401});}) as typeof fetch,entry=>traces.push(entry));
+ assert(state==='failed'&&calls===1&&events[1].actual===0&&events[1].credits===0);
+ assert(JSON.stringify(traces)===JSON.stringify([{event:'model_rejected',phase:'interpret',status:401}]));
+});
+Deno.test('model server rejection keeps uncertain cost held even when diagnostics fail',async()=>{
+ const {p,events}=port(job('interpret'));let calls=0;
+ await generalOne(p,'test',unused,true,(async()=>{calls++;return new Response('unavailable',{status:503});}) as typeof fetch,()=>{throw new Error('log unavailable');});
+ assert(calls===1&&events[1].actual===null&&events[1].result.failed===true);
+});

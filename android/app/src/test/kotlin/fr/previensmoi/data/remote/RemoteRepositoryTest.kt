@@ -179,6 +179,41 @@ class RemoteRepositoryTest {
             assertFalse(cache.value.toString().contains("secret"))
         }
     }
+    @Test fun `terminal analysis failure permits a new explicit attempt after repository recreation`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val cache=object: EvaluationJournal { var value: EvaluationCache?=null;override fun read()=value;override fun write(value: EvaluationCache){this.value=value} }
+            val api=ApiClient.create(server.url("/"),true);val session=auth(server,MemoryVault())
+            var generated=0
+            fun repository()=RemoteRepositories(api,session,MemoryPending(),IdGenerator { "eval-${++generated}" },cache)
+            server.enqueue(response("""{"token":"preview-secret","expiresAt":"2099-10-21T00:00:00Z"}"""))
+            server.enqueue(response("""{"id":"eval-1","status":"failed","draftRevision":0,"updatedAt":"2026-11-16T00:00:00Z","error":{"code":"temporary_failure","requestId":"019a05be-8000-7000-8000-000000000099","retryAfterSeconds":null,"scope":null}}"""))
+            val draft=RequestDraft("Kept request")
+            assertEquals(Outcome.Error(Failure.TemporaryFailure),repository().evaluate(draft))
+            assertNull(cache.value!!.request)
+            assertEquals(2,server.requestCount) // No automatic new analysis after failure.
+            server.enqueue(response("""{"id":"eval-2","status":"unsupported","draftRevision":0,"updatedAt":"2026-11-16T00:00:00Z","reason":"unqualified_method","explanation":"Controlled recovery"}"""))
+            assertTrue(repository().evaluate(draft) is Outcome.Success)
+            server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
+            val first=Json.parseToJsonElement(server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8()).jsonObject
+            val retry=Json.parseToJsonElement(server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8()).jsonObject
+            assertNotEquals(first["id"],retry["id"]);assertEquals(first["draft"],retry["draft"])
+        }
+    }
+    @Test fun `explicit retry recovers a terminal failure cached by an older client only once`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val draft=RequestDraft("Kept request")
+            val cached=EvaluationCache("preview-secret",EvaluationRequestDto("old-id",DraftDto(draft.text,draft.language,"once",draft.revision,emptyList()),null),null,Long.MAX_VALUE,2)
+            val cache=object: EvaluationJournal { var value=cached;override fun read()=value;override fun write(value: EvaluationCache){this.value=value} }
+            var generated=0
+            val repository=RemoteRepositories(ApiClient.create(server.url("/"),true),auth(server,MemoryVault()),MemoryPending(),IdGenerator { "new-${++generated}" },cache)
+            fun failed(id:String)="""{"id":"$id","status":"failed","draftRevision":0,"updatedAt":"2026-11-16T00:00:00Z","error":{"code":"temporary_failure","requestId":"019a05be-8000-7000-8000-000000000099","retryAfterSeconds":null,"scope":null}}"""
+            server.enqueue(response(failed("old-id")));server.enqueue(response(failed("new-1")))
+            assertEquals(Outcome.Error(Failure.TemporaryFailure),repository.evaluate(draft))
+            assertEquals(1,generated);assertEquals(2,server.requestCount);assertNull(cache.value.request)
+            assertEquals("old-id",Json.parseToJsonElement(server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8()).jsonObject["id"]!!.jsonPrimitive.content)
+            assertEquals("new-1",Json.parseToJsonElement(server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.body!!.utf8()).jsonObject["id"]!!.jsonPrimitive.content)
+        }
+    }
     @Test fun `analysis storage failure prevents model POST and expired preview renews within one user request`() = runTest {
         MockWebServer().apply { start() }.use { server ->
             val api=ApiClient.create(server.url("/"),true);val session=auth(server,MemoryVault())

@@ -200,7 +200,7 @@ fun CreateScreen(
             CreationStep.Editing,
             CreationStep.Evaluating -> {
                 RequestFields(state, vm)
-                FailureText(state.error)
+                FailureText(state.error, R.string.error_analysis_unavailable)
                 Button(
                     onClick = submit,
                     enabled =
@@ -267,7 +267,7 @@ fun CreateScreen(
                             Text(option, Modifier.weight(1f))
                         }
                     }
-                FailureText(state.error)
+                FailureText(state.error, R.string.error_analysis_unavailable)
                 Button(
                     onClick = {
                         if (questionIndex < state.questions.lastIndex) questionIndex++

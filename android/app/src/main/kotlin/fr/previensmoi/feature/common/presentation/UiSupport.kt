@@ -62,7 +62,7 @@ fun Page(
 }
 
 @Composable
-fun FailureText(failure: Failure?) {
+fun FailureText(failure: Failure?, temporaryMessage: Int = R.string.error_temporary) {
     if (failure == null) return
     val id =
         when (failure) {
@@ -70,7 +70,7 @@ fun FailureText(failure: Failure?) {
             Failure.OperationPending -> R.string.operation_pending
             Failure.OperationFailed -> R.string.operation_failed
             Failure.Offline -> R.string.error_offline
-            Failure.TemporaryFailure -> R.string.error_temporary
+            Failure.TemporaryFailure -> temporaryMessage
             Failure.SessionRequired -> R.string.error_session
             Failure.AccessDenied -> R.string.error_access
             Failure.NotFound -> R.string.missing

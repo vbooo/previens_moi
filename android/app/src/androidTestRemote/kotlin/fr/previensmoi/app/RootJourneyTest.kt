@@ -34,6 +34,8 @@ class RootJourneyTest {
     private lateinit var finding: JSONObject
     @Volatile private var findingGate: CountDownLatch? = null
     private lateinit var proposal: JSONObject
+    @Volatile private var understandingFails = false
+    private val understandings = java.util.concurrent.CopyOnWriteArrayList<String>()
     @Volatile private var listStatus = 200
     @Volatile private var listEmpty = false
     @Volatile private var extraWatches = emptyList<JSONObject>()
@@ -58,6 +60,8 @@ class RootJourneyTest {
                     path.endsWith("/preview-sessions") -> response("""{"token":"local-fixture-preview","expiresAt":"2099-01-01T00:00:00Z"}""")
                     path.endsWith("/understandings") -> {
                         val body=JSONObject(request.body!!.utf8())
+                        understandings.add(body.getString("id"))
+                        if (understandingFails) return response("""{"status":"failed","id":"${body.getString("id")}","draftRevision":${body.getJSONObject("draft").getLong("revision")},"updatedAt":"2026-11-16T12:00:00Z","error":{"code":"temporary_failure","requestId":"019a05be-8000-7000-8000-000000000099","retryAfterSeconds":null,"scope":null}}""")
                         proposal.put("draft",body.getJSONObject("draft")).put("backgroundPreparation",true).put("partial",true)
                         response("""{"status":"ready","id":"${body.getString("id")}","draftRevision":${body.getJSONObject("draft").getLong("revision")},"updatedAt":"2026-11-02T12:00:00Z","proposal":$proposal}""")
                     }
@@ -114,6 +118,19 @@ class RootJourneyTest {
         node.performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick) { it() }
     }
     private fun back() { activity!!.onActivity { it.onBackPressedDispatcher.onBackPressed() }; compose.waitForIdle() }
+    @Test fun failedUnderstandingExplainsAnalysisAndKeepsInputForExplicitRetry() {
+        understandingFails=true;signIn();launch();waitTag("new_request");tap("new_request");waitTag("request")
+        val input="Préviens-moi des promotions PS5"
+        compose.onNodeWithTag("request").performTextReplacement(input);tap("evaluate")
+        val message=context.getString(R.string.error_analysis_unavailable)
+        compose.waitUntil(20000) { compose.onAllNodesWithText(message).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText(message).performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("request").assertTextContains(input)
+        assertEquals(1,understandings.size);assertEquals(0,commands.size)
+        capture("analysis-unavailable")
+        understandingFails=false;tap("evaluate");waitTag("confirm")
+        assertEquals(2,understandings.size);assertNotEquals(understandings[0],understandings[1]);assertEquals(0,commands.size)
+    }
     @Test fun dailyTrialIsVisibleBeforeConfirmation() {
         proposal.put("trialDays",7).put("intervalHours",24)
         signIn(); launch(); waitTag("new_request"); tap("new_request"); waitTag("request")

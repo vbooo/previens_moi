@@ -1,0 +1,3 @@
+<resources>
+    <string name="error_analysis_unavailable">Your request could not be analysed right now. Try again later; your text has been kept.</string>
+</resources>
