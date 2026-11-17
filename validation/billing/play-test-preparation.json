@@ -9,7 +9,7 @@
   "billingSecurityUnitTestsPassed": 7,
   "newPaidProviderCalls": 0,
   "billingActivated": false,
-  "status": "Server identity, catalogue access and signed artifacts verified. Play license list page blank in Safari; user asked to configure their test account. Base plan remains draft; no live purchase or public launch.",
+  "status": "Server identity, catalogue access, signed artifacts and license test list verified. Base plan remains draft; internal distribution, RTDN and actual purchase qualification remain pending.",
   "playTestApkBuilt": true,
   "playTestApkPackage": "fr.previensmoi.app",
   "playTestApkDevelopmentSignatureVerified": true,
@@ -17,8 +17,8 @@
   "phoneInstallationPerformed": false,
   "globalGooglePlayPermissionsGranted": false,
   "signedReleaseVerified": true,
-  "licenseTesterConfirmed": false,
-  "licenseTesterConfigurationBlockedInSafari": true,
+  "licenseTesterConfirmed": true,
+  "licenseTesterConfigurationBlockedInSafari": false,
   "basePlanActive": false,
   "billingEnabled": false,
   "rtdnConfigured": false,
@@ -27,5 +27,6 @@
     "commit": "ca2169638c4064f87254fb42471abe4282bff38e",
     "passed": true,
     "url": "https://github.com/vbooo/previens_moi/actions/runs/44136067273"
-  }
+  },
+  "licenseTesterVerificationSource": "User-provided screenshot plus prior save confirmation; no email or screenshot published."
 }

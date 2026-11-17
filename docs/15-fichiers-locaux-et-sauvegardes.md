@@ -23,7 +23,7 @@ Les identités Play suivantes ont été créées le 17 novembre 2026, avec autor
 
 Une copie de téléchargement de la clé serveur Play se trouve aussi dans `~/Downloads/previens-moi-32653-a2615156ce06.json`. Elle n’a pas été supprimée automatiquement. La copie rangée et utilisée est `.local/cloud/play-service-account.json`.
 
-Le compte Google choisi pour les achats fictifs est consigné dans `.local/cloud/play-test-settings.json`, privé ; il peut différer du compte Firebase et du compte de connexion dans l’application. Son inscription comme testeur doit encore être confirmée.
+Le compte Google choisi pour les achats fictifs est consigné dans `.local/cloud/play-test-settings.json`, privé ; il peut différer du compte Firebase et du compte de connexion dans l’application. La sélection de sa liste de testeurs de licence a été confirmée par capture le 17 novembre 2026.
 
 Les artefacts de test se trouvent dans `.local/play-test/` : APK debug pour les comptes de licence, APK optimisé et AAB signés avec la clé de dépôt, ainsi que `mapping-0.2.0-14.txt`. Ce sont des fichiers locaux ; aucun téléversement Play n’est prouvé par leur présence.
 
