@@ -1,0 +1,19 @@
+{
+  "firebaseProject": "previens-moi-32653",
+  "playPackage": "fr.previensmoi.app",
+  "matchingFirebaseAppRegistered": true,
+  "downloadedConfigValidated": true,
+  "separatePlayClientConfigured": true,
+  "prototypeConfigUnchanged": true,
+  "configurationIgnoredByGit": true,
+  "newPaidProviderCalls": 0,
+  "billingActivated": false,
+  "date": "2026-11-17",
+  "releaseCompilationPassed": true,
+  "releaseLintPassed": true,
+  "staticBinaryChecksPassed": true,
+  "unsignedReleaseApkSha256": "b07c427907b52f0f6ce323504e93c073fcd53eb00789c54a97750df11d6528a4",
+  "googleLicensePurchaseTested": false,
+  "realPushDeliveryOnPlayBuildTested": false,
+  "productionReady": false
+}
