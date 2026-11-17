@@ -9,5 +9,8 @@
   "billingEnabled": false,
   "testOnly": true,
   "paidMonitoringEnabled": false,
-  "newPaidProviderCalls": 0
+  "newPaidProviderCalls": 0,
+  "globalBudgetCapsVerifiedUnchanged": true,
+  "googlePublisherApiEnabled": true,
+  "catalogueReadSucceeded": true
 }
