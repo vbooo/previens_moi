@@ -1,0 +1,32 @@
+{
+  "artifactSha256": "e89c314b8cdc8965197be11114a6061f144a365621b12b2fe32faab0a16a48ea",
+  "apkBytes": 2681042,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Upload signing verified locally; Google Play app-signing enrollment and distribution remain untested.",
+    "Static checks do not prove real notifications, purchases or seven days of operation."
+  ],
+  "date": "2026-11-17",
+  "apkUploadSignatureVerified": true,
+  "bundleUploadSignatureVerified": true,
+  "uploadCertificateSha256": "aa65bc3e55aec675d9da8cff28a8b9b84973e14148aafd18d711689f7c0c81ad",
+  "bundleSha256": "6524e4372c616171ecf37d606651f7a4c2238527da40edeec0d0b15b796d2923",
+  "releaseLintPassed": true,
+  "googlePlayAppSigningEnrolled": false,
+  "googleLicensePurchaseTested": false,
+  "productionReady": false
+}

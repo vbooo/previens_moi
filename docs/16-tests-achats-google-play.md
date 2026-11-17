@@ -1,0 +1,43 @@
+# Qualification des achats Google Play sans débit réel
+
+Préparation du 17 novembre 2026. **Ce protocole ne constitue pas un résultat de test.** Aucun achat Google n’est encore qualifié. L’offre est `previens_moi_plus` / `monthly`, France, 6,99 € TTC par mois, package `fr.previensmoi.app`.
+
+## Conditions avant le premier achat
+
+- Identité serveur autorisée uniquement sur cette application ; clé privée installée dans les secrets Supabase, jamais Android.
+- Produit et forfait disponibles pour le test ; application hors production publique. L’activation du forfait ne suffit pas à rendre un achat fictif.
+- Compte Google utilisé sur le téléphone ajouté dans **Tests de licence** de Play Console. Une invitation aux tests internes seule ne protège pas contre un paiement réel.
+- Version portant exactement `fr.previensmoi.app`, avec les bons paramètres Firebase/Supabase. C’est une application distincte du prototype ; il faut s’y reconnecter.
+- Serveur en mode `test_only=true`. La surveillance payante reste désactivée pendant la qualification des achats ; aucun crédit IA/Web ne doit être engagé par ces tests.
+- À l’ouverture de la feuille Google, vérifier **l’adresse du compte de test**, la mention d’achat de test et le moyen de paiement **« Test card, always approves »** (ou sa traduction). Si une vraie carte ou un compte non test apparaît : annuler. Ne pas valider un débit réel pour essayer.
+
+Google permet aux comptes de licence de tester une version installée directement, même signée en debug, avec le même package. La piste interne et le bundle signé restent nécessaires pour qualifier aussi la diffusion réelle. [Documentation des comptes et moyens de paiement de test](https://developer.android.com/google/play/billing/test).
+
+## Version locale disponible
+
+`.local/play-test/previens-moi-play-test-0.2.0-14.apk` : version de développement, package Play et signature debug vérifiés. Elle n’a pas été installée sur le téléphone. Le fichier `.local/play-test/previens-moi-play-release-0.2.0-14.aab` est signé avec la clé de dépôt pour préparer la piste interne ; il n’a pas encore été envoyé à Google. Ne pas tenter une mise à jour entre un APK debug et une version signée autrement sous le même package : Android refuse la signature différente. Le prototype a un autre package et peut rester installé.
+
+Le catalogue est accessible depuis l’identité serveur et le forfait est encore `DRAFT`. Aucun test d’achat n’est possible tant que sa disponibilité de test, le compte de licence et le mode test serveur ne sont pas prêts.
+
+## Parcours à effectuer et à consigner
+
+| Test | Action | Résultat attendu |
+|---|---|---|
+| Refus | Choisir la carte de test qui refuse toujours. | Aucun droit Plus ; retour compréhensible et nouvelle tentative possible. |
+| Annulation | Fermer la feuille d’achat. | Pas d’achat ni droit créé ; aucun message de réussite. |
+| En attente | Choisir la carte lente, approuvée ensuite ; fermer puis rouvrir l’app avant approbation. | Paiement en attente ; pas de droit avant validation Google. |
+| Achat approuvé | Utiliser la carte de test toujours approuvée. | Vérification serveur puis Plus actif ; acquittement Google confirmé ; surveillance externe toujours fermée. |
+| Restauration | Fermer/redémarrer, puis réinstaller la version et se reconnecter au même compte Préviens-moi. | Même achat retrouvé, sans nouvelle facturation ni remise à zéro des cinq demandes. |
+| Autre compte Préviens-moi | Se connecter à un autre compte dans l’app avec le même achat Google présent. | Pas de transfert silencieux du droit ; information explicite. |
+| Renouvellement | Attendre le renouvellement accéléré de test, puis actualiser plusieurs fois. | Une seule nouvelle période pour un même ordre Google ; pas de remise à zéro répétée. |
+| Résiliation | Résilier le test dans Google Play. | Accès conservé jusqu’à la fin de période puis expiré ; résultats précédents accessibles. |
+| Paiement défaillant | Utiliser Play Billing Lab pour grâce, blocage et régularisation. | Grâce conforme à Google ; blocage/expiration sans surveillance ; récupération sans réactiver une pause volontaire. |
+| Notifications serveur | Envoyer le test RTDN, contrôler doublons, ordre inversé et rattrapage périodique. | Seul l’état relu auprès de Google fait foi ; aucune notification non authentifiée acceptée. |
+
+Une souscription mensuelle de test se renouvelle en temps accéléré. Ne pas coder ces durées de test dans le produit. Consigner l’heure et l’état réels plutôt qu’attendre un mois. [Tests des abonnements et Play Billing Lab](https://developer.android.com/google/play/billing/test#subs).
+
+## Preuves à garder
+
+Pour chaque cas : version installée, heure, état affiché, état serveur agrégé, résultat attendu/obtenu. Garder les captures privées si elles montrent un e-mail ou une commande. Ne jamais publier de jeton d’achat, secret, clé, session ou données personnelles dans GitHub.
+
+L’absence d’achat réel ne prouve ni la rentabilité ni la disponibilité du moteur de surveillance. La qualification Play, les notifications Android, le fonctionnement Web pendant sept jours et l’ouverture commerciale sont des validations distinctes. Le plafond cumulé de 2 € et les compteurs actuels ne sont pas remis à zéro.

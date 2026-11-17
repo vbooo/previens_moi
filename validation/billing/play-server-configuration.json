@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-17",
+  "playServerIdentityCreated": true,
+  "playAppScopedAccessActive": true,
+  "globalPlayPermissionsGranted": false,
+  "playServerSecretInstalled": true,
+  "secretDigestVerified": true,
+  "billingGateUnchanged": true,
+  "billingEnabled": false,
+  "testOnly": true,
+  "paidMonitoringEnabled": false,
+  "newPaidProviderCalls": 0
+}

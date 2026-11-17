@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-11-17T17:15:19.283Z",
+  "package": "fr.previensmoi.app",
+  "product": "previens_moi_plus",
+  "readOnly": true,
+  "newPaidProviderCalls": 0,
+  "realPurchaseVerified": false,
+  "httpStatus": 200,
+  "catalogueAccessible": true,
+  "productMatches": true,
+  "basePlanState": "DRAFT",
+  "monthlyAutoRenewing": true,
+  "francePriceMatches": true,
+  "franceAvailable": true,
+  "passed": true
+}

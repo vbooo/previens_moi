@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-17",
+  "gradleConfigurationPassed": true,
+  "signingWithoutPlayPackageRefused": true,
+  "localUploadKeyCreated": true,
+  "playServerIdentityCreated": true,
+  "googlePlayPermissionsGranted": true,
+  "googleLicensePurchaseTested": false,
+  "billingSecurityUnitTestsPassed": 7,
+  "newPaidProviderCalls": 0,
+  "billingActivated": false,
+  "status": "Server identity, catalogue access, local signing and test APK prepared; license tester, plan availability, distribution and actual purchases still pending.",
+  "playTestApkBuilt": true,
+  "playTestApkPackage": "fr.previensmoi.app",
+  "playTestApkDevelopmentSignatureVerified": true,
+  "playTestApkSha256": "c90a881ab1cb7986a85d51f88f4beeb91f9ab0f2828a1a8b2bad0faa566e8c27",
+  "phoneInstallationPerformed": false,
+  "globalGooglePlayPermissionsGranted": false,
+  "signedReleaseVerified": true
+}

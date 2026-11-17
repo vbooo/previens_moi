@@ -17,6 +17,22 @@ val clientProperties = Properties().apply {
     if (file.isFile) file.inputStream().use { load(it) }
 }
 val localServiceBuild = providers.gradleProperty("localService").getOrElse("false") == "true"
+// Opt-in upload signing is local only. CI and ordinary release builds stay unsigned.
+val playSigning = providers.gradleProperty("playSigning").getOrElse("false") == "true"
+val uploadSigning = Properties().apply {
+    if (playSigning) {
+        check(providers.gradleProperty("playApplicationId").orNull == "fr.previensmoi.app" && !localServiceBuild) {
+            "Upload signing requires the definitive Play package and remote service."
+        }
+        val settings = rootProject.file("../.local/play-signing/signing.properties")
+        check(settings.isFile) { "Local upload signing settings missing; see docs/14-abonnement-google-play.md." }
+        settings.inputStream().use { load(it) }
+        check(listOf("storeFile", "storePassword", "keyAlias", "keyPassword").all { !getProperty(it).isNullOrBlank() }) {
+            "Incomplete local upload signing settings."
+        }
+        check(rootProject.file(getProperty("storeFile")).isFile) { "Local upload keystore missing." }
+    }
+}
 fun clientSetting(name: String, fallback: String = ""): String =
     providers.gradleProperty(name).getOrElse(
         if (localServiceBuild) fallback else clientProperties.getProperty(name, fallback),
@@ -34,12 +50,20 @@ android {
         versionCode = 14
         versionName = "0.2.0"
     }
+    if (playSigning) {
+        signingConfigs.create("playUpload") {
+            storeFile = rootProject.file(uploadSigning.getProperty("storeFile"))
+            storePassword = uploadSigning.getProperty("storePassword")
+            keyAlias = uploadSigning.getProperty("keyAlias")
+            keyPassword = uploadSigning.getProperty("keyPassword")
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            // Intentionally unsigned: the production key is never a debug key.
+            if (playSigning) signingConfig = signingConfigs.getByName("playUpload")
         }
     }
     flavorDimensions += "environment"
