@@ -114,7 +114,7 @@ class PushWorker(context: Context, params: WorkerParameters,
     private suspend fun showFinding(owner: String, finding: Finding, expiresAt: Long): Result {
         if (Build.VERSION.SDK_INT >= 33 && applicationContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return Result.success()
         val manager = applicationContext.getSystemService(NotificationManager::class.java)
-        if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return Result.success()
+        if (!manager.areNotificationsEnabled()) return Result.success()
         if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(NotificationChannel("findings",applicationContext.getString(R.string.notification_channel),NotificationManager.IMPORTANCE_DEFAULT))
         val intent = Intent(applicationContext,MainActivity::class.java).setAction("finding:${finding.id}").putExtra("findingId",finding.id)
         val pending = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -144,7 +144,7 @@ class PushWorker(context: Context, params: WorkerParameters,
         if (initial != null) return showFinding(owner,initial,expiresAt)
         if (Build.VERSION.SDK_INT >= 33 && applicationContext.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return Result.success()
         val manager = applicationContext.getSystemService(NotificationManager::class.java)
-        if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return Result.success()
+        if (!manager.areNotificationsEnabled()) return Result.success()
         if (Build.VERSION.SDK_INT >= 26) manager.createNotificationChannel(NotificationChannel("preparation",applicationContext.getString(R.string.notification_channel),NotificationManager.IMPORTANCE_DEFAULT))
         val intent = Intent(applicationContext,MainActivity::class.java).setAction("preparation:$id").putExtra("watchId",watchId)
         val pending = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)

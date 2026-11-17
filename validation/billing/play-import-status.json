@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-17",
+  "track": "internal",
+  "rejectedVersionCode": 14,
+  "rejectedVersionName": "0.2.0",
+  "reason": "Google Play automatic protection requires minSdk >= 24; uploaded bundle declared 23.",
+  "replacementVersionCode": 15,
+  "replacementVersionName": "0.2.1",
+  "replacementMinSdk": 24,
+  "replacementSignedAndChecked": true,
+  "replacementUploadConfirmed": false,
+  "internalReleasePublished": false,
+  "basePlanActivated": false,
+  "realPurchasePerformed": false,
+  "newPaidProviderCalls": 0
+}

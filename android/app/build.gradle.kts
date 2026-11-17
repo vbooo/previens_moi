@@ -44,11 +44,12 @@ android {
     compileSdk = 37
     defaultConfig {
         applicationId = "fr.previensmoi.prototype"
-        minSdk = 23
+        // Required by Google Play automatic protection.
+        minSdk = 24
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = 14
-        versionName = "0.2.0"
+        versionCode = 15
+        versionName = "0.2.1"
     }
     if (playSigning) {
         signingConfigs.create("playUpload") {

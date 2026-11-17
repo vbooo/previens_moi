@@ -15,7 +15,7 @@ Google permet aux comptes de licence de tester une version installée directemen
 
 ## Version locale disponible
 
-`.local/play-test/previens-moi-play-test-0.2.0-14.apk` : version de développement, package Play et signature debug vérifiés. Elle n’a pas été installée sur le téléphone. Le fichier `.local/play-test/previens-moi-play-release-0.2.0-14.aab` est signé avec la clé de dépôt pour préparer la piste interne ; il n’a pas encore été envoyé à Google. Ne pas tenter une mise à jour entre un APK debug et une version signée autrement sous le même package : Android refuse la signature différente. Le prototype a un autre package et peut rester installé.
+`.local/play-test/previens-moi-play-test-0.2.0-14.apk` : version de développement, package Play et signature debug vérifiés. Elle n’a pas été installée sur le téléphone. Le fichier `.local/play-test/previens-moi-play-release-0.2.1-15.aab` est signé avec la clé de dépôt pour préparer la piste interne ; la version précédente 0.2.0 a été refusée par Google pour son minimum SDK 23. La 0.2.1 exige API 24 et attend une validation d’import. Ne pas tenter une mise à jour entre un APK debug et une version signée autrement sous le même package : Android refuse la signature différente. Le prototype a un autre package et peut rester installé.
 
 Le catalogue est accessible depuis l’identité serveur et le forfait est encore `DRAFT`. Aucun test d’achat n’est possible tant que sa disponibilité de test, le compte de licence et le mode test serveur ne sont pas prêts.
 

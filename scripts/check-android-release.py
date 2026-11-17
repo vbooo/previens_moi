@@ -60,6 +60,9 @@ def inspect(apk, sdk, mapping, package=PACKAGE):
         'noSensitiveDevicePermission': not any('android.permission.' + p + "'" in badging for p in ('READ_CONTACTS','ACCESS_FINE_LOCATION','RECORD_AUDIO','CAMERA','READ_SMS')),
         'r8MappingPresent': mapping.is_file() and mapping.stat().st_size > 0,
     }
+    if package == 'fr.previensmoi.app':
+        minimum = re.search(r"minSdkVersion\([^)]*\)=(0x[0-9a-fA-F]+|[0-9]+)", manifest)
+        checks['playAutomaticProtectionMinSdk'] = minimum is not None and int(minimum[1], 0) >= 24
     forbidden_classes = ('fr.previensmoi.data.demo.', 'fr.previensmoi.app.DemoModule',
                          'fr.previensmoi.app.DemoViewModel', 'androidx.compose.ui.tooling.ComposeViewAdapter')
     mapping_text = mapping.read_text() if mapping.exists() else ''
