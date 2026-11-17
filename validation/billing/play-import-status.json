@@ -8,9 +8,11 @@
   "replacementVersionName": "0.2.1",
   "replacementMinSdk": 24,
   "replacementSignedAndChecked": true,
-  "replacementUploadConfirmed": false,
-  "internalReleasePublished": false,
+  "replacementUploadConfirmed": true,
+  "internalReleasePublished": true,
   "basePlanActivated": false,
   "realPurchasePerformed": false,
-  "newPaidProviderCalls": 0
+  "newPaidProviderCalls": 0,
+  "confirmationEvidence": "User screenshots: version 15 (0.2.1) accessible to internal testers, released 17 November 2026 21:24 Europe/Paris; selected test list has one user and Save disabled.",
+  "internalTesterListConfirmed": true
 }
