@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-17T19:57:28.032434+00:00",
+  "billingEnabled": true,
+  "testOnly": true,
+  "paidMonitoringEnabled": false,
+  "package": "fr.previensmoi.app",
+  "existingPurchases": 0,
+  "existingTrialsWatchesCapacityPreserved": true,
+  "globalBudgetCapsPreserved": true,
+  "newPaidProviderCalls": 0,
+  "realPurchasePerformed": false,
+  "googleLicensePurchaseTested": false,
+  "basePlanAvailabilityNotYetVerified": true
+}

@@ -19,6 +19,10 @@ Google permet aux comptes de licence de tester une version installée directemen
 
 Le catalogue est accessible depuis l’identité serveur et le forfait est encore `DRAFT`. Aucun test d’achat n’est possible tant que sa disponibilité de test, le compte de licence et le mode test serveur ne sont pas prêts.
 
+Pour éviter qu’un achat de test ne transforme l’essai gratuit d’un compte déjà utilisé, se connecter dans la nouvelle application avec un **compte Préviens-moi réservé aux tests**. Le compte Google Play choisi pour le paiement doit rester celui inscrit comme testeur de licence. Les deux identités jouent des rôles différents.
+
+Au 17 novembre, le serveur accepte uniquement les preuves Google marquées comme achats de test ; les droits Plus peuvent être contrôlés, mais l’exécution de nouvelles surveillances Plus reste fermée pour préserver l’enveloppe. Ce lot ne valide donc pas l’utilisation de deux suivis Plus réels sur le Web.
+
 ## Parcours à effectuer et à consigner
 
 | Test | Action | Résultat attendu |

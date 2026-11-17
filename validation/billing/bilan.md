@@ -21,7 +21,7 @@ Les migrations 39 et 40 et cinq fonctions ont été déployées avec **commerce 
 
 ## Limites et suite
 
-**Aucun achat avec compte de licence Google n’a encore été réalisé.** Le produit/forfait Play, l’identité serveur autorisée, RTDN et la nouvelle application Firebase doivent être configurés ; la clé de dépôt et le bundle signé restent à préparer. Tester ensuite le cycle complet avec les moyens de paiement de test Google, sans carte réellement débitée. Les tests contrôlés ci-dessus ne remplacent pas cette qualification.
+**Aucun achat avec compte de licence Google n’a encore été réalisé.** Mise à jour du 17 novembre : identité serveur autorisée sur cette seule application, nouvelle application Firebase raccordée, clé de dépôt et bundle signé contrôlés, compte de licence confirmé. La vérification serveur est ouverte uniquement aux achats de test ; la surveillance Plus reste fermée et les plafonds sont inchangés. Le forfait est encore en brouillon, la diffusion interne et RTDN restent à terminer. Tester ensuite le cycle complet avec les moyens de paiement de test Google, sans carte réellement débitée. Les tests contrôlés ci-dessus ne remplacent pas cette qualification.
 
 La vente réelle reste fermée. Le petit budget actuel protège le pilote personnel et ne peut pas financer une offre publique ; exploitation, capacité, informations commerciales/confidentialité et publication demandent une décision séparée. Les mesures de sept jours restent en cours de qualification, sans conclusion de fiabilité opérationnelle par simple compilation.
 
