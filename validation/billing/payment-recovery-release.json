@@ -32,7 +32,7 @@
   },
   "productionReady": false,
   "publishedToInternalTrack": true,
-  "testedOnUserPhone": false,
+  "testedOnUserPhone": true,
   "realPurchasesEnabled": false,
   "paidMonitoringEnabled": false,
   "newPaidProviderCalls": 0,
@@ -64,8 +64,10 @@
   },
   "phoneRecoveryObservation": {
     "userConfirmedReturnToActiveAfterPaymentMethodCorrection": true,
-    "accountHoldRecoveryConfirmed": false,
+    "accountHoldRecoveryConfirmed": true,
     "installedVersionIndependentlyInspected": false,
-    "evidence": "User report after 0.2.3 publication; no new provider or purchase request made by the agent."
+    "evidence": "User reports payment declined/access suspended, followed by approved test card and return to active. Installed version number not independently inspected.",
+    "accountHoldMessageConfirmed": true,
+    "confirmedAt": "2026-11-19T13:09:38.194896+00:00"
   }
 }
