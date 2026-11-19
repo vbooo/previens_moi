@@ -1,0 +1,41 @@
+{
+  "observedAt": "2026-11-19 14:27:03.029865+00:00",
+  "userReportedAppClosed": true,
+  "testPurchaseOnly": true,
+  "renewalObserved": true,
+  "before": {
+    "state": "active",
+    "active": true,
+    "expiresAt": "2026-11-19 14:26:58.230000+00:00",
+    "verifiedAt": "2026-11-19 14:22:01.702000+00:00",
+    "acknowledged": true,
+    "fallbackRefreshAttemptAt": "2026-11-19 14:22:02.350464+00:00",
+    "creations": 0,
+    "analyses": 0,
+    "modelUsedMicroUsd": 0,
+    "webCreditsUsed": 0
+  },
+  "after": {
+    "state": "active",
+    "active": true,
+    "expiresAt": "2026-11-19 14:29:01.811000+00:00",
+    "verifiedAt": "2026-11-19 14:27:01.704000+00:00",
+    "acknowledged": true,
+    "fallbackRefreshAttemptAt": "2026-11-19 14:27:01.961344+00:00",
+    "creations": 0,
+    "analyses": 0,
+    "modelUsedMicroUsd": 0,
+    "webCreditsUsed": 0
+  },
+  "newPaidModelOrWebCalls": 0,
+  "realSalesEnabled": false,
+  "paidMonitoringEnabled": false,
+  "causalityLimit": "Periodic purchase reconciliation remained enabled; match authenticated Pub/Sub 204 metrics around renewal before claiming direct-delivery causality.",
+  "googleReadBack": {
+    "test": true,
+    "state": "SUBSCRIPTION_STATE_ACTIVE",
+    "startTime": "2026-11-19T14:21:58.512Z",
+    "expiresAt": "2026-11-19T14:31:58.230Z",
+    "readOnly": true
+  }
+}

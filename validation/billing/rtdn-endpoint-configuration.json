@@ -1,0 +1,14 @@
+{
+  "projectRef": "sfmifkbofiwslkvjtmaj",
+  "audienceConfigured": true,
+  "expectedPushIdentityConfigured": true,
+  "unauthenticatedPushHttpStatus": 403,
+  "liveAuthenticatedPushQualified": true,
+  "testOnly": true,
+  "paidMonitoringEnabled": false,
+  "modelLimitMicroUsd": 300000,
+  "webCreditLimit": 171,
+  "privateKeyCreated": false,
+  "newPaidProviderCalls": 0,
+  "qualificationScope": "Authenticated Play test delivery, app-closed fictitious renewal and user-performed refund with access revocation; server state and read-only Google state agree. Periodic fallback remained enabled; no exclusive per-message causality claimed."
+}

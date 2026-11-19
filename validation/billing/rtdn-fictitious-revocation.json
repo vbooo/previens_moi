@@ -1,0 +1,69 @@
+{
+  "observationStartedAt": "2026-11-19 14:45:15.638929+00:00",
+  "observedAt": "2026-11-19 14:46:06.157065+00:00",
+  "before": {
+    "state": "active",
+    "active": true,
+    "expires_at": "2026-11-19 14:46:58.230000+00:00",
+    "verified_at": "2026-11-19 14:44:02.249000+00:00",
+    "acknowledged": true,
+    "test": true,
+    "creations": 0,
+    "analyses": 0,
+    "model_used": 0,
+    "credit_used": 0
+  },
+  "after": {
+    "state": "expired",
+    "active": false,
+    "expires_at": "2026-11-19 14:46:02.988000+00:00",
+    "verified_at": "2026-11-19 14:46:05.348000+00:00",
+    "acknowledged": true,
+    "test": true,
+    "creations": 0,
+    "analyses": 0,
+    "model_used": 0,
+    "credit_used": 0
+  },
+  "inactiveObserved": true,
+  "workerDispatchesDuringObservation": [
+    {
+      "start_time": "2026-11-19 14:46:00.015928+00:00",
+      "end_time": "2026-11-19 14:46:00.023557+00:00",
+      "status": "succeeded"
+    }
+  ],
+  "readOnly": true,
+  "financialActionPerformedByAgent": false,
+  "userReportedAppClosed": true,
+  "newPaidModelOrWebCalls": 0,
+  "paidMonitoringEnabled": false,
+  "realSalesEnabled": false,
+  "qualificationLimit": "App-closed renewal and user-performed revocation are verified against Google and server state, with authenticated successful Pub/Sub delivery. Periodic reconciliation stayed enabled; no per-message trace isolates which concurrent request performed the database update.",
+  "userConfirmedRefund": true,
+  "googleConsoleRefundConfirmed": true,
+  "googleConsoleRefundAtUtc": "2026-11-19T14:46:02Z",
+  "googleConsoleProductState": "Annulé",
+  "googleReadBack": {
+    "state": "SUBSCRIPTION_STATE_EXPIRED",
+    "startTime": "2026-11-19T14:21:58.512Z",
+    "expiryTime": "2026-11-19T14:46:02.988Z",
+    "acknowledged": "ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED",
+    "test": true,
+    "cancellationReason": [
+      "userInitiatedCancellation"
+    ]
+  },
+  "revocationObserved": true,
+  "naturalExpiryRuledOut": true,
+  "explanation": "Google Console shows the user-performed refund with access removal. Google expiry was shortened from 14:46:58.230Z to 14:46:02.988Z, matching the refund; this is earlier than natural test expiry.",
+  "authenticatedDelivery": {
+    "source": "Google Cloud Console subscription Push metrics after refund",
+    "series": "push_request_count ack_204",
+    "observedRatePerSecond": 0.05,
+    "outstandingMessages": 0,
+    "observedAtUtc": "2026-11-19T14:49:16.210556+00:00"
+  },
+  "verificationDelaySeconds": 2.36,
+  "observationDelaySeconds": 3.169065
+}

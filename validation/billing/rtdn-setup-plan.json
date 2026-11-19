@@ -1,5 +1,5 @@
 {
-  "status": "proposed-not-applied",
+  "status": "configured-live-fictitious-lifecycle-qualified",
   "project": "previens-moi-32653",
   "topic": "projects/previens-moi-32653/topics/play-billing-events",
   "subscription": "projects/previens-moi-32653/subscriptions/play-billing-to-supabase",
@@ -43,5 +43,19 @@
     "authorization for these scoped service-account grants",
     "public sales and paid monitoring stay closed until separately qualified"
   ],
-  "financialLimit": "Application cap remains EUR 2 cumulative; this cap does not cap Google Cloud billing."
+  "financialLimit": "Application cap remains EUR 2 cumulative; this cap does not cap Google Cloud billing.",
+  "topicCreated": true,
+  "endpointConfigured": true,
+  "billingTrialLinked": true,
+  "budgetAlertsConfigured": true,
+  "pushIdentityCreated": true,
+  "topicPublisherGrantVerified": true,
+  "pushTokenCreatorGrantVerified": false,
+  "authenticatedPushSubscriptionVerified": true,
+  "subscriptionExpirationPolicy": "never expire",
+  "playConsoleConfigured": true,
+  "authenticatedDeliverySmokeTestPassed": true,
+  "manualTokenCreatorGrantApplied": false,
+  "appClosedRenewalObserved": true,
+  "appClosedUserRevocationObserved": true
 }

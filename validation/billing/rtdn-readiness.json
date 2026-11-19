@@ -1,12 +1,94 @@
 {
-  "checkedAt": "2026-11-19T11:37:55.546651+00:00",
+  "checkedAt": "2026-11-19T14:49:16.211846+00:00",
   "project": "previens-moi-32653",
-  "billingAccountLinked": false,
-  "billingEvidence": "Google Cloud Billing linked-account page read with the existing Firebase account: This project has no billing account.",
-  "cloudBillingOrIamChanged": false,
-  "liveRtdnQualified": false,
+  "billingAccountLinked": true,
+  "billingEvidence": "Google Cloud linked-account page confirms a billing account linked to previens-moi-32653. Welcome page confirms Free Trial, EUR 269.43 credit and 90 days remaining; no paid-account upgrade performed by agent.",
+  "cloudBillingOrIamChanged": true,
+  "liveRtdnQualified": true,
   "pubsubInventoryReadableByPlayIdentity": false,
-  "apiReadChecks": {
+  "topicExists": true,
+  "unauthenticatedPushHttpStatus": 403,
+  "controlledServerTests": {
+    "passed": 138,
+    "failed": 0,
+    "providerNetworkPermissions": false,
+    "typecheckPassed": true
+  },
+  "newPaidProviderCalls": 0,
+  "cumulativeBudgetCapEur": 2,
+  "cloudBillingActivationAuthorized": true,
+  "realPurchasesEnabled": false,
+  "paidMonitoringEnabled": false,
+  "blockingPrerequisite": null,
+  "references": [
+    "https://developer.android.com/google/play/billing/getting-ready",
+    "https://docs.cloud.google.com/pubsub/docs/publish-receive-messages-console",
+    "https://cloud.google.com/pubsub/pricing"
+  ],
+  "localNotificationFix": {
+    "voidedSubscriptionTriggersGoogleRecheck": true,
+    "malformedPayloadCovered": true,
+    "deployed": true,
+    "deploymentReport": "payment-recovery-deployment.json"
+  },
+  "cloudBillingPreparationAuthorized": true,
+  "cloudBillingAuthorizationScope": "User authorized preparing Google Cloud linkage; user personally validates account creation, terms and final billing activation in Google Console.",
+  "cloudBillingSetup": {
+    "status": "free-trial-linked-user-completed",
+    "financialAccountCreatedByAgent": false,
+    "finalActivationPerformedByAgent": false,
+    "payAsYouGoUpgradePerformedByAgent": false,
+    "freeTrialDaysDisplayed": 90,
+    "freeTrialCreditEurDisplayed": 269.43
+  },
+  "budgetAlerts": {
+    "created": true,
+    "type": "alerts-only",
+    "name": "Préviens-moi — alerte 2 EUR",
+    "period": "monthly",
+    "scope": "all projects of this new billing account (one project currently)",
+    "amountEur": 2,
+    "actualCostThresholdsEur": [
+      1,
+      1.8,
+      2
+    ],
+    "emailBillingAdminsAndUsers": true,
+    "promotionalCreditsSubtracted": false,
+    "hardCap": false,
+    "observedCurrentCostEur": 0
+  },
+  "topicInventoryEvidence": "Topic creation success observed in Google Cloud Console for projects/previens-moi-32653/topics/play-billing-events; no default subscription, no topic retention, no export, Google-managed encryption.",
+  "endpointConfigurationReport": "rtdn-endpoint-configuration.json",
+  "scopedIamAuthorizedAtActionTime": true,
+  "scopedIamAuthorization": "User confirmed the topic-only Google Play publisher and keyless Pub/Sub push authentication grants; no broad project roles or private key.",
+  "topicPublisherGrantVerified": true,
+  "topicPublisherGrantScope": "roles/pubsub.publisher on projects/previens-moi-32653/topics/play-billing-events only",
+  "pushIdentityCreated": true,
+  "pushIdentityKeyCreated": false,
+  "pushIdentityProjectRoles": [],
+  "pushIdentityEvidence": "Google Cloud service-account details and principals page observed; no keys and no newly assigned project role.",
+  "pushTokenCreatorGrantVerified": false,
+  "authenticatedPushSubscriptionVerified": true,
+  "authenticatedPushSubscriptionEvidence": "Google Cloud Console confirmed Subscription successfully created; subscription play-billing-to-supabase active. Authentication selected with dedicated keyless identity and exact endpoint audience, 60s ack deadline, retry 10-600s, retention 1 day, no retain-acked and no export.",
+  "playRtdnConfigured": true,
+  "authenticatedTestMessageReceived": true,
+  "authenticatedTestMessageHttpStatus": 204,
+  "playNotificationTypes": "subscriptions and all voided purchases",
+  "authenticatedDeliveryEvidence": {
+    "source": "Google Cloud Console subscription Push metrics",
+    "subscription": "play-billing-to-supabase",
+    "series": "push_request_count ack_204",
+    "observedPositiveRatePerSecond": 0.0167,
+    "endpointRequiresGoogleSignatureAudienceAndExpectedEmail": true,
+    "phoneRenewalWithAppClosedQualified": true,
+    "observedAtUtc": "2026-11-19T14:16:26Z"
+  },
+  "scopedTokenCreatorGrantAttempt": {
+    "applied": false,
+    "reason": "IAM form initially rejected Google-managed service-agent principal. A push test subsequently returned 204 without a manual token-creator grant. Effective permissions are operational; no redundant grant applied."
+  },
+  "historicalPlayIdentityReadChecks": {
     "billing": {
       "httpStatus": 403,
       "reason": "SERVICE_DISABLED"
@@ -20,29 +102,12 @@
       "reason": "IAM_PERMISSION_DENIED"
     }
   },
-  "topicExists": null,
-  "unauthenticatedPushHttpStatus": 503,
-  "controlledServerTests": {
-    "passed": 138,
-    "failed": 0,
-    "providerNetworkPermissions": false,
-    "typecheckPassed": true
-  },
-  "newPaidProviderCalls": 0,
-  "cumulativeBudgetCapEur": 2,
-  "cloudBillingActivationAuthorized": false,
-  "realPurchasesEnabled": false,
-  "paidMonitoringEnabled": false,
-  "blockingPrerequisite": "Google Pub/Sub setup requires enabled Cloud billing. Existing identity has no Cloud provisioning rights; do not grant broad roles or enable billing silently.",
-  "references": [
-    "https://developer.android.com/google/play/billing/getting-ready",
-    "https://docs.cloud.google.com/pubsub/docs/publish-receive-messages-console",
-    "https://cloud.google.com/pubsub/pricing"
-  ],
-  "localNotificationFix": {
-    "voidedSubscriptionTriggersGoogleRecheck": true,
-    "malformedPayloadCovered": true,
-    "deployed": true,
-    "deploymentReport": "payment-recovery-deployment.json"
-  }
+  "pushAuthenticationOperational": true,
+  "appClosedRenewalObserved": true,
+  "appClosedRenewalReport": "rtdn-app-closed-renewal.json",
+  "revocationSubmittedByAgent": false,
+  "appClosedRevocationObserved": true,
+  "appClosedRevocationReport": "rtdn-fictitious-revocation.json",
+  "revocationPerformedByUser": true,
+  "qualificationScope": "Authenticated Play test delivery, app-closed fictitious renewal and user-performed refund with access revocation; server state and read-only Google state agree. Periodic fallback remained enabled; no exclusive per-message causality claimed."
 }
