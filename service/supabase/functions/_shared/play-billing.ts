@@ -99,6 +99,22 @@ export function verifySubscription(
       : null,
   };
 }
+/** Notifications only identify an existing purchase to re-read from Google. */
+export function notificationPurchaseToken(value: any): string | null {
+  const subscription = value?.subscriptionNotification;
+  const voided = value?.voidedPurchaseNotification;
+  const event = subscription && !voided
+    ? subscription
+    : !subscription && voided?.productType === 1
+    ? voided
+    : null;
+  const token = event?.purchaseToken;
+  return typeof token === "string" && token.length >= 20 &&
+      token.length <= 4096 &&
+      !/[\s\x00-\x1f]/.test(token)
+    ? token
+    : null;
+}
 export interface Publisher {
   get(token: string): Promise<unknown>;
   acknowledge(token: string): Promise<void>;

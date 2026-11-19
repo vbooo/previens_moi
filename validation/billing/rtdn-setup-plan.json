@@ -1,0 +1,47 @@
+{
+  "status": "proposed-not-applied",
+  "project": "previens-moi-32653",
+  "topic": "projects/previens-moi-32653/topics/play-billing-events",
+  "subscription": "projects/previens-moi-32653/subscriptions/play-billing-to-supabase",
+  "delivery": "authenticated HTTPS push",
+  "pushEndpoint": "https://sfmifkbofiwslkvjtmaj.supabase.co/functions/v1/play-notifications",
+  "oidcAudience": "https://sfmifkbofiwslkvjtmaj.supabase.co/functions/v1/play-notifications",
+  "newPushIdentity": "previens-moi-play-push@previens-moi-32653.iam.gserviceaccount.com",
+  "topicOnlyPublisher": {
+    "member": "serviceAccount:google-play-developer-notifications@system.gserviceaccount.com",
+    "role": "roles/pubsub.publisher"
+  },
+  "pushIdentityOnlyTokenCreator": {
+    "member": "serviceAccount:service-168504186970@gcp-sa-pubsub.iam.gserviceaccount.com",
+    "role": "roles/iam.serviceAccountTokenCreator"
+  },
+  "pushIdentityKeyCreated": false,
+  "pushIdentityProjectRole": "none",
+  "reuseExistingPlayApiIdentity": true,
+  "ackDeadlineSeconds": 60,
+  "retryPolicy": {
+    "minimumBackoff": "10s",
+    "maximumBackoff": "600s"
+  },
+  "messageRetentionDuration": "86400s",
+  "retainAckedMessages": false,
+  "supabaseSecretsRequired": {
+    "PLAY_RTDN_AUDIENCE": "https://sfmifkbofiwslkvjtmaj.supabase.co/functions/v1/play-notifications",
+    "PLAY_RTDN_EMAIL": "previens-moi-play-push@previens-moi-32653.iam.gserviceaccount.com"
+  },
+  "playConsoleNotificationTypes": "subscriptions and all voided purchases",
+  "verification": [
+    "Play Console test message reaches authenticated endpoint",
+    "wrong issuer/audience/identity rejected",
+    "actual test renewal while app is closed changes server expiry",
+    "duplicate notification does not reset quota",
+    "refund/revocation re-read from Google",
+    "periodic reconciliation catches a missed message"
+  ],
+  "prerequisites": [
+    "explicit Cloud billing decision",
+    "authorization for these scoped service-account grants",
+    "public sales and paid monitoring stay closed until separately qualified"
+  ],
+  "financialLimit": "Application cap remains EUR 2 cumulative; this cap does not cap Google Cloud billing."
+}

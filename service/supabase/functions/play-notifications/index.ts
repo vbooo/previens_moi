@@ -4,7 +4,7 @@ import {
   billingPolicy,
   verifyPlayPurchase,
 } from "../_shared/billing-runtime.ts";
-import { digest } from "../_shared/play-billing.ts";
+import { digest, notificationPurchaseToken } from "../_shared/play-billing.ts";
 serve(async (req) => {
   if (req.method !== "POST") throw new Fault("not_found", 404);
   const audience = Deno.env.get("PLAY_RTDN_AUDIENCE"),
@@ -27,11 +27,11 @@ serve(async (req) => {
     throw new Fault("invalid_input", 400);
   }
   const policy = await billingPolicy();
-  if (!policy.enabled || value.packageName !== policy.package_name) {
+  if (!policy.enabled || value?.packageName !== policy.package_name) {
     throw new Fault("access_denied", 403);
   }
-  const token = value.subscriptionNotification?.purchaseToken;
-  if (typeof token === "string" && token.length >= 20 && token.length <= 4096) {
+  const token = notificationPurchaseToken(value);
+  if (token) {
     const owner = await rpc("s7_purchase_owner", {
       token_hash: await digest(token),
     }) as string | null;

@@ -1,5 +1,6 @@
 import {
   accountId,
+  notificationPurchaseToken,
   PlayFailure,
   PLUS_PRODUCT,
   publisher,
@@ -197,4 +198,68 @@ Deno.test("publisher fixes the host, encodes opaque tokens, never accepts redire
       calls[1].url.endsWith("/opaque%2Ftoken%3Fsecret:acknowledge"),
   );
   assert(calls[0].method === "GET" && calls[1].method === "POST");
+});
+
+Deno.test("subscription notifications identify a token without granting rights from event type", () => {
+  const token = "synthetic-purchase-token-for-rtdn";
+  assert(
+    notificationPurchaseToken({
+      subscriptionNotification: { purchaseToken: token, notificationType: 2 },
+    }) === token,
+  );
+  assert(
+    notificationPurchaseToken({
+      subscriptionNotification: { purchaseToken: token, notificationType: 12 },
+    }) === token,
+  );
+});
+Deno.test("voided subscription purchases trigger a Google re-read but one-time products do not", () => {
+  const token = "synthetic-purchase-token-for-rtdn";
+  assert(
+    notificationPurchaseToken({
+      voidedPurchaseNotification: { purchaseToken: token, productType: 1 },
+    }) === token,
+  );
+  assert(
+    notificationPurchaseToken({
+      voidedPurchaseNotification: { purchaseToken: token, productType: 2 },
+    }) === null,
+  );
+  assert(
+    notificationPurchaseToken({
+      voidedPurchaseNotification: { purchaseToken: token },
+    }) === null,
+  );
+});
+Deno.test("test messages, conflicting event families and malformed tokens are ignored", () => {
+  for (
+    const value of [
+      null,
+      {},
+      { testNotification: { version: "1.0" } },
+      {
+        oneTimeProductNotification: {
+          purchaseToken: "synthetic-purchase-token-for-rtdn",
+        },
+      },
+      { subscriptionNotification: { purchaseToken: "short" } },
+      { subscriptionNotification: { purchaseToken: "x".repeat(4097) } },
+      {
+        subscriptionNotification: {
+          purchaseToken: "invalid token with whitespace",
+        },
+      },
+      {
+        subscriptionNotification: {
+          purchaseToken: "synthetic-purchase-token-for-rtdn",
+        },
+        voidedPurchaseNotification: {
+          purchaseToken: "synthetic-purchase-token-for-rtdn",
+          productType: 1,
+        },
+      },
+    ]
+  ) {
+    assert(notificationPurchaseToken(value) === null);
+  }
 });

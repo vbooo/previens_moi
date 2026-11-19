@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-11-19T11:37:55.546651+00:00",
+  "project": "previens-moi-32653",
+  "billingAccountLinked": false,
+  "billingEvidence": "Google Cloud Billing linked-account page read with the existing Firebase account: This project has no billing account.",
+  "cloudBillingOrIamChanged": false,
+  "liveRtdnQualified": false,
+  "pubsubInventoryReadableByPlayIdentity": false,
+  "apiReadChecks": {
+    "billing": {
+      "httpStatus": 403,
+      "reason": "SERVICE_DISABLED"
+    },
+    "pubsubApi": {
+      "httpStatus": 403,
+      "reason": "AUTH_PERMISSION_DENIED"
+    },
+    "topics": {
+      "httpStatus": 403,
+      "reason": "IAM_PERMISSION_DENIED"
+    }
+  },
+  "topicExists": null,
+  "unauthenticatedPushHttpStatus": 503,
+  "controlledServerTests": {
+    "passed": 137,
+    "failed": 0,
+    "providerNetworkPermissions": false,
+    "typecheckPassed": true
+  },
+  "newPaidProviderCalls": 0,
+  "cumulativeBudgetCapEur": 2,
+  "cloudBillingActivationAuthorized": false,
+  "realPurchasesEnabled": false,
+  "paidMonitoringEnabled": false,
+  "blockingPrerequisite": "Google Pub/Sub setup requires enabled Cloud billing. Existing identity has no Cloud provisioning rights; do not grant broad roles or enable billing silently.",
+  "references": [
+    "https://developer.android.com/google/play/billing/getting-ready",
+    "https://docs.cloud.google.com/pubsub/docs/publish-receive-messages-console",
+    "https://cloud.google.com/pubsub/pricing"
+  ],
+  "localNotificationFix": {
+    "voidedSubscriptionTriggersGoogleRecheck": true,
+    "malformedPayloadCovered": true,
+    "deployed": false
+  }
+}
