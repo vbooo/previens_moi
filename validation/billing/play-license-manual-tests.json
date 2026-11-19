@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-19T11:03:41.601531+00:00",
+  "recordedAt": "2026-11-19T11:26:46.697194+00:00",
   "installedVersion": "0.2.2 (16)",
   "evidence": "User reports and screenshots; no purchase tokens, orders or personal data exported.",
   "internalReleasePublishedUserCaptureConfirmed": true,
@@ -13,7 +13,9 @@
     "cancellationConfirmedInGoogleAndApplicationScreenshots": true,
     "accessMaintainedBeforeCancelledPeriodEnd": true,
     "cancelledAccessEndUserScreenshot": "2026-11-19T12:01:00+01:00",
-    "expirationAfterThisCancellationUserConfirmed": false
+    "expirationAfterThisCancellationUserConfirmed": true,
+    "restorationAfterReinstallationUserConfirmed": true,
+    "restorationAutomaticOrManual": "Not specified in user confirmation; do not infer automatic recovery."
   },
   "localCancellationCopyFix": {
     "packagedInPublishedVersion": false,
@@ -39,8 +41,6 @@
     "screenshots": "cancellation-ui"
   },
   "remainingQualification": [
-    "expiration following this cancellation on phone",
-    "restoration after reinstallation",
     "pending payment and payment recovery",
     "RTDN wiring and qualification"
   ],

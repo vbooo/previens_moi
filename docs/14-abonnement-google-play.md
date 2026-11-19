@@ -1,5 +1,7 @@
 # Abonnement Google Play : configuration et qualification
 
+Point au 19 novembre : achat fictif approuvé, refus, fermeture de la feuille d’achat, renouvellement observé, résiliation jusqu’à expiration et récupération après réinstallation confirmés pendant les essais sur téléphone. Les cas de paiement en attente/défaillant et le raccordement RTDN restent ouverts ; les ventes réelles et la surveillance Plus restent fermées. [État des essais](../validation/billing/play-license-manual-tests.json).
+
 ## État
 
 Implémentation Android et serveur de Préviens-moi Plus, sans ouverture des ventes. La vérification des achats de licence est ouverte depuis le 17 novembre : `private.billing_policy` vaut `enabled=true`, `test_only=true`, `monitoring_enabled=false`. Les achats réels restent refusés par le serveur et aucune surveillance Plus supplémentaire n’est ouverte. Aucun achat réel, aucune hausse du budget global. Le [bilan de validation](../validation/billing/bilan.md) distingue les tests contrôlés de la qualification Google à effectuer.

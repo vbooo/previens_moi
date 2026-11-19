@@ -1,6 +1,6 @@
 # Qualification des achats Google Play sans débit réel
 
-Préparation du 17 novembre 2026. **Premier achat fictif qualifié le 19 novembre 2026.** La restauration, les autres moyens de paiement et le cycle complet restent à vérifier. L’offre est `previens_moi_plus` / `monthly`, France, 6,99 € TTC par mois, package `fr.previensmoi.app`.
+Préparation du 17 novembre 2026. **Premier achat fictif qualifié le 19 novembre 2026.** Les essais courants, dont la résiliation jusqu’à expiration et la récupération après réinstallation, sont confirmés par Fabien. Les incidents de paiement et le raccordement RTDN restent à qualifier. L’offre est `previens_moi_plus` / `monthly`, France, 6,99 € TTC par mois, package `fr.previensmoi.app`.
 
 ## Conditions avant le premier achat
 
@@ -69,3 +69,7 @@ La capture Play Console confirme la publication de la 0.2.2 (16), accessible aux
 La carte de test toujours refusée déclenche bien le refus Google. Fabien confirme ensuite la fermeture de la feuille d’achat, le maintien de l’état terminé et l’absence de chargement bloqué. Un nouvel achat fictif approuvé a permis de vérifier la résiliation : Google affiche « Annulé », l’application « Résiliation prise en compte », avec accès jusqu’à 12 h 01. L’expiration après cette résiliation reste à confirmer sur le téléphone ; le cycle complet n’est pas déclaré terminé.
 
 Le retour du bouton de vérification affichait encore « Ton abonnement est bien actif » tant que l’accès restait ouvert après résiliation. Ce message est corrigé **localement, hors de la version 0.2.2 publiée**, en français et anglais : « Résiliation confirmée. Ton accès reste disponible jusqu’à la fin de la période. » Aucun droit d’accès ni quota n’est modifié. Le test d’écran couvre maintenant actif → résilié avec accès → expiré, avec la confirmation adaptée et l’absence de nouvelle offre d’achat avant expiration. 81 tests unitaires remote et Lint passent ; les deux tests d’écran passent en français, en clair et en sombre avec police 130 %. [Bilan des essais et limites](../validation/billing/play-license-manual-tests.json). Aucun appel fournisseur métier payant supplémentaire.
+
+### Confirmation de fin de période et de récupération après réinstallation
+
+Fabien confirme ensuite l’état « Abonnement terminé » après la fin de période de la souscription résiliée, puis le succès du test suivant : nouvel achat fictif approuvé, désinstallation/réinstallation depuis Google Play, reconnexion et récupération de l’abonnement. Sa confirmation ne précise pas si la récupération était automatique ou obtenue par le bouton de vérification ; ce point n’est donc pas déduit. Les parcours courants sont maintenant couverts par les observations utilisateur, sans prétendre qualifier les paiements en attente, la grâce/le blocage, le changement de compte ou RTDN.
