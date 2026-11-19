@@ -3,8 +3,8 @@
   "versionName": "0.2.2",
   "versionCode": 16,
   "package": "fr.previensmoi.app",
-  "publishedToPlay": false,
-  "testedOnUserPhone": false,
+  "publishedToPlay": true,
+  "testedOnUserPhone": true,
   "artifacts": {
     "previens-moi-play-release-0.2.2-16.apk": {
       "bytes": 2657624,
@@ -105,5 +105,8 @@
   "paidMonitoringEnabled": false,
   "realPurchasesEnabled": false,
   "rtdnConnected": false,
-  "productionReady": false
+  "productionReady": false,
+  "publishedAtUserCapture": "2026-11-19T11:13:00+01:00",
+  "installedOnUserPhoneUserCaptureConfirmed": true,
+  "phoneTestScope": "See play-license-manual-tests.json. The exact renewal-boundary transition on 0.2.2 is not yet qualified."
 }

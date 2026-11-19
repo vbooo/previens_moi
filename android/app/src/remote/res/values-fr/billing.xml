@@ -22,6 +22,7 @@
     <string name="billing_renewal">Prochain renouvellement : %1$s</string>
     <string name="billing_restore">Vérifier mon abonnement</string>
     <string name="billing_restored">Ton abonnement est bien actif.</string>
+    <string name="billing_restored_cancelled">Résiliation confirmée. Ton accès reste disponible jusqu’à la fin de la période.</string>
     <string name="billing_restore_none">Aucun abonnement actif retrouvé pour ce compte Google.</string>
     <string name="billing_purchase_cancelled">Achat annulé. Ton abonnement n’a pas changé.</string>
     <string name="billing_not_available">L’abonnement n’est pas disponible pour le moment. Tu peux continuer ton essai gratuit s’il est en cours.</string>

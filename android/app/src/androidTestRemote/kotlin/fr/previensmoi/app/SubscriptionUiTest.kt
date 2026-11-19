@@ -160,5 +160,37 @@ class SubscriptionUiTest {
             .assertIsDisplayed()
         compose.onNodeWithTag("subscribe").assertDoesNotExist()
         capture("checked-active")
+        compose.runOnIdle {
+            state.value =
+                state.value.copy(
+                    access = state.value.access!!.copy(status = SubscriptionStatus.Cancelled)
+                )
+        }
+        compose
+            .onNodeWithText(
+                compose.activity.getString(fr.previensmoi.R.string.billing_restored_cancelled)
+            )
+            .assertIsDisplayed()
+        compose
+            .onNodeWithText(compose.activity.getString(fr.previensmoi.R.string.billing_restored))
+            .assertDoesNotExist()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        capture("checked-cancelled")
+        compose.runOnIdle {
+            state.value =
+                state.value.copy(
+                    access =
+                        state.value.access!!.copy(
+                            status = SubscriptionStatus.Expired,
+                            active = false,
+                        )
+                )
+        }
+        compose
+            .onNodeWithText(
+                compose.activity.getString(fr.previensmoi.R.string.billing_restore_none)
+            )
+            .assertIsDisplayed()
+        compose.onNodeWithTag("subscribe").assertIsEnabled()
     }
 }

@@ -22,6 +22,7 @@
     <string name="billing_renewal">Next renewal: %1$s</string>
     <string name="billing_restore">Check my subscription</string>
     <string name="billing_restored">Your subscription is active.</string>
+    <string name="billing_restored_cancelled">Cancellation confirmed. You keep access until the end of the current period.</string>
     <string name="billing_restore_none">No active subscription found for this Google account.</string>
     <string name="billing_purchase_cancelled">Purchase cancelled. Your subscription has not changed.</string>
     <string name="billing_not_available">Subscriptions are unavailable right now. You can continue your free trial if it is still running.</string>

@@ -37,8 +37,12 @@ fun SubscriptionScreen(
     val restoreMessage =
         if (state.restored)
             stringResource(
-                if (access?.active == true) R.string.billing_restored
-                else R.string.billing_restore_none
+                when {
+                    access?.active != true -> R.string.billing_restore_none
+                    access.status == SubscriptionStatus.Cancelled ->
+                        R.string.billing_restored_cancelled
+                    else -> R.string.billing_restored
+                }
             )
         else null
     LaunchedEffect(restoreMessage) {
