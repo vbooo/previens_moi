@@ -87,3 +87,6 @@ Les 138 tests serveur, 82 tests unitaires Android et le scénario de base Postgr
 
 
 Contrôle natif : les trois parcours passent en français clair à 100 % et sombre à 130 %. Les quatre [captures contrôlées](../validation/billing/payment-ui/) sont sans données utilisateur ; elles ne prouvent pas une récupération de paiement réelle. Lint debug/release : aucune erreur ni avertissement. Le [rapport de version](../validation/billing/payment-recovery-release.json) garde la publication interne et le contrôle sur téléphone à `false` tant qu’ils ne sont pas observés. L’import 0.2.3 est préparé dans Safari mais le sélecteur de fichier ne se valide pas depuis l’automatisation ; intervention manuelle demandée. [Déploiement serveur](../validation/billing/payment-recovery-deployment.json).
+
+
+La version 0.2.3 (17) est publiée le 19 novembre 2026 à 13 h 42 (Paris, précision minute affichée par Google) dans le canal interne existant : statut « Accessible aux testeurs internes » observé après confirmation. Aucun déploiement en production. Le [contrôle GitHub du correctif](https://github.com/vbooo/previens_moi/actions/runs/44524820232) est réussi. La récupération du paiement sur téléphone reste à contrôler après installation de cette mise à jour ; l’ancien blocage du sélecteur de fichier est résolu par l’intervention du testeur.

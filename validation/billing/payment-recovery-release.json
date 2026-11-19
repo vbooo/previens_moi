@@ -31,7 +31,7 @@
     "noPrivilegedSupabaseJwt": true
   },
   "productionReady": false,
-  "publishedToInternalTrack": false,
+  "publishedToInternalTrack": true,
   "testedOnUserPhone": false,
   "realPurchasesEnabled": false,
   "paidMonitoringEnabled": false,
@@ -55,5 +55,11 @@
     "screenshots": "payment-ui",
     "notes": "Synthetic screen states; no provider purchase or monitoring request from instrumentation."
   },
-  "internalUploadState": "File selected in Safari; native dialog confirmation unavailable to automation. User action requested."
+  "internalUploadState": "Google Play Console shows active internal track, latest release 17 (0.2.3), accessible to internal testers.",
+  "publishedAtParisMinutePrecision": "2026-11-19T13:42:00+01:00",
+  "publicationScope": "Existing internal testers only; no production rollout.",
+  "githubCi": {
+    "conclusion": "success",
+    "url": "https://github.com/vbooo/previens_moi/actions/runs/44524820232"
+  }
 }
