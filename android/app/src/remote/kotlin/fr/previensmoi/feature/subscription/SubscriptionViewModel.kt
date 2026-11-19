@@ -63,7 +63,7 @@ constructor(private val repository: SubscriptionRepository, private val store: S
         viewModelScope.launch {
             mutex.withLock {
                 if (generation != epoch) return@withLock
-                mutable.update { it.copy(busy = true, problem = null) }
+                mutable.update { it.copy(busy = true, problem = null, restored = false) }
                 when (val access = repository.access()) {
                     is BillingOutcome.Error ->
                         if (generation == epoch)
@@ -78,7 +78,12 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                     is BillingOutcome.Success -> {
                         val product = if (access.value.canPurchase) store.product() else null
                         val recover =
-                            restoreOnLoad && generation == epoch && access.value.canPurchase
+                            generation == epoch &&
+                                access.value.canPurchase &&
+                                (restoreOnLoad || !access.value.active)
+                        // An expired server snapshot can overlap a Play renewal. Reconcile
+                        // owned purchases before publishing an offer to subscribe again.
+                        val recovered = if (recover) recoverAccess(generation) else null
                         if (generation == epoch) restoreOnLoad = false
                         if (generation == epoch)
                             mutable.update {
@@ -86,11 +91,11 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                                     loaded = true,
                                     busy = false,
                                     buying = false,
-                                    access = access.value,
+                                    access = recovered?.access ?: access.value,
                                     product = (product as? BillingOutcome.Success)?.value,
+                                    problem = recovered?.problem,
                                 )
                             }
-                        if (recover) restore(announce = false)
                     }
                 }
             }
@@ -104,7 +109,7 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                 current.busy ||
                 current.access?.canPurchase != true ||
                 current.access.active ||
-                current.problem == BillingProblem.Pending ||
+                current.problem !in setOf(null, BillingProblem.Cancelled) ||
                 current.access.status !in
                     setOf(SubscriptionStatus.None, SubscriptionStatus.Expired) ||
                 current.product == null
@@ -132,34 +137,46 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                 mutable.update {
                     it.copy(busy = true, buying = false, problem = null, restored = false)
                 }
-                when (val result = store.restore()) {
-                    is BillingOutcome.Error ->
-                        if (generation == epoch)
-                            mutable.update { it.copy(busy = false, problem = result.problem) }
-                    is BillingOutcome.Success -> {
-                        var error: BillingProblem? = null
-                        for (purchase in result.value) {
-                            if (generation != epoch) return@withLock
-                            if (purchase.pending) {
-                                error = BillingProblem.Pending
-                                continue
-                            }
-                            val checked = repository.verify(purchase.token)
-                            if (checked is BillingOutcome.Error) error = checked.problem
-                        }
-                        val access = repository.access()
-                        if (generation == epoch)
-                            mutable.update {
-                                it.copy(
-                                    loaded = true,
-                                    busy = false,
-                                    access =
-                                        (access as? BillingOutcome.Success)?.value ?: it.access,
-                                    problem = error ?: ((access as? BillingOutcome.Error)?.problem),
-                                    restored = announce && error == null,
-                                )
-                            }
+                val recovered = recoverAccess(generation)
+                if (generation == epoch)
+                    mutable.update {
+                        it.copy(
+                            loaded = true,
+                            busy = false,
+                            access = recovered.access ?: it.access,
+                            problem = recovered.problem,
+                            restored =
+                                announce && recovered.access != null && recovered.problem == null,
+                        )
                     }
+            }
+        }
+    }
+
+    fun dismissRestoreMessage() {
+        mutable.update { it.copy(restored = false) }
+    }
+
+    private data class Recovery(val access: SubscriptionAccess?, val problem: BillingProblem?)
+
+    private suspend fun recoverAccess(generation: Int): Recovery {
+        when (val result = store.restore()) {
+            is BillingOutcome.Error -> return Recovery(null, result.problem)
+            is BillingOutcome.Success -> {
+                var error: BillingProblem? = null
+                for (purchase in result.value) {
+                    if (generation != epoch) return Recovery(null, null)
+                    if (purchase.pending) {
+                        error = BillingProblem.Pending
+                        continue
+                    }
+                    val checked = repository.verify(purchase.token)
+                    if (checked is BillingOutcome.Error) error = checked.problem
+                }
+                if (generation != epoch) return Recovery(null, null)
+                return when (val access = repository.access()) {
+                    is BillingOutcome.Success -> Recovery(access.value, error)
+                    is BillingOutcome.Error -> Recovery(null, error ?: access.problem)
                 }
             }
         }

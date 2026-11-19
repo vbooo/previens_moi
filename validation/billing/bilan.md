@@ -28,3 +28,9 @@ La vente réelle reste fermée. Le petit budget actuel protège le pilote person
 ## Preuves
 
 [Contrôles](checks.json) · [Base jetable](local-database.json) · [Régression gratuit](free-trial-regression.json) · [Déploiement fermé](deployment.json) · [Binaire de contrôle](release-fixture.json).
+
+## Retour du test réel et correctif 0.2.2 — 19 novembre
+
+Un renouvellement Google de test est confirmé par le mail reçu et deux périodes distinctes en base, sans consommation IA/Web ni remise à zéro répétée observée. La restauration manuelle maintient l’état actif mais manquait de confirmation visible. Le bouton d’achat pouvait apparaître brièvement avant la fin du rapprochement Google.
+
+Le correctif attend ce rapprochement avant de publier l’offre, bloque le paiement en cas de vérification échouée et affiche une confirmation Material 3 après « Vérifier mon abonnement ». 81 tests unitaires remote, deux parcours d’écran dans deux configurations et Lint debug/release passent. La version signée **0.2.2 (16)** est prête localement et **n’est pas encore publiée ni testée sur le téléphone**. [Contrôle signé et preuves](play-renewal-fix.json). Les tests du cycle complet et RTDN restent ouverts ; ventes réelles et surveillance Plus restent fermées.

@@ -24,8 +24,10 @@ class SubscriptionViewModelTest {
         var access = SubscriptionAccess(canPurchase = true, accountId = "a".repeat(64))
         var gate: CompletableDeferred<BillingOutcome<SubscriptionAccess>>? = null
         val verified = mutableListOf<String>()
+        var accessFailure: BillingProblem? = null
 
-        override suspend fun access() = BillingOutcome.Success(access)
+        override suspend fun access(): BillingOutcome<SubscriptionAccess> =
+            accessFailure?.let { BillingOutcome.Error(it) } ?: BillingOutcome.Success(access)
 
         override suspend fun verify(token: String): BillingOutcome<SubscriptionAccess> {
             verified += token
@@ -181,4 +183,80 @@ class SubscriptionViewModelTest {
                 Dispatchers.resetMain()
             }
         }
+
+    @Test
+    fun `renewing purchase never publishes an expired offer before Google verification finishes`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access =
+                    server.access.copy(status = SubscriptionStatus.Active, active = true)
+                val store = Store()
+                val vm = SubscriptionViewModel(server, store)
+                vm.bindOwner("u")
+                runCurrent()
+                server.access =
+                    server.access.copy(status = SubscriptionStatus.Expired, active = false)
+                store.owned =
+                    BillingOutcome.Success(listOf(PurchaseNotice("renewing-test-token", false)))
+                server.gate = CompletableDeferred()
+                vm.refresh()
+                runCurrent()
+                assertTrue(vm.state.value.busy)
+                assertTrue(vm.state.value.access!!.active)
+                assertNull(vm.beginPurchase())
+                server.gate!!.complete(
+                    BillingOutcome.Success(
+                        server.access.copy(status = SubscriptionStatus.Active, active = true)
+                    )
+                )
+                runCurrent()
+                assertTrue(vm.state.value.access!!.active)
+                assertFalse(vm.state.value.busy)
+                assertNull(vm.beginPurchase())
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `failed renewal verification cannot enable a new purchase`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val server = Server()
+            val store = Store()
+            val vm = SubscriptionViewModel(server, store)
+            vm.bindOwner("u")
+            runCurrent()
+            server.access = server.access.copy(status = SubscriptionStatus.Expired)
+            store.owned =
+                BillingOutcome.Success(listOf(PurchaseNotice("renewing-test-token", false)))
+            server.gate = CompletableDeferred(BillingOutcome.Error(BillingProblem.Offline))
+            vm.refresh()
+            runCurrent()
+            assertEquals(BillingProblem.Offline, vm.state.value.problem)
+            assertNull(vm.beginPurchase())
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test
+    fun `server failure is never announced as a successful restoration`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val server = Server()
+            val vm = SubscriptionViewModel(server, Store())
+            vm.bindOwner("u")
+            runCurrent()
+            server.accessFailure = BillingProblem.Offline
+            vm.restore()
+            runCurrent()
+            assertFalse(vm.state.value.restored)
+            assertEquals(BillingProblem.Offline, vm.state.value.problem)
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
 }

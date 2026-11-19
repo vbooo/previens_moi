@@ -20,8 +20,8 @@
     <string name="billing_pending">Payment pending in Google Play. Your subscription starts after confirmation.</string>
     <string name="billing_access_until">Access until %1$s</string>
     <string name="billing_renewal">Next renewal: %1$s</string>
-    <string name="billing_restore">Restore purchases</string>
-    <string name="billing_restored">Your subscription was restored.</string>
+    <string name="billing_restore">Check my subscription</string>
+    <string name="billing_restored">Your subscription is active.</string>
     <string name="billing_restore_none">No active subscription found for this Google account.</string>
     <string name="billing_purchase_cancelled">Purchase cancelled. Your subscription has not changed.</string>
     <string name="billing_not_available">Subscriptions are unavailable right now. You can continue your free trial if it is still running.</string>
@@ -29,7 +29,8 @@
     <string name="billing_wrong_account">This purchase belongs to another Préviens-moi account. Sign in with the account used for the purchase.</string>
     <string name="billing_invalid">This purchase could not be verified. Check your subscription in Google Play.</string>
     <string name="billing_offline">The service could not be reached. Check your connection and try again.</string>
-    <string name="billing_verify_failed">Your purchase could not be confirmed. Use Restore purchases to try again.</string>
+    <string name="billing_verify_failed">Your purchase could not be confirmed. Tap Check my subscription to try again.</string>
     <string name="billing_terms">Monthly subscription, automatically renewed. Cancel in Google Play at any time; access continues until the end of the paid period.</string>
     <string name="billing_no_commitment">The free trial never starts a subscription automatically. If you subscribe, the paid period starts immediately.</string>
+    <string name="billing_checking">Checking…</string>
 </resources>

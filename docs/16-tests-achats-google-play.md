@@ -49,3 +49,15 @@ L’absence d’achat réel ne prouve ni la rentabilité ni la disponibilité du
 ## Observations du premier achat — 19 novembre 2026
 
 Google affichait explicitement la carte de test toujours approuvée et l’absence de facturation. Fabien confirme le mail Google et l’écran « Abonnement actif », puis le maintien de cet état après fermeture depuis les applications récentes et réouverture. La lecture serveur confirme un achat de test actif, acquitté et cinq demandes restantes. Les plafonds globaux restent inchangés et la surveillance Plus demeure fermée. Le bouton de restauration, la réinstallation, les autres moyens de paiement, RTDN et le cycle complet ne sont pas déduits de ce seul résultat.
+
+## Renouvellement et correction d’affichage — 19 novembre 2026
+
+Sur la version 0.2.1 installée par Google Play, Fabien confirme le mail de renouvellement après cinq minutes. Une lecture serveur en consultation seule confirme deux fins de période successives, un achat de test toujours actif et acquitté, et cinq demandes restantes. Les deux périodes n’ont consommé ni création, ni crédit IA/Web. Ce constat valide un renouvellement accéléré observé ; il ne qualifie pas encore la résiliation, le blocage, la réinstallation ou RTDN.
+
+Le bouton de restauration a été utilisé : l’état actif a été conservé, mais le retour visuel était trop discret. Fabien a aussi vu brièvement le bouton d’achat après navigation. Le code pouvait publier un état serveur expiré avant de rapprocher l’achat présent dans Google Play.
+
+**Correction locale 0.2.2 (16), pas encore diffusée :** rapprocher les achats avant d’afficher une offre après un état expiré, masquer l’achat pendant la vérification et empêcher un achat lorsque la vérification a échoué. Le bouton devient « Vérifier mon abonnement » ; une Snackbar Material 3 confirme le résultat visible en bas de l’écran. Un échec de lecture serveur ne peut plus produire une fausse confirmation de réussite. Les droits restent exclusivement accordés par le serveur.
+
+Validation : 81 tests unitaires remote, Lint debug/release sans erreur ni avertissement (14 suggestions de mise à jour de dépendances par variante), deux tests d’écran contrôlés en clair/français et en sombre/anglais avec police à 130 %. Une première capture sombre était masquée par un blocage de Pixel Launcher sur l’émulateur ; elle a été remplacée après arrêt du lanceur, sans modification de l’application. Le bundle et l’APK sont signés avec la clé de dépôt existante et contrôlés avec le package définitif et un minimum API 24. [Preuves et limites](../validation/billing/play-renewal-fix.json).
+
+Bundle à importer dans une **nouvelle version de la piste interne** : `.local/play-test/previens-moi-play-release-0.2.2-16.aab`. Ce fichier local n’est pas dans GitHub. Après diffusion et mise à jour depuis Play, vérifier le retour sur Abonnement autour d’un renouvellement, puis le bouton « Vérifier mon abonnement », sans nouvel achat. Le comportement réel de cette correction n’est pas encore validé sur le téléphone. Aucun appel fournisseur métier payant supplémentaire ; plafond cumulé de 2 € conservé, surveillance Plus et ventes réelles toujours fermées.

@@ -110,4 +110,55 @@ class SubscriptionUiTest {
         compose.onNodeWithTag("subscription_retry").assertIsEnabled()
         compose.onNodeWithTag("subscribe").assertDoesNotExist()
     }
+
+    @Test
+    fun checkingHidesCheckoutAndCompletionIsVisibleAtTheBottom() {
+        val state =
+            mutableStateOf(
+                SubscriptionUiState(
+                    loaded = true,
+                    busy = true,
+                    access =
+                        SubscriptionAccess(status = SubscriptionStatus.Expired, canPurchase = true),
+                    product = SubscriptionProduct("6,99 €"),
+                )
+            )
+        compose.activity.setContent {
+            PreviensTheme {
+                Scaffold { padding ->
+                    Box(Modifier.padding(padding)) {
+                        SubscriptionScreen(
+                            state.value,
+                            {},
+                            {},
+                            {},
+                            {},
+                            dismissRestoreMessage = {
+                                state.value = state.value.copy(restored = false)
+                            },
+                        )
+                    }
+                }
+            }
+        }
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        compose.onNodeWithTag("restore_purchases").performScrollTo().assertIsNotEnabled()
+        compose.runOnIdle {
+            state.value =
+                state.value.copy(
+                    busy = false,
+                    restored = true,
+                    access =
+                        state.value.access!!.copy(
+                            status = SubscriptionStatus.Active,
+                            active = true,
+                        ),
+                )
+        }
+        compose
+            .onNodeWithText(compose.activity.getString(fr.previensmoi.R.string.billing_restored))
+            .assertIsDisplayed()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        capture("checked-active")
+    }
 }

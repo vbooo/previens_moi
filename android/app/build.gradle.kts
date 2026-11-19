@@ -48,8 +48,8 @@ android {
         minSdk = 24
         targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = 15
-        versionName = "0.2.1"
+        versionCode = 16
+        versionName = "0.2.2"
     }
     if (playSigning) {
         signingConfigs.create("playUpload") {

@@ -405,7 +405,8 @@ class MainActivity : ComponentActivity() {
                                     entry<Membership> {
                                         SubscriptionScreen(subscription,
                                             subscribe = { membership.beginPurchase()?.let { membership.launchResult(playBilling.launch(this@MainActivity,it)) } },
-                                            restore = { membership.restore() }, refresh = membership::refresh, manage = manageSubscription)
+                                            restore = { membership.restore() }, refresh = membership::refresh, manage = manageSubscription,
+                                            dismissRestoreMessage = membership::dismissRestoreMessage)
                                     }
                                     entry<Create> {
                                         CreateScreen(

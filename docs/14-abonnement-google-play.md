@@ -63,3 +63,7 @@ Les tests unitaires/SQL natifs contrôlés ne remplacent pas cette qualification
 ## Évolutions commerciales après la V1
 
 Demande de Fabien du 19 novembre 2026 : prévoir une formule annuelle dans une prochaine mise à jour. Étudier aussi une formule à vie, sans activation ni engagement commercial à ce stade : son prix, ses quotas et la prise en charge du coût récurrent des surveillances doivent être décidés avant implémentation. La V1 conserve uniquement `monthly` à 6,99 € TTC/mois en France.
+
+### Correctif local après le premier renouvellement de test
+
+Le renouvellement accéléré a été observé le 19 novembre 2026. La version 0.2.2 (16), signée et disponible localement, corrige l’offre d’achat transitoire pendant la vérification et rend le retour du bouton « Vérifier mon abonnement » visible. Elle doit encore être diffusée en test interne et contrôlée sur le téléphone. [Qualification, artefact et limites](16-tests-achats-google-play.md#renouvellement-et-correction-daffichage--19-novembre-2026). Aucun changement de prix, quota, plafond financier ou ouverture commerciale.
