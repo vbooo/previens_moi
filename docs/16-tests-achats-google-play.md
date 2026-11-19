@@ -1,6 +1,6 @@
 # Qualification des achats Google Play sans débit réel
 
-Préparation du 17 novembre 2026. **Ce protocole ne constitue pas un résultat de test.** Aucun achat Google n’est encore qualifié. L’offre est `previens_moi_plus` / `monthly`, France, 6,99 € TTC par mois, package `fr.previensmoi.app`.
+Préparation du 17 novembre 2026. **Premier achat fictif qualifié le 19 novembre 2026.** La restauration, les autres moyens de paiement et le cycle complet restent à vérifier. L’offre est `previens_moi_plus` / `monthly`, France, 6,99 € TTC par mois, package `fr.previensmoi.app`.
 
 ## Conditions avant le premier achat
 
@@ -17,7 +17,7 @@ Google permet aux comptes de licence de tester une version installée directemen
 
 `.local/play-test/previens-moi-play-test-0.2.0-14.apk` : version de développement, package Play et signature debug vérifiés. Elle n’a pas été installée sur le téléphone. Le fichier `.local/play-test/previens-moi-play-release-0.2.1-15.aab` est signé avec la clé de dépôt pour préparer la piste interne ; la version précédente 0.2.0 a été refusée par Google pour son minimum SDK 23. La capture de Fabien confirme l’import de la 0.2.1 avec API 24 ; la version est maintenant accessible aux testeurs internes et la liste prévue est sélectionnée. Ne pas tenter une mise à jour entre un APK debug et une version signée autrement sous le même package : Android refuse la signature différente. Le prototype a un autre package et peut rester installé.
 
-Le catalogue est accessible depuis l’identité serveur et le forfait est encore `DRAFT`. Aucun test d’achat n’est possible tant que sa disponibilité de test, le compte de licence et le mode test serveur ne sont pas prêts.
+Lecture Google du 19 novembre 2026 : forfait `monthly` maintenant `ACTIVE`, mensuel, France à 6,99 € TTC. Fabien confirme avoir installé la version de test depuis Google Play. Le premier achat de licence est maintenant confirmé en base : achat de test, état actif, acquittement Google enregistré et cinq demandes restantes. La surveillance Plus reste désactivée et les plafonds globaux sont conservés. [Contrôle du premier achat](../validation/billing/play-first-license-purchase.json).
 
 Pour éviter qu’un achat de test ne transforme l’essai gratuit d’un compte déjà utilisé, se connecter dans la nouvelle application avec un **compte Préviens-moi réservé aux tests**. Le compte Google Play choisi pour le paiement doit rester celui inscrit comme testeur de licence. Les deux identités jouent des rôles différents.
 
@@ -45,3 +45,7 @@ Une souscription mensuelle de test se renouvelle en temps accéléré. Ne pas co
 Pour chaque cas : version installée, heure, état affiché, état serveur agrégé, résultat attendu/obtenu. Garder les captures privées si elles montrent un e-mail ou une commande. Ne jamais publier de jeton d’achat, secret, clé, session ou données personnelles dans GitHub.
 
 L’absence d’achat réel ne prouve ni la rentabilité ni la disponibilité du moteur de surveillance. La qualification Play, les notifications Android, le fonctionnement Web pendant sept jours et l’ouverture commerciale sont des validations distinctes. Le plafond cumulé de 2 € et les compteurs actuels ne sont pas remis à zéro.
+
+## Observations du premier achat — 19 novembre 2026
+
+Google affichait explicitement la carte de test toujours approuvée et l’absence de facturation. Fabien confirme le mail Google et l’écran « Abonnement actif », puis le maintien de cet état après fermeture depuis les applications récentes et réouverture. La lecture serveur confirme un achat de test actif, acquitté et cinq demandes restantes. Les plafonds globaux restent inchangés et la surveillance Plus demeure fermée. Le bouton de restauration, la réinstallation, les autres moyens de paiement, RTDN et le cycle complet ne sont pas déduits de ce seul résultat.

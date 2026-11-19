@@ -10,9 +10,12 @@
   "replacementSignedAndChecked": true,
   "replacementUploadConfirmed": true,
   "internalReleasePublished": true,
-  "basePlanActivated": false,
+  "basePlanActivated": true,
   "realPurchasePerformed": false,
   "newPaidProviderCalls": 0,
   "confirmationEvidence": "User screenshots: version 15 (0.2.1) accessible to internal testers, released 17 November 2026 21:24 Europe/Paris; selected test list has one user and Save disabled.",
-  "internalTesterListConfirmed": true
+  "internalTesterListConfirmed": true,
+  "basePlanActivationEvidence": "Google catalogue read confirms ACTIVE, monthly, France EUR 6.99 on 2026-11-19.",
+  "phoneInstallationConfirmedByUser": true,
+  "googleLicensePurchaseTested": false
 }

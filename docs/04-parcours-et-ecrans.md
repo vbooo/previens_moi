@@ -213,3 +213,11 @@ Les valeurs de données et les services simulés seront précisés dans les test
 ## Arbitrages validés lors de la revue
 
 Fabien a validé l’accueil centré sur la question principale, avec accès immédiat aux surveillances, et l’absence de boîte globale des alertes dans la V1. Il a également validé l’adresse d’une page publique comme voie de secours, seulement après un échec de recherche automatique et sous réserve de qualification. Ces choix sont enregistrés sous UX-D08 à UX-D10. Le choix du fournisseur de compte, la cadence, les heures calmes, le rattrapage après pause, les durées de stockage et les prix restent dans leurs documents respectifs.
+
+## Retours UI à traiter après les tests d’achat — 19 novembre 2026
+
+Retours de Fabien sur la version de test Play, à intégrer à la prochaine passe UI ; ces changements ne sont pas encore implémentés.
+
+- Ajouter un accès clair à l’aide, au contact et à l’envoi de retours ou de signalements de bugs. Définir le canal de réception avant le raccordement.
+- Sur l’accueil connecté sans suivi, proposer un vrai bouton principal « Nouveau suivi » au centre de l’état vide ; rendre les actions de connexion plus visibles.
+- Recomposer l’écran d’abonnement avec une offre lisible, un prix visible, de vrais boutons et une liste précise des limites : deux suivis actifs, trois sources par suivi, vérification quotidienne et cinq créations/changements de sujet par période payée. Retirer la phrase vague « Plus de suivis, au-delà de l’essai gratuit ».

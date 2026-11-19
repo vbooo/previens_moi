@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-19T09:35:24.232249+00:00",
+  "readOnly": true,
+  "newPaidProviderCalls": 0,
+  "realPurchasePerformed": false,
+  "restorationTested": false,
+  "rtdnDeliveryTested": false,
+  "purchaseFoundForTestAccount": true,
+  "state": "active",
+  "active": true,
+  "googleTestPurchase": true,
+  "acknowledged": true,
+  "expiresAt": "2026-11-19T09:38:29.514000+00:00",
+  "verifiedAt": "2026-11-19T09:35:03.927000+00:00",
+  "remainingCreations": 5,
+  "billingPolicy": {
+    "enabled": true,
+    "testOnly": true,
+    "paidMonitoringEnabled": false
+  },
+  "globalBudgetCapsPreserved": true,
+  "initialPurchaseServerValidated": true,
+  "appRelaunchRecognizedUserConfirmed": true,
+  "restoreButtonTested": false,
+  "reinstallationRestorationTested": false
+}
