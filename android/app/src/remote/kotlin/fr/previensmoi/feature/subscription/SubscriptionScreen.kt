@@ -38,6 +38,11 @@ fun SubscriptionScreen(
         if (state.restored)
             stringResource(
                 when {
+                    access?.status == SubscriptionStatus.Grace -> R.string.billing_grace
+                    access?.status == SubscriptionStatus.Hold -> R.string.billing_hold
+                    access?.status == SubscriptionStatus.Paused -> R.string.billing_paused
+                    access?.status == SubscriptionStatus.Pending -> R.string.billing_pending
+                    access?.status == SubscriptionStatus.Expired -> R.string.billing_expired
                     access?.active != true -> R.string.billing_restore_none
                     access.status == SubscriptionStatus.Cancelled ->
                         R.string.billing_restored_cancelled
@@ -54,7 +59,7 @@ fun SubscriptionScreen(
     Box(Modifier.fillMaxSize()) {
         Page(
             footer =
-                if (state.loaded && !state.busy && access != null && !access.active) {
+                if (state.loaded && !state.busy && eligible) {
                     {
                         Button(
                             subscribe,
@@ -133,9 +138,12 @@ fun SubscriptionScreen(
                         access.expiresAt?.let {
                             Text(
                                 stringResource(
-                                    if (access.status == SubscriptionStatus.Cancelled)
-                                        R.string.billing_access_until
-                                    else R.string.billing_renewal,
+                                    when (access.status) {
+                                        SubscriptionStatus.Cancelled ->
+                                            R.string.billing_access_until
+                                        SubscriptionStatus.Grace -> R.string.billing_grace_until
+                                        else -> R.string.billing_renewal
+                                    },
                                     dateText(it),
                                 )
                             )
@@ -164,7 +172,11 @@ fun SubscriptionScreen(
                     )
                     SecondaryText(stringResource(R.string.billing_quota_definition))
                 }
-            if (!access.active && !eligible && access.status != SubscriptionStatus.Pending)
+            if (
+                !access.active &&
+                    !eligible &&
+                    access.status in setOf(SubscriptionStatus.None, SubscriptionStatus.Expired)
+            )
                 SecondaryText(stringResource(R.string.billing_not_available))
             state.problem?.let { problem ->
                 Text(
@@ -191,7 +203,16 @@ fun SubscriptionScreen(
                     manage,
                     modifier = Modifier.fillMaxWidth().testTag("manage_subscription"),
                 ) {
-                    Text(stringResource(R.string.billing_manage))
+                    Text(
+                        stringResource(
+                            if (
+                                access.status in
+                                    setOf(SubscriptionStatus.Grace, SubscriptionStatus.Hold)
+                            )
+                                R.string.billing_fix_payment
+                            else R.string.billing_manage
+                        )
+                    )
                 }
             TextButton(
                 restore,
@@ -204,8 +225,10 @@ fun SubscriptionScreen(
                     )
                 )
             }
-            if (!access.active) SecondaryText(stringResource(R.string.billing_terms))
-            if (!access.active) SecondaryText(stringResource(R.string.billing_no_commitment))
+            if (access.status in setOf(SubscriptionStatus.None, SubscriptionStatus.Expired)) {
+                SecondaryText(stringResource(R.string.billing_terms))
+                SecondaryText(stringResource(R.string.billing_no_commitment))
+            }
         }
         SnackbarHost(
             snackbar,

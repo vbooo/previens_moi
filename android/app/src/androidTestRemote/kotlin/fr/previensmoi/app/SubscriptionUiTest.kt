@@ -57,7 +57,7 @@ class SubscriptionUiTest {
                 }
             }
         }
-        compose.onNodeWithTag("subscribe").assertIsNotEnabled()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
         capture("unavailable")
         compose.runOnIdle {
             state.value =
@@ -100,7 +100,7 @@ class SubscriptionUiTest {
                     problem = BillingProblem.Pending,
                 )
         }
-        compose.onNodeWithTag("subscribe").assertIsNotEnabled()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
         compose.onNodeWithTag("restore_purchases").performScrollTo().performClick()
         assertEquals(1, restored)
         capture("pending")
@@ -187,10 +187,103 @@ class SubscriptionUiTest {
                 )
         }
         compose
-            .onNodeWithText(
-                compose.activity.getString(fr.previensmoi.R.string.billing_restore_none)
+            .onNode(
+                hasText(compose.activity.getString(fr.previensmoi.R.string.billing_expired)) and
+                    hasAnyAncestor(hasTestTag("subscription_feedback"))
             )
             .assertIsDisplayed()
         compose.onNodeWithTag("subscribe").assertIsEnabled()
+    }
+
+    @Test
+    fun paymentRecoveryStatesNeverOfferCheckoutOrClaimNoSubscription() {
+        val state =
+            mutableStateOf(
+                SubscriptionUiState(
+                    loaded = true,
+                    access =
+                        SubscriptionAccess(
+                            status = SubscriptionStatus.Grace,
+                            active = true,
+                            expiresAt = 4102444800000,
+                            canPurchase = true,
+                        ),
+                    product = SubscriptionProduct("6,99 €"),
+                )
+            )
+        var managed = 0
+        compose.activity.setContent {
+            PreviensTheme {
+                Scaffold { padding ->
+                    Box(Modifier.padding(padding)) {
+                        SubscriptionScreen(
+                            state.value,
+                            {},
+                            {},
+                            {},
+                            { managed++ },
+                            { state.value = state.value.copy(restored = false) },
+                        )
+                    }
+                }
+            }
+        }
+        compose
+            .onNodeWithTag("subscription_status")
+            .assertTextEquals(compose.activity.getString(fr.previensmoi.R.string.billing_grace))
+        compose
+            .onNodeWithText(
+                compose.activity.getString(
+                    fr.previensmoi.R.string.billing_grace_until,
+                    java.text.DateFormat.getDateTimeInstance(
+                            java.text.DateFormat.MEDIUM,
+                            java.text.DateFormat.SHORT,
+                        )
+                        .format(java.util.Date(4102444800000)),
+                )
+            )
+            .assertExists()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        capture("grace")
+        compose
+            .onNodeWithTag("manage_subscription")
+            .performScrollTo()
+            .assertTextEquals(
+                compose.activity.getString(fr.previensmoi.R.string.billing_fix_payment)
+            )
+            .performClick()
+        assertEquals(1, managed)
+        compose.runOnIdle {
+            state.value =
+                state.value.copy(
+                    access =
+                        state.value.access!!.copy(
+                            status = SubscriptionStatus.Hold,
+                            active = false,
+                            expiresAt = 1,
+                        )
+                )
+        }
+        compose
+            .onNodeWithTag("subscription_status")
+            .performScrollTo()
+            .assertTextEquals(compose.activity.getString(fr.previensmoi.R.string.billing_hold))
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        compose
+            .onNodeWithText(
+                compose.activity.getString(fr.previensmoi.R.string.billing_not_available)
+            )
+            .assertDoesNotExist()
+        capture("hold")
+        compose.runOnIdle { state.value = state.value.copy(restored = true) }
+        compose
+            .onAllNodesWithText(compose.activity.getString(fr.previensmoi.R.string.billing_hold))
+            .assertCountEquals(2)
+        compose
+            .onNodeWithText(
+                compose.activity.getString(fr.previensmoi.R.string.billing_restore_none)
+            )
+            .assertDoesNotExist()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
     }
 }

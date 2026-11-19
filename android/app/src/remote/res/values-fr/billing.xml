@@ -13,8 +13,8 @@
     <string name="billing_quota_definition">Créer un suivi ou changer ce que tu recherches utilise une demande.</string>
     <string name="billing_active">Abonnement actif</string>
     <string name="billing_cancelled">Résiliation prise en compte</string>
-    <string name="billing_grace">Ton paiement nécessite une vérification. Tes suivis continuent pour le moment.</string>
-    <string name="billing_hold">Paiement à régulariser dans Google Play. Tes suivis sont suspendus.</string>
+    <string name="billing_grace">Paiement refusé. Mets à jour ta carte dans Google Play.</string>
+    <string name="billing_hold">Paiement refusé : ton accès est suspendu. Mets à jour ta carte dans Google Play.</string>
     <string name="billing_paused">Abonnement en pause</string>
     <string name="billing_expired">Abonnement terminé</string>
     <string name="billing_pending">Paiement en attente dans Google Play. L’abonnement sera activé après confirmation.</string>
@@ -34,4 +34,6 @@
     <string name="billing_terms">Abonnement mensuel à renouvellement automatique. Tu peux le résilier dans Google Play ; ton accès reste ouvert jusqu’à la fin de la période payée.</string>
     <string name="billing_no_commitment">L’essai gratuit ne déclenche aucun abonnement automatique. Si tu t’abonnes, la période payante commence dès l’achat.</string>
     <string name="billing_checking">Vérification…</string>
+    <string name="billing_grace_until">Accès maintenu jusqu’au %1$s</string>
+    <string name="billing_fix_payment">Régulariser mon paiement</string>
 </resources>

@@ -263,3 +263,21 @@ Deno.test("test messages, conflicting event families and malformed tokens are ig
     assert(notificationPurchaseToken(value) === null);
   }
 });
+
+Deno.test("past expiry suspends access without erasing recoverable Google payment states", () => {
+  for (
+    const [googleState, expected] of [
+      ["ON_HOLD", "hold"],
+      ["PAUSED", "paused"],
+      ["IN_GRACE_PERIOD", "grace"],
+      ["EXPIRED", "expired"],
+      ["ACTIVE", "expired"],
+      ["CANCELED", "expired"],
+    ]
+  ) {
+    const value = purchase("SUBSCRIPTION_STATE_" + googleState);
+    value.lineItems[0].expiryTime = "2026-11-15T12:00:00Z";
+    const verified = verifySubscription(value, "owner-hash", true, now);
+    assert(verified.state === expected && !verified.active);
+  }
+});

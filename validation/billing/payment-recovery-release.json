@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-11-19T12:25:56.382701+00:00",
+  "version": "0.2.3",
+  "versionCode": 17,
+  "package": "fr.previensmoi.app",
+  "artifacts": {
+    "aab": {
+      "bytes": 5939128,
+      "sha256": "ef989b900bc650cea1b80ce6f4553080e179d9d7f93d0864276b039ab603eca0"
+    },
+    "apk": {
+      "bytes": 2659168,
+      "sha256": "dfa62364fc08d14751fa71731ccfac03f1ef0b3ab5a81a3660fb067e20383cf2"
+    }
+  },
+  "signedWithExistingUploadKey": true,
+  "apkAndBundleSignaturesVerified": true,
+  "staticChecks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "productionReady": false,
+  "publishedToInternalTrack": false,
+  "testedOnUserPhone": false,
+  "realPurchasesEnabled": false,
+  "paidMonitoringEnabled": false,
+  "newPaidProviderCalls": 0,
+  "cumulativeBudgetCapEur": 2,
+  "validation": {
+    "serverTests": 138,
+    "serverTypecheck": true,
+    "androidUnitTests": 82,
+    "lintDebugErrors": 0,
+    "lintDebugWarnings": 0,
+    "lintReleaseErrors": 0,
+    "lintReleaseWarnings": 0,
+    "disposablePostgresScenarioPassed": true,
+    "nativeScreenTestsPerConfiguration": 3,
+    "nativeConfigurations": [
+      "light / French / font 100%",
+      "dark / French / font 130%"
+    ],
+    "nativeFailures": 0,
+    "screenshots": "payment-ui",
+    "notes": "Synthetic screen states; no provider purchase or monitoring request from instrumentation."
+  },
+  "internalUploadState": "File selected in Safari; native dialog confirmation unavailable to automation. User action requested."
+}

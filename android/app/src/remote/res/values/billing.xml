@@ -13,8 +13,8 @@
     <string name="billing_quota_definition">Creating a watch or changing what you are looking for uses one request.</string>
     <string name="billing_active">Subscription active</string>
     <string name="billing_cancelled">Cancellation confirmed</string>
-    <string name="billing_grace">Your payment needs attention. Your watches continue for now.</string>
-    <string name="billing_hold">Update your payment in Google Play. Your watches are suspended.</string>
+    <string name="billing_grace">Payment declined. Update your payment method in Google Play.</string>
+    <string name="billing_hold">Payment declined: your access is suspended. Update your payment method in Google Play.</string>
     <string name="billing_paused">Subscription paused</string>
     <string name="billing_expired">Subscription ended</string>
     <string name="billing_pending">Payment pending in Google Play. Your subscription starts after confirmation.</string>
@@ -34,4 +34,6 @@
     <string name="billing_terms">Monthly subscription, automatically renewed. Cancel in Google Play at any time; access continues until the end of the paid period.</string>
     <string name="billing_no_commitment">The free trial never starts a subscription automatically. If you subscribe, the paid period starts immediately.</string>
     <string name="billing_checking">Checking…</string>
+    <string name="billing_grace_until">Access maintained until %1$s</string>
+    <string name="billing_fix_payment">Fix my payment</string>
 </resources>

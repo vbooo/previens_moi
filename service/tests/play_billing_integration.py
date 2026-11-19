@@ -111,7 +111,18 @@ try:
   assert q('select count(*) from private.billing_periods where owner_id=%s',(u,))==2
   report['RenewalCreatesNewQuotaExactlyOnce']=True
   # A voluntary pause stays paused; a billing suspension can recover in place.
-  pause(w1);bind(u,token,proof(u,'hold',order='test-order-2'));assert not q('select public.s7_subscription()')['active']
+  pause(w1)
+  grace=proof(u,'grace',order='test-order-2');bind(u,token,grace)
+  assert q('select public.s7_subscription()')['status']=='grace' and q('select public.s7_subscription()')['active']
+  hold=proof(u,'hold',order='test-order-2');hold['expiresAt']=(dt.datetime.now(dt.timezone.utc)-dt.timedelta(minutes=1)).isoformat()
+  bind(u,token,hold)
+  assert q('select public.s7_subscription()')['status']=='hold' and not q('select public.s7_subscription()')['active']
+  historical=proof(u,'expired',order='historical-order');historical.update(active=False,expiresAt=(dt.datetime.now(dt.timezone.utc)-dt.timedelta(days=1)).isoformat())
+  bind(u,'synthetic-historical-expired-token',historical)
+  assert q('select public.s7_subscription()')['status']=='hold'
+  q("update private.billing_purchases set refresh_attempt_at=now()-interval '2 minutes' where owner_id=%s",(u,))
+  assert q('select public.s7_refresh_candidates(%s)',(u,))[0]['token']==token
+  report['GraceRetainsAccessHoldPreservesRecoveryDespiteExpiredHistory']=True
   assert q("select status='suspended_by_capacity' from private.watches where id=%s",(w2,))
   assert q("select public.s3_read('watch',%s)",(w2,))['subscriptionEnded']
   fail('select public.s3_command(%s)',(Jsonb({'id':v7(),'operation':'resume','watchId':w2,'expectedVersion':q('select version from private.watches where id=%s',(w2,))}),),'subscription_required')
@@ -131,7 +142,7 @@ try:
    assert not q("select has_function_privilege('authenticated',%s,'execute')",(function,));assert not q("select has_function_privilege('anon',%s,'execute')",(function,))
   assert not q("select has_table_privilege('authenticated','private.billing_purchases','select')")
   q('update private.accounts set deleted_at=now() where id=%s',(u,));assert q('select count(*) from private.billing_purchases where owner_id=%s',(u,))==0
-  assert q('select count(*) from private.billing_owners where owner_id is null')==1
+  assert q('select count(*) from private.billing_owners where owner_id is null')==2
   fail('select public.s7_bind_purchase(%s,%s,%s,now())',(other,token,Jsonb(proof(other))),'purchase_account_mismatch')
   report['AccountDeletionErasesTokensWithoutAllowingTheirReuse']=True;report['PurchaseSecretsAndInternalFunctionsAreNotClientAccessible']=True
   assert q('select jsonb_build_array(model_limit,credit_limit) from private.general_budget where id')==[300000,200]

@@ -23,7 +23,7 @@
   "topicExists": null,
   "unauthenticatedPushHttpStatus": 503,
   "controlledServerTests": {
-    "passed": 137,
+    "passed": 138,
     "failed": 0,
     "providerNetworkPermissions": false,
     "typecheckPassed": true
@@ -42,6 +42,7 @@
   "localNotificationFix": {
     "voidedSubscriptionTriggersGoogleRecheck": true,
     "malformedPayloadCovered": true,
-    "deployed": false
+    "deployed": true,
+    "deploymentReport": "payment-recovery-deployment.json"
   }
 }

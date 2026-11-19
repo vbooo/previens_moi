@@ -73,3 +73,17 @@ Le retour du bouton de vérification affichait encore « Ton abonnement est bien
 ### Confirmation de fin de période et de récupération après réinstallation
 
 Fabien confirme ensuite l’état « Abonnement terminé » après la fin de période de la souscription résiliée, puis le succès du test suivant : nouvel achat fictif approuvé, désinstallation/réinstallation depuis Google Play, reconnexion et récupération de l’abonnement. Sa confirmation ne précise pas si la récupération était automatique ou obtenue par le bouton de vérification ; ce point n’est donc pas déduit. Les parcours courants sont maintenant couverts par les observations utilisateur, sans prétendre qualifier les paiements en attente, la grâce/le blocage, le changement de compte ou RTDN.
+
+
+## Refus de renouvellement et suspension — 19 novembre 2026
+
+Le testeur confirme un nouveau paiement fictif accepté puis un renouvellement refusé : l’accès est maintenu pendant les cinq minutes de grâce accélérées, puis il est coupé. La lecture directe de l’API Google a confirmé `SUBSCRIPTION_STATE_ON_HOLD`, avec une date de fin d’accès passée et un achat acquitté. Le serveur convertissait à tort tout état dont cette date était passée en `expired`, et la lecture SQL reproduisait cette conversion. Un ancien achat expiré, vérifié plus récemment, pouvait également masquer l’achat récupérable.
+
+La correction conserve les états Google `hold` et `paused` même lorsque l’accès est fermé, privilégie l’abonnement en cours lors de la lecture et de la vérification manuelle, et garde le contrôle de date pour l’ouverture effective des droits. La migration `202611190041` et les fonctions `api`, `worker` et `play-notifications` sont déployées ; la facturation Cloud et les droits IAM sont inchangés. Le mode achats fictifs reste imposé, la surveillance payante reste fermée et les plafonds restent à 300 000 micro-USD / 171 crédits Web.
+
+La version Android 0.2.3 (17), signée et contrôlée localement, distingue le refus avec accès maintenu jusqu’à une date et la suspension à régulariser. Le bouton « Vérifier mon abonnement » reprend l’état connu au lieu de déclarer qu’aucun abonnement n’existe. Aucun nouveau paiement n’est proposé pendant la suspension. La confirmation de résiliation corrigée précédemment est incluse dans cette version.
+
+Les 138 tests serveur, 82 tests unitaires Android et le scénario de base PostgreSQL jetable couvrent notamment grâce → suspension avec date passée → récupération sans remise à zéro des quotas, ainsi que la présence d’anciens achats expirés. Cela ne remplace pas le contrôle sur téléphone après diffusion ni la qualification RTDN, qui reste bloquée par l’absence de facturation Cloud. La récupération d’un paiement refusé sur le téléphone reste à confirmer après mise à jour.
+
+
+Contrôle natif : les trois parcours passent en français clair à 100 % et sombre à 130 %. Les quatre [captures contrôlées](../validation/billing/payment-ui/) sont sans données utilisateur ; elles ne prouvent pas une récupération de paiement réelle. Lint debug/release : aucune erreur ni avertissement. Le [rapport de version](../validation/billing/payment-recovery-release.json) garde la publication interne et le contrôle sur téléphone à `false` tant qu’ils ne sont pas observés. L’import 0.2.3 est préparé dans Safari mais le sélecteur de fichier ne se valide pas depuis l’automatisation ; intervention manuelle demandée. [Déploiement serveur](../validation/billing/payment-recovery-deployment.json).

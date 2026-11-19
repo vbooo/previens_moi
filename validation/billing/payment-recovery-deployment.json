@@ -1,0 +1,15 @@
+{
+  "migration": "202611190041",
+  "deployedFunctions": [
+    "api",
+    "worker",
+    "play-notifications"
+  ],
+  "testOnly": true,
+  "paidMonitoringEnabled": false,
+  "modelLimitMicroUsd": 300000,
+  "webCreditLimit": 171,
+  "newPaidProviderCalls": 0,
+  "cloudBillingOrIamChanged": false,
+  "livePaymentRecoveryQualified": false
+}

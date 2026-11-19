@@ -12,7 +12,8 @@
     "202611030037",
     "202611150038",
     "202611160039",
-    "202611160040"
+    "202611160040",
+    "202611190041"
   ],
   "migrationOnHistoricalLocalSchema": true,
   "pendingNeverGrantsAndTestOnlyRejectsRealPayments": true,
@@ -22,6 +23,7 @@
   "RepeatedAndOutOfOrderProofsDoNotResetOrRevokeAccess": true,
   "FiveCreationsPerPeriodWithFreePauseAndResume": true,
   "RenewalCreatesNewQuotaExactlyOnce": true,
+  "GraceRetainsAccessHoldPreservesRecoveryDespiteExpiredHistory": true,
   "HoldStopsChecksAndRecoveryHonorsVoluntaryPause": true,
   "CancellationRetainsAccessUntilExpiry": true,
   "RepeatedUnderstandingDoesNotDoubleChargeAllowance": true,

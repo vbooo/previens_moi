@@ -15,7 +15,12 @@
     "cancelledAccessEndUserScreenshot": "2026-11-19T12:01:00+01:00",
     "expirationAfterThisCancellationUserConfirmed": true,
     "restorationAfterReinstallationUserConfirmed": true,
-    "restorationAutomaticOrManual": "Not specified in user confirmation; do not infer automatic recovery."
+    "restorationAutomaticOrManual": "Not specified in user confirmation; do not infer automatic recovery.",
+    "renewalDeclinedEmailUserConfirmed": true,
+    "accessMaintainedDuringAcceleratedGraceUserConfirmed": true,
+    "accessLostAfterAcceleratedGraceUserConfirmed": true,
+    "holdDisplayedAsExpiredInVersion16BugConfirmed": true,
+    "googleApiOnHoldObservedReadOnly": true
   },
   "localCancellationCopyFix": {
     "packagedInPublishedVersion": false,
@@ -41,11 +46,13 @@
     "screenshots": "cancellation-ui"
   },
   "remainingQualification": [
-    "pending payment and payment recovery",
+    "pending payment",
+    "payment recovery on updated phone client",
     "RTDN wiring and qualification"
   ],
   "newPaidProviderCalls": 0,
   "cumulativeBudgetCapEur": 2,
   "realPurchasesEnabled": false,
-  "paidMonitoringEnabled": false
+  "paidMonitoringEnabled": false,
+  "lastUpdatedAt": "2026-11-19T12:32:04.264854+00:00"
 }

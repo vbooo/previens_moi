@@ -86,7 +86,10 @@ export function verifySubscription(
   const active = ["active", "cancelled", "grace"].includes(state) && !!expiry &&
     Date.parse(expiry) > now;
   return {
-    state: expiry && Date.parse(expiry) <= now ? "expired" : state,
+    state: expiry && Date.parse(expiry) <= now &&
+        ["active", "cancelled"].includes(state)
+      ? "expired"
+      : state,
     active,
     expiresAt: expiry,
     orderId: order,

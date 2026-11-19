@@ -259,4 +259,43 @@ class SubscriptionViewModelTest {
             Dispatchers.resetMain()
         }
     }
+
+    @Test
+    fun `empty Play query during hold preserves server payment state and recovery quota`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Grace,
+                        active = true,
+                        remainingCreations = 3,
+                    )
+                val store = Store()
+                val vm = SubscriptionViewModel(server, store)
+                vm.bindOwner("u")
+                runCurrent()
+                assertEquals(SubscriptionStatus.Grace, vm.state.value.access!!.status)
+                server.access = server.access.copy(status = SubscriptionStatus.Hold, active = false)
+                vm.restore()
+                runCurrent()
+                assertEquals(SubscriptionStatus.Hold, vm.state.value.access!!.status)
+                assertFalse(vm.state.value.access!!.active)
+                assertTrue(vm.state.value.restored)
+                assertNull(vm.beginPurchase())
+                store.owned =
+                    BillingOutcome.Success(
+                        listOf(PurchaseNotice("recovered-same-purchase-token", false))
+                    )
+                vm.restore()
+                runCurrent()
+                assertEquals(SubscriptionStatus.Active, vm.state.value.access!!.status)
+                assertTrue(vm.state.value.access!!.active)
+                assertEquals(3, vm.state.value.access!!.remainingCreations)
+                assertNull(vm.beginPurchase())
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
 }
