@@ -61,5 +61,11 @@
   "githubCi": {
     "conclusion": "success",
     "url": "https://github.com/vbooo/previens_moi/actions/runs/44524820232"
+  },
+  "phoneRecoveryObservation": {
+    "userConfirmedReturnToActiveAfterPaymentMethodCorrection": true,
+    "accountHoldRecoveryConfirmed": false,
+    "installedVersionIndependentlyInspected": false,
+    "evidence": "User report after 0.2.3 publication; no new provider or purchase request made by the agent."
   }
 }

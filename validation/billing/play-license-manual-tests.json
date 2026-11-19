@@ -20,10 +20,13 @@
     "accessMaintainedDuringAcceleratedGraceUserConfirmed": true,
     "accessLostAfterAcceleratedGraceUserConfirmed": true,
     "holdDisplayedAsExpiredInVersion16BugConfirmed": true,
-    "googleApiOnHoldObservedReadOnly": true
+    "googleApiOnHoldObservedReadOnly": true,
+    "recoveryAfterDeclinedRenewalUserConfirmed": true,
+    "recoveryPhase": "Grace recovery reported; recovery after account hold not yet confirmed on phone.",
+    "recoveryInstalledVersion": "Reported after internal release 0.2.3; installed version not independently inspected."
   },
   "localCancellationCopyFix": {
-    "packagedInPublishedVersion": false,
+    "packagedInPublishedVersion": true,
     "serverOrBillingPolicyChanged": false,
     "description": "When access remains open after cancellation, verification confirms cancellation instead of displaying the generic active-subscription message.",
     "unitTests": {
@@ -43,16 +46,21 @@
       "cancelled but entitled",
       "expired"
     ],
-    "screenshots": "cancellation-ui"
+    "screenshots": "cancellation-ui",
+    "publishedVersion": "0.2.3 (17)"
   },
   "remainingQualification": [
-    "pending payment",
-    "payment recovery on updated phone client",
+    "payment recovery after account hold on phone",
     "RTDN wiring and qualification"
   ],
   "newPaidProviderCalls": 0,
   "cumulativeBudgetCapEur": 2,
   "realPurchasesEnabled": false,
   "paidMonitoringEnabled": false,
-  "lastUpdatedAt": "2026-11-19T12:32:04.264854+00:00"
+  "lastUpdatedAt": "2026-11-19T12:56:25.565227+00:00",
+  "pendingPaymentApplicability": {
+    "liveV1ScenarioRequired": false,
+    "reason": "Current catalogue offers only an auto-renewing monthly subscription. No prepaid plan or one-time product is offered; pending handling remains covered by controlled tests.",
+    "reference": "https://developer.android.com/google/play/billing/integrate#pending"
+  }
 }
