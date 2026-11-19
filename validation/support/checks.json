@@ -1,0 +1,40 @@
+{
+  "androidUnit": {
+    "remote": {
+      "tests": 84,
+      "failures": 0
+    },
+    "demo": {
+      "tests": 87,
+      "failures": 0
+    }
+  },
+  "lint": {
+    "remoteDebug": {
+      "Error": 0,
+      "Warning": 0,
+      "Information": 0
+    },
+    "remoteRelease": {
+      "Error": 0,
+      "Warning": 0,
+      "Information": 0
+    }
+  },
+  "serverTestsPassed": 143,
+  "nativeTestCases": 2,
+  "nativeConfigurations": [
+    "French light / font 1.0",
+    "English dark / font 1.3"
+  ],
+  "nativeExecutionsPassed": 4,
+  "actualFrenchKeyboardCaptured": true,
+  "sqlIsolatedChecksPassed": true,
+  "serverMailTestMessages": 1,
+  "identicalRetryDeduplicated": true,
+  "retentionDays": 30,
+  "retentionExplicitlyApproved": true,
+  "extraProviderCalls": 0,
+  "extraProviderCostEur": 0,
+  "visualReview": "ship after one material spacing fix; scope: support extension"
+}

@@ -1,0 +1,30 @@
+{
+  "artifactSha256": "56a9c74a11798e178b53973b41bfbb6d5a7ec07982f93d635ad40ebe135f22d9",
+  "apkBytes": 2700996,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks do not prove Google Play distribution or seven days of observation."
+  ],
+  "aabSignatureVerified": true,
+  "aabSha256": "83e3ea619d0bc9214280cc28da3e48b0ca04ebcb56ecaf6232acb270275068ae",
+  "versionName": "0.2.4",
+  "versionCode": 18,
+  "playUploaded": false,
+  "recipientNotEmbeddedInApk": true,
+  "recipientCheck": "Uncompressed APK entries checked for recipient UTF-8 and UTF-16 strings, plus server-only configuration review."
+}

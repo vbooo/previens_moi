@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">Aide et retours</string>
+    <string name="support_access">Aide</string>
+    <string name="support_intro">Une question, un problème ou une idée ? Dis-nous tout.</string>
+    <string name="support_question">Question</string>
+    <string name="support_problem">Problème</string>
+    <string name="support_idea">Idée / avis</string>
+    <string name="support_message">Ton message</string>
+    <string name="support_email">Ton e-mail (facultatif)</string>
+    <string name="support_email_hint">Pour recevoir une réponse.</string>
+    <string name="support_privacy">Ton message sera transmis à l’équipe de Préviens-moi.</string>
+    <string name="support_send">Envoyer</string>
+    <string name="support_sending">Envoi…</string>
+    <string name="support_received">Merci, ton message a bien été reçu.</string>
+    <string name="support_received_body">Si tu as laissé un e-mail, nous pourrons te répondre.</string>
+    <string name="support_done">Fermer</string>
+    <string name="support_invalid">Écris ton message et vérifie ton adresse e-mail, si tu en as indiqué une.</string>
+    <string name="support_offline">Pas de connexion. Ton texte est conservé. Réessaie une fois connecté.</string>
+    <string name="support_unavailable">L’envoi n’a pas pu être confirmé. Ton texte est conservé : tu peux réessayer.</string>
+    <string name="support_limit">La limite de messages est atteinte pour le moment. Ton texte est conservé : réessaie demain.</string>
+</resources>

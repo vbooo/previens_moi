@@ -1366,6 +1366,44 @@
           }
         }
       }
+    },
+    "/public/v1/support": {
+      "post": {
+        "operationId": "sendSupport",
+        "summary": "Submit a question, issue or idea to the private support inbox",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Received, including an identical retry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid message"
+          },
+          "429": {
+            "description": "Support rate limit reached"
+          },
+          "503": {
+            "description": "Support unavailable"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2970,6 +3008,80 @@
           "productId",
           "basePlanId"
         ]
+      },
+      "SupportMessage": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "category",
+          "message",
+          "replyEmail",
+          "appVersion",
+          "language"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "question",
+              "problem",
+              "idea"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "pattern": "\\S"
+          },
+          "replyEmail": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "format": "email",
+                "maxLength": 254
+              }
+            ]
+          },
+          "appVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40,
+            "pattern": "^[a-zA-Z0-9._+-]+$"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "fr",
+              "en"
+            ]
+          }
+        }
+      },
+      "SupportReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "state"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "const": "received"
+          }
+        }
       }
     }
   }

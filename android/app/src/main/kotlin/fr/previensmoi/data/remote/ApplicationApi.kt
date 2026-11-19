@@ -6,6 +6,7 @@ import retrofit2.http.*
 // Credentials are explicit per operation. No interceptor sends a preview secret or JWT
 // to every request, and redirect following is disabled by the factory.
 interface ApplicationApi {
+    @POST("public/v1/support") suspend fun support(@Body request: SupportRequestDto): Response<SupportReceiptDto>
     @GET("api/v1/subscription") suspend fun subscription(@Header("Authorization") bearer: String): Response<SubscriptionAccessDto>
     @POST("api/v1/subscription/purchases") suspend fun verifyPurchase(@Header("Authorization") bearer: String, @Body request: PurchaseVerificationDto): Response<SubscriptionAccessDto>
     @GET("public/v1/health") suspend fun health(): Response<HealthDto>

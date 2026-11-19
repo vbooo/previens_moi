@@ -42,3 +42,7 @@ Les réglages déployés dans Supabase et Google ne sont pas tous reconstruits p
 Aucune sauvegarde indépendante supplémentaire ni synchronisation vers un autre service n’a été créée par ce document. Les fichiers `.local/cloud/*session*.json`, codes e-mail et journaux de diagnostic peuvent contenir des données de test privées ; ils ne remplacent pas une sauvegarde et ne sont pas destinés au dépôt public.
 
 Pour chaque véritable version distribuée, archiver aussi le fichier AAB exact, son numéro de version, son empreinte et le mapping R8 correspondant. Les fichiers dans `android/app/build/` peuvent être effacés lors d’un nettoyage.
+
+## Assistance (19 novembre 2026)
+
+`.local/cloud/support-secrets.env` contient le réglage SMTP encodé et le sel de hachage réseau de l’assistance ; `.local/cloud/support-settings.json` conserve le destinataire. Ces fichiers restent privés et hors Git. Les secrets déployés correspondants sont `SUPPORT_MAIL_CONFIG_B64` et `SUPPORT_IP_SALT`. Voir [le fonctionnement et la conservation des retours](17-assistance.md).

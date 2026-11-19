@@ -1,0 +1,1 @@
+{"passed": true, "isolatedEmptyDatabase": true, "concurrentIdempotence": true, "privateAccess": true, "perSenderAndGlobalCaps": true, "concurrentClaimsDistinct": true, "acceptedContentCleared": true, "failedContentRetained": true, "requestTimeDeletionDisabled": true, "providerCalls": 0}

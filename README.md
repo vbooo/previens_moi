@@ -107,3 +107,5 @@ Restent notamment l’observation prolongée, le budget d’exploitation publiqu
 - [Dernière qualification Android](validation/form-polish/bilan.md), [correctif des alertes d’emploi](validation/job-opportunities/bilan.md), [bilans de validation](validation).
 
 Les documents de conception et bilans historiques expliquent les choix et leurs limites ; leur date fait foi. Ils ne constituent pas des résultats de tests de la CI actuelle.
+
+L’assistance intégrée (formulaire sans ouverture de messagerie) est décrite dans [le parcours et le raccordement de l’aide](docs/17-assistance.md).

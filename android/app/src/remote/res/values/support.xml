@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">Help &amp; feedback</string>
+    <string name="support_access">Help</string>
+    <string name="support_intro">A question, a problem or an idea? Tell us.</string>
+    <string name="support_question">Question</string>
+    <string name="support_problem">Problem</string>
+    <string name="support_idea">Idea / feedback</string>
+    <string name="support_message">Your message</string>
+    <string name="support_email">Your email (optional)</string>
+    <string name="support_email_hint">Only if you would like a reply.</string>
+    <string name="support_privacy">Your message will be sent to the Préviens-moi team.</string>
+    <string name="support_send">Send</string>
+    <string name="support_sending">Sending…</string>
+    <string name="support_received">Thank you, we received your message.</string>
+    <string name="support_received_body">If you left an email, we can reply there.</string>
+    <string name="support_done">Done</string>
+    <string name="support_invalid">Write your message and check your email address, if provided.</string>
+    <string name="support_offline">No connection. Your text is saved. Try again when connected.</string>
+    <string name="support_unavailable">Your message could not be confirmed. Your text is saved; please try again.</string>
+    <string name="support_limit">You have reached the message limit for now. Your text is saved; please try again tomorrow.</string>
+</resources>

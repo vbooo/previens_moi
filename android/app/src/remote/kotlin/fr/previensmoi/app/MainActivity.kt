@@ -40,6 +40,8 @@ import fr.previensmoi.feature.create.presentation.*
 import fr.previensmoi.feature.session.presentation.*
 import fr.previensmoi.feature.watches.presentation.*
 import fr.previensmoi.feature.subscription.*
+import fr.previensmoi.feature.support.*
+import androidx.compose.ui.Alignment
 import java.util.Locale
 import javax.inject.Inject
 
@@ -69,6 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Inject lateinit var playBilling: fr.previensmoi.data.billing.GooglePlayBilling
+    private val support: SupportViewModel by viewModels()
     private val membership: SubscriptionViewModel by viewModels()
     private val watches: WatchesViewModel by viewModels()
     private val creation: CreateViewModel by viewModels()
@@ -86,6 +89,9 @@ class MainActivity : ComponentActivity() {
                 val create by creation.state.collectAsStateWithLifecycle()
                 val account by session.state.collectAsStateWithLifecycle()
                 val subscription by membership.state.collectAsStateWithLifecycle()
+                val assistance by support.state.collectAsStateWithLifecycle()
+                if (assistance.opened) SupportSheet(assistance, support::message, support::email, support::category,
+                    { support.send(fr.previensmoi.BuildConfig.VERSION_NAME) }, support::close, support::done)
                 LaunchedEffect(account.session?.id) { membership.bindOwner(account.session?.id) }
                 WatchSynchronizationEffect(watches, account.session?.id)
                 LaunchedEffect(subscription.access?.active, subscription.access?.expiresAt) {
@@ -374,21 +380,27 @@ class MainActivity : ComponentActivity() {
                             entryProvider =
                                 entryProvider {
                                     entry<Home> {
-                                        HomeScreen(
-                                            state,
-                                            create,
-                                            creation,
-                                            preview = {},
-                                            refresh = watches::refresh,
-                                            open = {
-                                                watches.clearCommandError()
-                                                stack.add(Detail(it))
-                                            },
-                                            remote = true,
-                                            signedIn = account.session != null,
-                                            sessionReady = account.loaded && (account.session == null || state.ownerId == account.session?.id),
-                                            signIn = { stack.add(Account) },
-                                        )
+                                        Box(Modifier.fillMaxSize()) {
+                                            HomeScreen(
+                                                state,
+                                                create,
+                                                creation,
+                                                preview = {},
+                                                refresh = watches::refresh,
+                                                open = {
+                                                    watches.clearCommandError()
+                                                    stack.add(Detail(it))
+                                                },
+                                                remote = true,
+                                                signedIn = account.session != null,
+                                                sessionReady = account.loaded && (account.session == null || state.ownerId == account.session?.id),
+                                                signIn = { stack.add(Account) },
+                                            )
+                                            FilledTonalButton(onClick = support::open,
+                                                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp).heightIn(min = 48.dp).testTag("support_open")) {
+                                                Text(stringResource(R.string.support_access))
+                                            }
+                                        }
                                     }
                                     entry<Account> {
                                         SessionScreen(

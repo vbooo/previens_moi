@@ -1,3 +1,4 @@
+import {receiveSupport} from '../_shared/support.ts';
 import {generalOne} from '../_shared/general-worker.ts';
 import {Firecrawl} from '../_shared/firecrawl.ts';
 import {serve,json,body,rpc,uuid,Fault} from '../_shared/http.ts';
@@ -6,6 +7,7 @@ serve(async req=>{
  if(path[0]!=='v1')throw new Fault('not_found',404);
  if(req.method==='GET' && path[1]==='health' && path.length===2)return json({status:'ok',apiVersion:'1'},200,'Health');
  if(req.method==='POST' && path[1]==='preview-sessions' && path.length===2)return json(await rpc('s3_preview',{action:'session'}),201,'PreviewSession');
+ if(req.method==='POST' && path[1]==='support' && path.length===2)return await receiveSupport(req);
  const token=req.headers.get('X-Preview-Token');if(!token || token.length>256)throw new Fault('preview_required',401);
  if(req.method==='POST' && path[1]==='understandings' && path.length===2){
   const b=await body(req,'EvaluationRequest');const bearer=req.headers.get('Authorization');if(bearer){if(!bearer.startsWith('Bearer '))throw new Fault('session_required',401);await rpc('s7_analysis_access',{evaluation_id:b.id},bearer);}let value:any=await rpc('s3_preview',{action:'understand',token,body:b});

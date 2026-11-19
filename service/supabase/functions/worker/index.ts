@@ -1,3 +1,4 @@
+import {supportMailOne} from '../_shared/support-mail.ts';
 import {refreshSubscriptions} from '../_shared/billing-runtime.ts';
 import {serve,json,rpc,Fault,bytes} from '../_shared/http.ts';
 import {generalOne} from '../_shared/general-worker.ts';
@@ -13,6 +14,9 @@ serve(async req=>{
  const secret=Deno.env.get('WORKER_SECRET');if(!secret)throw new Fault('temporary_failure',503);
  if(!await workerAuthorized(req.headers,secret,async value=>await rpc('s3_worker_nonce',{value}) as boolean))throw new Fault('access_denied',403);
  if(req.body)await bytes(req,1024);
+ // Support is independent of monitoring and billing, including before sign-in.
+ let support='unavailable';
+ try{support=await supportMailOne();}catch{console.warn(JSON.stringify({event:'support_delivery_unavailable'}));}
  // Billing outages delay paid leases via plus_fresh; they must not stop free
  // trials, erasure, pause acknowledgements or notification delivery.
  try{await refreshSubscriptions();}catch{console.warn(JSON.stringify({event:'subscription_refresh_unavailable'}));}
@@ -35,7 +39,7 @@ serve(async req=>{
   async complete(target){await rpc('s3_erasure_identity_done',{target});},
  });
  // Provider execution above is independently gated; FCM delivery has its own switch.
- if(Deno.env.get('FCM_EXECUTION_ENABLED')!=='true'){const general=provider==='empty'&&stop==='empty'?await runGeneral():'busy';return json({state:'disabled',general,admission,provider,stop,remoteErasure,erasure},200);}
+ if(Deno.env.get('FCM_EXECUTION_ENABLED')!=='true'){const general=provider==='empty'&&stop==='empty'?await runGeneral():'busy';return json({state:'disabled',support,general,admission,provider,stop,remoteErasure,erasure},200);}
  const account=Deno.env.get('FIREBASE_SERVICE_ACCOUNT');if(!account)throw new Fault('temporary_failure',503);
  let serviceAccount:ServiceAccount;try{serviceAccount=JSON.parse(account);}catch{throw new Fault('temporary_failure',503);}
  const state=await sendOne({
@@ -45,5 +49,5 @@ serve(async req=>{
  },identity(serviceAccount),true);
  const preparation=state==='empty'?await sendOne({async lease(){return await rpc('s4_preparation_delivery_lease',{}) as Delivery|null;},async allowed(d){return await rpc('s4_preparation_delivery_allowed',{delivery:d.id,lease_id:d.lease}) as boolean;},async finish(d,outcome){await rpc('s4_preparation_delivery_finish',{delivery:d.id,lease_id:d.lease,outcome});}},identity(serviceAccount),true):'busy';
  const general=provider==='empty'&&stop==='empty'&&state==='empty'&&preparation==='empty'?await runGeneral():'busy';
- return json({state,preparation,general,admission,provider,stop,remoteErasure,erasure},200);
+ return json({state,support,preparation,general,admission,provider,stop,remoteErasure,erasure},200);
 });

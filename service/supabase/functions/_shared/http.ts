@@ -51,7 +51,7 @@ export async function authenticated(req: Request) {
 // Fixed route categories: never log user paths, query strings, headers or bodies.
 function routeCategory(req: Request): string {
   const path = new URL(req.url).pathname;
-  for (const category of ['subscription','watches','findings','commands','account','devices','understandings','evaluations','proposals','preview-sessions','health']) {
+  for (const category of ['support','subscription','watches','findings','commands','account','devices','understandings','evaluations','proposals','preview-sessions','health']) {
     if (path.split('/').includes(category)) return category;
   }
   return 'other';

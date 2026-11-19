@@ -29,7 +29,7 @@ for path, methods in spec['paths'].items():
     for operation in methods.values():
         if path.startswith('/api/'):
             assert operation['security'] == [{'UserJWT': []}], path
-        elif path not in ('/public/v1/health', '/public/v1/preview-sessions'):
+        elif path not in ('/public/v1/health', '/public/v1/preview-sessions', '/public/v1/support'):
             assert operation['security'] == [{'PreviewToken': []}], path
 assert all('.invalid/' in server['url'] for server in spec['servers']), 'No deployed environment claimed'
 print(json.dumps({'openapi': 'valid', 'operations': len(operations), 'schemas': len(spec['components']['schemas']),

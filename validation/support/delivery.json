@@ -1,0 +1,11 @@
+{
+  "messagesSubmitted": 1,
+  "identicalRetries": 1,
+  "serverRows": 1,
+  "smtpAccepted": true,
+  "queuedContentCleared": true,
+  "recipientConfiguredOnServerOnly": true,
+  "providerCalls": 0,
+  "extraProviderCostEur": 0,
+  "limitations": "SMTP acceptance does not prove inbox placement or reading. No arbitrary recipient or automatic retry after ambiguous SMTP failure."
+}
