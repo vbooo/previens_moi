@@ -1,0 +1,18 @@
+{
+  "migration": "202611200045",
+  "applied": true,
+  "oldModelLimitMicroUsd": 300000,
+  "newModelLimitMicroUsd": 320000,
+  "additionalModelEnvelopeUsd": 0.02,
+  "cumulativeAuthorizedMaxEur": 2,
+  "conservativeCumulativeUpperEur": 1.03337625,
+  "usedHeldCommittedAndWebCountersPreserved": true,
+  "trialDatesAndAllowancesUnchanged": true,
+  "interpretationReservationFits": true,
+  "trialWebCreditsRemaining": 21,
+  "trialModelMicroUsdRemaining": 172651,
+  "modelCredentialReadOnlyCheck": true,
+  "searchesStarted": 0,
+  "paidModelCalls": 0,
+  "publicSalesEnabled": false
+}

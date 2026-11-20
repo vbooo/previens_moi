@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "activeDatabaseModified": false,
+  "providerCalls": 0,
+  "migrationPreservesRuntimeCounters": true,
+  "interpretationHeadroomWithoutRefundOrReset": true,
+  "finiteCapAndCommitmentGuardsRemain": true,
+  "concurrentRequestsCannotOversubscribe": true
+}
