@@ -1,0 +1,29 @@
+{
+  "artifactSha256": "5e7d3e603aac1c619252dc8de29b2e4d9bdee28ae35a864e5390306e65a09f06",
+  "apkBytes": 2701940,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation.",
+    "Unsigned artifact; no production signing identity created or configured."
+  ],
+  "versionName": "0.2.6",
+  "versionCode": 20,
+  "aabSignatureVerified": true,
+  "aabSha256": "3be3d87916cb7b165f5333fbe0ff44e3b9488e61699ad27ae5757685e98c5f5a",
+  "playUploaded": false
+}

@@ -7,4 +7,5 @@
     <string name="billing_monthly_limit">Tu as utilisé tes demandes pour cette période. Tes suivis déjà actifs continuent.</string>
     <string name="billing_daily_offer">Préviens-moi Plus · Vérification quotidienne</string>
     <string name="billing_watch_suspended">Accès suspendu</string>
+    <string name="billing_view_offer">Voir l’offre Plus</string>
 </resources>

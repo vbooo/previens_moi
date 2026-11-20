@@ -167,10 +167,17 @@ fun CreateScreen(
         keyboard?.hide()
         vm.evaluate(Locale.getDefault().language)
     }
+    val offerPlus = subscription != null && (
+        state.error in setOf(Failure.TrialEnded, Failure.SubscriptionRequired) ||
+            (state.error == Failure.ActiveLimit && state.proposal?.trialDays == 7 &&
+                state.proposal.accessTier != "plus")
+    )
     val footer: (@Composable ColumnScope.() -> Unit)? =
         if (state.step in setOf(CreationStep.Ready, CreationStep.Confirming)) {
             {
-                Button(
+                FailureText(state.error)
+                if (offerPlus) PlusOfferButton(checkNotNull(subscription))
+                else Button(
                     onClick = vm::confirm,
                     enabled =
                         state.step != CreationStep.Confirming &&
@@ -202,10 +209,8 @@ fun CreateScreen(
             CreationStep.Evaluating -> {
                 RequestFields(state, vm)
                 FailureText(state.error, R.string.error_analysis_unavailable)
-                if (state.error in setOf(Failure.TrialEnded, Failure.SubscriptionRequired) && subscription != null) {
-                    Button(subscription, modifier = Modifier.fillMaxWidth().testTag("creation_subscription")) { Text(stringResource(R.string.billing_title)) }
-                }
-                Button(
+                if (offerPlus) PlusOfferButton(checkNotNull(subscription))
+                else Button(
                     onClick = submit,
                     enabled =
                         state.loaded &&
@@ -272,10 +277,8 @@ fun CreateScreen(
                         }
                     }
                 FailureText(state.error, R.string.error_analysis_unavailable)
-                if (state.error in setOf(Failure.TrialEnded, Failure.SubscriptionRequired) && subscription != null) {
-                    Button(subscription, modifier = Modifier.fillMaxWidth().testTag("creation_subscription")) { Text(stringResource(R.string.billing_title)) }
-                }
-                Button(
+                if (offerPlus) PlusOfferButton(checkNotNull(subscription))
+                else Button(
                     onClick = {
                         if (questionIndex < state.questions.lastIndex) questionIndex++
                         else vm.continueClarification(Locale.getDefault().language)
@@ -421,9 +424,19 @@ fun CreateScreen(
                         )
                     }
                 }
-                FailureText(state.error)
             }
         }
+    }
+}
+
+@Composable
+private fun PlusOfferButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp).testTag("creation_subscription"),
+        shape = MaterialTheme.shapes.medium,
+    ) {
+        Text(stringResource(R.string.billing_view_offer))
     }
 }
 

@@ -1,0 +1,34 @@
+{
+  "unitTests": {
+    "remote": 84,
+    "demo": 87
+  },
+  "lint": {
+    "remoteDebug": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "remoteRelease": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "demoDebug": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "instrumentation": {
+    "fr-light": {
+      "tests": 3,
+      "failures": 0
+    },
+    "en-dark-large": {
+      "tests": 3,
+      "failures": 0
+    }
+  },
+  "providerCalls": 0,
+  "extraProviderCostEur": 0,
+  "budgetChanged": false,
+  "cloudMutations": false
+}

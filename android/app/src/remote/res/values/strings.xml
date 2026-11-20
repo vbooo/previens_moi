@@ -12,7 +12,7 @@
     <string name="error_temporary">The service cannot respond right now. Please try again later.</string>
     <string name="error_session">Sign in to continue.</string>
     <string name="error_expired">This proposal expired. Return to your request to confirm it again.</string>
-    <string name="error_quota">The service has reached its trial capacity. No new watch was activated.</string>
+    <string name="error_quota">The service has reached its usage limit. Try again later.</string>
     <string name="operation_pending">We are checking whether your watch was saved.</string>
     <string name="missing">This content is no longer available. It may have been deleted.</string>
     <string name="detail_title">Watch details</string>

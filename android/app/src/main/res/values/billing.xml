@@ -7,4 +7,5 @@
     <string name="billing_monthly_limit">You have used your requests for this period. Your active watches continue.</string>
     <string name="billing_daily_offer">Préviens-moi Plus · Daily checks</string>
     <string name="billing_watch_suspended">Access suspended</string>
+    <string name="billing_view_offer">View the Plus plan</string>
 </resources>
