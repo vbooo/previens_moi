@@ -135,6 +135,12 @@ typography:
     fontWeight: 500
     lineHeight: "32sp"
     letterSpacing: "0sp"
+  title-large-semibold:
+    fontFamily: "sans-serif"
+    fontSize: "22sp"
+    fontWeight: 600
+    lineHeight: "28sp"
+    letterSpacing: "0sp"
   title-medium-semibold:
     fontFamily: "sans-serif"
     fontSize: "16sp"
@@ -168,7 +174,7 @@ spacing:
   status-horizontal: "10dp"
   compact: "12dp"
   section: "16dp"
-  home-top: "18dp"
+  home-top: "12dp"
   page: "20dp"
   page-bottom: "24dp"
 components:
@@ -291,7 +297,7 @@ components:
   top-app-bar-home-light:
     backgroundColor: "{colors.light-background}"
     textColor: "{colors.light-on-surface}"
-    typography: "{typography.headline-small-semibold}"
+    typography: "{typography.title-large-semibold}"
   top-app-bar-light:
     backgroundColor: "{colors.light-background}"
     textColor: "{colors.light-on-surface}"
@@ -424,7 +430,7 @@ components:
   top-app-bar-home-dark:
     backgroundColor: "{colors.dark-background}"
     textColor: "{colors.dark-on-surface}"
-    typography: "{typography.headline-small-semibold}"
+    typography: "{typography.title-large-semibold}"
   top-app-bar-dark:
     backgroundColor: "{colors.dark-background}"
     textColor: "{colors.dark-on-surface}"
@@ -458,6 +464,64 @@ components:
     typography: "{typography.body-medium}"
     padding: "0 24dp 24dp"
     width: "100%"
+  home-empty-light:
+    backgroundColor: "{colors.light-primary-container}"
+    textColor: "{colors.light-on-primary-container}"
+    rounded: "{rounded.large}"
+    padding: "24dp"
+    width: "100%"
+  support-sheet-light:
+    backgroundColor: "{colors.light-surface-container-lowest}"
+    textColor: "{colors.light-on-surface}"
+    padding: "0 24dp 24dp"
+    width: "100%"
+  support-entry-light:
+    backgroundColor: "{colors.light-secondary-container}"
+    textColor: "{colors.light-on-secondary-container}"
+    rounded: "{rounded.large}"
+    height: "56dp"
+  support-category-light:
+    backgroundColor: "{colors.light-secondary-container}"
+    textColor: "{colors.light-on-secondary-container}"
+    height: "48dp"
+  support-category-selected-light:
+    backgroundColor: "{colors.light-primary}"
+    textColor: "{colors.light-on-primary}"
+    height: "48dp"
+  support-field-light:
+    backgroundColor: "{colors.light-surface-container-low}"
+    textColor: "{colors.light-on-surface}"
+    rounded: "{rounded.medium}"
+    width: "100%"
+  home-empty-dark:
+    backgroundColor: "{colors.dark-primary-container}"
+    textColor: "{colors.dark-on-primary-container}"
+    rounded: "{rounded.large}"
+    padding: "24dp"
+    width: "100%"
+  support-sheet-dark:
+    backgroundColor: "{colors.dark-surface-container-lowest}"
+    textColor: "{colors.dark-on-surface}"
+    padding: "0 24dp 24dp"
+    width: "100%"
+  support-entry-dark:
+    backgroundColor: "{colors.dark-secondary-container}"
+    textColor: "{colors.dark-on-secondary-container}"
+    rounded: "{rounded.large}"
+    height: "56dp"
+  support-category-dark:
+    backgroundColor: "{colors.dark-secondary-container}"
+    textColor: "{colors.dark-on-secondary-container}"
+    height: "48dp"
+  support-category-selected-dark:
+    backgroundColor: "{colors.dark-primary}"
+    textColor: "{colors.dark-on-primary}"
+    height: "48dp"
+  support-field-dark:
+    backgroundColor: "{colors.dark-surface-container-low}"
+    textColor: "{colors.dark-on-surface}"
+    rounded: "{rounded.medium}"
+    width: "100%"
 ---
 
 # Design System: Préviens-moi
@@ -487,11 +551,11 @@ Les préfixes `light-` et `dark-` du frontmatter décrivent les deux schémas st
 
 ### Primary
 
-Le **graphite végétal** porte les boutons remplis et actions textuelles. `primary-container` et `on-primary-container` portent la pause ou l’annulation de préparation, le choix radio sélectionné et le résumé de proposition. Ces rôles expriment l’action, sans reprendre la couleur d’un statut.
+Le **graphite végétal** porte les boutons remplis, les catégories de support sélectionnées et les actions textuelles. `primary-container` et `on-primary-container` portent la pause ou l’annulation de préparation, le choix radio sélectionné et le résumé de proposition, le panneau d’accueil vide et les surfaces d’en-tête ou de réception du support. Ces rôles expriment l’action, sans reprendre la couleur d’un statut.
 
 ### Secondary
 
-Les **neutres feuillus** secondaires servent notamment au bouton tonal du compte. La pause possède une surcharge explicite en `primary-container` ; elle n’utilise pas le conteneur secondaire par défaut.
+Les **neutres feuillus** secondaires servent au bouton tonal du compte, à la connexion dans la barre d’accueil, à l’accès au support et aux catégories de support non sélectionnées. La pause possède une surcharge explicite en `primary-container` ; elle n’utilise pas le conteneur secondaire par défaut.
 
 ### Tertiary
 
@@ -526,8 +590,8 @@ Les fonds de statut sont des couleurs explicites du thème, pas une opacité cal
 | Rôle | Usage observé |
 | --- | --- |
 | `headlineMedium` | Certains états de connexion. |
-| `headlineSmall` | Question de création, détail, résultat, clarification et proposition ; SemiBold pour les titres principaux et le titre de barre d’accueil, Medium pour la proposition. |
-| `titleLarge` | Compte et petites barres de contexte. |
+| `headlineSmall` | Question de création, détail, résultat, clarification et proposition ; SemiBold pour les titres principaux, l’accueil vide et le support, Medium pour la proposition. |
+| `titleLarge` | Compte et barres de contexte compactes ; SemiBold pour la barre d’accueil. |
 | `titleMedium` | Titres de section et suivis d’accueil, avec emphase SemiBold. |
 | `bodyLarge` | Champs et fait principal d’un résultat. |
 | `bodyMedium` | Métadonnées et explications ; Medium pour certaines valeurs de réglage. |
@@ -543,7 +607,7 @@ Les titres longs de détail et résultat utilisent `LineBreak.Heading`. Les titr
 
 Page centre une colonne défilante de largeur maximale (720 dp), avec marges horizontales (20 dp), retrait supérieur (12 dp), retrait inférieur (24 dp) et espacement de section (16 dp). Son pied reste hors du défilement avec marges horizontales (20 dp), retraits supérieur (12 dp) et inférieur (8 dp). Les hauteurs de composants du frontmatter représentent les minima observés ou natifs : ne pas transformer `heightIn(min=…)` en hauteur fixe.
 
-L’accueil conserve LazyColumn avec marges latérales (20 dp), retrait supérieur (18 dp), réserve inférieure pour le FAB (112 dp) et aucun espace entre lignes. Les ListItem sont groupés sur une surface continue ; seuls les coins extérieurs du premier et dernier item sont arrondis (20 dp). Les lignes utilisent un retrait local horizontal (4 dp) et vertical (12 dp), puis leurs insets Material ; le séparateur est rentré (20 dp). Statut et dernier contrôle sont côte à côte seulement lorsque la largeur interne atteint (352 dp), fontScale ne dépasse pas (1,15) et que le suivi actif est sain sans commande non confirmée ; sinon ils s’empilent.
+L’accueil conserve LazyColumn avec marges latérales (20 dp), retrait supérieur (12 dp), réserve inférieure pour le FAB (112 dp) et aucun espace entre lignes. Les ListItem sont groupés sur une surface continue ; seuls les coins extérieurs du premier et dernier item sont arrondis (20 dp). Les lignes utilisent un retrait local horizontal (4 dp) et vertical (12 dp), puis leurs insets Material ; le séparateur est rentré (20 dp). Statut et dernier contrôle sont côte à côte seulement lorsque la largeur interne atteint (352 dp), fontScale ne dépasse pas (1,15) et que le suivi actif est sain sans commande non confirmée ; sinon ils s’empilent.
 
 Le détail place son titre hors d’un résumé neutre arrondi (20 dp), avec retrait interne (16 dp) et espacement (12 dp). CheckTiming partage l’espace en deux colonnes égales séparées de (16 dp), puis empile les dates au-delà de fontScale (1,15), avec espacement (12 dp). MetaRow et le réglage des notifications s’empilent également au-delà de ce seuil. Les dates compactes gardent l’année pour une observation d’une autre année.
 
@@ -569,7 +633,7 @@ Les formes héritées sont celles de Material 3 : `small` pour les statuts conte
 
 Button en graphite porte analyse, connexion, confirmation, ouverture de source et reprise ; la forme des boutons de page est `medium`. FilledTonalButton en `primary-container` porte pause ou annulation de préparation. Ces actions ont un minimum (48 dp), sauf confirmation (52 dp). Le bouton de confirmation et l’ouverture de source sont dans le pied fixe de Page, suivi de l’action textuelle de révision pour la confirmation. TextButton porte les actions légères ; les confirmations de suppression utilisent `error`. Conserver les états natifs et laisser les labels revenir à la ligne.
 
-Le seul FAB est l’ExtendedFloatingActionButton ambre de l’accueil, avec symbole plus et « Nouveau suivi ». Son affichage attend le chargement du compte et du brouillon. Aucun OutlinedButton n’est utilisé dans les sources inspectées.
+Le seul FAB est l’ExtendedFloatingActionButton ambre de l’accueil, avec symbole plus et « Nouveau suivi ». Son affichage attend le chargement du compte et du brouillon ; il apparaît hors connexion, avec une liste non vide ou en cas d’échec de chargement. L’accueil connecté vide propose la création dans son panneau, avec Button primaire de forme `medium` et minimum (52 dp), sans doubler le FAB. L’accès au support reste un FilledTonalButton secondaire de forme `large`, minimum (56 dp), avec symbole `info` et espace icône/texte (8 dp), ancré en bas à gauche (16 dp). Aucun OutlinedButton n’est utilisé dans les sources inspectées.
 
 ### Inputs and choices
 
@@ -577,11 +641,23 @@ OutlinedTextField utilise `surface-container-lowest` à l’état normal et foca
 
 ### Navigation
 
-WatchAppBar utilise MediumTopAppBar sur l’accueil et TopAppBar sur les autres routes, sur `background`. La barre d’accueil contient actualisation et compte ; le détail contient retour, actualisation et menu d’actions. Le bouton tonal du compte affiche les initiales dérivées du véritable email : jusqu’à deux segments de sa partie locale séparés par point, tiret bas ou tiret, avec « ? » si vide. Les initiales d’une maquette ne sont jamais figées en production. Hors connexion, l’action textuelle de connexion le remplace. Le retour conserve la pile NavDisplay et le retour système ; aucune destination inférieure n’est ajoutée.
+WatchAppBar utilise TopAppBar compact sur toutes les routes, sur `background`. Le titre d’accueil emploie `titleLarge` SemiBold ; les autres titres gardent `titleLarge` normal. La barre d’accueil contient actualisation et compte ; le détail contient retour, actualisation et menu d’actions. Le bouton tonal du compte affiche les initiales dérivées du véritable email : jusqu’à deux segments de sa partie locale séparés par point, tiret bas ou tiret, avec « ? » si vide. Les initiales d’une maquette ne sont jamais figées en production. Hors connexion, un FilledTonalButton de connexion le remplace. Le retour conserve la pile NavDisplay et le retour système ; aucune destination inférieure n’est ajoutée.
 
 ### Cards and collections
 
 Le résumé neutre du détail réunit statut, dates, explication utile et action disponible ; le titre principal reste au-dessus. La proposition conserve son conteneur primaire. Les résultats et sources sont des collections sur `surface-container-lowest`, les critères une SectionCard sur ce même rôle. Les ListItem transparents montrent la surface de leur collection ; résultats portent un chevron, sources une ouverture externe. Réutiliser sourceDomain pour les domaines.
+
+### Home empty state
+
+Le panneau vide commence dans le flux normal de l’accueil, sans grand retrait supérieur ajouté. Il emploie `primary-container` / `on-primary-container`, forme `large`, retraits (24 dp) et espacement interne (12 dp). Le titre utilise `headlineSmall` SemiBold avec `LineBreak.Heading` ; le texte utilise `bodyMedium`. Le bouton primaire pleine largeur ajoute un retrait supérieur (8 dp), garde une hauteur minimale (52 dp) et laisse son libellé grandir. Hors connexion, cette même recette conduit à la connexion.
+
+### Support form
+
+SupportSheet réemploie ModalBottomSheet avec `skipPartiallyExpanded = true`, les insets natifs, imePadding et une colonne défilante plafonnée (720 dp). Son fond est `surface-container-lowest`, ses retraits horizontaux et inférieur (24 dp), son espacement (16 dp). L’en-tête associe une icône `info` dans un carré primaire tonal de forme `medium` (48 dp), un titre `headlineSmall` SemiBold et la fermeture native ; l’espace d’en-tête est (12 dp).
+
+Les trois catégories utilisent FilterChip natif dans FlowRow, avec espaces horizontaux et verticaux (8 dp) et minimum tactile (48 dp). Le fond non sélectionné est `secondary-container` / `on-secondary-container` ; la sélection utilise `primary` / `on-primary` et une icône de confirmation. Les OutlinedTextField ont une forme `medium`, `surface-container-low` au repos et `surface-container-lowest` au focus. Le message accepte quatre à sept lignes ; le champ email reste monoligne. Labels, texte d’aide, compteur et focus restent natifs.
+
+L’envoi et la fermeture après réception utilisent Button primaire pleine largeur de forme `medium`, minimum (52 dp), avec états désactivé et occupé natifs. L’envoi montre le symbole `send` ou un indicateur de progression. L’erreur conserve une surface `error-container` / `on-error-container` de forme `medium`, avec icône et annonce polie ; la réception utilise une surface `primary-container` / `on-primary-container` de forme `large`, avec icône de confirmation, retraits (20 dp), espacement (12 dp) et annonce polie. Ces recettes restent locales au support et ne modifient pas les autres champs ou statuts.
 
 ### Confirmation information
 

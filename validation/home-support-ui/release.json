@@ -1,0 +1,29 @@
+{
+  "artifactSha256": "32125d84618eccd3f8f2e50f0328204614dd08dc8b5ca76c536842ca89a7e8f5",
+  "apkBytes": 2685128,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static artifact validation does not prove Google Play distribution, tablet usability or seven-day monitoring."
+  ],
+  "versionName": "0.2.5",
+  "versionCode": 19,
+  "aabSignatureVerified": true,
+  "aabSha256": "07d874290dc8430d0f47ac06addf084ada9dfa5cb26860aa0a44652c85dc9bbf",
+  "playUploaded": false,
+  "recipientNotEmbedded": true
+}

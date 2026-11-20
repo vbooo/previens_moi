@@ -19,6 +19,5 @@
     <string name="notification_ready">Your watch is ready</string>
     <string name="notification_preparation_failed">Your watch couldn’t start</string>
     <string name="notification_preparation_body">Open your watch to see its status and sources.</string>
-    <string name="new_watch">New watch</string>
     <string name="notification_result_found">Found for you: %1$s</string>
 </resources>

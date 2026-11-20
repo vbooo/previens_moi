@@ -234,7 +234,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         WatchAppBar(
-                            expanded = route == Home,
                             loading = (route == Home && (!account.loaded ||
                                 (account.session != null && (state.refreshing || (!state.hasLoaded && !state.refreshFailed))))) ||
                                 (route is Detail && state.refreshing && account.loaded &&
@@ -300,7 +299,7 @@ class MainActivity : ComponentActivity() {
                                             modifier = Modifier.padding(end = 12.dp).testTag("account")
                                                 .semantics { contentDescription = description },
                                         ) { Text(initials, style = MaterialTheme.typography.labelLarge) }
-                                    } else if (account.loaded) TextButton(
+                                    } else if (account.loaded) FilledTonalButton(
                                         onClick = { stack.add(Account) }, modifier = Modifier.testTag("account"),
                                     ) { Text(stringResource(R.string.sign_in)) }
                                 }
@@ -358,7 +357,8 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     floatingActionButton = {
-                        if (route == Home && account.loaded && create.loaded)
+                        if (route == Home && account.loaded && create.loaded &&
+                            (account.session == null || state.watches.isNotEmpty() || state.refreshFailed))
                             ExtendedFloatingActionButton(
                                 onClick = {
                                     creation.startNew()
@@ -395,9 +395,13 @@ class MainActivity : ComponentActivity() {
                                                 signedIn = account.session != null,
                                                 sessionReady = account.loaded && (account.session == null || state.ownerId == account.session?.id),
                                                 signIn = { stack.add(Account) },
+                                                newRequest = { creation.startNew(); stack.add(Create) },
                                             )
                                             FilledTonalButton(onClick = support::open,
-                                                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp).heightIn(min = 48.dp).testTag("support_open")) {
+                                                shape = MaterialTheme.shapes.large,
+                                                modifier = Modifier.align(Alignment.BottomStart).padding(start = 16.dp, bottom = 16.dp).heightIn(min = 56.dp).testTag("support_open")) {
+                                                AppIcon(R.drawable.symbol_info)
+                                                Spacer(Modifier.width(8.dp))
                                                 Text(stringResource(R.string.support_access))
                                             }
                                         }

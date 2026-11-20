@@ -2,14 +2,21 @@ package fr.previensmoi.app
 
 import android.graphics.Bitmap
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.lifecycle.ViewModelProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import fr.previensmoi.R
+import fr.previensmoi.domain.model.*
 import fr.previensmoi.feature.common.presentation.PreviensTheme
+import fr.previensmoi.feature.create.presentation.*
 import fr.previensmoi.feature.support.*
+import fr.previensmoi.feature.watches.presentation.*
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -55,6 +62,82 @@ class SupportUiTest {
         compose.onNodeWithTag("support_message").assertTextContains("Une idée pour Préviens-moi")
         compose.onNodeWithTag("support_send").performScrollTo().assertIsEnabled()
         capture("form")
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Test
+    fun emptyHomeOffersCreationAndPopulatedHomeOpensWatch() {
+        val create = ViewModelProvider(compose.activity)[CreateViewModel::class.java]
+        val state = mutableStateOf(WatchesUiState(hasLoaded = true))
+        var creations = 0
+        var opened: String? = null
+        compose.activity.setContent {
+            PreviensTheme {
+                Scaffold(
+                    topBar = {
+                        WatchAppBar(
+                            false,
+                            { Text(compose.activity.getString(R.string.v1_home)) },
+                            {},
+                            {},
+                            TopAppBarDefaults.topAppBarColors(),
+                        )
+                    },
+                ) { insets ->
+                    Box(Modifier.padding(insets)) {
+                        HomeScreen(
+                            state.value,
+                            CreateUiState(loaded = true),
+                            create,
+                            {},
+                            {},
+                            { opened = it },
+                            remote = true,
+                            newRequest = { creations++ },
+                        )
+                    }
+                }
+            }
+        }
+        compose.onNodeWithTag("home_empty").assertIsDisplayed()
+        compose.onNodeWithTag("new_request").assertIsDisplayed().performClick()
+        assertEquals(1, creations)
+        capture("home-empty")
+        val plan =
+            Proposal(
+                "visual",
+                1,
+                RequestDraft("Visual fixture"),
+                Long.MAX_VALUE,
+                title = "Promotions sur la PlayStation 5",
+            )
+        compose.runOnIdle {
+            state.value =
+                state.value.copy(
+                    watches =
+                        listOf(
+                            Watch(
+                                "active",
+                                plan,
+                                health = Health.Healthy,
+                                lastSuccess = 1795161600000,
+                                baselineAt = 0,
+                                nextCheck = Long.MAX_VALUE,
+                                remoteState = RemoteState.Running,
+                            ),
+                            Watch(
+                                "paused",
+                                plan.copy(title = "Offres d’emploi Android à Montpellier"),
+                                status = WatchStatus.Paused,
+                                baselineAt = 0,
+                            ),
+                        ),
+                )
+        }
+        compose.onNodeWithTag("home_empty").assertDoesNotExist()
+        compose.onNodeWithTag("watch_active").assertIsDisplayed().performClick()
+        assertEquals("active", opened)
+        capture("home-list")
     }
 
     @Test

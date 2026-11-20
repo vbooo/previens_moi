@@ -42,6 +42,7 @@ fun HomeScreen(
     signedIn: Boolean = true,
     signIn: () -> Unit = {},
     sessionReady: Boolean = true,
+    newRequest: (() -> Unit)? = null,
 ) {
     PullToRefreshBox(
         state.refreshing && signedIn,
@@ -51,7 +52,7 @@ fun HomeScreen(
         LazyColumn(
             Modifier.widthIn(max = 720.dp).fillMaxSize().align(Alignment.TopCenter),
             contentPadding =
-                PaddingValues(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 112.dp),
+                PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 112.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
             if (!remote)
@@ -73,24 +74,11 @@ fun HomeScreen(
                 item { WatchListSkeleton() }
             else if (remote && !signedIn)
                 item {
-                    Column(
-                        Modifier.padding(top = 64.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        Text(
-                            stringResource(R.string.v1_empty_title),
-                            style = MaterialTheme.typography.headlineSmall.copy(lineBreak = LineBreak.Heading),
-            fontWeight = FontWeight.SemiBold,
-                        )
-                        SecondaryText(stringResource(R.string.v1_empty_body))
-                        SecondaryText(
-                            stringResource(R.string.sign_in_to_view_watches),
-                            Modifier.testTag("signed_out_watches"),
-                        )
-                        TextButton(signIn, modifier = Modifier.testTag("sign_in_watches")) {
-                            Text(stringResource(R.string.sign_in))
-                        }
-                    }
+                    EmptyWatches(true, signIn, R.string.sign_in, "sign_in_watches")
+                    SecondaryText(
+                        stringResource(R.string.sign_in_to_view_watches),
+                        Modifier.padding(top = 16.dp).testTag("signed_out_watches"),
+                    )
                 }
             else {
                 if (state.refreshFailed)
@@ -102,17 +90,7 @@ fun HomeScreen(
                     }
                 if (state.watches.isEmpty() && !state.refreshing && !state.refreshFailed && (!remote || state.hasLoaded))
                     item {
-                        Column(
-                            Modifier.padding(top = 72.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                        ) {
-                            Text(
-                                stringResource(R.string.v1_empty_title),
-                                style = MaterialTheme.typography.headlineSmall.copy(lineBreak = LineBreak.Heading),
-            fontWeight = FontWeight.SemiBold,
-                            )
-                            SecondaryText(stringResource(R.string.v1_empty_body))
-                        }
+                        EmptyWatches(creation.loaded, newRequest)
                     }
                 if (state.watches.isNotEmpty()) item {
                     Text(pluralStringResource(R.plurals.v5_watch_count, state.watches.size, state.watches.size),
@@ -156,6 +134,40 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyWatches(
+    ready: Boolean, newRequest: (() -> Unit)?,
+    actionLabel: Int = R.string.new_watch, actionTag: String = "new_request",
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth().testTag("home_empty"),
+    ) {
+        Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text(
+                stringResource(R.string.v1_empty_title),
+                style = MaterialTheme.typography.headlineSmall.copy(lineBreak = LineBreak.Heading),
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(stringResource(R.string.v1_empty_body), style = MaterialTheme.typography.bodyMedium)
+            if (newRequest != null) Button(
+                onClick = newRequest,
+                enabled = ready,
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp).heightIn(min = 52.dp).testTag(actionTag),
+            ) {
+                if (actionLabel == R.string.new_watch) {
+                    AppIcon(R.drawable.symbol_add)
+                    Spacer(Modifier.width(8.dp))
+                }
+                Text(stringResource(actionLabel))
             }
         }
     }

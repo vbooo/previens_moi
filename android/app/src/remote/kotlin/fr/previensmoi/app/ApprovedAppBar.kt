@@ -6,11 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 
-/** One bar vocabulary for the real navigation, with a larger collection title. */
+/** Compact context bar; content starts directly below the navigation actions. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WatchAppBar(
-    expanded: Boolean,
     loading: Boolean,
     title: @Composable () -> Unit,
     navigationIcon: @Composable () -> Unit,
@@ -18,8 +17,12 @@ internal fun WatchAppBar(
     colors: TopAppBarColors,
 ) {
     Column {
-        if (expanded) MediumTopAppBar(title = title, navigationIcon = navigationIcon, actions = actions, colors = colors)
-        else TopAppBar(title = title, navigationIcon = navigationIcon, actions = actions, colors = colors)
+        TopAppBar(
+            title = title,
+            navigationIcon = navigationIcon,
+            actions = actions,
+            colors = colors,
+        )
         if (loading) LinearProgressIndicator(Modifier.fillMaxWidth().testTag("app_bar_progress"))
     }
 }

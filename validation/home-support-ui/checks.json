@@ -1,0 +1,43 @@
+{
+  "version": "0.2.5 (19)",
+  "androidUnit": {
+    "remote": {
+      "tests": 84,
+      "failures": 0
+    },
+    "demo": {
+      "tests": 87,
+      "failures": 0
+    }
+  },
+  "nativeExecutionsPassed": 7,
+  "nativeConfigurations": [
+    "FR light / font1.0",
+    "EN dark / font1.3"
+  ],
+  "frenchKeyboardChecked": true,
+  "contrastRatios": {
+    "light:onPrimary/primary": 11.4,
+    "light:onPrimaryContainer/primaryContainer": 10.31,
+    "light:onSecondaryContainer/secondaryContainer": 9.43,
+    "light:onSurface/surfaceContainerLow": 13.26,
+    "light:onSurfaceVariant/surfaceContainerLowest": 6.13,
+    "light:onErrorContainer/errorContainer": 13.26,
+    "dark:onPrimary/primary": 10.75,
+    "dark:onPrimaryContainer/primaryContainer": 8.27,
+    "dark:onSecondaryContainer/secondaryContainer": 8.37,
+    "dark:onSurface/surfaceContainerLow": 12.14,
+    "dark:onSurfaceVariant/surfaceContainerLowest": 10.7,
+    "dark:onErrorContainer/errorContainer": 7.24
+  },
+  "debugLintErrors": 0,
+  "debugLintWarnings": 0,
+  "paidProviderCalls": 0,
+  "paidProviderCostEur": 0,
+  "phonePortrait": true,
+  "tabletQualified": false,
+  "playUploaded": false,
+  "releaseLintErrors": 0,
+  "releaseLintWarnings": 0,
+  "visualReview": "ship for scoped native Home/support refinement"
+}
