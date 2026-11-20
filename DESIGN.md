@@ -698,3 +698,8 @@ Suppression, confidentialité et capacité réemploient AlertDialog. La suppress
 - **Don’t** ajouter une police décorative, des ombres de marque ou une direction fantaisiste.
 - **Don’t** empiler les cartes ou doubler les retraits des ListItem dans les collections.
 - **Don’t** déduire une qualification tablette, matérielle, réseau ou fournisseur des captures téléphone ou des aperçus HTML.
+
+
+### Identité de lancement V1
+
+Le logo est le P avec une cloche en réserve, sans point jaune. Il reprend `light-primary` (`#303D34`) sur `light-background` (`#F6F6F0`) ; la palette des écrans ne change pas. Les ressources de lancement adaptatives séparent fond et symbole et fournissent un calque monochrome, teinté par le système lorsque l’utilisateur active les icônes thématiques. Le même symbole blanc transparent sert aux petites icônes de notification. Sources et export Google Play : [assets/branding](assets/branding/README.md).

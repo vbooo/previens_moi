@@ -1,0 +1,63 @@
+{
+  "artifactSha256": "40935dd26ce3241c3584931957a76223a163be7f1cec6ebe67295bd26aaa9bf9",
+  "apkBytes": 2705876,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Upload signing and local binary checks verified; the bundle has not been uploaded to Google Play.",
+    "Native launcher icon visually checked through Android app info on API 36; API 24\u201325 and themed launcher behavior have only been compiled/structurally checked.",
+    "No purchase, source research or notification delivery was triggered for this branding change."
+  ],
+  "configurationKind": "supplied-client-configuration",
+  "productionReady": false,
+  "date": "2026-11-20",
+  "versionName": "0.2.7",
+  "versionCode": 21,
+  "apkUploadSignatureVerified": true,
+  "bundleUploadSignatureVerified": true,
+  "bundleSha256": "a52e078eee2e29ecc40fdad7aeb218ad8d941d8279070d5e21fa5692a106f480",
+  "bundleBytes": 6002069,
+  "lint": {
+    "demoDebug": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "remoteDebug": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "remoteRelease": {
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "nativeAppIconInspected": {
+    "androidApi": 36,
+    "emulatorOnly": true,
+    "applicationOpened": false,
+    "image": "native-app-info.png"
+  },
+  "playUploaded": false,
+  "providerCalls": 0,
+  "playIcon": {
+    "width": 512,
+    "height": 512,
+    "rgbaBits": 32,
+    "bytes": 15023,
+    "fullSquare": true
+  }
+}
