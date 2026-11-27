@@ -1,0 +1,24 @@
+{
+  "codeCommit": "1ee8a791bab72c691c999d6cc0c713b537570c53",
+  "ciUrl": "https://github.com/vbooo/previens_moi/actions/runs/46013665971",
+  "ciConclusion": "success",
+  "jobs": [
+    "Android build, tests and Lint",
+    "Server tests and API contract",
+    "Check the Git history for secrets"
+  ],
+  "publicEmailConfirmed": "contact@fabienbouvet.fr",
+  "siteDeployed": false,
+  "siteScope": "Local preparatory contact, deletion and privacy pages",
+  "designReview": "ship after recapture: six correctly sized complete captures, exact Effacer wording, focus4px",
+  "documentationReview": "preserve existing design files; no new global design rule",
+  "siteLimitations": [
+    "Privacy not approved: retention, provider transfers and hosting details outstanding",
+    "Screenshots reviewed in dark mode; no mailbox sent or account deletion executed",
+    "Supprimer changed to exact native Effacer label after source comparison; focus radius aligned 4px"
+  ],
+  "realSalesEnabled": false,
+  "phoneValidation": "pending on version 0.2.9 (23)",
+  "publicEmailStatus": "Modification publiée in Play Console",
+  "storeAssetsStatus": "Logo and 1024x500 graphic associated; saved as draft"
+}

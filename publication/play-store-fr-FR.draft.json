@@ -1,0 +1,35 @@
+{
+  "status": "text_and_brand_assets_saved_as_draft_in_play_console",
+  "language": "fr-FR",
+  "appName": "Préviens-moi",
+  "shortDescription": "Décris ce que tu veux suivre et retrouve les nouveautés qui correspondent.",
+  "fullDescription": "Une information à surveiller ? Décris ce que tu recherches avec tes mots. Préviens-moi t’aide à préciser ta demande, prépare un suivi et te présente les nouveautés trouvées dans les sources retenues.\n\nUn suivi adapté à ta demande\n• Précise ton sujet et tes critères avant de confirmer.\n• Consulte les sources et les limites annoncées pour ton suivi.\n• Retrouve les résultats sourcés dans l’application.\n• Reçois une notification lorsqu’un résultat correspondant est détecté, si tu autorises les notifications Android.\n• Mets tes suivis en pause, reprends-les ou supprime-les.\n\nPréviens-moi Plus\nL’offre mensuelle inclut deux suivis actifs en même temps, une vérification par jour sur trois sources au maximum pour chaque suivi et cinq créations ou changements de sujet par période mensuelle. Mettre en pause ou reprendre un suivi ne consomme pas de création.\n\nUn essai gratuit est proposé selon les conditions et limites affichées avant activation. Il ne déclenche aucun abonnement automatique. L’abonnement Plus est facultatif, à renouvellement automatique, géré et résiliable dans Google Play. Le prix et les conditions applicables sont présentés avant l’achat.\n\nUne surveillance avec une portée annoncée\nPréviens-moi ne surveille pas tout Internet en temps réel. La couverture dépend des sources retenues, de leur disponibilité et de la cadence annoncée. La compréhension et l’analyse peuvent utiliser une intelligence artificielle ; vérifie les sources avant de prendre une décision importante.\n\nBesoin d’aide ?\nDepuis l’accueil, le bouton Aide permet de poser une question, signaler un problème ou partager une idée. Tu peux laisser une adresse de réponse si tu le souhaites.",
+  "suggestedCategory": "Productivité",
+  "launchScope": {
+    "country": "France",
+    "promisedLanguage": "Français",
+    "englishQualificationComplete": false
+  },
+  "assets": {
+    "icon": "assets/branding/play-store-512.png",
+    "featureGraphic": "assets/branding/play-feature-1024x500.png",
+    "phoneScreenshots": "select current release captures after final phone validation"
+  },
+  "publicEmail": "contact@fabienbouvet.fr",
+  "publishingGates": [
+    "Public contact to confirm",
+    "Privacy and external account-deletion pages not published",
+    "Reviewer access without developer OTP dependency",
+    "Operating budget/capacity and seven-day observation",
+    "Final phone checks"
+  ],
+  "internalRelease": {
+    "versionName": "0.2.9",
+    "versionCode": 23,
+    "statusObserved": "Accessible aux testeurs internes",
+    "testersList": "Préviens-moi — tests",
+    "joinUrl": "https://play.google.com/apps/internaltest/4700114799993477837",
+    "realSalesEnabled": false
+  },
+  "publicEmailStatus": "saved_in_play_console"
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 72 72" role="img" aria-labelledby="title">
+  <title id="title">Préviens-moi — P et cloche</title>
+  <rect width="72" height="72" fill="#F6F6F0"/>
+  <path fill="#303D34" fill-rule="evenodd" transform="translate(-6.373205742 -9.974928230) scale(0.070622009569)" d="M394 308H650C785 308 886 414 886 551C886 693 785 800 650 800H500V926Q500 994 432 994H382Q314 994 314 926V388Q314 308 394 308Z M581 415V412C581 372 642 372 642 412V415C695 430 728 472 728 524C728 579 735 601 760 626Q780 659 748 659H474Q442 659 456 632C482 604 492 578 492 526C492 474 525 431 581 415Z M563 675H659C659 738 563 738 563 675Z"/>
+</svg>

@@ -1,0 +1,79 @@
+{
+  "status": "working_inventory_not_a_submitted_declaration",
+  "policyReferences": [
+    "https://support.google.com/googleplay/android-developer/answer/10144311",
+    "https://support.google.com/googleplay/android-developer/answer/13327111",
+    "https://support.google.com/googleplay/android-developer/answer/10787469"
+  ],
+  "collectedData": [
+    {
+      "data": "E-mail de connexion et identifiant de compte",
+      "purpose": "Connexion par code e-mail et association des suivis/achats au compte"
+    },
+    {
+      "data": "Demandes, critères, sources, résultats et actions sur les suivis",
+      "purpose": "Comprendre la demande, préparer et exécuter les contrôles, présenter les résultats"
+    },
+    {
+      "data": "Jeton de notification et langue",
+      "purpose": "Livrer les notifications autorisées"
+    },
+    {
+      "data": "Référence/jeton d’achat Google Play, état et dates de période",
+      "purpose": "Vérifier les droits et appliquer les quotas, sans recevoir le numéro de carte bancaire"
+    },
+    {
+      "data": "Message d’assistance, catégorie, version/langue, adresse de réponse facultative et empreinte réseau HMAC",
+      "purpose": "Traiter les retours, répondre et limiter les abus"
+    },
+    {
+      "data": "Métadonnées techniques minimales de requête",
+      "purpose": "Diagnostic des erreurs et sécurité; les logs applicatifs ne doivent pas contenir de chemin utilisateur, corps, en-tête ou jeton"
+    }
+  ],
+  "processorsToDescribe": [
+    "Supabase : authentification, base privée, fonctions et hébergement",
+    "Google : distribution, Play Billing et Firebase Cloud Messaging",
+    "OpenAI : compréhension/analyse des demandes selon les traitements exécutés",
+    "Firecrawl : recherche/lecture des sources Web",
+    "OVH et Gmail : acheminement et réception des messages d’assistance"
+  ],
+  "adSdkPresent": false,
+  "inAppDeletion": "Compte → Effacer mon compte → confirmation; arrêt des suivis puis traitement asynchrone avec reprise en cas d’échec",
+  "webDeletion": "Page publique dédiée requise avec moyen de demande; authentifier la propriété du compte avant effacement. Aucun effacement déclenché par simple adresse fournie par un tiers.",
+  "supportRetention": "Le texte et l’e-mail sont effacés de la file après acceptation SMTP; reçus/empreintes et messages non livrés purgés après 30 jours par tâche quotidienne. Les copies reçues par e-mail ont une conservation distincte encore à préciser.",
+  "remainingRetentionDecisions": [
+    "Durée des comptes inactifs et suivis terminés non supprimés",
+    "Rotation effective des sauvegardes et traces d’effacement",
+    "Durée des copies de messages dans la boîte de réception",
+    "Durées des journaux d’hébergement et exceptions légales de facturation"
+  ],
+  "reviewAccess": "Connexion actuelle par code e-mail; préparer un accès Google stable sans partager de boîte personnelle ou ajouter de code de contournement. Aucun nouvel identifiant créé par cet inventaire.",
+  "googleChecklistObserved": {
+    "completed": 0,
+    "total": 12,
+    "items": [
+      "Règles de confidentialité",
+      "Informations de connexion",
+      "Annonces",
+      "Classification du contenu",
+      "Cible",
+      "Sécurité des données",
+      "Applis gouvernementales",
+      "Fonctionnalités financières",
+      "Santé",
+      "Statut de professionnel",
+      "Catégorie et coordonnées",
+      "Fiche Play Store"
+    ]
+  },
+  "draftAnswersToValidate": {
+    "ads": "Non : pas de SDK publicitaire dans la version inspectée",
+    "government": "Non : aucune affiliation gouvernementale identifiée",
+    "finance": "Pas de fonctionnalité financière spécialisée identifiée; une recherche générique sur le Web ne doit pas être présentée comme un service financier",
+    "health": "Pas de fonctionnalité de santé spécialisée identifiée; ne pas promettre de diagnostic ou conseil médical",
+    "audience": "Choisir explicitement l’âge cible avant questionnaire; ne pas inventer la décision",
+    "professionalStatus": "Déclaration personnelle du développeur à valider; ne pas déduire un statut non professionnel du simple mot projet personnel"
+  },
+  "publicEmail": "contact@fabienbouvet.fr"
+}
