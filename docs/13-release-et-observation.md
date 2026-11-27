@@ -1,5 +1,7 @@
 # Préparer la diffusion et l’observation
 
+> Actualisation du 27 novembre 2026 : Fabien a autorisé **6 EUR cumulés pour les essais**, accès Plus offert au seul compte évaluateur et observation réelle. Les anciens plafonds de 2 EUR ci-dessous sont historiques. Les ventes restent fermées. Voir [la mise en œuvre](../validation/publication-final-2026-11-27/offered-plus-implementation.md), [le départ réel de l’observation](../validation/publication-final-2026-11-27/observation-protocol.md) et [les points d’exploitation](../validation/publication-final-2026-11-27/provider-contract-readiness.md).
+
 État du 15 novembre 2026 : contrôles release effectués, observation **préparée mais non démarrée**, aucune ouverture publique du service ni dépense nouvelle autorisée par ce document. Le plafond reste de **2 € cumulés pour les essais**, pas par compte et pas par mois.
 
 ## Version optimisée

@@ -1,5 +1,5 @@
 {
-  "status": "working_inventory_not_a_submitted_declaration",
+  "status": "saved_in_Play_prepared_for_review_not_Google_approved",
   "policyReferences": [
     "https://support.google.com/googleplay/android-developer/answer/10144311",
     "https://support.google.com/googleplay/android-developer/answer/13327111",
@@ -45,9 +45,9 @@
   "remainingRetentionDecisions": [
     "La politique décrit les critères de conservation réels ; aucune durée de sauvegarde ou journal fournisseur non vérifiée n’est inventée. L’exploitation des sauvegardes et les accords de sous-traitance doivent rester suivis avant ouverture commerciale."
   ],
-  "reviewAccess": "Compte utilisateur ordinaire créé après accord explicite, connexion standard par mot de passe. Identifiants privés conservés localement, non publiés. Le compte ne possède pas de droit Plus offert ; ne pas attester un accès complet tant que les fonctionnalités payantes restent inaccessibles.",
+  "reviewAccess": "Compte utilisateur ordinaire avec accès Plus offert attribué après accord explicite. Connexion standard par mot de passe vérifiée ; identifiants uniquement dans les champs privés Google Play et le stockage local protégé, aucun achat fictif ou rôle administrateur. Instructions et accès complet enregistrés dans Play.",
   "googleChecklistObserved": {
-    "completed": 9,
+    "completed": 12,
     "total": 12,
     "items": [
       "Règles de confidentialité",
@@ -64,7 +64,7 @@
       "Fiche Play Store"
     ],
     "observedAt": "2026-11-27",
-    "limit": "Neuf éléments de configuration préparés/enregistrés, pas une approbation Google. Accès évaluateur, cible et validation définitive Sécurité des données restent en attente."
+    "limit": "Les douze éléments de cette liste de préparation sont enregistrés. Le 27 novembre, la page Contenu de l’application affiche onze déclarations traitées et aucune attention requise ; ce ne sont pas onze approbations Google. Production inactive."
   },
   "draftAnswersToValidate": {
     "ads": "Non : pas de SDK publicitaire dans la version inspectée",
@@ -94,7 +94,7 @@
     "publicWebsite": "https://vbooo.github.io/app-policies/previens-moi/"
   },
   "dataSafetyDraftObserved": {
-    "status": "saved_pending_target_audience",
+    "status": "saved_for_review_target_dependency_resolved",
     "encryptedInTransit": true,
     "accountCreation": [
       "username_other_authentication"
@@ -203,6 +203,20 @@
     "ageRestrictedSalesFocus": false,
     "preciseLocationSharing": false,
     "gamblingOrRandomPurchases": false,
-    "targetAudienceStillPending": "18+ confirmed by Fabien, form blocked until full reviewer access"
+    "targetAudienceSaved": "18+ saved in Play on 2026-11-27"
+  },
+  "internalRelease": {
+    "versionCode": 27,
+    "versionName": "0.2.12",
+    "status": "Accessible aux testeurs internes",
+    "realSalesOpen": false
+  },
+  "productionPreparation": {
+    "versionCode": 27,
+    "versionName": "0.2.12",
+    "country": "France",
+    "status": "saved_ready_for_review_not_submitted",
+    "pendingChanges": 11,
+    "managedPublishingEnabled": false
   }
 }

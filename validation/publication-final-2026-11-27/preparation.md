@@ -46,3 +46,23 @@ Après accord explicite de Fabien sur les conditions IARC, questionnaire enregis
 Le questionnaire Sécurité des données est sauvegardé avec huit catégories et les liens publics de suppression ; son aperçu attend la cible. Le partage de requêtes/critères est déclaré, sans revendiquer une exception générale de sous-traitant non vérifiée pour tous les fournisseurs. Les finalités d’analyse comprennent les statistiques opérationnelles agrégées ; aucun SDK publicitaire ou nouveau suivi de navigation n’est ajouté.
 
 Le plan `plan-acces-et-qualification.md` propose, sans application à ce relevé, un accès Plus offert ordinaire côté serveur et un plafond de 6 EUR cumulés pour terminer les essais et l’observation. Le solde fournisseur Firecrawl est de 988 crédits sur le plan gratuit à 1000, vérifié en lecture seule ; l’admission locale ne dispose que de 16 crédits non consommés/non réservés. Les 39 crédits et 20000 micro-USD réservés incertains restent conservés. Aucune recharge, nouvelle souscription fournisseur ou hausse de plafond n’a été exécutée. Aucune vente réelle ouverte.
+
+
+## Complément après l’accord sur l’accès offert et 6 EUR
+
+La migration 47 et les limites autorisées sont appliquées ; les consommations et réservations inconnues sont préservées. Le compte évaluateur dispose d’un droit Plus offert normal, vérifié par connexion réelle au service. Les instructions privées Google, la cible 18+ et Sécurité des données sont enregistrées. La page Contenu affiche onze déclarations traitées et aucune attention requise. Ceci n’est pas une approbation Google.
+
+La version **0.2.12 (27)** est accessible aux testeurs internes, après CI réussie sur `b20e97f`, 107 tests Android, 151 tests serveur, contrat, cycles SQL locaux, Lint, contrôles binaires et signatures. Voir `release-27-rollout.json` et les captures. Aucune modification de sécurité n’a été appliquée : l’API garde `verify_jwt=true` et son contrôle utilisateur Supabase.
+
+L’observation normale est active sur deux sources Python depuis 19:39 heure de Paris ; le premier essai Chrome a échoué avant état de référence et reste dans le bilan. Les dates d’essai ne sont pas réinitialisées et sept jours réussis ne sont pas attestés. Le contrôle de sauvegarde/restauration, autorisé séparément, réussit sur 72 tables, sans écrire au cloud ; la copie chiffrée et la clé restent privées sur ce Mac.
+
+Restent avant ouverture publique : bilan des passages réels, cadre Firecrawl applicable aux demandes libres (DPA non inclus au forfait gratuit selon la documentation officielle), et modalités d’exploitation/reprise hors perte de ce Mac. Aucun nouveau forfait ni dépôt public de données d’utilisateurs. Les ventes restent fermées ; le budget de 6 EUR couvre les essais, pas l’exploitation publique.
+
+
+### Dossier de production préparé, sans envoi
+
+Le même bundle 27 (0.2.12), avec son mappage ReTrace, est ajouté depuis la bibliothèque au canal de production. Les notes françaises de première version sont enregistrées. La France est le seul pays à ajouter. Le récapitulatif ne présente aucune erreur et reprend le seul avertissement non bloquant sur les symboles natifs absents.
+
+La Vue d’ensemble affiche **11 modifications prêtes pour examen**, incluant production 27 et France. Rien n’est envoyé à Google et la production reste inactive. **La publication gérée est désactivée** : envoyer ce dossier pourrait donc conduire au déploiement après l’approbation. Ne pas envoyer les onze modifications tant que les essais, le cadre fournisseur et les moyens d’exploitation publique ne sont pas résolus et autorisés. Le plafond de six euros concerne les essais ; aucune ouverture de surveillance payante générale ni financement public renouvelable n’est approuvé par ce dossier.
+
+Le relevé J0 comporte un état de référence, zéro résultat nouveau et aucune entrée de notification pour le suivi Python. Les contrôles à venir et leur pertinence restent à observer ; aucun test d’affichage sur le téléphone personnel n’est déduit de ce relevé serveur.

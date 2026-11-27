@@ -1,0 +1,40 @@
+{
+  "sourceCommit": "b20e97fc27d7f9243225febde80fdd4251d9ad59",
+  "ciRun": "https://github.com/vbooo/previens_moi/actions/runs/46050586244",
+  "ciConclusion": "success",
+  "remoteAndroidUnitTests": 107,
+  "controlledServerTests": 151,
+  "contractFixtures": 45,
+  "offeredLocalLifecyclePassed": true,
+  "dailyTrialLocalRegressionPassed": true,
+  "nativeFRLightPassed": true,
+  "nativeENdarkFont130Passed": true,
+  "release": "0.2.12 (27)",
+  "internalStatus": "Accessible aux testeurs internes",
+  "publishedInternalAt": "2026-11-27T19:42:00+01:00",
+  "appContentDeclarationsProcessed": 11,
+  "appContentAttentionRequired": 0,
+  "audience": "18+",
+  "reviewAccessSaved": true,
+  "dataSafetySaved": true,
+  "productionActive": false,
+  "providerPlanPurchased": false,
+  "testBudgetCumulativeEUR": 6,
+  "cloudBackupRestorePassed": true,
+  "sevenDaysProven": false,
+  "productionPreparation": {
+    "version": "27 (0.2.12)",
+    "saved": true,
+    "previewErrors": 0,
+    "previewWarnings": [
+      "Native debug symbols not supplied; ReTrace mapping is attached."
+    ],
+    "countryToAdd": "France",
+    "changesReadyForReview": 11,
+    "submittedToGoogle": false,
+    "managedPublishingEnabled": false,
+    "productionTrackId": "4697934789510096431",
+    "productionReleaseId": "1",
+    "publishingUrl": "https://play.google.com/console/u/1/developers/7405571172348994833/app/4975975330835615320/publishing"
+  }
+}

@@ -1,4 +1,6 @@
-# Accès complet pour la revue et qualification — proposition non appliquée
+# Accès complet pour la revue et qualification — proposition puis accord
+
+> Accord explicite reçu et mise en œuvre effectuée après les constats ci-dessous. Voir `offered-plus-implementation.md`, `offered-budget-deployment.json` et `observation-protocol.md`. Les lignes suivantes conservent le point de départ de la proposition.
 
 ## État vérifié le 27 novembre 2026
 

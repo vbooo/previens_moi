@@ -1,5 +1,7 @@
 # Coûts et modèle économique
 
+> Actualisation du 27 novembre 2026 : Fabien a autorisé **6 EUR cumulés pour les essais**, accès Plus offert au seul compte évaluateur et observation réelle. Les anciens plafonds de 2 EUR ci-dessous sont historiques. Les ventes restent fermées. Voir [la mise en œuvre](../validation/publication-final-2026-11-27/offered-plus-implementation.md), [le départ réel de l’observation](../validation/publication-final-2026-11-27/observation-protocol.md) et [les points d’exploitation](../validation/publication-final-2026-11-27/provider-contract-readiness.md).
+
 Validé par Fabien le 2 octobre 2026, avec publication de la V1 sur le Play Store et premiers essais prévus surtout par Fabien, sa femme et éventuellement un ami. Les montants d'exploitation, quotas et cadences restent à mesurer avant publication. **Ce document n'autorise aucune dépense, ne choisit aucun fournisseur et ne fixe aucun tarif public.** Les décisions sont consignées dans la [décision 0007](decisions/0007-couts-et-modele-economique.md). Il complète la [stratégie de recherche validée](06-sources-et-strategie-de-recherche.md) et les [règles d'alerte](05-regles-des-alertes.md).
 
 ## Offre Plus validée le 16 novembre 2026

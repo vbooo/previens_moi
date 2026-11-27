@@ -1,0 +1,48 @@
+{
+  "observedAt": "2026-11-27T18:51:52.215674+00:00",
+  "topic": "Pr\u00e9viens-moi des annonces de nouvelles versions stables de Python sur https://www.python.org/downloads/ ; ignore les versions alpha, b\u00eata et release candidate.",
+  "status": "active",
+  "remoteState": "running",
+  "health": "healthy",
+  "baselineAt": "2026-11-27 18:39:04.697000+00:00",
+  "lastSuccessAt": "2026-11-27 18:39:04.697000+00:00",
+  "nextCheckAt": "2026-11-28 18:39:04.697000+00:00",
+  "sources": [
+    {
+      "url": "https://www.python.org/downloads/",
+      "label": "www.python.org"
+    },
+    {
+      "url": "https://www.python.org/downloads/release/python-3124/",
+      "label": "Python Release Python 3.12.4"
+    }
+  ],
+  "intervalHours": "24",
+  "trialStartedAt": "2026-11-27 18:29:19.162778+00:00",
+  "trialEndsAt": "2026-12-04 18:29:19.162778+00:00",
+  "trialModelUsed": 2831,
+  "trialModelHeld": 0,
+  "trialCreditUsed": 10,
+  "trialCreditHeld": 0,
+  "budget": {
+    "id": true,
+    "enabled": true,
+    "qualified": true,
+    "model_held": 20000,
+    "model_used": 101672,
+    "credit_held": 39,
+    "credit_used": 126,
+    "model_limit": 2900000,
+    "credit_limit": 435,
+    "model_committed": 177169,
+    "credit_committed": 20,
+    "qualification_preview_hash": null
+  },
+  "checksByOutcome": {
+    "baseline": 1
+  },
+  "findingsByNoveltyBasis": {},
+  "pushQueueByState": {},
+  "sevenDaysProven": false,
+  "phoneNotificationDisplayProven": false
+}
