@@ -14,7 +14,7 @@ Le logo de l’app était déjà livré dans le launcher. Le logo absent signal�
 - Émulateur API 36, sans intervention sur le téléphone e7df3e0b : 8 tests natifs SubscriptionUiTest/SupportUiTest passent en fenêtre téléphone anglaise ; deux parcours ciblés passent en français et en français sombre avec police 130 %.
 - Même émulateur en classe de fenêtre tablette 1280×800 dp : les 8 tests passent. En portrait 800×1280 dp : les deux parcours ciblés passent. Le profil AVD tablette API35 n’a pas d’image système installée ; la classe de fenêtre est donc contrôlée avec l’image API36 existante et des métriques d’affichage explicites.
 - Captures natives examinées dans `.local/publication-2026-11-27/ui-refinement/`. Les états d’achat utilisent des fixtures contrôlées, sans achat ni appel fournisseur. Le test réel hors connexion 0.2.9 est confirmé par Fabien dans ce chat.
-- Contrôle statique du binaire signé, certificat de dépôt et disponibilité Play à consigner après construction/import finaux. Les ventes réelles et les budgets ne sont pas modifiés.
+- Contrôle statique du binaire signé : 13 contrôles réussis. Le certificat SHA-256 correspond au certificat de dépôt existant. La 0.2.10 (25) est accessible aux testeurs internes (un seul code de version), avec ReTrace joint. Le build préparatoire 24 a été retiré avant publication. Google recommande les symboles de débogage natifs, sans bloquer la release. Après le cadrage du logo, les deux parcours ciblés passent à nouveau sur le build final ; captures finales jointes. Les ventes réelles et les budgets ne sont pas modifiés.
 
 ## Références publiques et limites
 
@@ -23,3 +23,7 @@ Le logo de l’app était déjà livré dans le launcher. Le logo absent signal�
 - Test interne et fiche temporaire : https://support.google.com/googleplay/android-developer/answer/9845334
 
 Cette retouche valide la présentation et les parcours ciblés. Elle ne remplace pas les étapes de confidentialité, accès évaluateur, observation et ouverture commerciale restantes.
+
+## Livraison confirmée
+
+Le commit applicatif `fd86e42` passe les trois jobs CI : Android, serveur/contrat et recherche de secrets. [Exécution GitHub](https://github.com/vbooo/previens_moi/actions/runs/46023663252). Le bundle 25 est le seul distribué par la release interne 0.2.10 ; `play-internal.jpg` confirme sa disponibilité. Les captures finales `support-home-signed-out.png` et `billing-offer.png` montrent le rendu natif français. Les ventes réelles restent fermées.

@@ -1,0 +1,47 @@
+{
+  "artifactSha256": "11f2e2f378f505189eb5fe27c40f3fa1513a9204c1ff8c8c1bdc5a245162e277",
+  "apkBytes": 2709072,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation."
+  ],
+  "configurationKind": "supplied-client-configuration",
+  "productionReady": false,
+  "versionName": "0.2.10",
+  "versionCode": 25,
+  "applicationId": "fr.previensmoi.app",
+  "sourceCommit": "fd86e42f5ad88078154d878bc23bf03010c3eaa1",
+  "certificateSha256": "aa65bc3e55aec675d9da8cff28a8b9b84973e14148aafd18d711689f7c0c81ad",
+  "apkSignatureVerified": true,
+  "aabSha256": "03b714825988b5c2ecc7f34a90cb323fde550975e41ee248781bb8255b1ea6f7",
+  "ciUrl": "https://github.com/vbooo/previens_moi/actions/runs/46023663252",
+  "lastNativeCheck": "2 targeted tests passed on final build 25; no purchase or provider call",
+  "playInternal": {
+    "observed": "Accessible aux testeurs internes",
+    "version": "25 (0.2.10)",
+    "artifactCount": 1,
+    "releaseUrl": "https://play.google.com/console/u/1/developers/7405571172348994833/app/4975975330835615320/tracks/4700114799993477837/releases/5/details",
+    "testerUrl": "https://play.google.com/apps/internaltest/4700114799993477837",
+    "productionPublished": false,
+    "warning": "Optional native debugging symbols missing; ReTrace mapping attached",
+    "retiredBeforePublication": [
+      24
+    ]
+  },
+  "ciConclusion": "success"
+}
