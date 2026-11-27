@@ -55,7 +55,6 @@
     <string name="remote_unavailable_title">Monitoring is not available yet</string>
     <string name="correction_notice">This finding corrects an earlier result.</string>
     <string name="analysis_pending">Analysis is still pending. Try again to check the same analysis; a second analysis will not be started.</string>
-    <string name="sign_in_to_view_watches">Sign in to see your watches.</string>
     <string name="sign_in">Sign in</string>
     <string name="preparation_failed_title">Your watch couldn’t start</string>
     <string name="cancel_preparation">Cancel preparation</string>

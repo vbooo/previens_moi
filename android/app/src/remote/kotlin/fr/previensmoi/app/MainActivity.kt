@@ -238,30 +238,37 @@ class MainActivity : ComponentActivity() {
                                     account.session != null && state.ownerId == account.session?.id &&
                                     state.watches.any { it.id == route.id }),
                             title = {
-                                Text(
-                                    stringResource(
-                                        when (route) {
-                                            Home -> R.string.v1_home
-                                            Membership -> R.string.billing_title
-                                            Account ->
-                                                if (account.session == null) R.string.v1_connection
-                                                else R.string.v1_account
-                                            Create ->
-                                                when (create.step) {
-                                                    CreationStep.Ready,
-                                                    CreationStep.Confirming ->
-                                                        R.string.v1_confirmation
-                                                    CreationStep.Clarifying -> R.string.v1_clarify
-                                                    else -> R.string.v1_new
-                                                }
-                                            is Result -> R.string.v1_result
-                                            else -> R.string.detail_title
-                                        },
-                                    ),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    fontWeight = if (route == Home) FontWeight.SemiBold else FontWeight.Normal,
-                                )
+                                if (route == Home) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                    Icon(androidx.compose.ui.res.painterResource(R.drawable.brand_mark), contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.width(24.dp).height(32.dp).testTag("home_brand"))
+                                    Text(stringResource(R.string.v1_home), maxLines = 1, overflow = TextOverflow.Ellipsis,
+                                        fontWeight = FontWeight.SemiBold)
+                                } else {
+                                    Text(
+                                        stringResource(
+                                            when (route) {
+                                                Home -> R.string.v1_home
+                                                Membership -> R.string.billing_title
+                                                Account ->
+                                                    if (account.session == null) R.string.v1_connection
+                                                    else R.string.v1_account
+                                                Create ->
+                                                    when (create.step) {
+                                                        CreationStep.Ready,
+                                                        CreationStep.Confirming ->
+                                                            R.string.v1_confirmation
+                                                        CreationStep.Clarifying -> R.string.v1_clarify
+                                                        else -> R.string.v1_new
+                                                    }
+                                                is Result -> R.string.v1_result
+                                                else -> R.string.detail_title
+                                            },
+                                        ),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        fontWeight = if (route == Home) FontWeight.SemiBold else FontWeight.Normal,
+                                    )
+                                }
                             },
                             navigationIcon = {
                                 if (stack.size > 1)
@@ -355,8 +362,7 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     floatingActionButton = {
-                        if (route == Home && account.loaded && create.loaded &&
-                            (account.session == null || state.watches.isNotEmpty() || state.refreshFailed))
+                        if (route == Home && account.loaded && create.loaded)
                             ExtendedFloatingActionButton(
                                 onClick = {
                                     creation.startNew()

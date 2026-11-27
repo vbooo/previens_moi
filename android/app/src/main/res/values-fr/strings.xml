@@ -55,7 +55,6 @@
     <string name="remote_unavailable_title">Surveillance indisponible pour l’instant</string>
     <string name="correction_notice">Ce résultat corrige un résultat précédent.</string>
     <string name="analysis_pending">Analyse encore en attente. Réessaie pour consulter son état ; aucune seconde analyse ne sera lancée.</string>
-    <string name="sign_in_to_view_watches">Connecte-toi pour retrouver tes suivis.</string>
     <string name="sign_in">Se connecter</string>
     <string name="preparation_failed_title">Le suivi n’a pas pu démarrer</string>
     <string name="cancel_preparation">Annuler la préparation</string>

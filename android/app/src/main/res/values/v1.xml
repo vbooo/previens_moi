@@ -29,7 +29,7 @@
     <string name="v1_login_body">Find your watches and results in your account.</string>
     <string name="v1_sign_in_title">Find your watches</string>
     <string name="v1_empty_title">Your first watch starts here</string>
-    <string name="v1_empty_body">Describe what interests you. We will notify you when information matches your request.</string>
+    <string name="v1_empty_body">Describe what you want to be notified about. We will notify you when information matches your request.</string>
     <string name="v1_retry">Try again</string>
     <string name="v1_delete_body">This watch and its results will be deleted.</string>
     <string name="v1_delete">Delete</string>
@@ -68,4 +68,5 @@
     </plurals>
     <string name="v1_hourly">Approximately every hour</string>
     <string name="v1_change">Change</string>
+    <string name="v1_start_without_account">You can start without an account. Sign in to activate your watch and find your results.</string>
 </resources>

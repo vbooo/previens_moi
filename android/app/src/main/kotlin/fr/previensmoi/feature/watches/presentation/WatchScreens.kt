@@ -74,9 +74,9 @@ fun HomeScreen(
                 item { WatchListSkeleton() }
             else if (remote && !signedIn)
                 item {
-                    EmptyWatches(true, signIn, R.string.sign_in, "sign_in_watches")
+                    EmptyWatches(true, newRequest, signIn = signIn)
                     SecondaryText(
-                        stringResource(R.string.sign_in_to_view_watches),
+                        stringResource(R.string.v1_start_without_account),
                         Modifier.padding(top = 16.dp).testTag("signed_out_watches"),
                     )
                 }
@@ -142,7 +142,7 @@ fun HomeScreen(
 @Composable
 private fun EmptyWatches(
     ready: Boolean, newRequest: (() -> Unit)?,
-    actionLabel: Int = R.string.new_watch, actionTag: String = "new_request",
+    signIn: (() -> Unit)? = null,
 ) {
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -157,17 +157,20 @@ private fun EmptyWatches(
                 fontWeight = FontWeight.SemiBold,
             )
             Text(stringResource(R.string.v1_empty_body), style = MaterialTheme.typography.bodyMedium)
+            if (signIn != null) OutlinedButton(
+                onClick = signIn,
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp).heightIn(min = 48.dp).testTag("sign_in_watches"),
+                shape = MaterialTheme.shapes.medium,
+            ) { Text(stringResource(R.string.sign_in)) }
             if (newRequest != null) Button(
                 onClick = newRequest,
                 enabled = ready,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp).heightIn(min = 52.dp).testTag(actionTag),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp).heightIn(min = 52.dp).testTag("new_request_empty"),
             ) {
-                if (actionLabel == R.string.new_watch) {
-                    AppIcon(R.drawable.symbol_add)
-                    Spacer(Modifier.width(8.dp))
-                }
-                Text(stringResource(actionLabel))
+                AppIcon(R.drawable.symbol_add)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(R.string.new_watch))
             }
         }
     }

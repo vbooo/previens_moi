@@ -107,14 +107,28 @@ fun SubscriptionScreen(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        stringResource(R.string.billing_plus),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.SemiBold,
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            androidx.compose.ui.res.painterResource(R.drawable.brand_mark),
+                            null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.width(24.dp).height(32.dp),
+                        )
+                        Text(
+                            stringResource(R.string.billing_plus),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
                     Text(
                         stringResource(R.string.billing_per_month, price),
                         style = MaterialTheme.typography.headlineSmall,
+                    )
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.16f),
                     )
                     Text(
                         stringResource(
@@ -156,23 +170,80 @@ fun SubscriptionScreen(
                         }
                 }
             }
-            SectionCard(stringResource(R.string.billing_included)) {
-                Text(
-                    stringResource(R.string.billing_two_watches),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Text(stringResource(R.string.billing_daily_sources))
-                Text(stringResource(R.string.billing_five_creations))
-                SecondaryText(stringResource(R.string.billing_pause_free))
+            SectionTitle(stringResource(R.string.billing_included))
+            Card(
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    ),
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                    SubscriptionBenefit(
+                        R.drawable.symbol_check_circle,
+                        R.string.billing_watch_title,
+                        R.string.billing_watch_detail,
+                    )
+                    SubscriptionBenefit(
+                        R.drawable.symbol_schedule,
+                        R.string.billing_daily_title,
+                        R.string.billing_daily_sources,
+                    )
+                    SubscriptionBenefit(
+                        R.drawable.symbol_refresh,
+                        R.string.billing_creation_title,
+                        R.string.billing_creation_detail,
+                    )
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.Top,
+                    ) {
+                        AppIcon(
+                            R.drawable.symbol_pause,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        SecondaryText(
+                            stringResource(R.string.billing_pause_free),
+                            Modifier.weight(1f),
+                        )
+                    }
+                }
             }
             if (access.active)
-                SectionCard(stringResource(R.string.billing_your_period)) {
-                    Text(
-                        stringResource(R.string.billing_remaining, access.remainingCreations),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.testTag("subscription_remaining"),
-                    )
-                    SecondaryText(stringResource(R.string.billing_quota_definition))
+                Card(
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        ),
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column(
+                        Modifier.padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Text(
+                            stringResource(R.string.billing_your_period),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            stringResource(R.string.billing_remaining, access.remainingCreations),
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.testTag("subscription_remaining"),
+                        )
+                        LinearProgressIndicator(
+                            progress = { access.remainingCreations.coerceIn(0, 5) / 5f },
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.primary,
+                            trackColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                        )
+                        Text(
+                            stringResource(R.string.billing_quota_definition),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
                 }
             if (
                 !access.active &&
@@ -209,9 +280,12 @@ fun SubscriptionScreen(
                     )
                 }
             if (known)
-                OutlinedButton(
+                FilledTonalButton(
                     manage,
-                    modifier = Modifier.fillMaxWidth().testTag("manage_subscription"),
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .heightIn(min = 52.dp)
+                            .testTag("manage_subscription"),
                 ) {
                     Text(
                         stringResource(
@@ -224,10 +298,11 @@ fun SubscriptionScreen(
                         ),
                     )
                 }
-            TextButton(
+            OutlinedButton(
                 restore,
                 enabled = !state.busy,
-                modifier = Modifier.testTag("restore_purchases"),
+                modifier =
+                    Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("restore_purchases"),
             ) {
                 Text(
                     stringResource(
@@ -236,8 +311,34 @@ fun SubscriptionScreen(
                 )
             }
             if (access.status in setOf(SubscriptionStatus.None, SubscriptionStatus.Expired)) {
-                SecondaryText(stringResource(R.string.billing_terms))
-                SecondaryText(stringResource(R.string.billing_no_commitment))
+                Card(
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        ),
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column(
+                        Modifier.padding(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        Text(
+                            stringResource(R.string.billing_how_title),
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(
+                            stringResource(R.string.billing_terms),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Text(
+                            stringResource(R.string.billing_no_commitment),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
             }
         }
         SnackbarHost(
@@ -247,5 +348,31 @@ fun SubscriptionScreen(
                 .padding(16.dp)
                 .testTag("subscription_feedback"),
         )
+    }
+}
+
+@Composable
+private fun SubscriptionBenefit(icon: Int, title: Int, detail: Int) {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.Top) {
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = MaterialTheme.shapes.medium,
+        ) {
+            Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) {
+                AppIcon(icon, tint = MaterialTheme.colorScheme.primary)
+            }
+        }
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(
+                stringResource(title),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                stringResource(detail),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }

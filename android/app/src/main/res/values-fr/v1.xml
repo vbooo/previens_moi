@@ -29,7 +29,7 @@
     <string name="v1_login_body">Retrouve tes suivis et leurs résultats sur ton compte.</string>
     <string name="v1_sign_in_title">Retrouve tes suivis</string>
     <string name="v1_empty_title">Ton premier suivi commence ici</string>
-    <string name="v1_empty_body">Décris ce qui t’intéresse. Nous te préviendrons lorsqu’une information correspond à ta demande.</string>
+    <string name="v1_empty_body">Décris de quoi tu veux être prévenu. Nous te préviendrons lorsqu’une information correspond à ta demande.</string>
     <string name="v1_retry">Réessayer</string>
     <string name="v1_delete_body">Ce suivi et ses résultats seront supprimés.</string>
     <string name="v1_delete">Supprimer</string>
@@ -69,4 +69,5 @@
     </plurals>
     <string name="v1_hourly">Environ toutes les heures</string>
     <string name="v1_change">Modifier</string>
+    <string name="v1_start_without_account">Tu peux commencer sans compte. Connecte-toi pour activer ton suivi et retrouver tes résultats.</string>
 </resources>

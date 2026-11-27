@@ -2,11 +2,9 @@
     <string name="billing_price_reference">6,99 €</string>
     <string name="billing_per_month">%1$s par mois</string>
     <string name="billing_subscribe">S’abonner à %1$s/mois</string>
-    <string name="billing_offer_intro">Plus de suivis, au-delà de l’essai gratuit.</string>
+    <string name="billing_offer_intro">Deux sujets suivis, avec une vérification quotidienne.</string>
     <string name="billing_included">Ce qui est inclus</string>
-    <string name="billing_two_watches">2 suivis actifs en même temps</string>
-    <string name="billing_daily_sources">Une vérification par jour, sur 3 sources au maximum pour chaque suivi.</string>
-    <string name="billing_five_creations">5 créations ou changements de sujet par mois.</string>
+    <string name="billing_daily_sources">Jusqu’à 3 sources pour chaque suivi.</string>
     <string name="billing_pause_free">La pause et la reprise ne comptent pas comme une création.</string>
     <string name="billing_your_period">Ta période en cours</string>
     <string name="billing_remaining">Demandes restantes : %1$d sur 5</string>
@@ -37,4 +35,10 @@
     <string name="billing_grace_until">Accès maintenu jusqu’au %1$s</string>
     <string name="billing_fix_payment">Régulariser mon paiement</string>
     <string name="billing_cached_offline">Hors connexion · Dernier état connu.</string>
+    <string name="billing_watch_title">2 suivis actifs</string>
+    <string name="billing_watch_detail">Surveille deux sujets en même temps.</string>
+    <string name="billing_daily_title">Une vérification par jour</string>
+    <string name="billing_creation_title">5 demandes par mois</string>
+    <string name="billing_creation_detail">Pour créer un suivi ou changer de sujet.</string>
+    <string name="billing_how_title">Comment fonctionne l’abonnement ?</string>
 </resources>

@@ -40,6 +40,18 @@ class SupportUiTest {
     }
 
     @Test
+    fun signedOutHomeCanStartAWatchWithoutOpeningSignIn() {
+        compose.onNodeWithTag("sign_in_watches").assertIsDisplayed()
+        compose.onNodeWithTag("new_request").assertIsDisplayed()
+        compose.onNodeWithTag("home_brand").assertExists()
+        compose.onNodeWithTag("new_request_empty").assertIsDisplayed()
+        capture("home-signed-out")
+        compose.onNodeWithTag("new_request_empty").performClick()
+        compose.onNodeWithTag("request").assertIsDisplayed()
+        compose.onNodeWithTag("email").assertDoesNotExist()
+    }
+
+    @Test
     fun helpIsAvailableBeforeSignInAndClosingKeepsDraft() {
         compose.onNodeWithTag("support_open").assertExists()
         capture("home")
@@ -100,7 +112,7 @@ class SupportUiTest {
             }
         }
         compose.onNodeWithTag("home_empty").assertIsDisplayed()
-        compose.onNodeWithTag("new_request").assertIsDisplayed().performClick()
+        compose.onNodeWithTag("new_request_empty").assertIsDisplayed().performClick()
         assertEquals(1, creations)
         capture("home-empty")
         val plan =

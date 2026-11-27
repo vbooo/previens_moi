@@ -2,11 +2,9 @@
     <string name="billing_price_reference">€6.99</string>
     <string name="billing_per_month">%1$s per month</string>
     <string name="billing_subscribe">Subscribe for %1$s/month</string>
-    <string name="billing_offer_intro">More watches, beyond the free trial.</string>
+    <string name="billing_offer_intro">Follow two topics with daily checks.</string>
     <string name="billing_included">Included</string>
-    <string name="billing_two_watches">2 active watches at a time</string>
-    <string name="billing_daily_sources">One check per day, with up to 3 sources for each watch.</string>
-    <string name="billing_five_creations">5 new watches or topic changes per month.</string>
+    <string name="billing_daily_sources">Up to 3 sources for each watch.</string>
     <string name="billing_pause_free">Pausing and resuming do not use a new request.</string>
     <string name="billing_your_period">Your current period</string>
     <string name="billing_remaining">Requests remaining: %1$d of 5</string>
@@ -37,4 +35,10 @@
     <string name="billing_grace_until">Access maintained until %1$s</string>
     <string name="billing_fix_payment">Fix my payment</string>
     <string name="billing_cached_offline">Offline · Last known status.</string>
+    <string name="billing_watch_title">2 active watches</string>
+    <string name="billing_watch_detail">Follow two topics at the same time.</string>
+    <string name="billing_daily_title">One check every day</string>
+    <string name="billing_creation_title">5 requests per month</string>
+    <string name="billing_creation_detail">Create a watch or change its topic.</string>
+    <string name="billing_how_title">How does the subscription work?</string>
 </resources>
