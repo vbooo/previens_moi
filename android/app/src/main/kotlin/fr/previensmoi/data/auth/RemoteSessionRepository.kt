@@ -23,6 +23,10 @@ class RemoteSessionRepository(private val api: AuthApi, private val vault: Sessi
     override suspend fun signIn(): Outcome<Session> = Outcome.Error(Failure.SessionRequired)
     override suspend fun requestCode(email: String): Outcome<Unit> = safe {
         if (email.length !in 3..254 || !email.contains('@')) return@safe Outcome.Error(Failure.InvalidInput)
+        // Documentation domains cannot receive login codes. Reject before any network request.
+        val domain = email.substringAfterLast('@').trim().lowercase(java.util.Locale.ROOT).trimEnd('.')
+        if (setOf("example.com", "example.net", "example.org").any { domain == it || domain.endsWith(".$it") })
+            return@safe Outcome.Error(Failure.InvalidInput)
         val response = api.request(OtpRequest(email))
         if (response.isSuccessful) Outcome.Success(Unit) else Outcome.Error(if (response.code() == 429) Failure.QuotaExceeded else Failure.TemporaryFailure)
     }

@@ -41,6 +41,19 @@ class RemoteRepositoryTest {
             val verification = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!; assertTrue(verification.body!!.utf8().contains("123456"))
         }
     }
+    @Test fun `documentation email domains never trigger a code request while real domains still do`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val session = auth(server, MemoryVault())
+            for (email in listOf("test@example.com", "test@EXAMPLE.COM", "test@example.net", "test@example.org", "test@sub.example.com", "test@example.com.")) {
+                assertEquals(email, Outcome.Error(Failure.InvalidInput), session.requestCode(email))
+            }
+            assertEquals(0, server.requestCount)
+            server.enqueue(response("{}"))
+            assertEquals(Outcome.Success(Unit), session.requestCode("contact@fabienbouvet.fr"))
+            assertEquals(1, server.requestCount)
+            assertEquals("/auth/v1/otp", server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!.url.encodedPath)
+        }
+    }
     @Test fun `concurrent refresh uses one rotation and logout clears local secrets even if server fails`() = runTest {
         MockWebServer().apply { start() }.use { server ->
             val vault = MemoryVault(Credentials("a","old","refresh",1));val session = auth(server,vault)
