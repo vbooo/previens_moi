@@ -36,6 +36,45 @@ class SubscriptionUiTest {
     }
 
     @Test
+    fun offeredAccessDoesNotAdvertiseAPaymentOrGoogleCancellation() {
+        val access =
+            SubscriptionAccess(
+                status = SubscriptionStatus.Offered,
+                active = true,
+                expiresAt = 4102444800000,
+                canPurchase = false,
+            )
+        compose.activity.setContent {
+            PreviensTheme {
+                Scaffold { padding ->
+                    Box(Modifier.padding(padding)) {
+                        SubscriptionScreen(
+                            SubscriptionUiState(loaded = true, access = access),
+                            {},
+                            {},
+                            {},
+                            {},
+                        )
+                    }
+                }
+            }
+        }
+        compose
+            .onNodeWithTag("subscription_status")
+            .assertTextContains(compose.activity.getString(fr.previensmoi.R.string.billing_offered))
+        compose
+            .onNodeWithText(
+                compose.activity.getString(fr.previensmoi.R.string.billing_offered_terms),
+            )
+            .assertExists()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        compose.onNodeWithTag("manage_subscription").assertDoesNotExist()
+        capture("offered-top")
+        compose.onNodeWithTag("restore_purchases").performScrollTo().assertIsEnabled()
+        capture("offered-bottom")
+    }
+
+    @Test
     fun subscriptionStatesKeepCheckoutDisabledUntilProductAndServerAreReady() {
         val state =
             mutableStateOf(SubscriptionUiState(loaded = true, access = SubscriptionAccess()))

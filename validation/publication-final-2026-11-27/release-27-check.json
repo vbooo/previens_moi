@@ -1,0 +1,30 @@
+{
+  "artifactSha256": "b860712012cfea39f7c6ee86c57c812301636c8d33278b4ff14e1fda8080e731",
+  "apkBytes": 2712956,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation."
+  ],
+  "configurationKind": "supplied-client-configuration",
+  "productionReady": false,
+  "aabSignatureVerified": true,
+  "apkSignatureVerified": true,
+  "existingUploadCertificateSha256": "aa65bc3e55aec675d9da8cff28a8b9b84973e14148aafd18d711689f7c0c81ad",
+  "aabSha256": "e32277aec063ef9303bf5f87daebb0691c0643d2210c331acdb6a490dd54bdf0",
+  "version": "0.2.12 (27)"
+}

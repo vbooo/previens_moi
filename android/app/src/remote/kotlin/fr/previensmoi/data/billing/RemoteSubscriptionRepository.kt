@@ -115,6 +115,7 @@ class RemoteSubscriptionRepository(
             when (dto.status) {
                 "none" -> SubscriptionStatus.None
                 "active" -> SubscriptionStatus.Active
+                "offered" -> SubscriptionStatus.Offered
                 "cancelled" -> SubscriptionStatus.Cancelled
                 "grace" -> SubscriptionStatus.Grace
                 "hold" -> SubscriptionStatus.Hold
@@ -128,6 +129,7 @@ class RemoteSubscriptionRepository(
                 (status in
                     setOf(
                         SubscriptionStatus.Active,
+                        SubscriptionStatus.Offered,
                         SubscriptionStatus.Cancelled,
                         SubscriptionStatus.Grace,
                     ) && dto.expiresAt != null),

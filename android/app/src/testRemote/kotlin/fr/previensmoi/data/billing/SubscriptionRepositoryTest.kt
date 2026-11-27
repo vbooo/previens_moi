@@ -102,6 +102,19 @@ class SubscriptionRepositoryTest {
         }
 
     @Test
+    fun `offered access is a server entitlement without a Play purchase`() = runTest {
+        MockWebServer()
+            .apply { start() }
+            .use { server ->
+                server.enqueue(response(body(status = "offered")))
+                val access = (repository(server).check() as BillingOutcome.Success).value
+                assertTrue(access.active)
+                assertEquals(SubscriptionStatus.Offered, access.status)
+                assertFalse(access.canPurchase)
+            }
+    }
+
+    @Test
     fun `purchase reuse denial stays distinct from service failure`() = runTest {
         MockWebServer()
             .apply { start() }

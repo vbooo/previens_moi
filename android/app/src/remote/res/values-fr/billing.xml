@@ -41,4 +41,6 @@
     <string name="billing_creation_title">5 demandes par mois</string>
     <string name="billing_creation_detail">Pour créer un suivi ou changer de sujet.</string>
     <string name="billing_how_title">Comment fonctionne l’abonnement ?</string>
+    <string name="billing_offered">Accès Plus offert</string>
+    <string name="billing_offered_terms">Aucun paiement ni renouvellement automatique.</string>
 </resources>

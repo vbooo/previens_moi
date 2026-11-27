@@ -52,6 +52,36 @@ class SubscriptionViewModelTest {
     }
 
     @Test
+    fun `offered access checks server even when Play is unavailable`() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        try {
+            val server =
+                Server().apply {
+                    access =
+                        access.copy(
+                            status = SubscriptionStatus.Offered,
+                            active = true,
+                            canPurchase = false,
+                            expiresAt = Long.MAX_VALUE,
+                        )
+                }
+            val store = Store().apply { owned = BillingOutcome.Error(BillingProblem.Unavailable) }
+            val vm = SubscriptionViewModel(server, store)
+            vm.bindOwner("u")
+            runCurrent()
+            vm.restore()
+            runCurrent()
+            assertEquals(1, server.checkCalls)
+            assertTrue(vm.state.value.restored)
+            assertNull(vm.state.value.problem)
+            assertTrue(vm.state.value.access!!.active)
+            assertNull(vm.beginPurchase())
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test
     fun `purchase stays unentitled until server confirms and second tap is ignored`() = runTest {
         Dispatchers.setMain(StandardTestDispatcher(testScheduler))
         try {

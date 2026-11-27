@@ -2951,7 +2951,8 @@
               "hold",
               "paused",
               "expired",
-              "pending"
+              "pending",
+              "offered"
             ]
           },
           "active": {

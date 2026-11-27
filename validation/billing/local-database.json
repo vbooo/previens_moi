@@ -3,6 +3,7 @@
   "paidCalls": 0,
   "activeDatabaseModified": false,
   "scope": "Disposable local database; synthetic users and injected model/source responses.",
+  "excludedSupportCronSchedule": "202611190044",
   "migrationsAppliedInDisposableDb": [
     "202610220032",
     "202610230033",
@@ -13,11 +14,17 @@
     "202611150038",
     "202611160039",
     "202611160040",
-    "202611190041"
+    "202611190041",
+    "202611190042",
+    "202611190043",
+    "202611200045",
+    "202611210046",
+    "202611270047"
   ],
   "migrationOnHistoricalLocalSchema": true,
   "pendingNeverGrantsAndTestOnlyRejectsRealPayments": true,
   "purchaseCannotMoveBetweenAccounts": true,
+  "ManualCheckRevalidatesRecentPurchaseFarFromExpiry": true,
   "twoActiveWatchesAndIdempotentCreationCharge": true,
   "dailyCadenceSettlementAndResumeWithoutPaidDiscovery": true,
   "RepeatedAndOutOfOrderProofsDoNotResetOrRevokeAccess": true,
@@ -31,5 +38,20 @@
   "PurchaseSecretsAndInternalFunctionsAreNotClientAccessible": true,
   "GlobalProviderCeilingsNotRaised": true,
   "PaidProposalCannotBeActivatedByANonPayingAccount": true,
-  "UpgradeDuringPreparationPreservesWorkWithoutResetOrDoubleCharge": true
+  "UpgradeDuringPreparationPreservesWorkWithoutResetOrDoubleCharge": true,
+  "OfferedPlus": {
+    "operatorOnly": true,
+    "noFakeGooglePurchase": true,
+    "accountIsolation": true,
+    "otherPaidMonitoringStaysClosed": true,
+    "twoActiveDailyWatches": true,
+    "fiveCreationsAnd25Analyses": true,
+    "idempotentAccounting": true,
+    "normalWorkerSettlement": true,
+    "unknownHoldsPreserved": true,
+    "periodRolloverNeverResetsBudget": true,
+    "periodBudgetEnforced": true,
+    "revocationAndDeletion": true,
+    "paidCalls": 0
+  }
 }

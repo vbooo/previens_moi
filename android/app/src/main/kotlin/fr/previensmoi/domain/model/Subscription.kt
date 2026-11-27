@@ -3,6 +3,7 @@ package fr.previensmoi.domain.model
 enum class SubscriptionStatus {
     None,
     Active,
+    Offered,
     Cancelled,
     Grace,
     Hold,

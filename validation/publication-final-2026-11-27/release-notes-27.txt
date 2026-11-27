@@ -1,0 +1,3 @@
+<fr-FR>
+Prise en charge des accès Plus offerts, avec un affichage clair et une vérification indépendante de Google Play pour ces accès.
+</fr-FR>

@@ -41,4 +41,6 @@
     <string name="billing_creation_title">5 requests per month</string>
     <string name="billing_creation_detail">Create a watch or change its topic.</string>
     <string name="billing_how_title">How does the subscription work?</string>
+    <string name="billing_offered">Complimentary Plus access</string>
+    <string name="billing_offered_terms">No payment or automatic renewal.</string>
 </resources>

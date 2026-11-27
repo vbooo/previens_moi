@@ -37,6 +37,8 @@ try:
   else:version=202610220031
   applied=[]
   for file in sorted((R/'service/supabase/migrations').glob('*.sql')):
+   # The disposable clone has no pg_cron; migration 44 only schedules support retention.
+   if file.name.startswith('202611190044'):continue
    if int(file.name[:12])>version:q(file.read_text());applied.append(file.name[:12])
   report['migrationsAppliedInDisposableDb']=applied
   report['migrationOnHistoricalLocalSchema']=True

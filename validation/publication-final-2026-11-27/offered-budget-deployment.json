@@ -1,0 +1,85 @@
+{
+  "executedAt": "2026-11-27T18:26:43.319145+00:00",
+  "migration": "202611270047",
+  "before": {
+    "budget": {
+      "id": true,
+      "enabled": true,
+      "qualified": true,
+      "model_held": 20000,
+      "model_used": 96732,
+      "credit_held": 39,
+      "credit_used": 116,
+      "model_limit": 320000,
+      "credit_limit": 171,
+      "model_committed": 0,
+      "credit_committed": 0,
+      "qualification_preview_hash": null
+    },
+    "capacity": {
+      "id": true,
+      "slots": 3,
+      "enabled": true,
+      "reserved": 0,
+      "used_units": 13,
+      "budget_units": 14,
+      "reserved_units": 0,
+      "active_per_account": 1
+    },
+    "billingPolicy": {
+      "id": true,
+      "enabled": true,
+      "test_only": true,
+      "package_name": "fr.previensmoi.app",
+      "monitoring_enabled": false
+    },
+    "workerEnabled": true,
+    "trialEnabled": true,
+    "liveWatches": 0,
+    "offeredTableExists": false,
+    "reviewAuthAccountExists": true
+  },
+  "after": {
+    "budget": {
+      "id": true,
+      "enabled": true,
+      "qualified": true,
+      "model_held": 20000,
+      "model_used": 96732,
+      "credit_held": 39,
+      "credit_used": 116,
+      "model_limit": 2900000,
+      "credit_limit": 435,
+      "model_committed": 0,
+      "credit_committed": 0,
+      "qualification_preview_hash": null
+    },
+    "capacity": {
+      "id": true,
+      "slots": 3,
+      "enabled": true,
+      "reserved": 0,
+      "used_units": 13,
+      "budget_units": 14,
+      "reserved_units": 0,
+      "active_per_account": 1
+    },
+    "billingPolicy": {
+      "id": true,
+      "enabled": true,
+      "test_only": true,
+      "package_name": "fr.previensmoi.app",
+      "monitoring_enabled": false
+    },
+    "workerEnabled": true,
+    "trialEnabled": true,
+    "liveWatches": 0,
+    "offeredTableExists": true,
+    "reviewAuthAccountExists": true
+  },
+  "grantApplied": false,
+  "cumulativeTestCapEUR": 6,
+  "conservativeUpperEUR": 5.87087625,
+  "unknownHoldsPreserved": true,
+  "realSalesClosed": true
+}

@@ -216,6 +216,16 @@ constructor(
     private data class Recovery(val access: SubscriptionAccess?, val problem: BillingProblem?)
 
     private suspend fun recoverAccess(generation: Int, forceCheck: Boolean = false): Recovery {
+        if (state.value.access?.status == SubscriptionStatus.Offered) {
+            return when (val checked = repository.check()) {
+                is BillingOutcome.Success ->
+                    Recovery(
+                        checked.value,
+                        if (checked.value.fromCache) BillingProblem.Offline else null,
+                    )
+                is BillingOutcome.Error -> Recovery(null, checked.problem)
+            }
+        }
         when (val result = store.restore()) {
             is BillingOutcome.Error -> return Recovery(null, result.problem)
             is BillingOutcome.Success -> {

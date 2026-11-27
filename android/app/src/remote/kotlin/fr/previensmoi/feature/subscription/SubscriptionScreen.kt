@@ -32,12 +32,15 @@ fun SubscriptionScreen(
             state.product != null &&
             access.active.not() &&
             access.status in setOf(SubscriptionStatus.None, SubscriptionStatus.Expired)
-    val known = access?.status != null && access.status != SubscriptionStatus.None
+    val known =
+        access?.status != null &&
+            access.status !in setOf(SubscriptionStatus.None, SubscriptionStatus.Offered)
     val snackbar = remember { SnackbarHostState() }
     val restoreMessage =
         if (state.restored)
             stringResource(
                 when {
+                    access?.status == SubscriptionStatus.Offered -> R.string.billing_offered
                     access?.status == SubscriptionStatus.Grace -> R.string.billing_grace
                     access?.status == SubscriptionStatus.Hold -> R.string.billing_hold
                     access?.status == SubscriptionStatus.Paused -> R.string.billing_paused
@@ -124,8 +127,13 @@ fun SubscriptionScreen(
                         )
                     }
                     Text(
-                        stringResource(R.string.billing_per_month, price),
-                        style = MaterialTheme.typography.headlineSmall,
+                        if (access.status == SubscriptionStatus.Offered)
+                            stringResource(R.string.billing_offered_terms)
+                        else stringResource(R.string.billing_per_month, price),
+                        style =
+                            if (access.status == SubscriptionStatus.Offered)
+                                MaterialTheme.typography.bodyLarge
+                            else MaterialTheme.typography.headlineSmall,
                     )
                     HorizontalDivider(
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.16f),
@@ -134,6 +142,7 @@ fun SubscriptionScreen(
                         stringResource(
                             when (access.status) {
                                 SubscriptionStatus.Active -> R.string.billing_active
+                                SubscriptionStatus.Offered -> R.string.billing_offered
                                 SubscriptionStatus.Cancelled -> R.string.billing_cancelled
                                 SubscriptionStatus.Grace -> R.string.billing_grace
                                 SubscriptionStatus.Hold -> R.string.billing_hold
@@ -148,7 +157,7 @@ fun SubscriptionScreen(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.testTag("subscription_status"),
                     )
-                    if (access.active)
+                    if (access.active && access.status != SubscriptionStatus.Offered)
                         access.expiresAt?.let {
                             Text(
                                 stringResource(
@@ -164,7 +173,7 @@ fun SubscriptionScreen(
                                 ),
                             )
                         }
-                    else if (!access.trialEnded)
+                    else if (!access.active && !access.trialEnded)
                         access.trialEndsAt?.let {
                             SecondaryText(stringResource(R.string.trial_ends_at, dateText(it)))
                         }

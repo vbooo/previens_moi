@@ -190,6 +190,77 @@ try:
   assert q('select model_committed from private.general_budget')==0
   assert q('select model_held from private.general_budget')==0
   report['UpgradeDuringPreparationPreservesWorkWithoutResetOrDoubleCharge']=True
+  # Operator-only offered access uses normal Plus quotas and global reservations.
+  q('truncate private.accounts,private.previews cascade');q('truncate private.general_attempts')
+  q('update private.capacity set reserved=0,slots=3')
+  q('update private.general_budget set model_limit=2900000,credit_limit=435,model_used=96732,model_held=20000,model_committed=0,credit_used=116,credit_held=39,credit_committed=0')
+  q('update private.billing_policy set enabled=true,test_only=true,monitoring_enabled=false')
+  gifted=owner();outsider=owner();claims(gifted)
+  before=q('select to_jsonb(b) from private.general_budget b')
+  q('insert into private.plus_grants(owner_id) values(%s)',(gifted,))
+  access=q('select public.s7_subscription()')
+  assert access['status']=='offered' and access['active'] and not access['canPurchase'] and access['remainingCreations']==5
+  assert q('select count(*) from private.billing_purchases')==0
+  assert q('select private.plus_fresh(%s)',(gifted,))
+  assert q('select to_jsonb(b) from private.general_budget b')==before
+  for role in ['anon','authenticated','service_role']:
+   assert not q("select has_table_privilege(%s,'private.plus_grants','insert')",(role,))
+   assert not q("select has_table_privilege(%s,'private.plus_grants','select')",(role,))
+   for fn in ['private.plus_period(uuid)','private.revoke_plus_grant(uuid)','public.s7_subscription_before_offered()']:
+    assert not q("select has_function_privilege(%s,%s,'execute')",(role,fn))
+  claims(outsider);assert not q('select public.s7_subscription()')['active']
+  bind(outsider,'synthetic-offered-isolation-purchase')
+  fail('select public.s3_command(%s)',(Jsonb(stage(outsider)[1]),),'billing_unavailable')
+  claims(gifted);p,cmd=stage(gifted)
+  prepared=q('select public.s7_prepare_proposal(%s,%s)',(p['id'],cmd['proposalToken']))
+  assert prepared['accessTier']=='plus' and prepared['intervalHours']==24 and 'trialDays' not in prepared
+  first=q('select public.s3_command(%s)',(Jsonb(cmd),));w1=first['watchId']
+  assert q('select public.s3_command(%s)',(Jsonb(cmd),))==first
+  second=q('select public.s3_command(%s)',(Jsonb(stage(gifted)[1]),));w2=second['watchId']
+  fail('select public.s3_command(%s)',(Jsonb(stage(gifted)[1]),),'active_watch_limit')
+  assert q('select public.s7_subscription()')['remainingCreations']==3
+  for _ in range(6):
+   x=q('select public.s3_general_lease()');assert x
+   if x['phase']=='collect':finish(x,{'documents':docs,'retrievalHealthy':True,'checkCoverage':{'verified':3,'total':3}},0,5)
+   elif x['phase']=='decide':
+    plan=q('select plan from private.watches where id=%s',(x['watchId'],));plan['sources']=[{'url':d['url'],'label':d['label']} for d in docs];finish(x,{'coverage':{'status':'observable'},'preparedPlan':plan,'documents':docs})
+   else:
+    at=dt.datetime.now(dt.timezone.utc).isoformat();memory={'generation':x['generation'],'baselineAt':at,'observedAt':at,'completed':False,'facts':[]};finish(x,{'decision':{'outcome':'baseline','memory':memory,'findings':[],'issues':[]},'findings':[],'documents':docs,'observedAt':at})
+  assert q("select count(*) from private.watches where status='active'")==2
+  period=q('select private.plus_period(%s)',(gifted,))
+  assert q('select model_used from private.billing_periods where id=%s',(period,))==800
+  assert q('select credit_used from private.billing_periods where id=%s',(period,))==10
+  assert q('select model_held from private.general_budget')==20000
+  assert q('select credit_held from private.general_budget')==39
+  pause(w1);command(w1,'resume');assert q('select public.s7_subscription()')['remainingCreations']==3
+  pause(w1)
+  for _ in range(3):
+   rc=q('select public.s3_command(%s)',(Jsonb(stage(gifted)[1]),));pause(rc['watchId'])
+  fail('select public.s3_command(%s)',(Jsonb(stage(gifted)[1]),),'monthly_creation_limit')
+  eid=v7();q('select public.s7_analysis_access(%s)',(eid,));q('select public.s7_analysis_access(%s)',(eid,))
+  for _ in range(24):q('select public.s7_analysis_access(%s)',(v7(),))
+  fail('select public.s7_analysis_access(%s)',(v7(),),'monthly_analysis_limit')
+  # Monthly quota rollover never resets the global financial counters.
+  before=q('select to_jsonb(b) from private.general_budget b')
+  q("update private.plus_grants set granted_at=granted_at-interval '31 days' where owner_id=%s",(gifted,))
+  assert q('select public.s7_subscription()')['remainingCreations']==5
+  assert q('select to_jsonb(b) from private.general_budget b')==before
+  assert q('select count(*) from private.billing_periods where owner_id=%s',(gifted,))==2
+  # A full period cannot acquire more supplier credits even with global headroom.
+  period=q('select private.plus_period(%s)',(gifted,))
+  q('update private.billing_periods set credit_used=250 where id=%s',(period,))
+  q("update private.watches set next_check_at=now()-interval '1 second' where id=%s",(w2,))
+  q('select public.s3_enqueue_due()');assert q('select public.s3_general_lease()') is None
+  q('select private.revoke_plus_grant(%s)',(gifted,))
+  assert not q('select public.s7_subscription()')['active']
+  assert q("select count(*) from private.watches where owner_id=%s and status in ('active','pending')",(gifted,))==0
+  assert q('select model_held from private.general_budget')==20000
+  assert q('select credit_held from private.general_budget')==39
+  q('update private.accounts set deleted_at=now() where id=%s',(gifted,))
+  assert q('select count(*) from private.plus_grants where owner_id=%s',(gifted,))==0
+  assert q('select count(*) from private.billing_periods where owner_id=%s',(gifted,))==0
+  assert q('select enabled and test_only and not monitoring_enabled from private.billing_policy')
+  report['OfferedPlus']={'operatorOnly':True,'noFakeGooglePurchase':True,'accountIsolation':True,'otherPaidMonitoringStaysClosed':True,'twoActiveDailyWatches':True,'fiveCreationsAnd25Analyses':True,'idempotentAccounting':True,'normalWorkerSettlement':True,'unknownHoldsPreserved':True,'periodRolloverNeverResetsBudget':True,'periodBudgetEnforced':True,'revocationAndDeletion':True,'paidCalls':0}
   report['passed']=True
 finally:
  if created:run([D,'exec',C,'dropdb','-U','postgres','--force',name])
