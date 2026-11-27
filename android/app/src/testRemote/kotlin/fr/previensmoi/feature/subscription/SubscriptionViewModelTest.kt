@@ -25,15 +25,27 @@ class SubscriptionViewModelTest {
         var gate: CompletableDeferred<BillingOutcome<SubscriptionAccess>>? = null
         val verified = mutableListOf<String>()
         var accessFailure: BillingProblem? = null
+        var accessGate: CompletableDeferred<BillingOutcome<SubscriptionAccess>>? = null
+        var accessCalls = 0
+        var checkCalls = 0
 
-        override suspend fun access(): BillingOutcome<SubscriptionAccess> =
-            accessFailure?.let { BillingOutcome.Error(it) } ?: BillingOutcome.Success(access)
+        override suspend fun check(): BillingOutcome<SubscriptionAccess> {
+            checkCalls++
+            return access()
+        }
+
+        override suspend fun access(): BillingOutcome<SubscriptionAccess> {
+            accessCalls++
+            return accessGate?.await()
+                ?: accessFailure?.let { BillingOutcome.Error(it) }
+                ?: BillingOutcome.Success(access)
+        }
 
         override suspend fun verify(token: String): BillingOutcome<SubscriptionAccess> {
             verified += token
             return (gate?.await()
                     ?: BillingOutcome.Success(
-                        access.copy(status = SubscriptionStatus.Active, active = true)
+                        access.copy(status = SubscriptionStatus.Active, active = true),
                     ))
                 .also { result -> if (result is BillingOutcome.Success) access = result.value }
         }
@@ -52,15 +64,15 @@ class SubscriptionViewModelTest {
             assertNull(vm.beginPurchase())
             server.gate = CompletableDeferred()
             store.events.emit(
-                StoreNotice.Purchase(PurchaseNotice("synthetic-token", false, "a".repeat(64)))
+                StoreNotice.Purchase(PurchaseNotice("synthetic-token", false, "a".repeat(64))),
             )
             runCurrent()
             assertFalse(vm.state.value.access!!.active)
             assertTrue(vm.state.value.busy)
             server.gate!!.complete(
                 BillingOutcome.Success(
-                    server.access.copy(status = SubscriptionStatus.Active, active = true)
-                )
+                    server.access.copy(status = SubscriptionStatus.Active, active = true),
+                ),
             )
             runCurrent()
             assertTrue(vm.state.value.access!!.active)
@@ -107,7 +119,7 @@ class SubscriptionViewModelTest {
             vm.bindOwner("u")
             runCurrent()
             assertTrue(
-                vm.state.value.access!!.active
+                vm.state.value.access!!.active,
             ) // Cold-start restoration did not need the lost callback.
             vm.restore()
             runCurrent()
@@ -136,7 +148,7 @@ class SubscriptionViewModelTest {
             runCurrent()
             server.gate = CompletableDeferred()
             store.events.emit(
-                StoreNotice.Purchase(PurchaseNotice("synthetic-token", false, "a".repeat(64)))
+                StoreNotice.Purchase(PurchaseNotice("synthetic-token", false, "a".repeat(64))),
             )
             runCurrent()
             vm.bindOwner(null)
@@ -152,7 +164,7 @@ class SubscriptionViewModelTest {
             vm.bindOwner("other")
             runCurrent()
             store.events.emit(
-                StoreNotice.Purchase(PurchaseNotice("other-token", false, "a".repeat(64)))
+                StoreNotice.Purchase(PurchaseNotice("other-token", false, "a".repeat(64))),
             )
             runCurrent()
             assertFalse(vm.state.value.access!!.active)
@@ -177,7 +189,7 @@ class SubscriptionViewModelTest {
                 assertFalse(
                     PurchaseNotice("very-private-token", false)
                         .toString()
-                        .contains("very-private-token")
+                        .contains("very-private-token"),
                 )
             } finally {
                 Dispatchers.resetMain()
@@ -208,8 +220,8 @@ class SubscriptionViewModelTest {
                 assertNull(vm.beginPurchase())
                 server.gate!!.complete(
                     BillingOutcome.Success(
-                        server.access.copy(status = SubscriptionStatus.Active, active = true)
-                    )
+                        server.access.copy(status = SubscriptionStatus.Active, active = true),
+                    ),
                 )
                 runCurrent()
                 assertTrue(vm.state.value.access!!.active)
@@ -286,7 +298,7 @@ class SubscriptionViewModelTest {
                 assertNull(vm.beginPurchase())
                 store.owned =
                     BillingOutcome.Success(
-                        listOf(PurchaseNotice("recovered-same-purchase-token", false))
+                        listOf(PurchaseNotice("recovered-same-purchase-token", false)),
                     )
                 vm.restore()
                 runCurrent()
@@ -294,6 +306,231 @@ class SubscriptionViewModelTest {
                 assertTrue(vm.state.value.access!!.active)
                 assertEquals(3, vm.state.value.access!!.remainingCreations)
                 assertNull(vm.beginPurchase())
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `offline restart displays cached active subscription without checkout or false verification success`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Active,
+                        active = true,
+                        expiresAt = 4102444800000L,
+                        canPurchase = false,
+                        fromCache = true,
+                    )
+                val store = Store()
+                store.owned = BillingOutcome.Error(BillingProblem.Offline)
+                val vm = SubscriptionViewModel(server, store)
+                vm.bindOwner("u")
+                runCurrent()
+                assertTrue(vm.state.value.access!!.active)
+                assertEquals(BillingProblem.Offline, vm.state.value.problem)
+                assertNull(vm.beginPurchase())
+                vm.restore()
+                runCurrent()
+                assertFalse(vm.state.value.restored)
+                assertTrue(vm.state.value.access!!.active)
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Hold,
+                        active = false,
+                        fromCache = false,
+                    )
+                vm.refresh()
+                runCurrent()
+                assertEquals(SubscriptionStatus.Hold, vm.state.value.access!!.status)
+                assertFalse(vm.state.value.access!!.active)
+                assertNull(vm.state.value.problem)
+                vm.bindOwner(null)
+                assertNull(vm.state.value.access)
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `failed refresh or restore cannot keep an expired in-memory subscription active`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                var now = 1000L
+                val server = Server()
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Active,
+                        active = true,
+                        expiresAt = 2000L,
+                        canPurchase = false,
+                        fromCache = true,
+                    )
+                val store = Store()
+                val vm = SubscriptionViewModel(server, store, Clock { now })
+                vm.bindOwner("u")
+                runCurrent()
+                assertTrue(vm.state.value.access!!.active)
+                now = 2000L
+                server.accessFailure = BillingProblem.Offline
+                vm.refresh()
+                runCurrent()
+                assertNull(vm.state.value.access)
+                assertNull(vm.beginPurchase())
+                now = 1000L
+                server.accessFailure = null
+                vm.refresh()
+                runCurrent()
+                now = 2000L
+                store.owned = BillingOutcome.Error(BillingProblem.Offline)
+                vm.restore()
+                runCurrent()
+                assertNull(vm.state.value.access)
+                assertFalse(vm.state.value.restored)
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `store outage does not hide a server-confirmed active subscription or pretend it is a free trial`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Active,
+                        active = true,
+                        expiresAt = 4102444800000L,
+                    )
+                val store = Store()
+                store.owned = BillingOutcome.Error(BillingProblem.Unavailable)
+                val vm = SubscriptionViewModel(server, store)
+                vm.bindOwner("u")
+                runCurrent()
+                assertTrue(vm.state.value.access!!.active)
+                assertNull(vm.state.value.problem)
+                assertNull(vm.beginPurchase())
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `foreground refresh receives revocation without tapping and stops on cancellation`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Active,
+                        active = true,
+                        canPurchase = false,
+                        expiresAt = 4102444800000L,
+                    )
+                val vm = SubscriptionViewModel(server, Store())
+                vm.bindOwner("u")
+                runCurrent()
+                val sync = launch { vm.synchronizeWhileVisible() }
+                runCurrent()
+                server.access =
+                    server.access.copy(status = SubscriptionStatus.Expired, active = false)
+                advanceTimeBy(60_000)
+                runCurrent()
+                assertEquals(SubscriptionStatus.Expired, vm.state.value.access!!.status)
+                assertFalse(vm.state.value.access!!.active)
+                assertFalse(vm.state.value.busy)
+                sync.cancelAndJoin()
+                val reads = server.accessCalls
+                advanceTimeBy(120_000)
+                runCurrent()
+                assertEquals(reads, server.accessCalls)
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `offline foreground cache is refreshed when connection returns and expires at its known end`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access =
+                    server.access.copy(
+                        status = SubscriptionStatus.Active,
+                        active = true,
+                        canPurchase = false,
+                        fromCache = true,
+                        expiresAt = 90_000L,
+                    )
+                val vm = SubscriptionViewModel(server, Store(), Clock { testScheduler.currentTime })
+                vm.bindOwner("u")
+                runCurrent()
+                val sync = launch { vm.synchronizeWhileVisible() }
+                runCurrent()
+                assertEquals(BillingProblem.Offline, vm.state.value.problem)
+                server.access = server.access.copy(fromCache = false)
+                advanceTimeBy(60_000)
+                runCurrent()
+                assertNull(vm.state.value.problem)
+                assertFalse(vm.state.value.access!!.fromCache)
+                server.accessFailure = BillingProblem.Offline
+                advanceTimeBy(30_000)
+                runCurrent()
+                assertNull(vm.state.value.access)
+                assertNull(vm.beginPurchase())
+                sync.cancelAndJoin()
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `overlapping refresh taps share a read and old account response cannot overwrite sign out`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                server.access = server.access.copy(canPurchase = false)
+                server.accessGate = CompletableDeferred()
+                val vm = SubscriptionViewModel(server, Store())
+                vm.bindOwner("u")
+                runCurrent()
+                repeat(5) { vm.refresh() }
+                runCurrent()
+                assertEquals(1, server.accessCalls)
+                vm.bindOwner(null)
+                server.accessGate!!.complete(
+                    BillingOutcome.Success(server.access.copy(active = true)),
+                )
+                runCurrent()
+                assertNull(vm.state.value.access)
+                assertFalse(vm.state.value.busy)
+            } finally {
+                Dispatchers.resetMain()
+            }
+        }
+
+    @Test
+    fun `manual check asks for fresh verification even when Play returns no owned purchase`() =
+        runTest {
+            Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+            try {
+                val server = Server()
+                val vm = SubscriptionViewModel(server, Store())
+                vm.bindOwner("u")
+                runCurrent()
+                assertEquals(0, server.checkCalls)
+                vm.restore()
+                runCurrent()
+                assertEquals(1, server.checkCalls)
             } finally {
                 Dispatchers.resetMain()
             }

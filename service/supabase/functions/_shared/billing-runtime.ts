@@ -75,21 +75,42 @@ export async function verifyPlayPurchase(
     throw error;
   }
 }
+interface RefreshDependencies {
+  policy: () => Promise<Policy>;
+  candidates: (
+    owner: string | null,
+    forceCheck: boolean,
+  ) => Promise<{ owner_id: string; token: string }[]>;
+  verify: typeof verifyPlayPurchase;
+}
+const refreshDependencies: RefreshDependencies = {
+  policy: billingPolicy,
+  candidates: async (owner, forceCheck) =>
+    await rpc("s7_refresh_candidates", { owner, force_check: forceCheck }) as {
+      owner_id: string;
+      token: string;
+    }[],
+  verify: verifyPlayPurchase,
+};
+
 export async function refreshSubscriptions(
   owner: string | null = null,
+  forceCheck = false,
+  dependencies: RefreshDependencies = refreshDependencies,
 ): Promise<void> {
-  const policy = await billingPolicy();
-  if (!policy.enabled) return;
-  // No Google request unless credentials exist. Refresh at most one row per wakeup.
-  google(policy);
-  const candidates = await rpc("s7_refresh_candidates", { owner }) as {
-    owner_id: string;
-    token: string;
-  }[];
+  const policy = await dependencies.policy();
+  if (!policy.enabled) {
+    if (forceCheck) throw new Fault("billing_unavailable", 503);
+    return;
+  }
+  // Accounts without a purchase do not depend on Play credentials.
+  const candidates = await dependencies.candidates(owner, forceCheck);
   for (const candidate of candidates) {
     try {
-      await verifyPlayPurchase(candidate.token, candidate.owner_id, policy);
+      await dependencies.verify(candidate.token, candidate.owner_id, policy);
     } catch {
+      // A manual check must fail explicitly instead of calling old data verified.
+      if (forceCheck) throw new Fault("billing_unavailable", 503);
       console.warn(JSON.stringify({ event: "subscription_refresh_failed" }));
     }
   }

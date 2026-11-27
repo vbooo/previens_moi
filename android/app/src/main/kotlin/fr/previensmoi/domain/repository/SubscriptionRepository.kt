@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface SubscriptionRepository {
     suspend fun access(): BillingOutcome<SubscriptionAccess>
 
+    suspend fun check(): BillingOutcome<SubscriptionAccess> = access()
+
     suspend fun verify(token: String): BillingOutcome<SubscriptionAccess>
 }
 

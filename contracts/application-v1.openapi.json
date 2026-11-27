@@ -1293,7 +1293,19 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "name": "verify",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "true : vérification Google explicite de l’achat courant du compte, sans réutiliser le délai des lectures ordinaires. Échec temporaire si Google ne peut pas être interrogé. Les lectures ordinaires conservent le rythme de réconciliation serveur."
+          }
+        ]
       }
     },
     "/api/v1/subscription/purchases": {

@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-11-27T14:08:42.228992+00:00",
+  "providerCalls": 0,
+  "billing": {
+    "enabled": true,
+    "testOnly": true,
+    "monitoringEnabled": false
+  },
+  "budget": {
+    "modelHeld": 20000,
+    "modelUsed": 94313,
+    "creditHeld": 39,
+    "creditUsed": 116,
+    "modelLimit": 320000,
+    "creditLimit": 171,
+    "modelCommitted": 0,
+    "creditCommitted": 0
+  },
+  "migrationApplied": true,
+  "refreshArguments": "owner uuid DEFAULT NULL::uuid, force_check boolean DEFAULT false",
+  "noAnonymousRefresh": true,
+  "noAuthenticatedRefresh": true,
+  "functions": [
+    {
+      "name": "api",
+      "versionBefore": 23,
+      "versionAfter": 24,
+      "verifyJwt": true
+    },
+    {
+      "name": "worker",
+      "versionBefore": 43,
+      "versionAfter": 44,
+      "verifyJwt": false
+    },
+    {
+      "name": "play-notifications",
+      "versionBefore": 7,
+      "versionAfter": 8,
+      "verifyJwt": false
+    }
+  ],
+  "httpChecks": [
+    {
+      "path": "/api/v1/subscription?verify=true",
+      "method": "GET",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/worker",
+      "method": "POST",
+      "unauthenticatedStatus": 403
+    },
+    {
+      "path": "/play-notifications",
+      "method": "POST",
+      "unauthenticatedStatus": 403
+    }
+  ],
+  "passed": true
+}

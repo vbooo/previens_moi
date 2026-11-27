@@ -1,0 +1,12 @@
+[
+  {
+    "tests": 4,
+    "failures": 0,
+    "cases": [
+      "cachedSubscriptionKeepsStatusAndNeverOffersAnotherPurchase",
+      "checkingHidesCheckoutAndCompletionIsVisibleAtTheBottom",
+      "paymentRecoveryStatesNeverOfferCheckoutOrClaimNoSubscription",
+      "subscriptionStatesKeepCheckoutDisabledUntilProductAndServerAreReady"
+    ]
+  }
+]

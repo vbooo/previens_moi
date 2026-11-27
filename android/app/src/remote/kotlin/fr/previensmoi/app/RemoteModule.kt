@@ -25,7 +25,8 @@ object RemoteModule {
     @Provides @Singleton fun support(api: ApplicationApi): SupportRepository = RemoteSupportRepository(api)
     @Provides @Singleton fun playBilling(@ApplicationContext context: Context) = fr.previensmoi.data.billing.GooglePlayBilling(context)
     @Provides fun storeBilling(value: fr.previensmoi.data.billing.GooglePlayBilling): StoreBilling = value
-    @Provides @Singleton fun subscriptions(api: ApplicationApi, session: RemoteSessionRepository): SubscriptionRepository = fr.previensmoi.data.billing.RemoteSubscriptionRepository(api,session)
+    @Provides @Singleton fun subscriptionCache(@ApplicationContext context: Context): fr.previensmoi.data.billing.SubscriptionCache = fr.previensmoi.data.billing.KeystoreSubscriptionCache(context)
+    @Provides @Singleton fun subscriptions(api: ApplicationApi, session: RemoteSessionRepository, cache: fr.previensmoi.data.billing.SubscriptionCache, clock: Clock): SubscriptionRepository = fr.previensmoi.data.billing.RemoteSubscriptionRepository(api,session,cache,clock)
     @Provides fun clock(): Clock = Clock { System.currentTimeMillis() }
     @Provides @Singleton fun ids(): IdGenerator = IdGenerator {
         val bytes = ByteArray(16).also { SecureRandom().nextBytes(it) }; val now = System.currentTimeMillis()
@@ -38,11 +39,11 @@ object RemoteModule {
     @Provides @Singleton fun vault(@ApplicationContext context: Context): SessionVault = KeystoreSessionVault(context)
     @Provides @Singleton fun notificationClaims(@ApplicationContext context: Context) = fr.previensmoi.data.push.NotificationClaims(context)
     @Provides @Singleton fun installation(@ApplicationContext context: Context) = DeviceInstallation(context)
-    @Provides @Singleton fun sessions(api: AuthApi, vault: SessionVault, clock: Clock, application: ApplicationApi, installation: DeviceInstallation, ids: IdGenerator) = RemoteSessionRepository(api, vault, clock,
-        beforeSignOut = { bearer -> application.removeDevice(bearer,installation.id) },
+    @Provides @Singleton fun sessions(api: AuthApi, vault: SessionVault, clock: Clock, application: ApplicationApi, installation: DeviceInstallation, ids: IdGenerator, cache: fr.previensmoi.data.billing.SubscriptionCache) = RemoteSessionRepository(api, vault, clock,
+        beforeSignOut = { bearer -> kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { cache.clear() } }; application.removeDevice(bearer,installation.id) },
         deleteAccount = { bearer ->
             when (val result = apiCall { application.deleteAccount(bearer,DeletionRequestDto(ids.next())) }) {
-                is ApiResult.Value -> if (result.body.state == "accepted") Outcome.Success(Unit) else Outcome.Error(Failure.TemporaryFailure)
+                is ApiResult.Value -> if (result.body.state == "accepted") { kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching { cache.clear() } }; Outcome.Success(Unit) } else Outcome.Error(Failure.TemporaryFailure)
                 is ApiResult.Rejected -> Outcome.Error(if (result.httpStatus == 401) Failure.SessionRequired else Failure.TemporaryFailure)
                 else -> Outcome.Error(Failure.TemporaryFailure)
             }

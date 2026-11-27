@@ -47,7 +47,7 @@ fun SubscriptionScreen(
                     access.status == SubscriptionStatus.Cancelled ->
                         R.string.billing_restored_cancelled
                     else -> R.string.billing_restored
-                }
+                },
             )
         else null
     LaunchedEffect(restoreMessage) {
@@ -73,11 +73,11 @@ fun SubscriptionScreen(
                                     if (state.busy) R.string.v1_wait
                                     else R.string.billing_subscribe,
                                     price,
-                                )
+                                ),
                             )
                         }
                     }
-                } else null
+                } else null,
         ) {
             if (!state.loaded) {
                 Busy()
@@ -101,7 +101,7 @@ fun SubscriptionScreen(
             Card(
                 colors =
                     CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
                     ),
                 shape = MaterialTheme.shapes.large,
                 modifier = Modifier.fillMaxWidth(),
@@ -129,7 +129,7 @@ fun SubscriptionScreen(
                                 SubscriptionStatus.None ->
                                     if (access.trialEnded) R.string.trial_ended
                                     else R.string.billing_offer_intro
-                            }
+                            },
                         ),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.testTag("subscription_status"),
@@ -142,10 +142,12 @@ fun SubscriptionScreen(
                                         SubscriptionStatus.Cancelled ->
                                             R.string.billing_access_until
                                         SubscriptionStatus.Grace -> R.string.billing_grace_until
-                                        else -> R.string.billing_renewal
+                                        else ->
+                                            if (access.fromCache) R.string.billing_access_until
+                                            else R.string.billing_renewal
                                     },
                                     dateText(it),
-                                )
+                                ),
                             )
                         }
                     else if (!access.trialEnded)
@@ -174,30 +176,38 @@ fun SubscriptionScreen(
                 }
             if (
                 !access.active &&
+                    !access.fromCache &&
                     !eligible &&
                     access.status in setOf(SubscriptionStatus.None, SubscriptionStatus.Expired)
             )
                 SecondaryText(stringResource(R.string.billing_not_available))
-            state.problem?.let { problem ->
-                Text(
-                    stringResource(
-                        when (problem) {
-                            BillingProblem.Cancelled -> R.string.billing_purchase_cancelled
-                            BillingProblem.Pending -> R.string.billing_pending
-                            BillingProblem.WrongAccount -> R.string.billing_wrong_account
-                            BillingProblem.InvalidPurchase -> R.string.billing_invalid
-                            BillingProblem.Offline -> R.string.billing_offline
-                            BillingProblem.Verification -> R.string.billing_verify_failed
-                            BillingProblem.Unavailable -> R.string.billing_not_available
-                        }
-                    ),
-                    color =
-                        if (problem in setOf(BillingProblem.Cancelled, BillingProblem.Pending))
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        else MaterialTheme.colorScheme.error,
-                    modifier = Modifier.testTag("subscription_message"),
+            if (access.fromCache)
+                SecondaryText(
+                    stringResource(R.string.billing_cached_offline),
+                    modifier = Modifier.testTag("subscription_cached"),
                 )
-            }
+            state.problem
+                ?.takeUnless { access.fromCache && it == BillingProblem.Offline }
+                ?.let { problem ->
+                    Text(
+                        stringResource(
+                            when (problem) {
+                                BillingProblem.Cancelled -> R.string.billing_purchase_cancelled
+                                BillingProblem.Pending -> R.string.billing_pending
+                                BillingProblem.WrongAccount -> R.string.billing_wrong_account
+                                BillingProblem.InvalidPurchase -> R.string.billing_invalid
+                                BillingProblem.Offline -> R.string.billing_offline
+                                BillingProblem.Verification -> R.string.billing_verify_failed
+                                BillingProblem.Unavailable -> R.string.billing_not_available
+                            },
+                        ),
+                        color =
+                            if (problem in setOf(BillingProblem.Cancelled, BillingProblem.Pending))
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            else MaterialTheme.colorScheme.error,
+                        modifier = Modifier.testTag("subscription_message"),
+                    )
+                }
             if (known)
                 OutlinedButton(
                     manage,
@@ -210,8 +220,8 @@ fun SubscriptionScreen(
                                     setOf(SubscriptionStatus.Grace, SubscriptionStatus.Hold)
                             )
                                 R.string.billing_fix_payment
-                            else R.string.billing_manage
-                        )
+                            else R.string.billing_manage,
+                        ),
                     )
                 }
             TextButton(
@@ -221,8 +231,8 @@ fun SubscriptionScreen(
             ) {
                 Text(
                     stringResource(
-                        if (state.busy) R.string.billing_checking else R.string.billing_restore
-                    )
+                        if (state.busy) R.string.billing_checking else R.string.billing_restore,
+                    ),
                 )
             }
             if (access.status in setOf(SubscriptionStatus.None, SubscriptionStatus.Expired)) {

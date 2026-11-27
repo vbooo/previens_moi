@@ -1,0 +1,56 @@
+{
+  "artifactSha256": "0775e93624947e1e409d66b958eb70c8b2a189ef3861484fbe8c84472d4f1d6b",
+  "apkBytes": 2706372,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation.",
+    "Unsigned artifact; no production signing identity created or configured."
+  ],
+  "checkedAt": "2026-11-21T12:28:50.267372+00:00",
+  "version": "0.2.8",
+  "versionCode": 22,
+  "unitTests": {
+    "testRemoteDebugUnitTest": {
+      "tests": 96,
+      "failures": 0,
+      "errors": 0
+    },
+    "testDemoDebugUnitTest": {
+      "tests": 87,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "lint": {
+    "remoteDebug": {
+      "Hint": 16
+    },
+    "demoDebug": {
+      "Hint": 16
+    },
+    "remoteRelease": {
+      "Hint": 16
+    }
+  },
+  "uploadCertificateMatches": true,
+  "bundleSignatureVerified": true,
+  "bundleSha256": "63057d980bf134ca54de830e7a29da31ec82b390257f7ff392c71fdff5d2b8a4",
+  "providerRequests": 0,
+  "realPurchases": 0,
+  "googlePlayUploadPerformed": false
+}

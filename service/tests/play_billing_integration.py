@@ -1,6 +1,6 @@
 """Disposable local DB, synthetic identities and injected provider results only."""
 from pathlib import Path
-import concurrent.futures,datetime as dt,json,subprocess,time,uuid
+import concurrent.futures,datetime as dt,json,subprocess,time,uuid,sys
 import psycopg
 from psycopg.types.json import Jsonb
 R=Path(__file__).resolve().parents[2]
@@ -37,6 +37,10 @@ try:
   else:version=202610220031
   applied=[]
   for file in sorted((R/'service/supabase/migrations').glob('*.sql')):
+   # This clone omits pg_cron, which can only run in its configured database.
+   # Migration 44 only schedules unrelated support-message retention.
+   if file.name.startswith('202611190044'):
+    report['excludedSupportCronSchedule']='202611190044';continue
    if int(file.name[:12])>version:q(file.read_text());applied.append(file.name[:12])
   report['migrationsAppliedInDisposableDb']=applied
   report['migrationOnHistoricalLocalSchema']=True
@@ -73,6 +77,15 @@ try:
   fail('select public.s7_bind_purchase(%s,%s,%s,now())',(u,token,Jsonb(real)),'billing_unavailable')
   bind(u,token);access=q('select public.s7_subscription()');assert access['active'] and access['remainingCreations']==5
   report['pendingNeverGrantsAndTestOnlyRejectsRealPayments']=True;report['purchaseCannotMoveBetweenAccounts']=True
+
+  # A manual verification must consult a current purchase even far from expiry,
+  # including immediately after a recent successful read (refund/revocation).
+  q('update private.billing_purchases set acknowledged=true,verified_at=now(),refresh_attempt_at=now() where owner_id=%s',(u,))
+  assert q('select public.s7_refresh_candidates()')==[], 'background remains throttled'
+  assert q('select public.s7_refresh_candidates(%s)',(u,))==[], 'routine owner reads remain throttled'
+  current=q('select public.s7_refresh_candidates(%s,true)',(u,))
+  assert current and current[0]['token']==token, 'manual check incorrectly skips a recently verified purchase'
+  report['ManualCheckRevalidatesRecentPurchaseFarFromExpiry']=True
   p,cmd=stage(u);prepared=q('select public.s7_prepare_proposal(%s,%s)',(p['id'],cmd['proposalToken']));assert prepared['accessTier']=='plus' and prepared['intervalHours']==24 and prepared['limits']['activePerAccount']==2 and 'trialDays' not in prepared
   first=q('select public.s3_command(%s)',(Jsonb(cmd),));w1=first['watchId'];assert q('select public.s3_command(%s)',(Jsonb(cmd),))==first
   assert q('select public.s7_subscription()')['remainingCreations']==4
@@ -138,7 +151,7 @@ try:
   eid=v7();q('select public.s7_analysis_access(%s)',(eid,));q('select public.s7_analysis_access(%s)',(eid,));assert q("select analyses from private.billing_periods where period_key=encode(extensions.digest(encode(extensions.digest(%s,'sha256'),'hex')||':test-order-2','sha256'),'hex')",(token,))==1
   for _ in range(24):q('select public.s7_analysis_access(%s)',(v7(),))
   fail('select public.s7_analysis_access(%s)',(v7(),),'monthly_analysis_limit');report['RepeatedUnderstandingDoesNotDoubleChargeAllowance']=True
-  for function in ['public.s7_bind_purchase(uuid,text,jsonb,timestamptz)','public.s7_acknowledged(text)','public.s7_refresh_candidates(uuid)','public.s7_purchase_owner(text)']:
+  for function in ['public.s7_bind_purchase(uuid,text,jsonb,timestamptz)','public.s7_acknowledged(text)','public.s7_refresh_candidates(uuid,boolean)','public.s7_purchase_owner(text)']:
    assert not q("select has_function_privilege('authenticated',%s,'execute')",(function,));assert not q("select has_function_privilege('anon',%s,'execute')",(function,))
   assert not q("select has_table_privilege('authenticated','private.billing_purchases','select')")
   q('update private.accounts set deleted_at=now() where id=%s',(u,));assert q('select count(*) from private.billing_purchases where owner_id=%s',(u,))==0
@@ -180,4 +193,4 @@ try:
   report['passed']=True
 finally:
  if created:run([D,'exec',C,'dropdb','-U','postgres','--force',name])
- out=R/'validation/billing/local-database.json';out.parent.mkdir(exist_ok=True,parents=True);out.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+ out=R/'validation/billing'/('audit-lifecycle-local.json' if '--audit-report' in sys.argv else 'local-database.json');out.parent.mkdir(exist_ok=True,parents=True);out.write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

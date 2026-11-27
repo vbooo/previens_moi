@@ -5,7 +5,7 @@ serve(async req=>{
  if(path[0]!=='v1')throw new Fault('not_found',404);
  if(path[1]==='subscription'){
   const owner=await rpc('s7_billing_owner',{},bearer) as string;
-  if(req.method==='GET'&&path.length===2){try{await refreshSubscriptions(owner);}catch{console.warn(JSON.stringify({event:'subscription_refresh_unavailable'}));}return json(await rpc('s7_subscription',{},bearer),200,'SubscriptionAccess');}
+  if(req.method==='GET'&&path.length===2){if(url.searchParams.get('verify')==='true'){await refreshSubscriptions(owner,true);}else{try{await refreshSubscriptions(owner);}catch{console.warn(JSON.stringify({event:'subscription_refresh_unavailable'}));}}return json(await rpc('s7_subscription',{},bearer),200,'SubscriptionAccess');}
   if(req.method==='POST'&&path.length===3&&path[2]==='purchases'){
    const purchase=await body(req,'PurchaseVerification');await verifyPlayPurchase(purchase.purchaseToken,owner,await billingPolicy());
    return json(await rpc('s7_subscription',{},bearer),200,'SubscriptionAccess');

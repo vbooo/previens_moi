@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-21T15:39:50.918015+00:00",
+  "emulatorApi": 36,
+  "version": "0.2.9",
+  "realPurchases": 0,
+  "providerCalls": 0,
+  "results": [
+    {
+      "class": "SubscriptionSynchronizationTest",
+      "passed": true,
+      "tests": 1
+    },
+    {
+      "class": "SubscriptionUiTest",
+      "passed": true,
+      "tests": 4
+    },
+    {
+      "class": "OfflineSubscriptionStorageTest",
+      "passed": true,
+      "tests": 1
+    },
+    {
+      "class": "OfflineSubscriptionStorageTest",
+      "passed": true,
+      "tests": 1
+    },
+    {
+      "class": "OfflineSubscriptionStorageTest",
+      "passed": true,
+      "tests": 1
+    }
+  ],
+  "forcedProcessStopBetweenStoragePhases": true,
+  "passed": true
+}

@@ -20,6 +20,7 @@ data class SubscriptionAccess(
     val accountId: String = "",
     val trialEndsAt: Long? = null,
     val trialEnded: Boolean = false,
+    val fromCache: Boolean = false,
 )
 
 data class SubscriptionProduct(val formattedPrice: String)

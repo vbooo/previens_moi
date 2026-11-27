@@ -28,7 +28,6 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
@@ -42,7 +41,6 @@ import fr.previensmoi.feature.watches.presentation.*
 import fr.previensmoi.feature.subscription.*
 import fr.previensmoi.feature.support.*
 import androidx.compose.ui.Alignment
-import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -92,7 +90,7 @@ class MainActivity : ComponentActivity() {
                 val assistance by support.state.collectAsStateWithLifecycle()
                 if (assistance.opened) SupportSheet(assistance, support::message, support::email, support::category,
                     { support.send(fr.previensmoi.BuildConfig.VERSION_NAME) }, support::close, support::done)
-                LaunchedEffect(account.session?.id) { membership.bindOwner(account.session?.id) }
+                SubscriptionSynchronizationEffect(membership, account.session?.id)
                 WatchSynchronizationEffect(watches, account.session?.id)
                 LaunchedEffect(subscription.access?.active, subscription.access?.expiresAt) {
                     if (subscription.loaded && account.session != null) watches.refresh()

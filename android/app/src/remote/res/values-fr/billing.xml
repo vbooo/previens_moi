@@ -36,4 +36,5 @@
     <string name="billing_checking">Vérification…</string>
     <string name="billing_grace_until">Accès maintenu jusqu’au %1$s</string>
     <string name="billing_fix_payment">Régulariser mon paiement</string>
+    <string name="billing_cached_offline">Hors connexion · Dernier état connu.</string>
 </resources>

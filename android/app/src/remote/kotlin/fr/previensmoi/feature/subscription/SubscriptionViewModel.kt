@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.previensmoi.domain.model.*
 import fr.previensmoi.domain.repository.*
 import javax.inject.Inject
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -24,8 +24,11 @@ data class SubscriptionUiState(
 @HiltViewModel
 class SubscriptionViewModel
 @Inject
-constructor(private val repository: SubscriptionRepository, private val store: StoreBilling) :
-    ViewModel() {
+constructor(
+    private val repository: SubscriptionRepository,
+    private val store: StoreBilling,
+    private val clock: Clock = Clock { System.currentTimeMillis() },
+) : ViewModel() {
     private val mutable = MutableStateFlow(SubscriptionUiState())
     val state = mutable.asStateFlow()
     private val mutex = Mutex()
@@ -50,6 +53,8 @@ constructor(private val repository: SubscriptionRepository, private val store: S
 
     fun bindOwner(value: String?) {
         if (value == owner) return
+        refreshJob?.cancel()
+        refreshJob = null
         owner = value
         restoreOnLoad = value != null
         epoch++
@@ -57,49 +62,97 @@ constructor(private val repository: SubscriptionRepository, private val store: S
         if (value != null) refresh()
     }
 
+    private var refreshJob: Job? = null
+
     fun refresh() {
+        if (owner == null || refreshJob?.isActive == true) return
+        refreshJob = viewModelScope.launch { refreshFromService(showLoading = true) }
+    }
+
+    /** Only called inside STARTED: cancellation stops an in-flight read as well. */
+    suspend fun synchronizeWhileVisible() {
+        while (currentCoroutineContext().isActive && owner != null) {
+            refreshFromService(showLoading = false)
+            val untilExpiry =
+                state.value.access
+                    ?.takeIf { it.active }
+                    ?.expiresAt
+                    ?.minus(clock.now())
+                    ?.takeIf { it > 0 }
+            delay(minOf(60_000L, untilExpiry ?: 60_000L))
+        }
+    }
+
+    private suspend fun refreshFromService(showLoading: Boolean) {
+        if (owner == null || state.value.buying || !mutex.tryLock()) return
         val generation = epoch
-        if (owner == null) return
-        viewModelScope.launch {
-            mutex.withLock {
-                if (generation != epoch) return@withLock
-                mutable.update { it.copy(busy = true, problem = null, restored = false) }
-                when (val access = repository.access()) {
-                    is BillingOutcome.Error ->
-                        if (generation == epoch)
-                            mutable.update {
-                                it.copy(
-                                    loaded = true,
-                                    busy = false,
-                                    buying = false,
-                                    problem = access.problem,
-                                )
-                            }
-                    is BillingOutcome.Success -> {
-                        val product = if (access.value.canPurchase) store.product() else null
-                        val recover =
-                            generation == epoch &&
-                                access.value.canPurchase &&
-                                (restoreOnLoad || !access.value.active)
-                        // An expired server snapshot can overlap a Play renewal. Reconcile
-                        // owned purchases before publishing an offer to subscribe again.
-                        val recovered = if (recover) recoverAccess(generation) else null
-                        if (generation == epoch) restoreOnLoad = false
-                        if (generation == epoch)
-                            mutable.update {
-                                it.copy(
-                                    loaded = true,
-                                    busy = false,
-                                    buying = false,
-                                    access = recovered?.access ?: access.value,
-                                    product = (product as? BillingOutcome.Success)?.value,
-                                    problem = recovered?.problem,
-                                )
-                            }
+        try {
+            mutable.update {
+                it.copy(
+                    busy = showLoading || !it.loaded,
+                    problem = if (showLoading) null else it.problem,
+                    restored = if (showLoading) false else it.restored,
+                )
+            }
+            when (val access = repository.access()) {
+                is BillingOutcome.Error ->
+                    if (generation == epoch)
+                        mutable.update {
+                            it.copy(
+                                loaded = true,
+                                busy = false,
+                                buying = false,
+                                problem = access.problem,
+                                access = retainValid(it.access),
+                            )
+                        }
+                is BillingOutcome.Success -> {
+                    val product =
+                        if (access.value.canPurchase)
+                            state.value.product?.let { BillingOutcome.Success(it) }
+                                ?: store.product()
+                        else null
+                    val recover =
+                        generation == epoch &&
+                            access.value.canPurchase &&
+                            (restoreOnLoad || (!access.value.active && showLoading))
+                    val recovered = if (recover) recoverAccess(generation) else null
+                    if (generation == epoch) {
+                        restoreOnLoad = false
+                        mutable.update {
+                            // An unavailable store does not invalidate an authoritative server
+                            // proof.
+                            val problem =
+                                recovered?.problem?.takeUnless { issue ->
+                                    issue == BillingProblem.Unavailable &&
+                                        access.value.active &&
+                                        !access.value.fromCache &&
+                                        recovered.access == null
+                                }
+                            it.copy(
+                                loaded = true,
+                                busy = false,
+                                buying = false,
+                                access = recovered?.access ?: access.value,
+                                product = (product as? BillingOutcome.Success)?.value,
+                                problem =
+                                    problem
+                                        ?: if (access.value.fromCache) BillingProblem.Offline
+                                        else null,
+                            )
+                        }
                     }
                 }
             }
+        } finally {
+            if (generation == epoch) mutable.update { it.copy(busy = false) }
+            mutex.unlock()
         }
+    }
+
+    // A transient failure is not a cancellation, but cannot extend a known paid period.
+    private fun retainValid(access: SubscriptionAccess?): SubscriptionAccess? = access?.takeUnless {
+        it.active && it.expiresAt?.let { end -> end <= clock.now() } == true
     }
 
     fun beginPurchase(): String? {
@@ -137,16 +190,19 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                 mutable.update {
                     it.copy(busy = true, buying = false, problem = null, restored = false)
                 }
-                val recovered = recoverAccess(generation)
+                val recovered = recoverAccess(generation, forceCheck = true)
                 if (generation == epoch)
                     mutable.update {
                         it.copy(
                             loaded = true,
                             busy = false,
-                            access = recovered.access ?: it.access,
+                            access = recovered.access ?: retainValid(it.access),
                             problem = recovered.problem,
                             restored =
-                                announce && recovered.access != null && recovered.problem == null,
+                                announce &&
+                                    recovered.access != null &&
+                                    !recovered.access.fromCache &&
+                                    recovered.problem == null,
                         )
                     }
             }
@@ -159,7 +215,7 @@ constructor(private val repository: SubscriptionRepository, private val store: S
 
     private data class Recovery(val access: SubscriptionAccess?, val problem: BillingProblem?)
 
-    private suspend fun recoverAccess(generation: Int): Recovery {
+    private suspend fun recoverAccess(generation: Int, forceCheck: Boolean = false): Recovery {
         when (val result = store.restore()) {
             is BillingOutcome.Error -> return Recovery(null, result.problem)
             is BillingOutcome.Success -> {
@@ -174,8 +230,14 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                     if (checked is BillingOutcome.Error) error = checked.problem
                 }
                 if (generation != epoch) return Recovery(null, null)
-                return when (val access = repository.access()) {
-                    is BillingOutcome.Success -> Recovery(access.value, error)
+                return when (
+                    val access = if (forceCheck) repository.check() else repository.access()
+                ) {
+                    is BillingOutcome.Success ->
+                        Recovery(
+                            access.value,
+                            error ?: if (access.value.fromCache) BillingProblem.Offline else null,
+                        )
                     is BillingOutcome.Error -> Recovery(null, error ?: access.problem)
                 }
             }
@@ -209,7 +271,13 @@ constructor(private val repository: SubscriptionRepository, private val store: S
                             }
                     is BillingOutcome.Error ->
                         if (generation == epoch)
-                            mutable.update { it.copy(busy = false, problem = checked.problem) }
+                            mutable.update {
+                                it.copy(
+                                    busy = false,
+                                    problem = checked.problem,
+                                    access = retainValid(it.access),
+                                )
+                            }
                 }
             }
         }

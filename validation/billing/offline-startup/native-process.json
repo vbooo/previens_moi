@@ -1,0 +1,14 @@
+{
+  "emulatorApi": 36,
+  "forcedProcessStopBetweenPhases": true,
+  "results": [
+    {
+      "phase": "seed",
+      "passed": true
+    },
+    {
+      "phase": "read",
+      "passed": true
+    }
+  ]
+}

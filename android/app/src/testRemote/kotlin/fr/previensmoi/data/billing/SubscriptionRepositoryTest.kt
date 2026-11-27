@@ -48,6 +48,14 @@ class SubscriptionRepositoryTest {
         return RemoteSubscriptionRepository(
             ApiClient.create(server.url("/functions/v1/"), true),
             session,
+            object : SubscriptionCache {
+                override fun read(): SubscriptionSnapshot? = null
+
+                override fun write(value: SubscriptionSnapshot) {}
+
+                override fun clear() {}
+            },
+            Clock { 1000L },
         )
     }
 
@@ -72,7 +80,7 @@ class SubscriptionRepositoryTest {
                     assertFalse(
                         PurchaseVerificationDto("synthetic-purchase-token")
                             .toString()
-                            .contains("synthetic-purchase-token")
+                            .contains("synthetic-purchase-token"),
                     )
                 }
         }
@@ -103,7 +111,7 @@ class SubscriptionRepositoryTest {
                     response(
                         """{"code":"purchase_account_mismatch","requestId":"test","retryAfterSeconds":null,"scope":null}""",
                         403,
-                    )
+                    ),
                 )
                 assertEquals(
                     BillingOutcome.Error(BillingProblem.WrongAccount),
@@ -111,6 +119,20 @@ class SubscriptionRepositoryTest {
                 )
                 server.enqueue(response("{}", 503))
                 assertEquals(BillingOutcome.Error(BillingProblem.Verification), repo.access())
+            }
+    }
+
+    @Test
+    fun `manual check uses authenticated forced verification route`() = runTest {
+        MockWebServer()
+            .apply { start() }
+            .use { server ->
+                server.enqueue(response(body()))
+                val result = repository(server).check() as BillingOutcome.Success
+                assertTrue(result.value.active)
+                val request = server.takeRequest(5, TimeUnit.SECONDS)!!
+                assertEquals("true", request.url.queryParameter("verify"))
+                assertEquals("Bearer access", request.headers["Authorization"])
             }
     }
 }

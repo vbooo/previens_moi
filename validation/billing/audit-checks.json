@@ -1,0 +1,63 @@
+{
+  "artifactSha256": "2a82f505c4d2d264fd19d586b08cecae832a5474d7637fa85606060644c3e345",
+  "apkBytes": 2706372,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation."
+  ],
+  "checkedAt": "2026-11-21T15:43:51.214023+00:00",
+  "version": "0.2.9",
+  "versionCode": 23,
+  "unitTests": {
+    "testRemoteDebugUnitTest": {
+      "tests": 103,
+      "failures": 0,
+      "errors": 0
+    },
+    "testDemoDebugUnitTest": {
+      "tests": 87,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "lint": {
+    "remoteDebug": {
+      "Hint": 16
+    },
+    "demoDebug": {
+      "Hint": 16
+    },
+    "remoteRelease": {
+      "Hint": 16
+    }
+  },
+  "serverTests": {
+    "passed": 151,
+    "failed": 0,
+    "providerNetworkAllowed": false
+  },
+  "databaseIntegration": "audit-lifecycle-local.json",
+  "nativeTests": "audit-native.json",
+  "uploadCertificateMatches": true,
+  "bundleSignatureVerified": true,
+  "providerRequests": 0,
+  "realPurchases": 0,
+  "productionDeploymentPerformed": false,
+  "googlePlayUploadPerformed": false,
+  "bundleSha256": "30e2d69b9621f6fb34efb8b415cc06492baa32bf7d958b9807fa4f2e46262aa7"
+}

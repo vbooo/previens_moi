@@ -78,7 +78,7 @@ class SubscriptionUiTest {
                             active = true,
                             remainingCreations = 3,
                             expiresAt = 4102444800000,
-                        )
+                        ),
                 )
         }
         compose.onNodeWithTag("subscribe").assertDoesNotExist()
@@ -121,7 +121,7 @@ class SubscriptionUiTest {
                     access =
                         SubscriptionAccess(status = SubscriptionStatus.Expired, canPurchase = true),
                     product = SubscriptionProduct("6,99 €"),
-                )
+                ),
             )
         compose.activity.setContent {
             PreviensTheme {
@@ -163,12 +163,12 @@ class SubscriptionUiTest {
         compose.runOnIdle {
             state.value =
                 state.value.copy(
-                    access = state.value.access!!.copy(status = SubscriptionStatus.Cancelled)
+                    access = state.value.access!!.copy(status = SubscriptionStatus.Cancelled),
                 )
         }
         compose
             .onNodeWithText(
-                compose.activity.getString(fr.previensmoi.R.string.billing_restored_cancelled)
+                compose.activity.getString(fr.previensmoi.R.string.billing_restored_cancelled),
             )
             .assertIsDisplayed()
         compose
@@ -183,13 +183,13 @@ class SubscriptionUiTest {
                         state.value.access!!.copy(
                             status = SubscriptionStatus.Expired,
                             active = false,
-                        )
+                        ),
                 )
         }
         compose
             .onNode(
                 hasText(compose.activity.getString(fr.previensmoi.R.string.billing_expired)) and
-                    hasAnyAncestor(hasTestTag("subscription_feedback"))
+                    hasAnyAncestor(hasTestTag("subscription_feedback")),
             )
             .assertIsDisplayed()
         compose.onNodeWithTag("subscribe").assertIsEnabled()
@@ -209,7 +209,7 @@ class SubscriptionUiTest {
                             canPurchase = true,
                         ),
                     product = SubscriptionProduct("6,99 €"),
-                )
+                ),
             )
         var managed = 0
         compose.activity.setContent {
@@ -240,7 +240,7 @@ class SubscriptionUiTest {
                             java.text.DateFormat.SHORT,
                         )
                         .format(java.util.Date(4102444800000)),
-                )
+                ),
             )
             .assertExists()
         compose.onNodeWithTag("subscribe").assertDoesNotExist()
@@ -249,7 +249,7 @@ class SubscriptionUiTest {
             .onNodeWithTag("manage_subscription")
             .performScrollTo()
             .assertTextEquals(
-                compose.activity.getString(fr.previensmoi.R.string.billing_fix_payment)
+                compose.activity.getString(fr.previensmoi.R.string.billing_fix_payment),
             )
             .performClick()
         assertEquals(1, managed)
@@ -261,7 +261,7 @@ class SubscriptionUiTest {
                             status = SubscriptionStatus.Hold,
                             active = false,
                             expiresAt = 1,
-                        )
+                        ),
                 )
         }
         compose
@@ -271,7 +271,7 @@ class SubscriptionUiTest {
         compose.onNodeWithTag("subscribe").assertDoesNotExist()
         compose
             .onNodeWithText(
-                compose.activity.getString(fr.previensmoi.R.string.billing_not_available)
+                compose.activity.getString(fr.previensmoi.R.string.billing_not_available),
             )
             .assertDoesNotExist()
         capture("hold")
@@ -281,9 +281,47 @@ class SubscriptionUiTest {
             .assertCountEquals(2)
         compose
             .onNodeWithText(
-                compose.activity.getString(fr.previensmoi.R.string.billing_restore_none)
+                compose.activity.getString(fr.previensmoi.R.string.billing_restore_none),
             )
             .assertDoesNotExist()
         compose.onNodeWithTag("subscribe").assertDoesNotExist()
+    }
+
+    @Test
+    fun cachedSubscriptionKeepsStatusAndNeverOffersAnotherPurchase() {
+        compose.activity.setContent {
+            PreviensTheme {
+                SubscriptionScreen(
+                    SubscriptionUiState(
+                        loaded = true,
+                        access =
+                            SubscriptionAccess(
+                                status = SubscriptionStatus.Active,
+                                active = true,
+                                expiresAt = 4102444800000L,
+                                fromCache = true,
+                                remainingCreations = 3,
+                            ),
+                        problem = BillingProblem.Offline,
+                    ),
+                    {},
+                    {},
+                    {},
+                    {},
+                )
+            }
+        }
+        compose
+            .onNodeWithTag("subscription_status")
+            .assertTextEquals(
+                compose.activity.getString(fr.previensmoi.R.string.billing_active),
+            )
+        compose.onNodeWithTag("subscription_cached").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("subscription_message").assertDoesNotExist()
+        compose.onNodeWithTag("subscribe").assertDoesNotExist()
+        compose
+            .onNodeWithTag("subscription_remaining")
+            .performScrollTo()
+            .assertTextContains("3", substring = true)
     }
 }
