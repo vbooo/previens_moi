@@ -38,3 +38,10 @@ Pour un test manuel : ouvrir **Mes suivis → Aide**, choisir une catégorie, é
 ## Suite demandée par Fabien
 
 La prochaine passe UI doit revoir **l’accueil**, notamment les espaces libres excessifs en haut et la présentation de l’état sans suivi. Elle reste distincte de ce lot. Restent ensuite l’identité/logo, la qualification complète FR/EN, les exigences de publication et l’observation réelle sur sept jours. Aucun nouveau forfait annuel ou à vie, achat réel, ouverture des ventes ou test IA payant n’est ajouté ici.
+
+
+## Service partagé — identité des mails (19/11/2026)
+
+Le client Mesures sur photos réutilise le service existant. Son `appVersion` au format complet `MSP-…-Android-…` sélectionne `[Mesures sur photos]` dans l’objet et `Mesures sur photos — assistance` comme nom d’expéditeur. Préviens-moi conserve ses objets, nom d’expéditeur et contenu exactement. Le marqueur sert uniquement à l’affichage, pas à authentifier une application. Aucun changement de destinataire, adresse SMTP, Reply-To, Message-ID, secrets, base ou règles de livraison. Les quotas 3/24 h par empreinte réseau et 20/24 h global sont communs aux deux applications.
+
+Correction ciblée déployée au worker v43 depuis les sources v42 en ligne ; autres fonctions inchangées. 146 tests serveur passent, dont les 3 contrôles d’identité dans `service/tests/support_mail_presentation_test.ts`. Vérification TypeScript réussie ; 28 fichiers déployés relus et comparés. Aucun mail réel envoyé par l’agent pour cette correction. Le dossier privé `.local/cloud/support-mail-branding-20261119/before` conserve le snapshot précédent ; ne pas l’utiliser pour annuler des évolutions ultérieures.
