@@ -45,9 +45,9 @@
   "remainingRetentionDecisions": [
     "La politique décrit les critères de conservation réels ; aucune durée de sauvegarde ou journal fournisseur non vérifiée n’est inventée. L’exploitation des sauvegardes et les accords de sous-traitance doivent rester suivis avant ouverture commerciale."
   ],
-  "reviewAccess": "Connexion actuelle par code e-mail; préparer un accès Google stable sans partager de boîte personnelle ou ajouter de code de contournement. Aucun nouvel identifiant créé par cet inventaire.",
+  "reviewAccess": "Compte utilisateur ordinaire créé après accord explicite, connexion standard par mot de passe. Identifiants privés conservés localement, non publiés. Le compte ne possède pas de droit Plus offert ; ne pas attester un accès complet tant que les fonctionnalités payantes restent inaccessibles.",
   "googleChecklistObserved": {
-    "completed": 0,
+    "completed": 9,
     "total": 12,
     "items": [
       "Règles de confidentialité",
@@ -62,7 +62,9 @@
       "Statut de professionnel",
       "Catégorie et coordonnées",
       "Fiche Play Store"
-    ]
+    ],
+    "observedAt": "2026-11-27",
+    "limit": "Neuf éléments de configuration préparés/enregistrés, pas une approbation Google. Accès évaluateur, cible et validation définitive Sécurité des données restent en attente."
   },
   "draftAnswersToValidate": {
     "ads": "Non : pas de SDK publicitaire dans la version inspectée",
@@ -77,5 +79,130 @@
   "publicDeletionUrl": "https://vbooo.github.io/app-policies/previens-moi/suppression.html",
   "publicSupportUrl": "https://vbooo.github.io/app-policies/previens-moi/",
   "audienceConfirmed": "18+",
-  "professionalStatusConfirmed": true
+  "professionalStatusConfirmed": true,
+  "storeListing": {
+    "language": "fr-FR",
+    "category": "Productivité",
+    "status": "Prête à être envoyée pour examen",
+    "screenshots": [
+      "01-accueil.jpg",
+      "02-nouveau-suivi.jpg",
+      "03-assistance.jpg"
+    ],
+    "logo": true,
+    "featureGraphic": true,
+    "publicWebsite": "https://vbooo.github.io/app-policies/previens-moi/"
+  },
+  "dataSafetyDraftObserved": {
+    "status": "saved_pending_target_audience",
+    "encryptedInTransit": true,
+    "accountCreation": [
+      "username_other_authentication"
+    ],
+    "accountDeletionUrl": "https://vbooo.github.io/app-policies/previens-moi/suppression.html",
+    "dataDeletionUrl": "https://vbooo.github.io/app-policies/previens-moi/suppression.html",
+    "independentSecurityAudit": false,
+    "noAdvertisingPurposes": true,
+    "noMarketingPurposes": true,
+    "sharedData": [
+      "in_app_search_history",
+      "other_user_generated_content"
+    ],
+    "sharingReason": "Requêtes et critères peuvent être transmis à Firecrawl et aux services d’analyse ; aucune exception générale de sous-traitant n’est revendiquée pour ces textes sans vérification complète des conditions. Les autres destinataires sont des prestataires de fonctionnement pour les catégories concernées.",
+    "types": [
+      {
+        "type": "email_address",
+        "optional": false,
+        "purposes": [
+          "app_functionality",
+          "fraud_prevention_security",
+          "account_management"
+        ]
+      },
+      {
+        "type": "user_ids",
+        "optional": false,
+        "purposes": [
+          "app_functionality",
+          "analytics",
+          "fraud_prevention_security",
+          "account_management"
+        ]
+      },
+      {
+        "type": "purchase_history",
+        "optional": true,
+        "purposes": [
+          "app_functionality",
+          "analytics",
+          "fraud_prevention_security"
+        ]
+      },
+      {
+        "type": "diagnostics",
+        "optional": false,
+        "purposes": [
+          "app_functionality",
+          "analytics",
+          "fraud_prevention_security"
+        ]
+      },
+      {
+        "type": "in_app_search_history",
+        "optional": false,
+        "purposes": [
+          "app_functionality"
+        ],
+        "sharingPurposes": [
+          "app_functionality"
+        ]
+      },
+      {
+        "type": "other_user_generated_content",
+        "optional": true,
+        "purposes": [
+          "app_functionality"
+        ],
+        "sharingPurposes": [
+          "app_functionality"
+        ]
+      },
+      {
+        "type": "other_actions",
+        "optional": false,
+        "purposes": [
+          "app_functionality",
+          "analytics",
+          "fraud_prevention_security"
+        ]
+      },
+      {
+        "type": "device_or_other_ids",
+        "optional": false,
+        "purposes": [
+          "app_functionality",
+          "fraud_prevention_security"
+        ]
+      }
+    ]
+  },
+  "contentRating": {
+    "status": "IARC review completed, saved in Play",
+    "submittedAt": "2026-11-27T18:58:00+01:00",
+    "contact": "contact@fabienbouvet.fr",
+    "termsApprovedByFabien": true,
+    "europe": "PEGI parental guidance",
+    "northAmerica": "ESRB Teen",
+    "brazil": "14+",
+    "generic": "12+",
+    "inAppPurchases": true,
+    "onlineContentAndAI": true,
+    "textualMatureReferencesPossible": true,
+    "matureVisualsProvided": false,
+    "userToUserInteraction": false,
+    "ageRestrictedSalesFocus": false,
+    "preciseLocationSharing": false,
+    "gamblingOrRandomPurchases": false,
+    "targetAudienceStillPending": "18+ confirmed by Fabien, form blocked until full reviewer access"
+  }
 }

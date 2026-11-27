@@ -1,5 +1,5 @@
 {
-  "artifactSha256": "8b9592f1d93c46fb36400deadd484533fe505491e0b2a219eab4486652732184",
+  "artifactSha256": "2398a2aca80f47f7b0c92ea959878b335fd969bb209a9923e462b22092b1f5f6",
   "apkBytes": 2711996,
   "checks": {
     "connectedPackage": true,
@@ -22,16 +22,26 @@
   ],
   "configurationKind": "supplied-client-configuration",
   "productionReady": false,
-  "version": "0.2.11",
+  "versionName": "0.2.11",
   "versionCode": 26,
-  "signatureVerified": true,
+  "sourceCommit": "8e69628ab496dd427aacd9244de6e05b81409b3c",
   "certificateSha256": "aa65bc3e55aec675d9da8cff28a8b9b84973e14148aafd18d711689f7c0c81ad",
-  "aabSha256": "16db025447d83b531dd18d5db4c7f143920380da03c1e9d0e7fd5e5cd514634a",
-  "demoUnitTests": 88,
-  "remoteUnitTests": 104,
-  "nativeReviewAccessTests": 1,
-  "nativeStoreCaptureTests": 1,
-  "realEmailsSentByTheseTests": 0,
-  "providerCallsByTheseTests": 0,
-  "realSalesEnabled": false
+  "apkSignatureVerified": true,
+  "aabSignatureVerified": true,
+  "aabSha256": "4ce9b60c9ec0f3c952a7d6aae27dc83fa9341f3c53f77227c0715cf9a4e60ad4",
+  "apkSha256": "2398a2aca80f47f7b0c92ea959878b335fd969bb209a9923e462b22092b1f5f6",
+  "unitTests": {
+    "RemoteDebug": {
+      "tests": 105,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "realSalesEnabled": false,
+  "documentationDomainsBlocked": true,
+  "ciUrl": "https://github.com/vbooo/previens_moi/actions/runs/46043976565",
+  "ciConclusion": "success",
+  "internalRelease": "Accessible aux testeurs internes",
+  "internalReleaseObservedAt": "2026-11-27T18:49:00+01:00"
 }
