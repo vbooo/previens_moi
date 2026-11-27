@@ -1,0 +1,37 @@
+{
+  "artifactSha256": "8b9592f1d93c46fb36400deadd484533fe505491e0b2a219eab4486652732184",
+  "apkBytes": 2711996,
+  "checks": {
+    "connectedPackage": true,
+    "notDebuggable": true,
+    "backupsDisabled": true,
+    "httpsOnlyIncludingLoopback": true,
+    "internetPermission": true,
+    "notificationPermission": true,
+    "noSensitiveDevicePermission": true,
+    "r8MappingPresent": true,
+    "playAutomaticProtectionMinSdk": true,
+    "noDemoOrPreviewClasses": true,
+    "noConfigurationOrFixtureFiles": true,
+    "noPrivateKeyOrProviderKeyMarkers": true,
+    "noPrivilegedSupabaseJwt": true
+  },
+  "passed": true,
+  "limits": [
+    "Static binary checks and compilation do not prove real notification delivery or seven days of operation."
+  ],
+  "configurationKind": "supplied-client-configuration",
+  "productionReady": false,
+  "version": "0.2.11",
+  "versionCode": 26,
+  "signatureVerified": true,
+  "certificateSha256": "aa65bc3e55aec675d9da8cff28a8b9b84973e14148aafd18d711689f7c0c81ad",
+  "aabSha256": "16db025447d83b531dd18d5db4c7f143920380da03c1e9d0e7fd5e5cd514634a",
+  "demoUnitTests": 88,
+  "remoteUnitTests": 104,
+  "nativeReviewAccessTests": 1,
+  "nativeStoreCaptureTests": 1,
+  "realEmailsSentByTheseTests": 0,
+  "providerCallsByTheseTests": 0,
+  "realSalesEnabled": false
+}

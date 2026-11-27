@@ -32,7 +32,9 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
 
     init {
         viewModelScope.launch {
-            repository.observeSession().collect { s -> mutable.update { it.copy(session = s, loaded = true) } }
+            repository.observeSession().collect { s ->
+                mutable.update { it.copy(session = s, loaded = true) }
+            }
         }
     }
 
@@ -93,12 +95,30 @@ class SessionViewModel @Inject constructor(private val repository: SessionReposi
         }
     }
 
+    fun signInWithPassword(password: String) {
+        if (state.value.busy) return
+        val email = state.value.email.trim()
+        mutable.update { it.copy(busy = true, code = "", error = null) }
+        viewModelScope.launch {
+            val result = repository.signInWithPassword(email, password)
+            mutable.update {
+                it.copy(
+                    busy = false,
+                    sent = false,
+                    email = if (result is Outcome.Success) "" else it.email,
+                    error = (result as? Outcome.Error)?.reason,
+                )
+            }
+        }
+    }
+
     fun requestDeletion() {
         if (state.value.busy) return
         mutable.update { it.copy(busy = true, error = null) }
         viewModelScope.launch {
             when (val result = repository.requestDeletion()) {
-                is Outcome.Success -> mutable.update { SessionUiState(deletionAccepted = true, loaded = true) }
+                is Outcome.Success ->
+                    mutable.update { SessionUiState(deletionAccepted = true, loaded = true) }
                 is Outcome.Error -> mutable.update { it.copy(busy = false, error = result.reason) }
             }
         }

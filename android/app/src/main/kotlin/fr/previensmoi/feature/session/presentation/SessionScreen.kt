@@ -11,10 +11,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import fr.previensmoi.R
 import fr.previensmoi.feature.common.presentation.*
@@ -30,6 +32,9 @@ fun SessionScreen(
     hasSubscription: Boolean = false,
     manageSubscription: () -> Unit = {},
 ) {
+    var passwordMode by rememberSaveable { mutableStateOf(false) }
+    var password by remember { mutableStateOf("") }
+    val uri = LocalUriHandler.current
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
     val canSend = !state.busy && state.resendSeconds == 0 && state.email.contains('@')
@@ -48,13 +53,32 @@ fun SessionScreen(
             vm.verify()
         }
     }
+    val passwordSignIn = {
+        if (!state.busy && state.email.contains('@') && password.isNotEmpty()) {
+            val submitted = password
+            password = ""
+            focus.clearFocus()
+            keyboard?.hide()
+            vm.signInWithPassword(submitted)
+        }
+    }
     var deleting by rememberSaveable { mutableStateOf(false) }
     var privacy by rememberSaveable { mutableStateOf(false) }
     if (deleting)
         AlertDialog(
             onDismissRequest = { deleting = false },
             title = { Text(stringResource(R.string.erase_account)) },
-            text = { Column { Text(stringResource(R.string.v1_erase_body)); if(hasSubscription) { Text(stringResource(R.string.billing_delete_warning));TextButton(manageSubscription){Text(stringResource(R.string.billing_manage))} } } },
+            text = {
+                Column {
+                    Text(stringResource(R.string.v1_erase_body))
+                    if (hasSubscription) {
+                        Text(stringResource(R.string.billing_delete_warning))
+                        TextButton(manageSubscription) {
+                            Text(stringResource(R.string.billing_manage))
+                        }
+                    }
+                }
+            },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -84,6 +108,16 @@ fun SessionScreen(
                 )
             },
             confirmButton = {
+                TextButton(
+                    onClick = {
+                        uri.openUri("https://vbooo.github.io/app-policies/previens-moi/fr.html")
+                    },
+                    modifier = Modifier.testTag("privacy_full"),
+                ) {
+                    Text(stringResource(R.string.privacy_full))
+                }
+            },
+            dismissButton = {
                 TextButton(onClick = { privacy = false }) {
                     Text(stringResource(R.string.v1_close))
                 }
@@ -97,7 +131,12 @@ fun SessionScreen(
                 style = MaterialTheme.typography.titleLarge,
             )
             subscriptionAction?.let { action ->
-                OutlinedButton(action,modifier=Modifier.fillMaxWidth().testTag("open_subscription")){Text(stringResource(R.string.billing_title))}
+                OutlinedButton(
+                    action,
+                    modifier = Modifier.fillMaxWidth().testTag("open_subscription"),
+                ) {
+                    Text(stringResource(R.string.billing_title))
+                }
             }
             Spacer(Modifier.height(8.dp))
             SectionTitle(stringResource(R.string.v1_notifications))
@@ -111,7 +150,6 @@ fun SessionScreen(
                 Text(stringResource(R.string.v1_notification_settings))
             }
             HorizontalDivider()
-            TextButton(onClick = { privacy = true }) { Text(stringResource(R.string.v1_privacy)) }
             TextButton(
                 vm::signOut,
                 enabled = !state.busy,
@@ -134,30 +172,90 @@ fun SessionScreen(
                 ),
                 style = MaterialTheme.typography.headlineSmall,
             )
-            SecondaryText(stringResource(R.string.v1_login_body))
+            SecondaryText(
+                stringResource(
+                    if (passwordMode) R.string.password_sign_in_body else R.string.v1_login_body,
+                ),
+            )
             OutlinedTextField(
                 state.email,
                 vm::email,
                 enabled = !state.busy,
                 singleLine = true,
                 shape = MaterialTheme.shapes.medium,
-                colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+                colors =
+                    OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    ),
                 label = { Text(stringResource(R.string.email_label)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { send() }),
+                keyboardOptions =
+                    KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done),
+                keyboardActions =
+                    KeyboardActions(onDone = { if (passwordMode) passwordSignIn() else send() }),
                 modifier = Modifier.fillMaxWidth().testTag("email"),
             )
-            FailureText(state.error)
-            Button(
-                send,
-                enabled = canSend,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("send_code"),
-                shape = MaterialTheme.shapes.medium,
+            if (passwordMode) {
+                OutlinedTextField(
+                    password,
+                    { password = it },
+                    enabled = !state.busy,
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.password_label)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions =
+                        KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done,
+                        ),
+                    keyboardActions = KeyboardActions(onDone = { passwordSignIn() }),
+                    modifier = Modifier.fillMaxWidth().testTag("password"),
+                )
+                if (state.error != null)
+                    Text(
+                        stringResource(R.string.password_sign_in_error),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                Button(
+                    passwordSignIn,
+                    enabled = !state.busy && state.email.contains('@') && password.isNotEmpty(),
+                    modifier =
+                        Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("password_sign_in"),
+                ) {
+                    Text(stringResource(if (state.busy) R.string.v1_wait else R.string.sign_in))
+                }
+            } else {
+                FailureText(state.error)
+                Button(
+                    send,
+                    enabled = canSend,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).testTag("send_code"),
+                    shape = MaterialTheme.shapes.medium,
+                ) {
+                    Text(
+                        if (state.resendSeconds > 0)
+                            stringResource(R.string.v1_resend_wait, state.resendSeconds)
+                        else
+                            stringResource(
+                                if (state.busy) R.string.v1_wait else R.string.send_code,
+                            ),
+                    )
+                }
+            }
+            TextButton(
+                onClick = {
+                    passwordMode = !passwordMode
+                    password = ""
+                    vm.email(state.email)
+                },
+                enabled = !state.busy,
+                modifier = Modifier.testTag("password_mode"),
             ) {
                 Text(
-                    if (state.resendSeconds > 0)
-                        stringResource(R.string.v1_resend_wait, state.resendSeconds)
-                    else stringResource(if (state.busy) R.string.v1_wait else R.string.send_code),
+                    stringResource(
+                        if (passwordMode) R.string.use_email_code
+                        else R.string.use_existing_password,
+                    ),
                 )
             }
         } else {
@@ -172,9 +270,17 @@ fun SessionScreen(
                 enabled = !state.busy,
                 singleLine = true,
                 shape = MaterialTheme.shapes.medium,
-                colors = OutlinedTextFieldDefaults.colors(unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest, focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+                colors =
+                    OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    ),
                 label = { Text(stringResource(R.string.v1_code_label)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword, imeAction = ImeAction.Done),
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.NumberPassword,
+                        imeAction = ImeAction.Done,
+                    ),
                 keyboardActions = KeyboardActions(onDone = { verify() }),
                 modifier = Modifier.fillMaxWidth().testTag("otp"),
             )
@@ -201,6 +307,9 @@ fun SessionScreen(
             TextButton(vm::changeEmail, enabled = !state.busy) {
                 Text(stringResource(R.string.v1_change_email))
             }
+        }
+        TextButton(onClick = { privacy = true }, modifier = Modifier.testTag("privacy_open")) {
+            Text(stringResource(R.string.v1_privacy))
         }
     }
 }

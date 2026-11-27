@@ -8,7 +8,7 @@
   "collectedData": [
     {
       "data": "E-mail de connexion et identifiant de compte",
-      "purpose": "Connexion par code e-mail et association des suivis/achats au compte"
+      "purpose": "Connexion par code e-mail ou mot de passe existant, association des suivis/achats au compte; aucun mot de passe de messagerie collecté."
     },
     {
       "data": "Demandes, critères, sources, résultats et actions sur les suivis",
@@ -40,13 +40,10 @@
   ],
   "adSdkPresent": false,
   "inAppDeletion": "Compte → Effacer mon compte → confirmation; arrêt des suivis puis traitement asynchrone avec reprise en cas d’échec",
-  "webDeletion": "Page publique dédiée requise avec moyen de demande; authentifier la propriété du compte avant effacement. Aucun effacement déclenché par simple adresse fournie par un tiers.",
-  "supportRetention": "Le texte et l’e-mail sont effacés de la file après acceptation SMTP; reçus/empreintes et messages non livrés purgés après 30 jours par tâche quotidienne. Les copies reçues par e-mail ont une conservation distincte encore à préciser.",
+  "webDeletion": "Page publique publiée; demande par e-mail et vérification de propriété avant purge. Aucun effacement sur simple adresse fournie par un tiers.",
+  "supportRetention": "Texte/adresse retirés de la file après acceptation SMTP; reçus et messages non livrés purgés après 30 jours. Boîte mail : pendant le traitement puis au maximum 12 mois après clôture, nettoyage manuel comme le service partagé existant.",
   "remainingRetentionDecisions": [
-    "Durée des comptes inactifs et suivis terminés non supprimés",
-    "Rotation effective des sauvegardes et traces d’effacement",
-    "Durée des copies de messages dans la boîte de réception",
-    "Durées des journaux d’hébergement et exceptions légales de facturation"
+    "La politique décrit les critères de conservation réels ; aucune durée de sauvegarde ou journal fournisseur non vérifiée n’est inventée. L’exploitation des sauvegardes et les accords de sous-traitance doivent rester suivis avant ouverture commerciale."
   ],
   "reviewAccess": "Connexion actuelle par code e-mail; préparer un accès Google stable sans partager de boîte personnelle ou ajouter de code de contournement. Aucun nouvel identifiant créé par cet inventaire.",
   "googleChecklistObserved": {
@@ -72,8 +69,13 @@
     "government": "Non : aucune affiliation gouvernementale identifiée",
     "finance": "Pas de fonctionnalité financière spécialisée identifiée; une recherche générique sur le Web ne doit pas être présentée comme un service financier",
     "health": "Pas de fonctionnalité de santé spécialisée identifiée; ne pas promettre de diagnostic ou conseil médical",
-    "audience": "Choisir explicitement l’âge cible avant questionnaire; ne pas inventer la décision",
-    "professionalStatus": "Déclaration personnelle du développeur à valider; ne pas déduire un statut non professionnel du simple mot projet personnel"
+    "audience": "18 ans et plus, confirmé par Fabien le 27 novembre 2026.",
+    "professionalStatus": "Professionnel via sa micro-entreprise, confirmé par Fabien le 27 novembre 2026."
   },
-  "publicEmail": "contact@fabienbouvet.fr"
+  "publicEmail": "contact@fabienbouvet.fr",
+  "publicPrivacyUrl": "https://vbooo.github.io/app-policies/previens-moi/fr.html",
+  "publicDeletionUrl": "https://vbooo.github.io/app-policies/previens-moi/suppression.html",
+  "publicSupportUrl": "https://vbooo.github.io/app-policies/previens-moi/",
+  "audienceConfirmed": "18+",
+  "professionalStatusConfirmed": true
 }

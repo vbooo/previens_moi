@@ -17,12 +17,14 @@ import retrofit2.http.*
 @Serializable class VerifyRequest(val email: String, val token: String, val type: String = "email") {
     override fun toString() = "VerifyRequest([redacted])"
 }
+@Serializable class PasswordRequest(val email: String, val password: String) { override fun toString() = "PasswordRequest([redacted])" }
 @Serializable class RefreshRequest(val refresh_token: String) { override fun toString() = "RefreshRequest([redacted])" }
 @Serializable data class AuthUser(val id: String, val email: String = "")
 @Serializable class AuthResponse(val access_token: String, val refresh_token: String, val expires_in: Long, val user: AuthUser) {
     override fun toString() = "AuthResponse([redacted])"
 }
 interface AuthApi {
+    @POST("token?grant_type=password") suspend fun password(@Body request: PasswordRequest): Response<AuthResponse>
     @POST("otp") suspend fun request(@Body request: OtpRequest): Response<Unit>
     @POST("verify") suspend fun verify(@Body request: VerifyRequest): Response<AuthResponse>
     @POST("token?grant_type=refresh_token") suspend fun refresh(@Body request: RefreshRequest): Response<AuthResponse>

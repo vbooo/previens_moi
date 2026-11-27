@@ -70,4 +70,10 @@
     <string name="v1_hourly">Environ toutes les heures</string>
     <string name="v1_change">Modifier</string>
     <string name="v1_start_without_account">Tu peux commencer sans compte. Connecte-toi pour activer ton suivi et retrouver tes résultats.</string>
+    <string name="privacy_full">Lire la politique complète</string>
+    <string name="password_label">Mot de passe</string>
+    <string name="use_existing_password">J’ai déjà un mot de passe</string>
+    <string name="use_email_code">Utiliser un code par e-mail</string>
+    <string name="password_sign_in_body">Connecte-toi avec un mot de passe déjà défini pour ce compte.</string>
+    <string name="password_sign_in_error">Connexion impossible. Vérifie tes identifiants et ta connexion.</string>
 </resources>

@@ -57,6 +57,25 @@ class RemoteRepositoryTest {
             server.enqueue(response("{}",400));assertNull(session.bearer());assertNull(vault.value)
         }
     }
+    @Test fun `password sign in requires server verification and never stores the password`() = runTest {
+        MockWebServer().apply { start() }.use { server ->
+            val vault = MemoryVault(); val session = auth(server, vault)
+            server.enqueue(response("{}", 400))
+            assertEquals(Outcome.Error(Failure.SessionRequired), session.signInWithPassword("fixture@example.test", "incorrect-fixture"))
+            assertNull(vault.value)
+            server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
+            server.enqueue(response("""{"access_token":"verified","refresh_token":"refresh","expires_in":3600,"user":{"id":"fixture","email":"fixture@example.test"}}"""))
+            assertTrue(session.signInWithPassword("fixture@example.test", "only-a-test-fixture") is Outcome.Success)
+            val request = server.takeRequest(5, java.util.concurrent.TimeUnit.SECONDS)!!
+            assertEquals("/auth/v1/token", request.url.encodedPath)
+            assertEquals("password", request.url.queryParameter("grant_type"))
+            assertEquals("only-a-test-fixture", ApiClient.json.parseToJsonElement(request.body!!.utf8()).jsonObject["password"]!!.jsonPrimitive.content)
+            assertEquals("verified", vault.value!!.accessToken)
+            assertFalse(PasswordRequest("fixture@example.test", "only-a-test-fixture").toString().contains("only-a-test-fixture"))
+            assertEquals("Bearer verified", session.bearer())
+        }
+    }
+
     @Test fun `pending command survives repository recreation and new action only reads original UUID`() = runTest {
         MockWebServer().apply { start() }.use { server ->
             val session = auth(server,MemoryVault(Credentials("a","token","refresh",9_000_000)))

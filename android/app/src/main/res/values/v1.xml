@@ -69,4 +69,10 @@
     <string name="v1_hourly">Approximately every hour</string>
     <string name="v1_change">Change</string>
     <string name="v1_start_without_account">You can start without an account. Sign in to activate your watch and find your results.</string>
+    <string name="privacy_full">Read the full privacy policy (French)</string>
+    <string name="password_label">Password</string>
+    <string name="use_existing_password">I already have a password</string>
+    <string name="use_email_code">Use an email code</string>
+    <string name="password_sign_in_body">Sign in with a password already set for this account.</string>
+    <string name="password_sign_in_error">Sign-in failed. Check your credentials and connection.</string>
 </resources>

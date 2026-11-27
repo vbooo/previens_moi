@@ -19,7 +19,7 @@ class RemoteSessionRepository(private val api: AuthApi, private val vault: Sessi
     private val session = MutableStateFlow(credentials?.let { Session(it.userId,it.email) })
     fun currentUserId(): String? = session.value?.id
     override fun observeSession() = session.asStateFlow()
-    // A real session always requires the explicit email + OTP flow.
+    // Sessions require explicit server-verified credentials; there is no automatic sign-in.
     override suspend fun signIn(): Outcome<Session> = Outcome.Error(Failure.SessionRequired)
     override suspend fun requestCode(email: String): Outcome<Unit> = safe {
         if (email.length !in 3..254 || !email.contains('@')) return@safe Outcome.Error(Failure.InvalidInput)
@@ -32,6 +32,13 @@ class RemoteSessionRepository(private val api: AuthApi, private val vault: Sessi
         val value = response.body()
         if (!response.isSuccessful || value == null) Outcome.Error(Failure.SessionRequired)
         else { save(value); Outcome.Success(Session(value.user.id,value.user.email)) }
+    } }
+    override suspend fun signInWithPassword(email: String, password: String): Outcome<Session> = mutex.withLock { safe {
+        if (email.length !in 3..254 || !email.contains('@') || password.isEmpty() || password.length > 4096) return@safe Outcome.Error(Failure.InvalidInput)
+        val response = api.password(PasswordRequest(email, password))
+        val value = response.body()
+        if (!response.isSuccessful || value == null) Outcome.Error(if (response.code() == 429) Failure.QuotaExceeded else Failure.SessionRequired)
+        else { save(value); Outcome.Success(Session(value.user.id, value.user.email)) }
     } }
     suspend fun bearer(rejected: String? = null): String? = mutex.withLock {
         val current = credentials ?: return@withLock null
